@@ -1,3 +1,10 @@
+
+html {
+  height: 100%;
+  display: flex;
+    font-family: 'Work Sans', sans-serif;
+  text-align: center;}
+
 body {
     background:rgb(247,237,244);
     margin: 10px;
@@ -79,9 +86,8 @@ section#header{
       justify-self: center;
       z-index: 1;
       position: fixed;
-      top: 90%;
+       top: 95%;
       left: 50%;
-      margin: 0px auto;
       transform: translate(-50%, -50%); 
       background-color: rgb(255, 255, 255);
       border: 1px solid rgb(237, 238, 242);
@@ -108,6 +114,18 @@ section#header{
       padding: 10px;
       transition: 0.3s;
     }
+
+    .tabButton:hover{
+      background-color: antiquewhite;
+      border-radius: 20px;
+    }
+
+    .tab-container-center a{
+      text-decoration: none;
+      display: block;
+      color: black;
+      font-weight: 500;
+    }
     .btn-wallet{
           text-align: justify;
       margin: 0.2rem;
@@ -126,6 +144,7 @@ section#header{
         background-color: antiquewhite;
         border-radius: 20px;
     }
+    
     
 
     .Options{
@@ -203,7 +222,7 @@ section#header{
     
   
 .main-body {
-  max-height: 300;
+  max-height: 400;
   padding: 10px;
   min-width: 40%;;
   border-radius: 20px;
@@ -264,6 +283,7 @@ text-align: center;
   border-radius: 20px;
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
 }
 .textField{
   height: 40;
@@ -426,7 +446,7 @@ input[type="number"]:focus{
   background: rgb(247,248,250);
   max-height: 200;
   padding: 10px;
-  min-width: 80%;;
+  min-width: 100%;;
   border-radius: 20px;
   display:block;
   z-index:1;
@@ -457,4 +477,11 @@ input[type="number"]:focus{
 }
 .history-details p{
   text-align: center;
+}
+
+
+.range-select{
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
 }
