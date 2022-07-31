@@ -1,14 +1,12 @@
 
-html {
-  height: 100%;
-  display: flex;
-    font-family: 'Work Sans', sans-serif;
-  text-align: center;}
-
-body {
+body, html {    
+  font-family: 'Work Sans', sans-serif;
     background:rgb(247,237,244);
-    margin: 10px;
-    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    min-height: 100vh; 
+    width: 100%;
+    overflow:hidden;
  
 }
 
@@ -55,7 +53,7 @@ section#header{
 }
 @media (max-width:1280px){
   .tab-container-center {
-   justify-content: center;
+   justify-self: start;
   }
 }
 .tab-container-center {
@@ -84,7 +82,7 @@ section#header{
       -webkit-box-pack: justify;
       justify-content: space-between;
       justify-self: center;
-      z-index: 1;
+      z-index: 99;
       position: fixed;
        top: 95%;
       left: 50%;
@@ -94,6 +92,7 @@ section#header{
       box-shadow: rgb(0 0 0 / 2%) 0px 6px 10px;
   }
 }
+
     .tab-container-right {
       margin: 1rem;
       display: flex;
@@ -219,10 +218,18 @@ section#header{
     justify-content: space-between;
     padding: 6px 8px;
 }
-    
   
+@media (max-width:960px) {
+  .main-body{
+    top: 50% !important;
+    max-height: 480px !important;
+  }
+  
+}
+
 .main-body {
-  max-height: 400;
+  float:left;
+  max-height: 860px;
   padding: 10px;
   min-width: 40%;;
   border-radius: 20px;
@@ -235,6 +242,7 @@ section#header{
       margin-right: -50%;
       transform: translate(-50%, -50%)
 }
+  
 
 
 /* .exchangeContainer{
@@ -307,6 +315,59 @@ text-align: center;
   border: 1px solid white;
   border-radius: 16px;
 }
+
+.menu-three-dot{
+  width: 100%;
+    margin: 0px;
+    height: 40px;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(255, 255, 255);
+    padding: 0.15rem 0.5rem;
+    border-radius: 16px;
+}
+.menu-three-dot:hover, .menu-three-dot:focus {
+  cursor: pointer;
+  outline: none;
+  border: 1px solid rgb(206, 208, 217);
+}
+
+.menu-list{
+  min-width: 196px;
+  max-height: 350px;
+  overflow: auto;
+  background-color: rgb(247, 248, 250);
+  box-shadow: rgb(0 0 0 / 1%) 0px 0px 1px, rgb(0 0 0 / 4%) 0px 4px 8px, rgb(0 0 0 / 4%) 0px 16px 24px, rgb(0 0 0 / 1%) 0px 24px 32px;
+  border: 1px solid rgb(255, 255, 255);
+  border-radius: 12px;
+  padding: 0.5rem;
+  /* display: flex; */
+  flex-direction: column;
+  font-size: 16px;
+  position: absolute;
+  top: 3rem;
+  z-index: 100;
+  right: 0rem;
+  display: none;
+}
+
+.menu-list a {
+  text-decoration: none;
+  display: flex;
+    flex: 1 1 0%;
+    flex-direction: row;
+    -webkit-box-align: center;
+    align-items: center;
+    padding: 0.5rem;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    color: rgb(86, 90, 105);
+}
+
+.show {
+  display: block;
+}
+
+
 /* 
 .fa-ellipsis-h {
 align-self: center;
@@ -361,7 +422,6 @@ input[type="number"]:focus{
   width: fit-content;
   background:rgb(247,248,250);
   position: absolute;
-  top: 45%;
     left: 50%;
     margin-right: -50%;
     transform: translate(-50%, -50%)
@@ -470,7 +530,7 @@ input[type="number"]:focus{
 }
 
 .history-details{
-  height: 55%;
+  height: 100%;
   border-radius: 16px;
   border: 4px solid white;
   
@@ -484,4 +544,50 @@ input[type="number"]:focus{
   margin-top: 1rem;
   display: flex;
   justify-content: center;
+}
+
+
+/* Add Liquidity */
+
+.add-liquidity{
+  display: flex;
+     flex-direction: column;
+    padding: 120px 16px 0px;
+    -webkit-box-align: center;
+    align-items: center;
+    flex: 1 1 0%;
+    z-index: 1;
+    
+}
+
+
+@media (max-width: 960px)
+{
+.container-liquidity{
+    max-width: 480px;
+    margin: 0px auto;
+  
+}
+}
+
+.container-liquidity{
+  position: relative;
+    display: flex;
+    flex-direction: column;
+
+   
+}
+
+.Liquidity{
+  position: relative;
+  height: 500px;
+  width: 500px;
+    max-width: 880px;
+    background: rgb(255, 255, 255);
+    box-shadow: rgb(0 0 0 / 1%) 0px 0px 1px, rgb(0 0 0 / 4%) 0px 4px 8px, rgb(0 0 0 / 4%) 0px 16px 24px, rgb(0 0 0 / 1%) 0px 24px 32px;
+    border-radius: 24px;
+    margin-top: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 1;
 }
