@@ -8,11 +8,11 @@
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+      <script src="/dropDown.js"></script>
   </head>
   <body>
-    <header>
+    <div class="wrapper">
         <section id="header">
-            <div class="wrapper">
                <div class="row">
                 <a href="index.html" ><img class="logo" src="unicorn.png" alt="logo"></image>  </a>
                 <div class = "tab-container-center">
@@ -37,25 +37,226 @@
                 <div class = "wallet-balance">
                     <button class="btn-wallet">0.69 rETH</button>
                     <button class="btn-wallet">0x51bc...xc</button>
-                </div> 
-                  <div class="menu-option"><i class="fa fa-ellipsis-h"></i>
                 </div>
+                    <div class="menu-option">
+                      <button class="menu-three-dot" onclick="showDropdown()">
+                          <i class="fa fa-ellipsis-h"></i>
+                      </button>
+                      <span class="menu-list" id="menu-dropdown">
+                        <a class="options" href="">About</a>
+                        <a class="options" href="">Help Center</a>
+                        <a class="options" href="">Request Feature</a>
+                        <a class="options" href="">Discord</a>
+                        <a class="options" href="">Language</a>
+                        <a class="options" href="">Dark Theme</a>
+                        <a class="options" href="">Docs</a>
+                        <a class="options" href="">Legal Privacy</a>
+                      </span>
+                  </div>
                </div>
             </div>
-            </div>
         </section>
-    </header>
+
     <div class="add-liquidity">
         <div class="container-liquidity">
             <main class="liquidity">
-        
-            </main>
+             <div class="top-heading">
+               <div class="heading-title" style="padding: 1rem 1rem 0px;">
+                  <a flex="1" class="arrow-back" href="/addLiquidity.html">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#565A69" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sc-iwajx4-3 nbMDA"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                  </a>
+                  <div class="title" style="flex: 5 1 0%;margin: auto;text-align: start;">Add Liquidity</div>
+                  <div class="switch-crypto" style="margin-right: 0.5rem;">
+                    <div class="crypto-items" style="width:fit-content; min-width:fit-content;">
+                      <div class = "crypto-status">
+                        <button class="btn-wallet">ETH</button>
+                        <button class="btn-wallet">ACH</button>
+                    </div>
+                    </div>
+                    </div>
+                    <div class="settings-icon">
+                         <button id="open-settings" class="settings-button">
+                          <i class="fa fa-gear" style="color: black;"></i>
+                         </button>
+                    </div>
+                  </div>
+                 
+               </div>
+               <div class="pool-container">
+                <div class="pool-body">
+                  <div class="select-pair">
+                     <div class="pair">
+                      <div class="pair-title">
+                        <div class="title">Select Pair</div>
+                      </div>
+                      <div class="select-options">
+                         <div id="tokena">
+                          <div class="token">
+                            <div class="token-input" style="padding: 0px; border-radius:8px;">
+                               <button class="token-input-select">
+                                <span class="options">
+                                  <div class="currency-label">
+                                    <img class="imgCurrency" alt="ETH Logo" src="/ethereum.png" style="height: 20px; width:20px;">
+                                    <span class="currency-label">
+                                      ETH
+                                    </span>
+                                    <svg width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg" class="sc-33m4yg-8 kgnnlF"><path d="M0.97168 1L6.20532 6L11.439 1" stroke="#AEAEAE"></path></svg>
+                                  </div>
+                                </span>
+                               </button>
+                            </div>
+                          </div>
+                         </div>
+                         <div style="width: 12px;"></div>
+                         <div id="tokena">
+                          <div class="token">
+                            <div class="token-input" style="padding: 0px; border-radius:8px;">
+                               <button class="token-input-select">
+                                <span class="options">
+                                  <div class="currency-label">
+                                    <img class="imgCurrency" alt="ETH Logo" src="/ethereum.png" style="height: 20px; width:20px;">
+                                    <span class="currency-label">
+                                      ETH
+                                    </span>
+                                    <svg width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg" class="sc-33m4yg-8 kgnnlF"><path d="M0.97168 1L6.20532 6L11.439 1" stroke="#AEAEAE"></path></svg>
+                                  </div>
+                                </span>
+                               </button>
+                            </div>
+                          </div>
+                         </div>
+                        
+                      </div>
+                      <div class="fee-tier">
+                        <div class="container-fee">
+                         <div class="select-fee-tier">
+                             <div class="options">
+                                <div class="add-liquidity-fee">
+                                       <div class="title">0.3% fee tier</div>
+                                       <div class="selected-fee-percentage subtitle" style="width: fit-content; margin-top:8px;">
+                                       <div class="percentage-container">
+                                        <div class="percentage-label">
+                                          86% Select
+                                        </div>
+                                       </div>
+                                      </div>
+                                </div>
+                                <button width="auto" class="hide-show" onclick="visible()" id="show/hide">Edit</button>
+                             </div>
+                         </div>
+                         <div class="fee-tier-options" id="showDiv" style="display: none;">
+                          <button class="best-tier-options bso">
+                            <div class="options">
+                              <div class="add-liquidity-fee">
+                                     <div class="title">0.3% fee tier</div>
+                                     <div class="selected-fee-percentage subtitle" style="width: fit-content; margin-top:8px;">
+                                     <div class="percentage-container">
+                                      <div class="percentage-label">
+                                        86% Select
+                                      </div>
+                                     </div>
+                                    </div>
+                              </div>
+                          </button>
+                          <button class="best-tier-options bso">
+                            <div class="options">
+                              <div class="add-liquidity-fee">
+                                     <div class="title">0.3% fee tier</div>
+                                     <div class="selected-fee-percentage subtitle" style="width: fit-content; margin-top:8px;">
+                                     <div class="percentage-container">
+                                      <div class="percentage-label">
+                                        86% Select
+                                      </div>
+                                     </div>
+                                    </div>
+                              </div>
+                          </button>
+                          <button class="best-tier-options bso">
+                            <div class="options">
+                              <div class="add-liquidity-fee">
+                                     <div class="title">0.3% fee tier</div>
+                                     <div class="selected-fee-percentage subtitle" style="width: fit-content; margin-top:8px;">
+                                     <div class="percentage-container">
+                                      <div class="percentage-label">
+                                        86% Select
+                                      </div>
+                                     </div>
+                                    </div>
+                              </div>
+                          </button>
+                          <button class="best-tier-options bso">
+                            <div class="options">
+                              <div class="add-liquidity-fee">
+                                     <div class="title">0.3% fee tier</div>
+                                     <div class="selected-fee-percentage subtitle" style="width: fit-content; margin-top:8px;">
+                                     <div class="percentage-container">
+                                      <div class="percentage-label">
+                                        86% Select
+                                      </div>
+                                     </div>
+                                    </div>
+                              </div>
+                          </button>
+                         </div>
+                        </div>
+                      </div>
+                     </div>
+                  </div>
+                  </div>
+                  <div class="separator hz"></div>
+                  <div class="deposit-amounts">
+                     <div class="container-deposits">
+                      <div class="deposits title">
+                        Depsoits Amounts
+                      </div>
+                      <div id="add-liquidity-input-tokena" class="add-token-input">
+                          <div class="add-token-field">
+                            <div class="inputField">
+                              <input class="sc-1x3stf0-0 chxufg sc-33m4yg-11 jLdqNm token-amount-input" 
+                              inputmode="decimal" autocomplete="off" autocorrect="off" type="text" 
+                              pattern="^[0-9]*[.,]?[0-9]*$" placeholder="0.0" minlength="1" 
+                              maxlength="79" spellcheck="false" value=""> 
+                              <button class="btn add-token">
+                                <span class="logo-label">
+                                  <img class="imgCurrency" alt="ETH Logo" src="/ethereum.png" style="height: 20px; width:20px;">
+                                  <span class="currency-label">
+                                    ETH
+                                  </span>
+                                </span>
+                              </button>
+                          </div>
+                          </div>
+                     </div>
+                     </div>
+                     <div class="separator hz">
+                     </div>
+                     <div id="add-liquidity-input-tokena" class="add-token-input">
+                      <div class="add-token-field">
+                        <div class="inputField">
+                          <input class="sc-1x3stf0-0 chxufg sc-33m4yg-11 jLdqNm token-amount-input" 
+                          inputmode="decimal" autocomplete="off" autocorrect="off" type="text" 
+                          pattern="^[0-9]*[.,]?[0-9]*$" placeholder="0.0" minlength="1" 
+                          maxlength="79" spellcheck="false" value=""> 
+                          <button class="btn add-token">
+                            <span class="logo-label">
+                              <img class="imgCurrency" alt="ETH Logo" src="/ethereum.png" style="height: 20px; width:20px;">
+                              <span class="currency-label">
+                                ETH
+                              </span>
+                            </span>
+                          </button>
+                      </div>
+                    </div>
+                      
+                  </div>
+               </div>
+               <div class="separator hz">
+               <button class="btn btn-connect">Connect Wallet</button>
+               </div>
+               </div>
+               
+             </main>
         </div>
     </div>
   </body>
 </html>
-<script>
-  function showDropdown(event) {
-    event.target.nextElementSibling.classList.toggle("show");
-}
-</script>

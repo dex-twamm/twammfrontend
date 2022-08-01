@@ -6,6 +6,7 @@
     <title>Web 3</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="/dropDown.js"></script>
 </head>
 
 <body>
@@ -37,7 +38,22 @@
             <button class="btn-wallet">0.69 rETH</button>
             <button class="btn-wallet">0x51bc...xc</button>
         </div> 
-          <div class="menu-option"><i class="fa fa-ellipsis-h"></i></button>
+        <div class="menu-option">
+            <button class="menu-three-dot" onclick="showDropdown()">
+                <i class="fa fa-ellipsis-h"></i>
+            </button>
+            <span class="menu-list" id="menu-dropdown">
+              <a class="options" href="">About</a>
+              <a class="options" href="">Help Center</a>
+              <a class="options" href="">Request Feature</a>
+              <a class="options" href="">Discord</a>
+              <a class="options" href="">Language</a>
+              <a class="options" href="">Dark Theme</a>
+              <a class="options" href="">Docs</a>
+              <a class="options" href="">Legal Privacy</a>
+            </span>
+        </div>
+     </div>
         </div>
        </div>
     </div>

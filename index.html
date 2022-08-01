@@ -6,13 +6,13 @@
     <title>Web 3</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="/dropDown.js"></script>
 </head>
 
 <body>
-<div>
+<div class="wrapper">
 <section id="header">
-    <div class="wrapper">
-       <div class="row">
+        <div class="row">
         <a href="index.html" ><img class="logo" src="unicorn.png" alt="logo"></image>  </a>
         <div class = "tab-container-center">
             <div class="tabButton"><a href="/index.html">Swap</a></div>
@@ -51,7 +51,6 @@
               <a class="options" href="">Docs</a>
               <a class="options" href="">Legal Privacy</a>
             </span>
-            
         </div>
        </div>
     </div>
@@ -67,7 +66,7 @@
     </div>
 
  <div class="textInput">
-        <input class="textField" type="number", value="0.0">
+        <input class="textField" type="number", placeholder="0.0">
         <button class = "btn currency-select">
             <span class="spn-currency">
                 <div class="currecy">
@@ -84,7 +83,7 @@
         <i class="fa fa-arrow-down"></i>
  </div>
  <div class="textOutput">
-    <input class="textField" type="number", value="0.0">
+    <input class="textField" type="number",  placeholder="0.0">
     <button class = "btn token-select">
         <span class="spn-select-token">
             <div class="">
@@ -96,41 +95,7 @@
    
  </div>
     <button class="btn btn-connect">Connect Wallet</button>
-    <!-- <div class="swap-history"> -->
-        <div class="label-history">
-         <p> Your LongTerm Orders</p>
-         <i class="fa fa-arrow-down"></i>
-         
-        </div>
-        <div class="history-details">
-             <p>Connect To Wallet To Load Your List</p>
-        </div>
-    </div>
-    
-</div>
-
 </div>
 </div>
-
 </body>
-<script>
-function showDropdown() {
-  document.getElementById("menu-dropdown").classList.toggle("show");
-}
-
-// Close the dropdown if the user clicks outside of it
-window.onclick = function(event) {
-  if (!event.target.matches(".menu-three-dot")) {
-    var dropdowns = document.getElementsByClassName("menu-list");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains("show")) {
-        openDropdown.classList.remove("show");
-      }
-    }
-  }
-};
-
-  </script>
 </html>
