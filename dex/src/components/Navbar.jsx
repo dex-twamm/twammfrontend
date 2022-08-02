@@ -10,9 +10,9 @@ const Navbar = () => {
         <div className="row">
           <a href="index.html"><img className="logo" src="unicorn.png" alt="logo" width='20px'/></a>
           <div className = "tab-container-center">
-            <div className="tabButton"><a href="/index.html">Swap</a></div>
-            <div className="tabButton"><a href="/longTerm.html">Long Term Swap</a></div>
-            <div className="tabButton"><a href="/addLiquidity.html">Add Liquidity</a></div>
+            <div className="tabButton"><a href="/">Swap</a></div>
+            <div className="tabButton"><a href="/longterm">Long Term Swap</a></div>
+            <div className="tabButton"><a href="/liquidity">Add Liquidity</a></div>
           </div>
           <div className="tab-container-right">
             <div className="dropdown">
@@ -33,7 +33,7 @@ const Navbar = () => {
             </div> 
             <div className="menu-option">
               <button className="menu-three-dot" onClick={showDropdown}>
-                <FontAwesomeIcon icon={faEllipsis} />
+                <FontAwesomeIcon icon={faEllipsis}/>
               </button>
               <span className="menu-list" id="menu-dropdown">
                 <a className="options" href="">About</a>

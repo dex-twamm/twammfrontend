@@ -2,8 +2,10 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 
-const Swap = () => {
+const Swap = ({swapOption}) => {
+  console.log("swap:",swapOption);
   return (
+    
     <div className='main-body'>
       <div className="swap">
         <div className="swapOptions">

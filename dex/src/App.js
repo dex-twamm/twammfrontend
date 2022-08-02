@@ -1,3 +1,4 @@
+import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar';
 import Swap from './components/Swap';
@@ -8,9 +9,25 @@ function App() {
   return (
     <div className="App">
       <Navbar/>
-      {/* <Swap/> */}
-      {/* <LongTermSwap/> */}
-      {/* <AddLiquidity/> */}
+      <Routes>
+        <Route path="/" 
+          element={
+            <Swap/>
+          }
+        /> 
+
+        <Route path="/longterm" 
+          element={
+            <LongTermSwap/>
+          }
+        /> 
+
+        <Route path="/liquidity" 
+          element={
+            <AddLiquidity/>
+          }
+        />
+      </Routes>
     </div>
   );
 }
