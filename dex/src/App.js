@@ -9,6 +9,7 @@ function App() {
   const data = {
     token:{
       name: 'Ethereum',
+      symbol:'ETH',
       image : '/ethereum.png',
     },
     wallet:{
@@ -27,7 +28,10 @@ function App() {
       <Routes>
         <Route path="/" 
           element={
-            <Swap/>
+            <Swap 
+            tokenSymbol={data.token.symbol}
+            tokenImage={data.token.image}
+            />
           }
         /> 
 
