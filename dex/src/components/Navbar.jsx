@@ -16,7 +16,7 @@ const Navbar = ({tokenImage, tokenName, walletBalance, walletAddress}) => {
     },
     {
       value:'Add Liquidity',
-      path:'/addliquidity'
+      path:'/liquidity'
     }
   ]
   const tabList = tabOptions.map((option)=>

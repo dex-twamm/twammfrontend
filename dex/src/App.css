@@ -1082,3 +1082,28 @@ width: 220px;
     line-height: 1rem;
     padding: 0px 1rem 1rem;
 }
+.modal__container{
+  display:flex;
+  justify-content: space-between;
+  padding:10px;
+}
+.modal__token-list{
+  display:flex;
+  justify-content: space-evenly;
+}
+.modal__token {
+  display:flex;
+  background-color: #EDEEF2;
+  padding:4px;
+  border-radius:30px;
+}
+.modal__token:hover{
+  cursor: pointer;
+}
+.modal__wrapper{
+  position:absolute;
+  background-color: white;
+  width:650px;
+  height:200px;
+  border-radius:20px;
+}
