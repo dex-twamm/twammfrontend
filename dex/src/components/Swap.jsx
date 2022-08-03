@@ -1,6 +1,6 @@
-import React,{useState} from 'react'
+import React,{Fragment, useState} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGear, faArrowDown } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
 
 const Swap = ({tokenSymbol, tokenImage}) => {
   
@@ -16,14 +16,7 @@ const Swap = ({tokenSymbol, tokenImage}) => {
   }
 
   return (
-    
-    <div className='main-body'>
-      <div className="swap">
-        <div className="swapOptions">
-          <a className="textLink" href="/">Swap</a>
-          <FontAwesomeIcon icon={faGear} />
-        </div>
-      </div>
+    <Fragment>
       <div className="textInput">
         <input className="textField" type="text" placeholder="0.0" value={primary} onChange={handlePrimary}/>
         <button className= "btn currency-select">
@@ -48,8 +41,7 @@ const Swap = ({tokenSymbol, tokenImage}) => {
           </span>
         </button>
       </div>
-      <button className="btn btn-connect">Connect Wallet</button>
-    </div>
+    </Fragment>
   )
 }
 

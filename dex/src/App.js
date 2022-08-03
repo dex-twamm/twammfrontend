@@ -1,9 +1,9 @@
 import { Routes, Route } from 'react-router-dom';
-import './App.css';
 import Navbar from './components/Navbar';
-import Swap from './components/Swap';
-import LongTermSwap from './components/LongTermSwap';
+import ShortSwap from './pages/ShortSwap';
+import LongSwap from './pages/LongSwap';
 import AddLiquidity from './components/AddLiquidity';
+import './App.css';
 
 function App() {
   const data = {
@@ -28,7 +28,7 @@ function App() {
       <Routes>
         <Route path="/" 
           element={
-            <Swap 
+            <ShortSwap
             tokenSymbol={data.token.symbol}
             tokenImage={data.token.image}
             />
@@ -37,7 +37,10 @@ function App() {
 
         <Route path="/longterm" 
           element={
-            <LongTermSwap/>
+            <LongSwap
+            tokenSymbol={data.token.symbol}
+            tokenImage={data.token.image}
+            />
           }
         /> 
 

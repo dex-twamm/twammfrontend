@@ -5,22 +5,39 @@ import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 
 const Navbar = ({tokenImage, tokenName, walletBalance, walletAddress}) => {
 
+  const tabOptions = [
+    {
+      value:'Swap',
+      path:'/'
+    },
+    {
+      value:'Long Term Swap',
+      path:'/longterm'
+    },
+    {
+      value:'Add Liquidity',
+      path:'/addliquidity'
+    }
+  ]
+  const tabList = tabOptions.map((option)=>
+  (
+    <div className="tabButton"><a href={option.path}>{option.value}</a></div>
+  ))
+
   const options = ['About', 'Help Center','Request Feature','Discord','Language','Dark Theme','Docs','Legal Privacy'];
   const optionsList = options.map((option)=>{
     return (
       <a className="options" href="">{option}</a>
     )
   })
-  
+
   return (
     <div>
       <section id="header">
         <div className="row">
           <a href="/"><img className="logo" src="unicorn.png" alt="logo" width='20px'/></a>
           <div className = "tab-container-center">
-            <div className="tabButton"><a href="/">Swap</a></div>
-            <div className="tabButton"><a href="/longterm">Long Term Swap</a></div>
-            <div className="tabButton"><a href="/liquidity">Add Liquidity</a></div>
+            {tabList}
           </div>
           <div className="tab-container-right">
             <div className="dropdown">
