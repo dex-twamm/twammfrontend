@@ -6,9 +6,24 @@ import LongTermSwap from './components/LongTermSwap';
 import AddLiquidity from './components/AddLiquidity';
 
 function App() {
+  const data = {
+    token:{
+      name: 'Ethereum',
+      image : '/ethereum.png',
+    },
+    wallet:{
+      balance:'.69 rETH',
+      address:'0x51bc...xc'
+    }
+  }
   return (
     <div className="App">
-      <Navbar/>
+      <Navbar 
+        tokenName={data.token.name}
+        tokenImage={data.token.image}
+        walletBalance={data.wallet.balance}
+        walletAddress={data.wallet.address}
+      />
       <Routes>
         <Route path="/" 
           element={
