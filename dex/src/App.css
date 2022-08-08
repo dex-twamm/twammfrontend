@@ -248,7 +248,7 @@ section#header {
   min-width: 40%;
   border-radius: 20px;
   display: block;
-  z-index: 50;
+  z-index: 1;
   background: white;
   position: absolute;
   top: 40%;

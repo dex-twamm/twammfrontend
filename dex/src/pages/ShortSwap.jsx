@@ -2,7 +2,8 @@ import React from 'react';
 import Swap from '../components/Swap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
-const ShortSwap = ({tokenSymbol,tokenImage}) => {
+
+const ShortSwap = ({tokenSymbol,tokenImage,connectWallet, buttonText}) => {
   return (
     <div className='main-body'>
       <div className="swap">
@@ -12,7 +13,7 @@ const ShortSwap = ({tokenSymbol,tokenImage}) => {
         </div>
       </div>
       <Swap tokenSymbol={tokenSymbol} tokenImage={tokenImage}/>
-      <button className="btn btn-connect">Connect Wallet</button>
+      <button className="btn btn-connect" onClick={connectWallet}>{buttonText}</button>
     </div>
   )
 }

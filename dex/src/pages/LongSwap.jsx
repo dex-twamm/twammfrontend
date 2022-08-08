@@ -3,7 +3,10 @@ import Swap from '../components/Swap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear,faArrowDown } from '@fortawesome/free-solid-svg-icons';
 
-const LongSwap = ({ tokenSymbol,tokenImage}) => {
+
+const LongSwap = ({ tokenSymbol,tokenImage,connectWallet, buttonText}) => {
+      
+   
   return (
     <div className='main-body'>
       <div className="swap">
@@ -16,8 +19,8 @@ const LongSwap = ({ tokenSymbol,tokenImage}) => {
       <div className="range-select">
         <input type="range" value="0"/>
       </div>
-      <button className="btn btn-connect">Connect Wallet</button>
-      <div className="label-history">
+        <button className="btn btn-connect" onClick= {connectWallet}>{buttonText}</button>:
+        <div className="label-history">
         <p>Your LongTerm Orders</p>
         <FontAwesomeIcon icon={faArrowDown} />
       </div>
