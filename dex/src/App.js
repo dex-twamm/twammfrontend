@@ -32,8 +32,10 @@ function App() {
         setAccount(accounts[0]);
       }
       setEthBalance(humanFriendlyBalance);
+      return true;
     } catch (error) {
       console.error(error);
+      return false;
     }
   };
 
@@ -43,13 +45,16 @@ function App() {
     await web3Modal.clearCachedProvider();
   };
 
-  const handleButtonClick = async () => {
-    if (!web3Provider) {
-      await connectWallet().finally(() => setButtonText("Disconnect"));
+  async function handleButtonClick() {
+    if (!account) {
+      const isWallletConnceted = await connectWallet();
+      console.log(isWallletConnceted);
+      if (isWallletConnceted) setButtonText("Disconnect Wallet");
+      else setButtonText("Connect Wallet");
     } else {
-      await disconnect();
+      disconnect().then(() => setButtonText("Connect Wallet"));
     }
-  };
+  }
 
   const data = {
     token: {
@@ -77,11 +82,11 @@ function App() {
     },
   };
 
-  useEffect(() => {
-    if (web3Modal.cachedProvider) {
-      connectWallet();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (web3Modal.cachedProvider) {
+  //     connectWallet();
+  //   }
+  // }, []);
   return (
     <div className="App">
       <Navbar

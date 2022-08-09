@@ -32,3 +32,4 @@ const LongSwap = ({ tokenSymbol,tokenImage,connectWallet, buttonText}) => {
 }
 
 export default LongSwap;
+   
