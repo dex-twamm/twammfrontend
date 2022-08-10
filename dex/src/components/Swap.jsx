@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import Modal from './Modal';
 
-const Swap = () => {
+const Swap = (props) => {
 
   // Handle Select Token Modal display
   const [display, setDisplay] = useState(false);
@@ -34,9 +34,14 @@ const Swap = () => {
   const handleSecondary = (e) => {
     setSecondary(e.target.value)
   }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    props.onChange(primary);
+  };
 
   return (
     <Fragment>
+      <form onSubmit={handleSubmit}>
       <div className="textInput">
         <input className="textField" type="text" placeholder="0.0" value={primary} onChange={handlePrimary}/>
         <button className= "btn currency-select" onClick={handleDisplay}>
@@ -74,6 +79,7 @@ const Swap = () => {
 
         }
       </div>
+      </form>
       {display ? 
       <Modal display={display} setDisplay={setDisplay} setTokenA={setTokenA} setTokenB={setTokenB} selectToken={selectToken}/> : ""}
     </Fragment>

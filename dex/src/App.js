@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import Swap from "./components/Swap";
 import Navbar from "./components/Navbar";
 import ShortSwap from "./pages/ShortSwap";
 import LongSwap from "./pages/LongSwap";
@@ -16,11 +17,17 @@ import {
 import { swapTokens, getAmountOfTokensReceivedFromSwap } from "./utils/swap";
 import { MAX_UINT256 } from "./constants";
 import { truncateAddress } from "./utils";
-import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+  EXCHANGE_CONTRACT_ABI,
+  EXCHANGE_CONTRACT_ADDRESS,
+  TOKEN_CONTRACT_ABI,
+  TOKEN_CONTRACT_ADDRESS,
+} from "./constants";
 
 function App() {
   const zero = BigNumber.from(0);
-
+  const [primary, setPrimary] = useState("");
+  const [secondary, setSecondary] = useState("");
   const initialText = "Connect Wallet";
   const [provider, setProvider] = useState();
   const [web3Provider, setWeb3Provider] = useState();
@@ -32,14 +39,17 @@ function App() {
   const [swapAmount, setSwapAmount] = useState(5);
   const [loading, setLoading] = useState(false);
   const [tokenToBeReceivedAfterSwap, settokenToBeReceivedAfterSwap] =
-    useState(zero);
+    useState(5);
   const [ethSelected, setEthSelected] = useState(true);
 
   const [isWallletConnceted, setWalletConnected] = useState(false);
+
   const connectWallet = async () => {
     try {
       await getProvider();
+
       setWalletConnected(true);
+
       // const provider = await web3Modal.connect();
       // const library = new ethers.providers.Web3Provider(provider);
       // const accounts = await library.listAccounts();
@@ -109,30 +119,53 @@ function App() {
 
   const _swapTokens = async () => {
     try {
-      // Convert the amount entered by the user to a BigNumber using the `parseEther` library from `ethers.js`
-      const swapAmountWei = utils.parseEther(swapAmount);
-      // Check if the user entered zero
-      // We are here using the `eq` method from BigNumber class in `ethers.js`
-      if (!swapAmountWei.eq(zero)) {
-        const signer = await getProvider(true);
-        setLoading(true);
-        // Call the swapTokens function from the `utils` folder
-        await swapTokens(
-          signer,
-          swapAmountWei,
-          tokenToBeReceivedAfterSwap,
-          ethSelected
-        );
-        setLoading(false);
-        // Get all the updated amounts after the swap
-        await getAmounts();
-        setSwapAmount("");
-      }
+      const web3Provider = await getProvider();
+      const signer = await getProvider(true);
+      console.log(signer);
+      const exchangeContract = new Contract(
+        EXCHANGE_CONTRACT_ADDRESS,
+        EXCHANGE_CONTRACT_ABI,
+        signer
+      );
+      const tokenContract = new Contract(
+        TOKEN_CONTRACT_ADDRESS,
+        TOKEN_CONTRACT_ABI,
+        signer
+      );
+
+      const tokenTx = await tokenContract.approve(
+        EXCHANGE_CONTRACT_ADDRESS,
+        ethers.utils.parseEther("10")
+      );
+      await tokenTx.wait();
     } catch (err) {
       console.error(err);
-      setLoading(false);
-      setSwapAmount("");
     }
+    // try {
+    //   // Convert the amount entered by the user to a BigNumber using the `parseEther` library from `ethers.js`
+    //   const swapAmountWei = utils.parseEther(swapAmount);
+    //   // Check if the user entered zero
+    //   // We are here using the `eq` method from BigNumber class in `ethers.js`
+    //   if (!swapAmountWei.eq(zero)) {
+    //     const signer = await getProvider(true);
+    //     setLoading(true);
+    //     // Call the swapTokens function from the `utils` folder
+    //     await swapTokens(
+    //       signer,
+    //       swapAmountWei,
+    //       tokenToBeReceivedAfterSwap,
+    //       ethSelected
+    //     );
+    //     setLoading(false);
+    //     // Get all the updated amounts after the swap
+    //     await getAmounts();
+    //     setSwapAmount("");
+    //   }
+    // } catch (err) {
+    //   console.error(err);
+    //   setLoading(false);
+    //   setSwapAmount("");
+    // }
   };
 
   const _getAmountOfTokensReceivedFromSwap = async (_swapAmount) => {
@@ -211,6 +244,7 @@ function App() {
         walletBalance={data.wallet.balance}
         walletAddress={data.wallet.address}
       />
+      {/* <Swap onChange={primaryAmount} /> */}
       <Routes>
         <Route
           path="/"
