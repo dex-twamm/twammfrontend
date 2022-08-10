@@ -7,13 +7,13 @@ export const providerOptions = {
     package: CoinbaseWalletSDK,
     options: {
       appName: "Web 3 Demo",
-      infuraid: { 3: `https://mainnet.infura.io/v3/${process.env.INFURA_KEY}` },
+      infuraid: { 3: `https://goerli.infura.io/v3/${process.env.INFURA_KEY}` },
     },
   },
   walletconnect: {
     package: WalletConnect,
     options: {
-      infuraid: { 3: `https://mainnet.infura.io/v3/${process.env.INFURA_KEY}` },
+      infuraid: { 3: `https://goerli.infura.io/v3/${process.env.INFURA_KEY}` },
     },
   },
 };
