@@ -6,6 +6,9 @@ import {
   TOKEN_CONTRACT_ADDRESS,
 } from "../constants";
 
+import { maxUint } from "./numbers";
+const MAX_UINT256 = maxUint(256);
+
 /*
     getAmountOfTokensReceivedFromSwap:  Returns the number of Eth/Crypto Dev tokens that can be received 
     when the user swaps `_swapAmountWei` amount of Eth/Crypto Dev tokens.
@@ -62,38 +65,39 @@ export const swapTokens = async (
     EXCHANGE_CONTRACT_ABI,
     signer
   );
-  const tokenContract = new Contract(
+  const tokenContract1 = new Contract(
     TOKEN_CONTRACT_ADDRESS,
     TOKEN_CONTRACT_ABI,
     signer
   );
 
-  let tx;
-  // If Eth is selected call the `ethToCryptoDevToken` function else
-  // call the `cryptoDevTokenToEth` function from the contract
-  // As you can see you need to pass the `swapAmount` as a value to the function because
-  // it is the ether we are paying to the contract, instead of a value we are passing to the function
-  if (ethSelected) {
-    tx = await exchangeContract.ethToCryptoDevToken(
-      tokenToBeReceivedAfterSwap,
-      {
-        value: swapAmountWei,
-      }
-    );
-  } else {
-    // User has to approve `swapAmountWei` for the contract because `Crypto Dev` token
-    // is an ERC20
-    tx = await tokenContract.approve(
-      EXCHANGE_CONTRACT_ADDRESS,
-      swapAmountWei.toString()
-    );
-    await tx.wait();
-    // call cryptoDevTokenToEth function which would take in `swapAmountWei` of `Crypto Dev` tokens and would
-    // send back `tokenToBeReceivedAfterSwap` amount of `Eth` to the user
-    tx = await exchangeContract.cryptoDevTokenToEth(
-      swapAmountWei,
-      tokenToBeReceivedAfterSwap
-    );
-  }
-  await tx.wait();
+  const tokenContract2 = new Contract(
+    TOKEN_CONTRACT_ADDRESS2,
+    TOKEN_CONTRACT_ABI2,
+    signer
+  );
+
+  const kind = 0; // GivenIn
+
+  const swapTx = await exchangeContract.swap(
+    {
+      poolId: POOL_ID,
+      kind: kind,
+      assetIn: tokenContract1,
+      assetOut: tokenContract2,
+      amount: swapAmountWei,
+      userData: "0x",
+    },
+    {
+      sender: OWNER_ADDRESS,
+      fromInternalBalance: false,
+      recipient: OWNER_ADDRESS,
+      toInternalBalance: false,
+    },
+    kind === 0 ? 0 : MAX_UINT256, // 0 if given in, infinite if given out.
+    MAX_UINT256
+  );
+
+  const swapResult = await swapTx.wait();
+  console.log(swapResult);
 };
