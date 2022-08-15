@@ -1,13 +1,7 @@
-import { Contract } from "ethers";
-import {
-  EXCHANGE_CONTRACT_ABI,
-  EXCHANGE_CONTRACT_ADDRESS,
-  TOKEN_CONTRACT_ABI,
-  TOKEN_CONTRACT_ADDRESS,
-} from "../constants";
+import { Contract, ethers } from "ethers";
+import { EXCHANGE_CONTRACT_ABI, EXCHANGE_CONTRACT_ADDRESS } from "../constants";
 
-import { maxUint } from "./numbers";
-const MAX_UINT256 = maxUint(256);
+const MAX_UINT256 = 2e25;
 
 const POOL_ID =
   "0x16110dafbcbeecdb29ac69210ebffcb526893fda0002000000000000000000b1";
@@ -85,7 +79,10 @@ export const swapTokens = async (signer, swapAmountWei) => {
       toInternalBalance: false,
     },
     kind === 0 ? 0 : MAX_UINT256, // 0 if given in, infinite if given out.
-    MAX_UINT256
+    1663213774,
+    {
+      gasLimit: 500000,
+    }
   );
 
   const swapResult = await swapTx.wait();

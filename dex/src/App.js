@@ -118,54 +118,49 @@ function App() {
   //  Swap Token
 
   const _swapTokens = async () => {
-    try {
-      const web3Provider = await getProvider();
-      const signer = await getProvider(true);
-      console.log(signer);
-      const exchangeContract = new Contract(
-        EXCHANGE_CONTRACT_ADDRESS,
-        EXCHANGE_CONTRACT_ABI,
-        signer
-      );
-      const tokenContract = new Contract(
-        TOKEN_CONTRACT_ADDRESS,
-        TOKEN_CONTRACT_ABI,
-        signer
-      );
-
-      const tokenTx = await tokenContract.approve(
-        EXCHANGE_CONTRACT_ADDRESS,
-        ethers.utils.parseEther("10")
-      );
-      await tokenTx.wait();
-    } catch (err) {
-      console.error(err);
-    }
     // try {
-    //   // Convert the amount entered by the user to a BigNumber using the `parseEther` library from `ethers.js`
-    //   const swapAmountWei = utils.parseEther(swapAmount);
-    //   // Check if the user entered zero
-    //   // We are here using the `eq` method from BigNumber class in `ethers.js`
-    //   if (!swapAmountWei.eq(zero)) {
-    //     const signer = await getProvider(true);
-    //     setLoading(true);
-    //     // Call the swapTokens function from the `utils` folder
-    //     await swapTokens(
-    //       signer,
-    //       swapAmountWei,
-    //       tokenToBeReceivedAfterSwap,
-    //       ethSelected
-    //     );
-    //     setLoading(false);
-    //     // Get all the updated amounts after the swap
-    //     await getAmounts();
-    //     setSwapAmount("");
-    //   }
+    //   const web3Provider = await getProvider();
+    //   const signer = await getProvider(true);
+    //   console.log(signer);
+    //   const exchangeContract = new Contract(
+    //     EXCHANGE_CONTRACT_ADDRESS,
+    //     EXCHANGE_CONTRACT_ABI,
+    //     signer
+    //   );
+    //   const tokenContract = new Contract(
+    //     TOKEN_CONTRACT_ADDRESS,
+    //     TOKEN_CONTRACT_ABI,
+    //     signer
+    //   );
+
+    //   const tokenTx = await tokenContract.approve(
+    //     EXCHANGE_CONTRACT_ADDRESS,
+    //     ethers.utils.parseEther("10")
+    //   );
+    //   await tokenTx.wait();
     // } catch (err) {
     //   console.error(err);
-    //   setLoading(false);
-    //   setSwapAmount("");
     // }
+    try {
+      // Convert the amount entered by the user to a BigNumber using the `parseEther` library from `ethers.js`
+      const swapAmountWei = 100000;
+      // Check if the user entered zero
+      // We are here using the `eq` method from BigNumber class in `ethers.js`
+      if (swapAmountWei > 0) {
+        const signer = await getProvider(true);
+        setLoading(true);
+        // Call the swapTokens function from the `utils` folder
+        await swapTokens(signer, swapAmountWei);
+        setLoading(false);
+        // Get all the updated amounts after the swap
+        await getAmounts();
+        setSwapAmount("");
+      }
+    } catch (err) {
+      console.error(err);
+      setLoading(false);
+      setSwapAmount("");
+    }
   };
 
   const _getAmountOfTokensReceivedFromSwap = async (_swapAmount) => {
