@@ -9,6 +9,12 @@ import {
 import { maxUint } from "./numbers";
 const MAX_UINT256 = maxUint(256);
 
+const POOL_ID =
+  "0x16110dafbcbeecdb29ac69210ebffcb526893fda0002000000000000000000b1";
+
+const MATIC_TOKEN_ADDRESS = "0x499d11E0b6eAC7c0593d8Fb292DCBbF815Fb29Ae";
+const FAUCET_TOKEN_ADDRESS = "0xBA62BCfcAaFc6622853cca2BE6Ac7d845BC0f2Dc";
+const OWNER_ADDRESS = "0x51Ac1DB1A27Ec7CD51a21523a935b26ad53DBEb7";
 /*
     getAmountOfTokensReceivedFromSwap:  Returns the number of Eth/Crypto Dev tokens that can be received 
     when the user swaps `_swapAmountWei` amount of Eth/Crypto Dev tokens.
@@ -53,27 +59,11 @@ export const getAmountOfTokensReceivedFromSwap = async (
 /*
   swapTokens: Swaps `swapAmountWei` of Eth/Crypto Dev tokens with `tokenToBeReceivedAfterSwap` amount of Eth/Crypto Dev tokens.
 */
-export const swapTokens = async (
-  signer,
-  swapAmountWei,
-  tokenToBeReceivedAfterSwap,
-  ethSelected
-) => {
+export const swapTokens = async (signer, swapAmountWei) => {
   // Create a new instance of the exchange contract
   const exchangeContract = new Contract(
     EXCHANGE_CONTRACT_ADDRESS,
     EXCHANGE_CONTRACT_ABI,
-    signer
-  );
-  const tokenContract1 = new Contract(
-    TOKEN_CONTRACT_ADDRESS,
-    TOKEN_CONTRACT_ABI,
-    signer
-  );
-
-  const tokenContract2 = new Contract(
-    TOKEN_CONTRACT_ADDRESS2,
-    TOKEN_CONTRACT_ABI2,
     signer
   );
 
@@ -83,8 +73,8 @@ export const swapTokens = async (
     {
       poolId: POOL_ID,
       kind: kind,
-      assetIn: tokenContract1,
-      assetOut: tokenContract2,
+      assetIn: FAUCET_TOKEN_ADDRESS,
+      assetOut: MATIC_TOKEN_ADDRESS,
       amount: swapAmountWei,
       userData: "0x",
     },
