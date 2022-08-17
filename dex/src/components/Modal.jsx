@@ -1,8 +1,22 @@
 import React,{useState} from 'react';
+import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from '../utils';
 
 
 const Modal = ({display,setDisplay,setTokenA,setTokenB,selectToken}) => {
 
+  const tokenDetails = [
+    {
+      symbol : "MATIC",
+      image : "/ethereum.png",
+      address: {MATIC_TOKEN_ADDRESS}
+    },
+    {
+      symbol : "FAUCET",
+      image : "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png",
+      address: {FAUCET_TOKEN_ADDRESS}
+    },
+
+  ];
   // Handle Select Token Modal display
   const handleModalClose = () => {
     setDisplay(!display);
@@ -11,11 +25,13 @@ const Modal = ({display,setDisplay,setTokenA,setTokenB,selectToken}) => {
     const token = event.currentTarget;
     if(selectToken){
       setTokenB({
+        address:token.children[2].innerHTML,
         symbol:token.children[1].innerHTML,
-        image :token.children[0].src.slice(21,token.length)
+        image :token.children[0].src.slice(21,token.length),
       })
     } else {
       setTokenA({ 
+        address:token.children[2].innerHTML,
         symbol:token.children[1].innerHTML,
         image :token.children[0].src.slice(21,token.length)
       })
@@ -35,16 +51,22 @@ const Modal = ({display,setDisplay,setTokenA,setTokenB,selectToken}) => {
       <div className="modal__token-list">
         <div className="modal__token" onClick={handleTokenSelection}>
           <img className="modal__token-img" alt="ETH logo" src="/ethereum.png" style={{marginRight:'8px', width:'20px'}}/>
-          <div className="modal__token-symbol">ETH</div>
+          <div className="modal__token-symbol">Faucet</div>
+          <p style={{display: "none"}}>FAUCET:{FAUCET_TOKEN_ADDRESS}</p>
+
+        
         </div>
         <div className="modal__token" onClick={handleTokenSelection}>
           <img className="modal__token-img" alt="DAI logo" src="/dai.png" style={{marginRight:'8px', width:'20px'}}/>
-          <div className="modal__token-symbol">DAI</div>
+          <div className="modal__token-symbol">Matic</div>
+          <p style={{display: "none"}}>MATIC:{MATIC_TOKEN_ADDRESS}</p>
         </div>
-        <div className="modal__token" onClick={handleTokenSelection}>
+        {/* <div className="modal__token" onClick={handleTokenSelection}>
           <img className="modal__token-img" alt="DAI logo" src="/dai.png" style={{marginRight:'8px', width:'20px'}}/>
           <div className="modal__token-symbol">USDC</div>
-        </div>
+          <p style={{display: "none"}}>USDC Address</p>
+
+        </div> */}
       </div>
     </div>  : ""}
     </>

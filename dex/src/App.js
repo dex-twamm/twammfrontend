@@ -7,7 +7,7 @@ import AddLiquidity from "./components/AddLiquidity";
 import "./App.css";
 import { web3Modal } from "./utils/providerOptions";
 import { Contract, ethers, BigNumber, utils, providers } from "ethers";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   getCDTokensBalance,
   getEtherBalance,
@@ -23,6 +23,8 @@ import {
   TOKEN_CONTRACT_ABI,
   TOKEN_CONTRACT_ADDRESS,
 } from "./constants";
+import AllProviders, { ShortSwapContext } from "./providers";
+import { placeLongTermOrder } from "./utils/longSwap";
 
 function App() {
   const zero = BigNumber.from(0);
@@ -36,7 +38,10 @@ function App() {
   const [ethBalance, setEthBalance] = useState();
   const [buttonText, setButtonText] = useState(initialText);
   const [reservedCD, setReservedCD] = useState(zero);
-  const [swapAmount, setSwapAmount] = useState(5);
+  const { swapAmount } = useContext(ShortSwapContext);
+  const { srcAddress } = useContext(ShortSwapContext);
+  const { destAddress } = useContext(ShortSwapContext);
+
   const [loading, setLoading] = useState(false);
   const [tokenToBeReceivedAfterSwap, settokenToBeReceivedAfterSwap] =
     useState(5);
@@ -47,27 +52,9 @@ function App() {
   const connectWallet = async () => {
     try {
       await getProvider();
-
       setWalletConnected(true);
-
-      // const provider = await web3Modal.connect();
-      // const library = new ethers.providers.Web3Provider(provider);
-      // const accounts = await library.listAccounts();
-      // const addressWallet = await library.provider.selectedAddress;
-      // const walletBalance = await library.getBalance(addressWallet);
-      // const ethBalance = ethers.utils.formatEther(walletBalance);
-      // const humanFriendlyBalance = parseFloat(ethBalance).toFixed(4);
-      // console.log(accounts);
-      // console.log(library);
-      // setProvider(provider);
-      // setWeb3Provider(library);
-      // if (accounts) {
-      //   setAccount(accounts[0]);
     } catch (err) {
-      // setEthBalance(humanFriendlyBalance);
-      // return true;
       console.error(err);
-      // return false;
     }
   };
 
@@ -118,32 +105,11 @@ function App() {
   //  Swap Token
 
   const _swapTokens = async () => {
-    // try {
-    //   const web3Provider = await getProvider();
-    //   const signer = await getProvider(true);
-    //   console.log(signer);
-    //   const exchangeContract = new Contract(
-    //     EXCHANGE_CONTRACT_ADDRESS,
-    //     EXCHANGE_CONTRACT_ABI,
-    //     signer
-    //   );
-    //   const tokenContract = new Contract(
-    //     TOKEN_CONTRACT_ADDRESS,
-    //     TOKEN_CONTRACT_ABI,
-    //     signer
-    //   );
-
-    //   const tokenTx = await tokenContract.approve(
-    //     EXCHANGE_CONTRACT_ADDRESS,
-    //     ethers.utils.parseEther("10")
-    //   );
-    //   await tokenTx.wait();
-    // } catch (err) {
-    //   console.error(err);
-    // }
     try {
       // Convert the amount entered by the user to a BigNumber using the `parseEther` library from `ethers.js`
-      const swapAmountWei = 100000;
+      const swapAmountWei = swapAmount;
+      console.log(swapAmountWei);
+
       // Check if the user entered zero
       // We are here using the `eq` method from BigNumber class in `ethers.js`
       if (swapAmountWei > 0) {
@@ -154,49 +120,49 @@ function App() {
         setLoading(false);
         // Get all the updated amounts after the swap
         await getAmounts();
-        setSwapAmount("");
+        // setSwapAmount("");
       }
     } catch (err) {
       console.error(err);
       setLoading(false);
-      setSwapAmount("");
+      // setSwapAmount("");
     }
   };
 
-  const _getAmountOfTokensReceivedFromSwap = async (_swapAmount) => {
+  const _placeLongTermOrders = async () => {
     try {
-      // Convert the amount entered by the user to a BigNumber using the `parseEther` library from `ethers.js`
-      const _swapAmountWEI = utils.parseEther(_swapAmount.toString());
-      // Check if the user entered zero
-      // We are here using the `eq` method from BigNumber class in `ethers.js`
-      if (!_swapAmountWEI.eq(zero)) {
-        const provider = await connectWallet();
-        // Get the amount of ether in the contract
-        const _ethBalance = await getEtherBalance(provider, null, true);
-        // Call the `getAmountOfTokensReceivedFromSwap` from the utils folder
-        const amountOfTokens = await getAmountOfTokensReceivedFromSwap(
-          _swapAmountWEI,
-          provider,
-          ethSelected,
-          _ethBalance,
-          reservedCD
-        );
-        settokenToBeReceivedAfterSwap(amountOfTokens);
-      } else {
-        settokenToBeReceivedAfterSwap(zero);
-      }
-    } catch (err) {
+      const tokenInIndex = "0";
+      const tokenOutIndex = "0";
+      const amountIn = "100000";
+      const numberOfBlockIntervals = "0";
+      const signer = await getProvider(true);
+      // Call the PlaceLongTermOrders function from the `utils` folder*
+      await placeLongTermOrder(tokenInIndex, tokenOutIndex, amountIn, numberOfBlockIntervals, signer);
+
+    }
+    catch (err) {
       console.error(err);
     }
-  };
+  }
 
-  async function handleButtonClick() {
+
+  async function ShortSwapButtonClick() {
     console.log("I am Being Clicked");
     console.log(isWallletConnceted);
     if (!isWallletConnceted) {
-      connectWallet().then(() => setButtonText("Swap"));
+      connectWallet();
     } else {
       _swapTokens();
+    }
+  }
+
+  async function LongSwapButtonClick() {
+    console.log("I am Being Clicked");
+    console.log(isWallletConnceted);
+    if (!isWallletConnceted) {
+      connectWallet();
+    } else {
+      _placeLongTermOrders();
     }
   }
   const data = {
@@ -225,11 +191,16 @@ function App() {
     },
   };
 
-  // useEffect(() => {
-  //   if (web3Modal.cachedProvider) {
-  //     connectWallet();
-  //   }
-  // }, []);
+  useEffect(() => {
+    console.log(swapAmount);
+  }, [swapAmount]);
+  useEffect(() => {
+    console.log(srcAddress);
+  }, [srcAddress]);
+
+  useEffect(() => {
+    console.log(destAddress);
+  }, [destAddress]);
 
   return (
     <div className="App">
@@ -247,8 +218,8 @@ function App() {
             <ShortSwap
               tokenSymbol={data.token.symbol}
               tokenImage={data.token.image}
-              connectWallet={handleButtonClick}
-              buttonText={buttonText}
+              connectWallet={ShortSwapButtonClick}
+              buttonText={isWallletConnceted ? "Swap" : "Connect Wallet"}
             />
           }
         />
@@ -259,6 +230,8 @@ function App() {
             <LongSwap
               tokenSymbol={data.token.symbol}
               tokenImage={data.token.image}
+              buttonText={isWallletConnceted ? "Swap" : "Connect Wallet"}
+              connectWallet={LongSwapButtonClick}
             />
           }
         />

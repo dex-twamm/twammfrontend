@@ -2,40 +2,59 @@ import React, { Fragment, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import Modal from "./Modal";
+import { useContext } from "react";
+import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
+import TokenListFetching from "../Helpers/TokenListFetching";
 
-const Swap = (props) => {
+const Swap = () => {
   // Handle Select Token Modal display
   const [display, setDisplay] = useState(false);
   const [selectToken, setSelectToken] = useState(false);
+  // useContext To Get swapAmount From InputField
+  const {swapAmount, setSwapAmount}= useContext(ShortSwapContext)
+  const {srcAddress, setSrcAddress} = useContext(ShortSwapContext);
+  const {destAddress, setDestAddress} = useContext(ShortSwapContext);
+
   const handleDisplay = (event) => {
     console.log(event.currentTarget.className.includes("token"));
+    // console.log(tokenA.address);
+
     setSelectToken(event.currentTarget.className.includes("token"));
+    setDestAddress(tokenB.address);
+    setSrcAddress(tokenA.address);
+    // console.log(tokenB.address);
     display ? setDisplay(false) : setDisplay(true);
   };
-
+  // const CMC_TOKEN_LIST = TokenListFetching();
+  // console.log(CMC_TOKEN_LIST);
+   
   // Set Default Token A & Token B
   const [tokenA, setTokenA] = useState({
-    symbol: "ETH",
+    symbol: "Faucet",
     image: "/ethereum.png",
+    // address:"Token A Adress"
+
   });
 
   const [tokenB, setTokenB] = useState({
-    symbol: "DAI",
-    image: "/dai.png",
+    symbol: "Matic",
+    image: "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png",
+    // address : "Token B Adress",
   });
 
   // Handling Primary and Secondary Tokens
   const [primary, setPrimary] = useState("");
-  const handlePrimary = (e) => {
-    setPrimary(e.target.value);
-  };
+  // const handlePrimary = (e) => {
+  //   console.log(`Swap: e.target.value:`,e.target.value)
+  //   setSwapAmount(e.target.value);
+  // };
   const [secondary, setSecondary] = useState("");
   const handleSecondary = (e) => {
     setSecondary(e.target.value);
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.onChange(primary);
+    // props.onChange(swapAmount);
   };
 
   return (
@@ -46,10 +65,11 @@ const Swap = (props) => {
             className="textField"
             type="text"
             placeholder="0.0"
-            value={primary}
-            onChange={handlePrimary}
+            value={swapAmount}
+            onChange={(e)=> setSwapAmount(e.target.value)}
           />
-          <button className="btn currency-select" onClick={handleDisplay}>
+          <button className="btn currency-select" onClick={handleDisplay}  
+            value={srcAddress} onChange={(e)=> setSrcAddress(e.target.value)}>
             <span className="spn-currency">
               <div className="currency">
                 <img
@@ -88,7 +108,7 @@ const Swap = (props) => {
           />
 
           {!selectToken ? (
-            <button className="btn token-select" onClick={handleDisplay}>
+            <button className="btn token-select" onClick={handleDisplay} >
               <span className="spn-select-token">
                 <div className="">
                   <span className="select-container">Select a token</span>
@@ -109,7 +129,8 @@ const Swap = (props) => {
               </span>
             </button>
           ) : (
-            <button className="btn currency-select" onClick={handleDisplay}>
+            <button className="btn currency-select" onClick={handleDisplay} value={destAddress} 
+            onChange={(e)=> setDestAddress(e.target.value)}>
               <span className="spn-currency">
                 <div className="currency">
                   <img

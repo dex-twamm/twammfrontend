@@ -4,11 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 
 const ShortSwap = ({tokenSymbol,tokenImage,connectWallet, buttonText}) => {
-  const [primary, setPrimary] = useState();
-  const primaryAmount = (data) => {
-    setPrimary(primary);
-    console.log("primary", data);
-  };
   return (
     <div className='main-body'>
       <div className="swap">
@@ -17,8 +12,8 @@ const ShortSwap = ({tokenSymbol,tokenImage,connectWallet, buttonText}) => {
           <FontAwesomeIcon icon={faGear} />
         </div>
       </div>
-      <Swap tokenSymbol={tokenSymbol} tokenImage={tokenImage} onChange = {primaryAmount}/>
-      <button className="btn btn-connect" onClick={connectWallet}>{buttonText}</button>
+      <Swap tokenSymbol={tokenSymbol} tokenImage={tokenImage} />
+        <button className="btn btn-connect" onClick={connectWallet}>{buttonText}</button>
     </div>
   )
 }

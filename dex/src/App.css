@@ -144,15 +144,14 @@ section#header {
   border: none;
   outline: none;
   cursor: pointer;
-  padding: 10px;
   transition: 0.3s;
 }
 
 
-.btn-wallet:hover {
+/* .btn-wallet:hover {
   background-color: antiquewhite;
   border-radius: 20px;
-}
+} */
 
 
 
@@ -211,6 +210,9 @@ section#header {
 
 
 .wallet-balance {
+  align-items: center;
+  white-space: nowrap;
+  width: 100%;
   margin: 0.5rem;
   display: flex;
   border: 2px solid white;
@@ -1088,22 +1090,25 @@ width: 220px;
   padding:10px;
 }
 .modal__token-list{
-  display:flex;
-  justify-content: space-evenly;
+  width: fit-content;
+  padding: 10px;
 }
 .modal__token {
+  margin-top: 0.6rem;
   display:flex;
   background-color: #EDEEF2;
-  padding:4px;
-  border-radius:30px;
+  padding:8px;
+  border-radius:20px;
 }
 .modal__token:hover{
   cursor: pointer;
 }
 .modal__wrapper{
-  position:absolute;
+  top: 20%;
+  left: 40%;
+  position: fixed;
   background-color: white;
-  width:650px;
-  height:200px;
-  border-radius:20px;
+  width: 200px;
+  border-radius: 20px;
+margin: 0;
 }

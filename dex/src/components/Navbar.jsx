@@ -47,14 +47,14 @@ const Navbar = ({tokenImage, tokenName, walletBalance, walletAddress}) => {
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="sc-w04zhs-16 lfEMTx"><polyline points="6 9 12 15 18 9"></polyline></svg>
               </div>
               <div className="dropdown-content">
-                <a href="#">Link 1</a>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
+                <a href="#"> Ethereum</a>
+                <a href="#">Gorli</a>
+                <a href="#">Others Comming Soon.....</a>
               </div>
             </div>
             <div className = "wallet-balance">
               <button className="btn-wallet">{walletBalance}</button>
-              <button className="btn-wallet">{walletAddress}</button>
+              <button className="btn-wallet" style={{backgroundColor:"rgb(244,248,250",borderRadius:"14px"}}>{walletAddress}</button>
             </div> 
             <div className="menu-option">
               <button className="menu-three-dot" onClick={showDropdown}>
