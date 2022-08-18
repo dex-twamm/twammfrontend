@@ -22,11 +22,13 @@ const Modal = ({ display, setDisplay, setTokenA, setTokenB, selectToken }) => {
   const handleTokenSelection = (event) => {
     const token = event.currentTarget;
     if (selectToken === "2") {
+
       setTokenB({
         address: token.children[2].innerHTML,
         symbol: token.children[1].innerHTML,
         image: token.children[0].src.slice(21, token.length),
       });
+
     } else if (selectToken === "1") {
       setTokenA({
         address: token.children[2].innerHTML,
@@ -78,13 +80,15 @@ const Modal = ({ display, setDisplay, setTokenA, setTokenB, selectToken }) => {
                 style={{ marginRight: "8px", width: "20px" }}
               />
               <div className="modal__token-symbol">Matic</div>
+
+              <div className="modal__token-symbol" onClick={handleModalClose} id="token2">Matic</div>
+
               <p style={{ display: "none" }}>MATIC:{MATIC_TOKEN_ADDRESS}</p>
             </div>
             {/* <div className="modal__token" onClick={handleTokenSelection}>
           <img className="modal__token-img" alt="DAI logo" src="/dai.png" style={{marginRight:'8px', width:'20px'}}/>
           <div className="modal__token-symbol">USDC</div>
           <p style={{display: "none"}}>USDC Address</p>
-
         </div> */}
           </div>
         </div>

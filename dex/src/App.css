@@ -1104,11 +1104,12 @@ width: 220px;
   cursor: pointer;
 }
 .modal__wrapper{
+  z-index: 1;
   top: 20%;
   left: 40%;
   position: fixed;
   background-color: white;
   width: 200px;
   border-radius: 20px;
-margin: 0;
+  margin: 0;
 }

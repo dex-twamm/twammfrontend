@@ -4,7 +4,7 @@ import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import Modal from "./Modal";
 import { useContext } from "react";
 import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
-import TokenListFetching from "../Helpers/TokenListFetching";
+import InputField from "./InputField";
 
 const Swap = () => {
   // Handle Select Token Modal display
@@ -102,62 +102,13 @@ const Swap = () => {
             </span>
           </button>
         </div>
-        <FontAwesomeIcon className="iconDown" icon={faArrowDown} />
-        <div className="textOutput">
-          <input
-            className="textField"
-            type="text"
-            placeholder="0.0"
-            value={secondary}
-            onChange={handleSecondary}
-          />
 
-          <button
-            className="btn currency-select"
-            onClick={handleDisplay}
-            value={destAddress}
-            id="2"
-            onChange={(e) => setDestAddress(e.target.value)}
-          >
-            <span className="spn-currency">
-              <div className="currency">
-                <img
-                  className="tokenImage"
-                  src={tokenB.image}
-                  style={{ marginRight: "0.5rem" }}
-                  alt="token-image"
-                />
-                <span className="token-container">{tokenB.symbol}</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="sc-w04zhs-16 lfEMTx"
-                >
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              </div>
-            </span>
-          </button>
-        </div>
+        <InputField id={1}/>
+
+        <FontAwesomeIcon className="iconDown" icon={faArrowDown} />
+        <InputField id={2}/>
+      
       </form>
-      {display ? (
-        <Modal
-          display={display}
-          setDisplay={setDisplay}
-          setTokenA={setTokenA}
-          setTokenB={setTokenB}
-          selectToken={selectToken}
-        />
-      ) : (
-        ""
-      )}
     </Fragment>
   );
 };

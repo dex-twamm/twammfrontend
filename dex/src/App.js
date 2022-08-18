@@ -16,38 +16,22 @@ import {
 } from "./utils/getAmount";
 import { swapTokens, getAmountOfTokensReceivedFromSwap } from "./utils/swap";
 import { MAX_UINT256 } from "./constants";
-import { truncateAddress } from "./utils";
-import {
-  EXCHANGE_CONTRACT_ABI,
-  EXCHANGE_CONTRACT_ADDRESS,
-  TOKEN_CONTRACT_ABI,
-  TOKEN_CONTRACT_ADDRESS,
-} from "./constants";
+import { toHex, truncateAddress } from "./utils";
 import AllProviders, { ShortSwapContext } from "./providers";
 import { placeLongTermOrder } from "./utils/longSwap";
 
 function App() {
-  const zero = BigNumber.from(0);
-  const [primary, setPrimary] = useState("");
-  const [secondary, setSecondary] = useState("");
-  const initialText = "Connect Wallet";
   const [provider, setProvider] = useState();
-  const [web3Provider, setWeb3Provider] = useState();
+  const [web3provider, setweb3provider] = useState();
   const [account, setAccount] = useState();
   const [balance, setBalance] = useState();
   const [ethBalance, setEthBalance] = useState();
-  const [buttonText, setButtonText] = useState(initialText);
-  const [reservedCD, setReservedCD] = useState(zero);
   const { swapAmount } = useContext(ShortSwapContext);
   const { srcAddress } = useContext(ShortSwapContext);
   const { destAddress } = useContext(ShortSwapContext);
-
   const [loading, setLoading] = useState(false);
-  const [tokenToBeReceivedAfterSwap, settokenToBeReceivedAfterSwap] =
-    useState(5);
-  const [ethSelected, setEthSelected] = useState(true);
-
   const [isWallletConnceted, setWalletConnected] = useState(false);
+  const [network, setNetwork] = useState();
 
   const connectWallet = async () => {
     try {
@@ -62,6 +46,8 @@ function App() {
     const provider = await web3Modal.connect();
     const web3Provider = new providers.Web3Provider(provider);
     const accounts = await web3Provider.listAccounts();
+    setweb3provider(web3Provider);
+    setProvider(provider);
     console.log(accounts);
     const walletBalance = await web3Provider.getBalance(accounts[0]);
     const ethBalance = ethers.utils.formatEther(walletBalance);
@@ -71,17 +57,39 @@ function App() {
       setAccount(accounts[0]);
     }
 
-    const { chainId } = await web3Provider.getNetwork();
-    if (chainId !== 5) {
-      window.alert("Change the network to Goerli");
-      throw new Error("Change network to Goerli");
-    }
+    // const { chainId } = await web3Provider.getNetwork();
+    // if (chainId !== 5) {
+    //   window.alert("Change the network to Goerli");
+    //   throw new Error("Change network to Goerli");
+    // }
     if (needSigner) {
       const signer = web3Provider.getSigner();
       return signer;
     }
     return web3Provider;
   };
+
+  // const handleNetwork = async (e) => {
+  //   const id = e.target.value;
+  //   setNetwork(toHex(id));
+  //   console.log("HandleNetwork", id);
+  // }
+
+
+  const changeNetwork = async (e) => {
+    const id = e.target.value;
+    setNetwork(toHex(id));
+    console.log("ChainId", id);
+    try {
+      await window.ethereum.request({
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: toHex(network) }]
+      })
+    }
+    catch (err) {
+      console.error(err);
+    }
+  }
   const disconnect = async () => {
     setEthBalance("");
     setAccount("");
@@ -192,14 +200,14 @@ function App() {
   };
 
   useEffect(() => {
-    console.log(swapAmount);
+    console.log("Swap Amount", swapAmount);
   }, [swapAmount]);
   useEffect(() => {
-    console.log(srcAddress);
+    console.log("Source Address", srcAddress);
   }, [srcAddress]);
 
   useEffect(() => {
-    console.log(destAddress);
+    console.log("Destination Address", destAddress);
   }, [destAddress]);
 
   return (
@@ -209,6 +217,9 @@ function App() {
         tokenImage={data.token.image}
         walletBalance={data.wallet.balance}
         walletAddress={data.wallet.address}
+        accountStatus={isWallletConnceted ? true : false}
+        connectWallet={ShortSwapButtonClick}
+        switchNetwork={changeNetwork}
       />
       {/* <Swap onChange={primaryAmount} /> */}
       <Routes>
