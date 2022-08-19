@@ -21,15 +21,15 @@ const Modal = ({ display, setDisplay, setTokenA, setTokenB, selectToken }) => {
   };
   const handleTokenSelection = (event) => {
     const token = event.currentTarget;
-    if (selectToken === "2") {
-
+    console.log("Modal:Handle", token.children[2].innerHTML);
+    if(selectToken === "2") {
       setTokenB({
         address: token.children[2].innerHTML,
         symbol: token.children[1].innerHTML,
         image: token.children[0].src.slice(21, token.length),
       });
 
-    } else if (selectToken === "1") {
+    } else if(selectToken === "1") {
       setTokenA({
         address: token.children[2].innerHTML,
         symbol: token.children[1].innerHTML,
@@ -69,8 +69,8 @@ const Modal = ({ display, setDisplay, setTokenA, setTokenB, selectToken }) => {
                 src="/ethereum.png"
                 style={{ marginRight: "8px", width: "20px" }}
               />
-              <div className="modal__token-symbol">Faucet</div>
-              <p style={{ display: "none" }}>FAUCET:{FAUCET_TOKEN_ADDRESS}</p>
+              <div className="modal__token-symbol" onClick={handleModalClose}>Faucet</div>
+              <p style={{ display: "none" }}>{FAUCET_TOKEN_ADDRESS}</p>
             </div>
             <div className="modal__token" onClick={handleTokenSelection}>
               <img
@@ -79,11 +79,8 @@ const Modal = ({ display, setDisplay, setTokenA, setTokenB, selectToken }) => {
                 src="/dai.png"
                 style={{ marginRight: "8px", width: "20px" }}
               />
-              <div className="modal__token-symbol">Matic</div>
-
               <div className="modal__token-symbol" onClick={handleModalClose} id="token2">Matic</div>
-
-              <p style={{ display: "none" }}>MATIC:{MATIC_TOKEN_ADDRESS}</p>
+              <p style={{ display: "none" }}>{MATIC_TOKEN_ADDRESS}</p>
             </div>
             {/* <div className="modal__token" onClick={handleTokenSelection}>
           <img className="modal__token-img" alt="DAI logo" src="/dai.png" style={{marginRight:'8px', width:'20px'}}/>

@@ -7,7 +7,7 @@ import { POOL_ID, FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS, OWNER_ADDRESS, MAX_
 /*
   swapTokens: Swaps `swapAmountWei` of Eth/Crypto Dev tokens with `tokenToBeReceivedAfterSwap` amount of Eth/Crypto Dev tokens.
 */
-export const swapTokens = async (signer, swapAmountWei) => {
+export const swapTokens = async (signer, swapAmountWei, assetIn, assetOut) => {
   // Create a new instance of the exchange contract
   const exchangeContract = new Contract(
     EXCHANGE_CONTRACT_ADDRESS,
@@ -21,8 +21,8 @@ export const swapTokens = async (signer, swapAmountWei) => {
     {
       poolId: POOL_ID,
       kind: kind,
-      assetIn: FAUCET_TOKEN_ADDRESS,
-      assetOut: MATIC_TOKEN_ADDRESS,
+      assetIn: assetIn,
+      assetOut: assetOut,
       amount: swapAmountWei,
       userData: "0x",
     },

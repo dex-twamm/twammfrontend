@@ -123,8 +123,10 @@ function App() {
       if (swapAmountWei > 0) {
         const signer = await getProvider(true);
         setLoading(true);
+        const assetIn = srcAddress;
+        const assetOut = destAddress;
         // Call the swapTokens function from the `utils` folder
-        await swapTokens(signer, swapAmountWei);
+        await swapTokens(signer, swapAmountWei, assetIn, assetOut);
         setLoading(false);
         // Get all the updated amounts after the swap
         await getAmounts();
@@ -202,6 +204,7 @@ function App() {
   useEffect(() => {
     console.log("Swap Amount", swapAmount);
   }, [swapAmount]);
+  
   useEffect(() => {
     console.log("Source Address", srcAddress);
   }, [srcAddress]);

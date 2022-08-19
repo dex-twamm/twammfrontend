@@ -63,9 +63,7 @@ const Navbar = ({tokenImage, tokenName, walletBalance, walletAddress, accountSta
               <button className="btn-wallet">{walletBalance}</button>
               <button className="btn-wallet" style={{backgroundColor:"rgb(244,248,250",borderRadius:"14px"}}>{walletAddress}</button>
               </>) 
-              :(<button className="btn btn-connect" style={{height:'fit-content', width:"200%", fontSize:"small", margin:'0'}} onClick={connectWallet}>Connect Wallet</button>) }
-            
-             
+              :(<button className="btn btn-connect" style={{height:'fit-content', width:"200%", fontSize:"small", margin:'0'}} onClick={connectWallet}>Connect Wallet</button>) }            
             </div> 
             <div className="menu-option">
               <button className="menu-three-dot" onClick={showDropdown}>
