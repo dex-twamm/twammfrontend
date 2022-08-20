@@ -1,18 +1,22 @@
 import React, { useState } from "react";
+import { useContext } from "react";
+import { ShortSwapContext } from "../providers";
 import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from "../utils";
 
-const Modal = ({ display, setDisplay, setTokenA, setTokenB, selectToken }) => {
+const Modal = ({ display, setDisplay, selectToken, setTokenA, setTokenB }) => {
+  const { setSrcAddress } = useContext(ShortSwapContext);
+  const { setDestAddress } = useContext(ShortSwapContext);
+
   const tokenDetails = [
     {
-      symbol: "MATIC",
+      symbol: "Faucet",
       image: "/ethereum.png",
-      address: { MATIC_TOKEN_ADDRESS },
+      address: MATIC_TOKEN_ADDRESS,
     },
     {
-      symbol: "FAUCET",
-      image:
-        "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png",
-      address: { FAUCET_TOKEN_ADDRESS },
+      symbol: "Matic",
+      image: "/dai.png",
+      address: FAUCET_TOKEN_ADDRESS,
     },
   ];
   // Handle Select Token Modal display
@@ -20,23 +24,44 @@ const Modal = ({ display, setDisplay, setTokenA, setTokenB, selectToken }) => {
     setDisplay(!display);
   };
   const handleTokenSelection = (event) => {
+    console.log("TokenSelected", selectToken);
     const token = event.currentTarget;
     console.log("Modal:Handle", token.children[2].innerHTML);
-    if(selectToken === "2") {
-      setTokenB({
-        address: token.children[2].innerHTML,
+    if (selectToken === "1") {
+      setSrcAddress(token.children[2].innerHTML);
+      setTokenA({
         symbol: token.children[1].innerHTML,
         image: token.children[0].src.slice(21, token.length),
       });
-
-    } else if(selectToken === "1") {
-      setTokenA({
-        address: token.children[2].innerHTML,
+    } else if (selectToken === "2") {
+      setDestAddress(token.children[2].innerHTML);
+      setTokenB({
         symbol: token.children[1].innerHTML,
         image: token.children[0].src.slice(21, token.length),
       });
     }
   };
+
+  const tokenList = tokenDetails.map((token) => {
+    return (
+      <div
+        className="modal__token"
+        key={token.symbol}
+        onClick={handleTokenSelection}
+      >
+        <img
+          className="modal__token-img"
+          alt="ETH logo"
+          src={token.image}
+          style={{ marginRight: "8px", width: "20px" }}
+        />
+        <div className="modal__token-symbol" onClick={handleModalClose}>
+          {token.symbol}
+        </div>
+        <p style={{ display: "none" }}>{token.address}</p>
+      </div>
+    );
+  });
 
   return (
     <>
@@ -61,33 +86,7 @@ const Modal = ({ display, setDisplay, setTokenA, setTokenB, selectToken }) => {
               <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
           </div>
-          <div className="modal__token-list">
-            <div className="modal__token" onClick={handleTokenSelection}>
-              <img
-                className="modal__token-img"
-                alt="ETH logo"
-                src="/ethereum.png"
-                style={{ marginRight: "8px", width: "20px" }}
-              />
-              <div className="modal__token-symbol" onClick={handleModalClose}>Faucet</div>
-              <p style={{ display: "none" }}>{FAUCET_TOKEN_ADDRESS}</p>
-            </div>
-            <div className="modal__token" onClick={handleTokenSelection}>
-              <img
-                className="modal__token-img"
-                alt="DAI logo"
-                src="/dai.png"
-                style={{ marginRight: "8px", width: "20px" }}
-              />
-              <div className="modal__token-symbol" onClick={handleModalClose} id="token2">Matic</div>
-              <p style={{ display: "none" }}>{MATIC_TOKEN_ADDRESS}</p>
-            </div>
-            {/* <div className="modal__token" onClick={handleTokenSelection}>
-          <img className="modal__token-img" alt="DAI logo" src="/dai.png" style={{marginRight:'8px', width:'20px'}}/>
-          <div className="modal__token-symbol">USDC</div>
-          <p style={{display: "none"}}>USDC Address</p>
-        </div> */}
-          </div>
+          <div className="modal__token-list">{tokenList}</div>
         </div>
       ) : (
         ""

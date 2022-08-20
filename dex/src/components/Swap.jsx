@@ -5,28 +5,27 @@ import Modal from "./Modal";
 import { useContext } from "react";
 import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
 import InputField from "./InputField";
+import Input from "./Input";
 
 const Swap = () => {
   // Handle Select Token Modal display
   const [display, setDisplay] = useState(false);
   const [selectToken, setSelectToken] = useState("0");
   // useContext To Get swapAmount From InputField
+  const { inputValue, setInputValue } = useContext(ShortSwapContext);
   const { swapAmount, setSwapAmount } = useContext(ShortSwapContext);
   const { srcAddress, setSrcAddress } = useContext(ShortSwapContext);
   const { destAddress, setDestAddress } = useContext(ShortSwapContext);
 
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setInputValue(value);
+  };
   const handleDisplay = (event) => {
-    console.log(event.currentTarget.id);
-    // console.log(tokenA.address);
-
+    console.log("Current Target Id", event.currentTarget.id);
     setSelectToken(event.currentTarget.id);
-    setDestAddress(tokenB.address);
-    setSrcAddress(tokenA.address);
-    // console.log(tokenB.address);
     display ? setDisplay(false) : setDisplay(true);
   };
-  // const CMC_TOKEN_LIST = TokenListFetching();
-  // console.log(CMC_TOKEN_LIST);
 
   // Set Default Token A & Token B
   const [tokenA, setTokenA] = useState({
@@ -60,10 +59,33 @@ const Swap = () => {
   return (
     <Fragment>
       <form onSubmit={handleSubmit}>
-        <InputField id={1}/>
+        <Input
+          id={1}
+          input={inputValue}
+          onChange={handleInputChange}
+          imgSrc={tokenA.image}
+          symbol={tokenA.symbol}
+          handleDisplay={handleDisplay}
+          selectToken={selectToken}
+          display={display}
+          setDisplay={setDisplay}
+          setTokenA={setTokenA}
+          setTokenB={setTokenB}
+        />
         <FontAwesomeIcon className="iconDown" icon={faArrowDown} />
-        <InputField id={2}/>
-      
+        <Input
+          id={2}
+          input={inputValue}
+          onChange={handleInputChange}
+          imgSrc={tokenB.image}
+          symbol={tokenB.symbol}
+          handleDisplay={handleDisplay}
+          selectToken={selectToken}
+          display={display}
+          setDisplay={setDisplay}
+          setTokenA={setTokenA}
+          setTokenB={setTokenB}
+        />
       </form>
     </Fragment>
   );
