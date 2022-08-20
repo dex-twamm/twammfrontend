@@ -4,9 +4,11 @@ import { ShortSwapContext } from "../providers";
 import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from "../utils";
 
 const Modal = ({ display, setDisplay, selectToken, setTokenA, setTokenB }) => {
+  // useContext To Retrieve The Source and Destination Address of The Token
   const { setSrcAddress } = useContext(ShortSwapContext);
   const { setDestAddress } = useContext(ShortSwapContext);
 
+  // Object For Token Details
   const tokenDetails = [
     {
       symbol: "Faucet",
@@ -19,10 +21,13 @@ const Modal = ({ display, setDisplay, selectToken, setTokenA, setTokenB }) => {
       address: FAUCET_TOKEN_ADDRESS,
     },
   ];
-  // Handle Select Token Modal display
+
+  // Handle Modal Close
   const handleModalClose = () => {
     setDisplay(!display);
   };
+
+  // Handle Select Token Modal display
   const handleTokenSelection = (event) => {
     console.log("TokenSelected", selectToken);
     const token = event.currentTarget;
@@ -42,6 +47,7 @@ const Modal = ({ display, setDisplay, selectToken, setTokenA, setTokenB }) => {
     }
   };
 
+  // Mapping The Token Details Objects
   const tokenList = tokenDetails.map((token) => {
     return (
       <div

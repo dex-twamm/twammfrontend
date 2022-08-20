@@ -4,7 +4,6 @@ import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import Modal from "./Modal";
 import { useContext } from "react";
 import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
-import InputField from "./InputField";
 import Input from "./Input";
 
 const Swap = () => {
@@ -12,10 +11,8 @@ const Swap = () => {
   const [display, setDisplay] = useState(false);
   const [selectToken, setSelectToken] = useState("0");
   // useContext To Get swapAmount From InputField
-  const { inputValue, setInputValue } = useContext(ShortSwapContext);
-  const { swapAmount, setSwapAmount } = useContext(ShortSwapContext);
-  const { srcAddress, setSrcAddress } = useContext(ShortSwapContext);
-  const { destAddress, setDestAddress } = useContext(ShortSwapContext);
+  const { inputValue, setInputValue, swapAmount, setSwapAmount } =
+    useContext(ShortSwapContext);
 
   const handleInputChange = (e) => {
     const value = e.target.value;
@@ -41,19 +38,9 @@ const Swap = () => {
     // address : "Token B Adress",
   });
 
-  // Handling Primary and Secondary Tokens
-  const [primary, setPrimary] = useState("");
-  // const handlePrimary = (e) => {
-  //   console.log(`Swap: e.target.value:`,e.target.value)
-  //   setSwapAmount(e.target.value);
-  // };
-  const [secondary, setSecondary] = useState("");
-  const handleSecondary = (e) => {
-    setSecondary(e.target.value);
-  };
+  // Prevents Re-rendering the Form
   const handleSubmit = (e) => {
     e.preventDefault();
-    // props.onChange(swapAmount);
   };
 
   return (
@@ -61,8 +48,8 @@ const Swap = () => {
       <form onSubmit={handleSubmit}>
         <Input
           id={1}
-          input={inputValue}
-          onChange={handleInputChange}
+          input={swapAmount !== "" ? swapAmount : ""}
+          onChange={(e) => setSwapAmount(e.target.value)}
           imgSrc={tokenA.image}
           symbol={tokenA.symbol}
           handleDisplay={handleDisplay}

@@ -1,5 +1,3 @@
-import { useContext } from "react";
-import { ShortSwapContext } from "../providers";
 import Modal from "./Modal";
 
 const Input = ({
