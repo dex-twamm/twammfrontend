@@ -1,55 +1,54 @@
-
-@media (max-width:960px) {
-  .mainBody {
-    top: 50% !important;
-    max-height: 480px !important;
-  }
-
-}
-
 .mainBody {
-  float: left;
   max-height: 860px;
   padding: 10px;
-  min-width: 40%;
-  border-radius: 20px;
+  width: 100%;
+  max-width: 480px;
+  border-radius: 24px;
   display: block;
   z-index: 1;
   background: white;
   position: absolute;
-  top: 40%;
+  top: 240px;
   left: 50%;
-  transform: translate(-50%, -50%)
+  transform: translate(-50%, -50%);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 }
 
-.swapOptions {
-  text-align: center;
+@media (min-width:960px) {
+  .mainBody {
+    top: 270px;
+  }
+}
+
+.swap{
+  padding: 6px 12px 8px;
 }
 
 .textLink {
   text-decoration: none;
   padding: 5px;
-  font-size: large;
-  font-weight: 600;
+  font-size: 16px;
+  color: #000;
+  font-weight: 500;
 
 }
 
 .btnConnect {
   margin-top: 10px;
   height: 60px;
-  background-color: rgb(245, 212, 224);
+  background-color: rgb(253, 234, 241);
+  color: rgb(213, 0, 102);
   width: 100%;
   border-radius: 20px;
-  float: left;
-  border: 0px solid;
+  border: none;
   outline: none;
   cursor: pointer;
   padding: 10px;
   transition: 0.3s;
-  font-size: large;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 600;
 }
 
-.btn-connect:focus {
+.btnConnect:focus {
   background-color: rgb(240, 142, 178);
 }
