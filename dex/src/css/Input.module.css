@@ -1,7 +1,7 @@
 .textInput {
-  margin-top: 4px;
+  margin-top: 2px;
   padding: 16px;
-  border: none;
+  border: 2px solid #fff;
 
   background-color: rgb(247, 248, 250);
   height: 80;
@@ -11,6 +11,10 @@
   border-radius: 20px;
   display: flex;
   flex-wrap: wrap;
+}
+
+.textInput:hover{
+border: 2px solid #c8c8c8;
 }
 
 .inputSelectContainer {
