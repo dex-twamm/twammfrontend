@@ -39,7 +39,7 @@
 .btnConnect {
   margin-top: 10px;
   height: 60px;
-  background-color: rgb(253, 234, 241);
+  background-color: #fdeaf1;
   color: rgb(213, 0, 102);
   width: 100%;
   border-radius: 20px;
@@ -52,6 +52,6 @@
   font-weight: 600;
 }
 
-.btnConnect:focus {
-  background-color: rgb(240, 142, 178);
+.btnConnect:hover{
+  background-color: #ffdeea;
 }
