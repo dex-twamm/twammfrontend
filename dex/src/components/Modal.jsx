@@ -6,8 +6,7 @@ import styles from "../css/Modal.module.css";
 
 const Modal = ({ display, setDisplay, selectToken, setTokenA, setTokenB }) => {
   // useContext To Retrieve The Source and Destination Address of The Token
-  const { setSrcAddress } = useContext(ShortSwapContext);
-  const { setDestAddress } = useContext(ShortSwapContext);
+  const { setSrcAddress,setDestAddress } = useContext(ShortSwapContext);
 
   // Object For Token Details
   const tokenDetails = [
@@ -94,6 +93,11 @@ const Modal = ({ display, setDisplay, selectToken, setTokenA, setTokenB }) => {
             </svg>
           </div>
           <div className={styles.modalTokenList}>{tokenList}</div>
+          <div>
+            <button className={styles.btnManageToken}>
+            Manage Token List
+            </button>
+          </div>
         </div>
       </div>
     )
