@@ -1,0 +1,55 @@
+
+@media (max-width:960px) {
+  .mainBody {
+    top: 50% !important;
+    max-height: 480px !important;
+  }
+
+}
+
+.mainBody {
+  float: left;
+  max-height: 860px;
+  padding: 10px;
+  min-width: 40%;
+  border-radius: 20px;
+  display: block;
+  z-index: 1;
+  background: white;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%)
+}
+
+.swapOptions {
+  text-align: center;
+}
+
+.textLink {
+  text-decoration: none;
+  padding: 5px;
+  font-size: large;
+  font-weight: 600;
+
+}
+
+.btnConnect {
+  margin-top: 10px;
+  height: 60px;
+  background-color: rgb(245, 212, 224);
+  width: 100%;
+  border-radius: 20px;
+  float: left;
+  border: 0px solid;
+  outline: none;
+  cursor: pointer;
+  padding: 10px;
+  transition: 0.3s;
+  font-size: large;
+  font-weight: 500;
+}
+
+.btn-connect:focus {
+  background-color: rgb(240, 142, 178);
+}
