@@ -5,6 +5,7 @@ import Modal from "./Modal";
 import { useContext } from "react";
 import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
 import Input from "./Input";
+import styles from "../css/Swap.module.css";
 
 const Swap = () => {
   // Handle Select Token Modal display
@@ -59,7 +60,7 @@ const Swap = () => {
           setTokenA={setTokenA}
           setTokenB={setTokenB}
         />
-        <FontAwesomeIcon className="iconDown" icon={faArrowDown} />
+        <FontAwesomeIcon className={styles.iconDown} icon={faArrowDown} />
         <Input
           id={2}
           input={inputValue}

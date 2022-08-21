@@ -1,0 +1,34 @@
+.modalWrapper {
+  z-index: 1;
+  position: fixed;
+  inset: 0;
+  background-color: rgb(185, 185, 185);
+  /* width: 200px;
+  border-radius: 20px; */
+  /* height: 80%;
+  width: 90%; */
+  margin: 0;
+}
+
+.container .modalContainer {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.modalToken {
+  margin-top: 0.6rem;
+  display: flex;
+  background-color: #edeef2;
+  padding: 8px;
+  border-radius: 20px;
+}
+
+.modalToken:hover {
+  cursor: pointer;
+}
+
+.modalTokenList {
+  width: fit-content;
+  padding: 10px;
+}

@@ -7,7 +7,8 @@ import classnames from "classnames"
 
 const ShortSwap = ({tokenSymbol,tokenImage,connectWallet, buttonText}) => {
   return (
-    <div className={styles.mainBody}>
+    <div className={styles.container}>
+      <div className={styles.mainBody}>
       <div className={styles.swap}>
         <div className={styles.swapOptions}>
           <a className={styles.textLink} href="/">Swap</a>
@@ -18,6 +19,7 @@ const ShortSwap = ({tokenSymbol,tokenImage,connectWallet, buttonText}) => {
       <button className={classnames(styles.btn, styles.btnConnect)} onClick={connectWallet}>
         {buttonText}
       </button>
+    </div>
     </div>
   )
 }

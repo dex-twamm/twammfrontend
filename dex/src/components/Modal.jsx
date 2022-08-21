@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useContext } from "react";
 import { ShortSwapContext } from "../providers";
 import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from "../utils";
+import styles from "../css/Modal.module.css";
 
 const Modal = ({ display, setDisplay, selectToken, setTokenA, setTokenB }) => {
   // useContext To Retrieve The Source and Destination Address of The Token
@@ -51,17 +52,17 @@ const Modal = ({ display, setDisplay, selectToken, setTokenA, setTokenB }) => {
   const tokenList = tokenDetails.map((token) => {
     return (
       <div
-        className="modal__token"
+        className={styles.modalToken}
         key={token.symbol}
         onClick={handleTokenSelection}
       >
         <img
-          className="modal__token-img"
+          className={styles.modalTokenImg}
           alt="ETH logo"
           src={token.image}
           style={{ marginRight: "8px", width: "20px" }}
         />
-        <div className="modal__token-symbol" onClick={handleModalClose}>
+        <div className={styles.modalTokenSymbol} onClick={handleModalClose}>
           {token.symbol}
         </div>
         <p style={{ display: "none" }}>{token.address}</p>
@@ -70,11 +71,11 @@ const Modal = ({ display, setDisplay, selectToken, setTokenA, setTokenB }) => {
   });
 
   return (
-    <>
-      {display ? (
-        <div className="modal__wrapper">
-          <div className="modal__container">
-            <div className="modal__heading">Select a token</div>
+    display && (
+      <div className={styles.modalWrapper}>
+        <div className={styles.container}>
+          <div className={styles.modalContainer}>
+            <div className={styles.modalHeading}>Select a token</div>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -92,12 +93,10 @@ const Modal = ({ display, setDisplay, selectToken, setTokenA, setTokenB }) => {
               <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
           </div>
-          <div className="modal__token-list">{tokenList}</div>
+          <div className={styles.modalTokenList}>{tokenList}</div>
         </div>
-      ) : (
-        ""
-      )}
-    </>
+      </div>
+    )
   );
 };
 
