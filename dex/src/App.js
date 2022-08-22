@@ -26,12 +26,10 @@ function App() {
   const [account, setAccount] = useState();
   const [balance, setBalance] = useState();
   const [ethBalance, setEthBalance] = useState();
-  const { swapAmount } = useContext(ShortSwapContext);
-  const { srcAddress } = useContext(ShortSwapContext);
-  const { destAddress } = useContext(ShortSwapContext);
   const [loading, setLoading] = useState(false);
   const [isWallletConnceted, setWalletConnected] = useState(false);
-  const [network, setNetwork] = useState();
+
+  const { srcAddress, destAddress, swapAmount, networkId } = useContext(ShortSwapContext);
 
   const connectWallet = async () => {
     try {
@@ -69,27 +67,20 @@ function App() {
     return web3Provider;
   };
 
-  // const handleNetwork = async (e) => {
-  //   const id = e.target.value;
-  //   setNetwork(toHex(id));
-  //   console.log("HandleNetwork", id);
+
+
+
+  // const changeNetwork = async () => {
+  //   try {
+  //     await window.ethereum.request({
+  //       method: "wallet_switchEthereumChain",
+  //       params: [{ chainId: toHex(networkId) }]
+  //     })
+  //   }
+  //   catch (err) {
+  //     console.error(err);
+  //   }
   // }
-
-
-  const changeNetwork = async (e) => {
-    const id = e.target.value;
-    setNetwork(toHex(id));
-    console.log("ChainId", id);
-    try {
-      await window.ethereum.request({
-        method: "wallet_switchEthereumChain",
-        params: [{ chainId: toHex(network) }]
-      })
-    }
-    catch (err) {
-      console.error(err);
-    }
-  }
   const disconnect = async () => {
     setEthBalance("");
     setAccount("");
@@ -204,7 +195,7 @@ function App() {
   useEffect(() => {
     console.log("Swap Amount", swapAmount);
   }, [swapAmount]);
-  
+
   useEffect(() => {
     console.log("Source Address", srcAddress);
   }, [srcAddress]);
@@ -222,7 +213,6 @@ function App() {
         walletAddress={data.wallet.address}
         accountStatus={isWallletConnceted ? true : false}
         connectWallet={ShortSwapButtonClick}
-        switchNetwork={changeNetwork}
       />
       {/* <Swap onChange={primaryAmount} /> */}
       <Routes>

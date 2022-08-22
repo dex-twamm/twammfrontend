@@ -8,6 +8,7 @@ export const ShortSwapProvider = ({ children }) => {
   const [srcAddress, setSrcAddress] = useState("");
   const [destAddress, setDestAddress] = useState("");
   const [equivalentAmount, setEquivalentAmount] = useState("");
+  const [networkId, setNetworkId] = useState();
 
   return (
     <ShortSwapContext.Provider
@@ -20,6 +21,8 @@ export const ShortSwapProvider = ({ children }) => {
         setSrcAddress,
         destAddress,
         setDestAddress,
+        networkId,
+        setNetworkId,
       }}
     >
       {children}

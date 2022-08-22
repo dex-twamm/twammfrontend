@@ -1,4 +1,5 @@
 import { ethers } from "ethers";
+import React from "react";
 
 export const truncateAddress = (address) => {
   if (!address) return "No Account";
@@ -11,7 +12,9 @@ export const truncateAddress = (address) => {
 
 export const toHex = (num) => {
   const val = Number(num);
+  console.log("Hex Value", "0x" + val.toString(16));
   return "0x" + val.toString(16);
+
 };
 
 
