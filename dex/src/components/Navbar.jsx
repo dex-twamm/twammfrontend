@@ -4,8 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { toHex } from "../utils";
 import { ShortSwapContext } from "../providers";
-import styles from "../css/ShortSwap.module.css";
-import { useEffect } from "react";
 
 const Navbar = ({
   walletBalance,
@@ -13,6 +11,7 @@ const Navbar = ({
   accountStatus,
   connectWallet,
 }) => {
+  const { setError } = useContext(ShortSwapContext);
   const tabOptions = [
     {
       value: "Swap",
@@ -76,6 +75,7 @@ const Navbar = ({
         });
       } catch (err) {
         console.error(err);
+        setError(err);
       }
     }
   };

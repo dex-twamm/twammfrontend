@@ -5,6 +5,7 @@ import { useContext } from "react";
 import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
 import Input from "./Input";
 import styles from "../css/Swap.module.css";
+import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from "../utils";
 
 const Swap = () => {
   // Handle Select Token Modal display
@@ -28,14 +29,14 @@ const Swap = () => {
   const [tokenA, setTokenA] = useState({
     symbol: "Faucet",
     image: "/ethereum.png",
-    // address:"Token A Adress"
+    address: FAUCET_TOKEN_ADDRESS,
   });
 
   const [tokenB, setTokenB] = useState({
     symbol: "Matic",
     image:
       "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png",
-    // address : "Token B Adress",
+    address: MATIC_TOKEN_ADDRESS,
   });
 
   // Prevents Re-rendering the Form
