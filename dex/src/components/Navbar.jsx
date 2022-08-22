@@ -3,7 +3,9 @@ import showDropdown from "../Helpers/showdropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { toHex } from "../utils";
-import { ShortSwapContext, ShortSwapProvider } from "../providers";
+import { ShortSwapContext } from "../providers";
+import styles from "../css/ShortSwap.module.css";
+import { useEffect } from "react";
 
 const Navbar = ({
   walletBalance,
@@ -11,7 +13,6 @@ const Navbar = ({
   accountStatus,
   connectWallet,
 }) => {
-  const { networkId, setNetworkId } = useContext(ShortSwapContext);
   const tabOptions = [
     {
       value: "Swap",
@@ -51,8 +52,10 @@ const Navbar = ({
   });
 
   const networks = [
+    { name: "Select Network", chainId: "0" },
     { name: "Ethereum", chainId: "1" },
     { name: "Goerli", chainId: "5" },
+    { name: "Coming Soon", chainId: "0" },
   ];
 
   const networkList = networks.map((network) => {
@@ -65,18 +68,17 @@ const Navbar = ({
 
   const handleChangeId = async (e) => {
     const id = e.target.value;
-    setNetworkId(toHex(id));
-    console.log("HandleNetworkID", id);
-    try {
-      await window.ethereum.request({
-        method: "wallet_switchEthereumChain",
-        params: [{ chainId: toHex(networkId) }],
-      });
-    } catch (err) {
-      console.error(err);
+    if (window.ethereum.networkVersion !== id) {
+      try {
+        await window.ethereum.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: toHex(id) }],
+        });
+      } catch (err) {
+        console.error(err);
+      }
     }
   };
-
   return (
     <div>
       <section id="header">
@@ -87,15 +89,16 @@ const Navbar = ({
           <div className="tab-container-center">{tabList}</div>
           <div className="tab-container-right">
             <div className="dropdown">
+              {/* <div className={styles.dropdownItem}>
+                <img src="./ethereum.png"></img>
+              </div> */}
               <select
+                placeholder="Select Network"
                 id="networkType"
                 className="currency"
-                value={networkId}
                 onChange={handleChangeId}
               >
-                <option>Select Network</option>
                 {networkList}
-                <option id="soon">Coming Soon</option>
               </select>
             </div>
 

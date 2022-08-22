@@ -55,3 +55,18 @@
 .btnConnect:hover{
   background-color: #ffdeea;
 }
+
+.dropdownItem {
+  -webkit-box-align: center;
+    align-items: center;
+    background-color: rgb(25, 27, 31);
+    border: 2px solid rgb(25, 27, 31);
+    border-radius: 16px;
+    color: rgb(255, 255, 255);
+    display: flex;
+    font-weight: 500;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    padding: 6px 8px;
+    cursor: default;
+}

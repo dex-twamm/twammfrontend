@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { createContext } from "react";
 
-export const ShortSwapContext = createContext(null);
-
 export const ShortSwapProvider = ({ children }) => {
   const [swapAmount, setSwapAmount] = useState("");
   const [srcAddress, setSrcAddress] = useState("");
@@ -29,3 +27,5 @@ export const ShortSwapProvider = ({ children }) => {
     </ShortSwapContext.Provider>
   );
 };
+
+export const ShortSwapContext = createContext(null);

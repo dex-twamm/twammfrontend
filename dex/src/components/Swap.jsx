@@ -1,7 +1,6 @@
 import React, { Fragment, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
-import Modal from "./Modal";
 import { useContext } from "react";
 import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
 import Input from "./Input";

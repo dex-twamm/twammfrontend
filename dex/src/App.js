@@ -1,12 +1,11 @@
 import { Routes, Route } from "react-router-dom";
-import Swap from "./components/Swap";
 import Navbar from "./components/Navbar";
 import ShortSwap from "./pages/ShortSwap";
 import LongSwap from "./pages/LongSwap";
 import AddLiquidity from "./components/AddLiquidity";
 import "./App.css";
 import { web3Modal } from "./utils/providerOptions";
-import { Contract, ethers, BigNumber, utils, providers } from "ethers";
+import { ethers, BigNumber, utils, providers } from "ethers";
 import { useState, useEffect, useContext } from "react";
 import {
   getCDTokensBalance,
