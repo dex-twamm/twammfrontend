@@ -60,37 +60,19 @@ function App() {
         return signer;
       }
       return web3Provider;
-    } catch (error) {
-      setError(error);
+    } catch (err) {
+      setError(err);
+
     }
 
 
   };
 
-
-
-
-  // const changeNetwork = async () => {
-  //   try {
-  //     await window.ethereum.request({
-  //       method: "wallet_switchEthereumChain",
-  //       params: [{ chainId: toHex(networkId) }]
-  //     })
-  //   }
-  //   catch (err) {
-  //     console.error(err);
-  //   }
-  // }
   const disconnect = async () => {
     setEthBalance("");
     setAccount("");
     await web3Modal.clearCachedProvider();
   };
-
-  // const swapTokens = async () => {
-  //   swap(Contract, account, account);
-  //   console.log("Clicked");
-  // };
 
   const getAmounts = async () => {
     const provider = await connectWallet();
@@ -150,21 +132,26 @@ function App() {
 
   async function ShortSwapButtonClick() {
     console.log("I am Being Clicked");
-    console.log(isWallletConnceted);
+    console.log("Wallet Connection", isWallletConnceted);
     if (!isWallletConnceted) {
-      connectWallet();
+      try {
+        await connectWallet()
+      }
+      catch (err) {
+        console.log(err);
+      }
     } else {
-      _swapTokens();
+      await _swapTokens();
     }
   }
 
   async function LongSwapButtonClick() {
     console.log("I am Being Clicked");
-    console.log(isWallletConnceted);
+    console.log("Wallet Connection", isWallletConnceted);
     if (!isWallletConnceted) {
-      connectWallet();
+      await connectWallet();
     } else {
-      _placeLongTermOrders();
+      await _placeLongTermOrders();
     }
   }
   const data = {
