@@ -28,7 +28,9 @@ const Navbar = ({
   ];
   const tabList = tabOptions.map((option) => (
     <div className="tabButton">
-      <a href={option.path}>{option.value}</a>
+      <a key={option.value} href={option.path}>
+        {option.value}
+      </a>
     </div>
   ));
 

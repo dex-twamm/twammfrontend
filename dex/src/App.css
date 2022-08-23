@@ -126,7 +126,7 @@ section#header {
   transition: 0.3s;
 }
 
-.tabButton:hover {
+.tabButton:hover, .tabButton:active{
   background-color: antiquewhite;
   border-radius: 20px;
 }

@@ -6,19 +6,24 @@ import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
 import Input from "./Input";
 import styles from "../css/Swap.module.css";
 import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from "../utils";
+import { useEffect } from "react";
 
 const Swap = () => {
   // Handle Select Token Modal display
   const [display, setDisplay] = useState(false);
   const [selectToken, setSelectToken] = useState("0");
+  const [formErrors, setFormErrors] = useState({});
+  const [isSubmit, setIsSubmit] = useState(false);
+
   // useContext To Get swapAmount From InputField
-  const { inputValue, setInputValue, swapAmount, setSwapAmount } =
+  const { equivalentAmount, setEquivalentAmount, swapAmount, setSwapAmount } =
     useContext(ShortSwapContext);
 
-  const handleInputChange = (e) => {
-    const value = e.target.value;
-    setInputValue(value);
-  };
+  // const handleInputChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setSwapAmount({ [name]: value });
+  //   console.log("Input values", swapAmount);
+  // };
   const handleDisplay = (event) => {
     console.log("Current Target Id", event.currentTarget.id);
     setSelectToken(event.currentTarget.id);
@@ -42,8 +47,23 @@ const Swap = () => {
   // Prevents Re-rendering the Form
   const handleSubmit = (e) => {
     e.preventDefault();
+    setFormErrors(validate(swapAmount));
+    setIsSubmit(true);
   };
+  useEffect(() => {
+    console.log(formErrors);
+    if (Object.keys(formErrors).length === 0 && isSubmit) {
+      console.log(swapAmount);
+    }
+  }, [formErrors]);
 
+  const validate = (values) => {
+    const errors = {};
+    if (!values.swapAmount) {
+      errors.swapAmount = "Swap Amount Is Required";
+    }
+    return errors;
+  };
   return (
     <Fragment>
       <form onSubmit={handleSubmit}>
@@ -63,8 +83,8 @@ const Swap = () => {
         <FontAwesomeIcon className={styles.iconDown} icon={faArrowDown} />
         <Input
           id={2}
-          input={inputValue}
-          onChange={handleInputChange}
+          input={equivalentAmount}
+          onChange={(e) => setEquivalentAmount(e.target.value)}
           imgSrc={tokenB.image}
           symbol={tokenB.symbol}
           handleDisplay={handleDisplay}

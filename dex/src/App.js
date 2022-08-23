@@ -35,7 +35,9 @@ function App() {
   const connectWallet = async () => {
     try {
       await getProvider();
-      setWalletConnected(true);
+      // setWalletConnected(true);
+      console.log("Wallet Connected Info", isWallletConnceted);
+
     } catch (err) {
       console.error(err);
     }
@@ -48,6 +50,7 @@ function App() {
       const accounts = await web3Provider.listAccounts();
       setweb3provider(web3Provider);
       setProvider(provider);
+
       console.log(accounts);
       const walletBalance = await web3Provider.getBalance(accounts[0]);
       const ethBalance = ethers.utils.formatEther(walletBalance);
@@ -59,6 +62,9 @@ function App() {
       if (needSigner) {
         const signer = web3Provider.getSigner();
         return signer;
+      }
+      if (provider) {
+        setWalletConnected(true);
       }
       return web3Provider;
     } catch (err) {
@@ -88,18 +94,20 @@ function App() {
   const _swapTokens = async () => {
     try {
       // Convert the amount entered by the user to a BigNumber using the `parseEther` library from `ethers.js`
-      const swapAmountWei = swapAmount;
+      const swapAmountWei = ethers.utils.parseEther(swapAmount);
       console.log(swapAmountWei);
 
       // Check if the user entered zero
       // We are here using the `eq` method from BigNumber class in `ethers.js`
       if (swapAmountWei > 0) {
         const signer = await getProvider(true);
+        console.log(signer);
         setLoading(true);
         const assetIn = srcAddress;
         const assetOut = destAddress;
+        const walletAddress = account;
         // Call the swapTokens function from the `utils` folder
-        await swapTokens(signer, swapAmountWei, assetIn, assetOut);
+        await swapTokens(signer, swapAmountWei, assetIn, assetOut, walletAddress);
         setLoading(false);
         // Get all the updated amounts after the swap
         await getAmounts();
@@ -107,7 +115,6 @@ function App() {
       }
     } catch (err) {
       console.error(err);
-      setLoading(false);
       setError("Transaction Cancelled");
       // setSwapAmount("");
     }
