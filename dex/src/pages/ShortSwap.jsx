@@ -6,6 +6,7 @@ import styles from "../css/ShortSwap.module.css";
 import classnames from "classnames";
 import { ShortSwapContext } from "../providers";
 import { useContext } from "react";
+import PopupModal from "../components/PopupModal";
 
 const ShortSwap = ({ tokenSymbol, tokenImage, connectWallet, buttonText }) => {
   const { error } = useContext(ShortSwapContext);
@@ -27,7 +28,7 @@ const ShortSwap = ({ tokenSymbol, tokenImage, connectWallet, buttonText }) => {
         >
           {buttonText}
         </button>
-        <p>{error ? error.message : null}</p>
+        <PopupModal errorDisplay={error ? true : false}></PopupModal>
       </div>
     </div>
   );

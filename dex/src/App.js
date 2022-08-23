@@ -29,6 +29,7 @@ function App() {
   const [isWallletConnceted, setWalletConnected] = useState(false);
 
 
+
   const { srcAddress, destAddress, swapAmount, setError } = useContext(ShortSwapContext);
 
   const connectWallet = async () => {
@@ -61,8 +62,7 @@ function App() {
       }
       return web3Provider;
     } catch (err) {
-      setError(err);
-
+      setError("Wallet Connection Rejected");
     }
 
 
@@ -108,7 +108,7 @@ function App() {
     } catch (err) {
       console.error(err);
       setLoading(false);
-      setError(err);
+      setError("Transaction Cancelled");
       // setSwapAmount("");
     }
   };
@@ -126,6 +126,7 @@ function App() {
     }
     catch (err) {
       console.error(err);
+      setError("Transaction Cancelled");
     }
   }
 
@@ -133,15 +134,16 @@ function App() {
   async function ShortSwapButtonClick() {
     console.log("I am Being Clicked");
     console.log("Wallet Connection", isWallletConnceted);
-    if (!isWallletConnceted) {
-      try {
-        await connectWallet()
+    try {
+      if (!isWallletConnceted) {
+        await connectWallet();;
       }
-      catch (err) {
-        console.log(err);
+      else {
+        await _swapTokens();
+
       }
-    } else {
-      await _swapTokens();
+    } catch (err) {
+      console.error(err);
     }
   }
 
@@ -152,6 +154,7 @@ function App() {
       await connectWallet();
     } else {
       await _placeLongTermOrders();
+
     }
   }
   const data = {
@@ -211,7 +214,7 @@ function App() {
               tokenSymbol={data.token.symbol}
               tokenImage={data.token.image}
               connectWallet={ShortSwapButtonClick}
-              buttonText={isWallletConnceted ? "Swap" : "Connect Wallet"}
+              buttonText={!isWallletConnceted ? "Connect Wallet" : "Swap"}
             />
           }
         />
@@ -222,7 +225,7 @@ function App() {
             <LongSwap
               tokenSymbol={data.token.symbol}
               tokenImage={data.token.image}
-              buttonText={isWallletConnceted ? "Swap" : "Connect Wallet"}
+              buttonText={!isWallletConnceted ? "Connect Wallet" : "Swap"}
               connectWallet={LongSwapButtonClick}
             />
           }
