@@ -32,6 +32,7 @@ function App() {
 
   const { srcAddress, destAddress, swapAmount, setError } = useContext(ShortSwapContext);
 
+
   const connectWallet = async () => {
     try {
       await getProvider();
@@ -107,10 +108,13 @@ function App() {
         const assetOut = destAddress;
         const walletAddress = account;
         // Call the swapTokens function from the `utils` folder
-        await swapTokens(signer, swapAmountWei, assetIn, assetOut, walletAddress);
+        await swapTokens(signer, swapAmountWei, assetIn, assetOut, walletAddress).catch((err) => {
+          console.error(err);
+          setError("Transaction Error");
+        });
         setLoading(false);
         // Get all the updated amounts after the swap
-        await getAmounts();
+        // await getAmounts();
         // setSwapAmount("");
       }
     } catch (err) {
@@ -201,7 +205,6 @@ function App() {
   useEffect(() => {
     console.log("Destination Address", destAddress);
   }, [destAddress]);
-
   return (
     <div className="App">
       <Navbar

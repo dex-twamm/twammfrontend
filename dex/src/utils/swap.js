@@ -1,6 +1,6 @@
 import { Contract, ethers } from "ethers";
 import { EXCHANGE_CONTRACT_ABI, EXCHANGE_CONTRACT_ADDRESS } from "../constants";
-import { POOL_ID, FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS, OWNER_ADDRESS, MAX_UINT256 } from ".";
+import { POOL_ID, MAX_UINT256, toHex } from ".";
 
 
 
@@ -16,7 +16,6 @@ export const swapTokens = async (signer, swapAmountWei, assetIn, assetOut, walle
   );
 
   const kind = 0; // GivenIn
-
   const swapTx = await exchangeContract.swap(
     {
       poolId: POOL_ID,
@@ -35,10 +34,13 @@ export const swapTokens = async (signer, swapAmountWei, assetIn, assetOut, walle
     kind === 0 ? 0 : MAX_UINT256, // 0 if given in, infinite if given out.
     1663213774,
     {
-      gasLimit: 500000,
+      gasLimit: 100000
     }
   );
 
   const swapResult = await swapTx.wait();
   console.log(swapResult);
+
+
+
 };
