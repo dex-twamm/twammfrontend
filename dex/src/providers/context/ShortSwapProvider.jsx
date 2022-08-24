@@ -8,7 +8,7 @@ export const ShortSwapProvider = ({ children }) => {
   const [equivalentAmount, setEquivalentAmount] = useState("");
   const [networkId, setNetworkId] = useState();
   const [error, setError] = useState();
-  const [loading, setLoading] = useState();
+  const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState();
 
   return (
