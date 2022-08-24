@@ -5,7 +5,8 @@ import { faGear, faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Slider from "@mui/material/Slider";
+import Slider, { sliderClasses } from "@mui/material/Slider";
+import { createTheme, ThemeProvider } from "@mui/system";
 
 const valueLabel = (value) => {
   const sliderUnits = ["Min", "Hours", "Days", "Week"];
@@ -50,6 +51,7 @@ const LongSwap = ({ tokenSymbol, tokenImage, connectWallet, buttonText }) => {
             min={1}
             step={2}
             max={12}
+            sx={{ width: 500, height: 15 }}
             scale={calculateValue}
             getAriaValueText={valueLabel}
             valueLabelFormat={valueLabel}

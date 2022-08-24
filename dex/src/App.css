@@ -550,9 +550,8 @@ input[type="number"]:focus {
 }
 
 .range-select {
-  margin-top: 1rem;
+  margin: 1rem;
   display: flex;
-  justify-content: center;
 }
 
 /* Add Liquidity */
