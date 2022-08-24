@@ -11,15 +11,15 @@ const valueLabel = (value) => {
   const sliderUnits = ["Min", "Hours", "Days", "Week"];
   let unitIndex = 0;
   let scaledValue = value;
-  while (scaledValue >= 604800 && unitIndex < sliderUnits.length - 1) {
+  while (scaledValue >= 60 && unitIndex < sliderUnits.length - 1) {
     unitIndex += 1;
-    scaledValue /= 604800;
+    scaledValue /= 60;
   }
   return `${scaledValue} ${sliderUnits[unitIndex]}`;
 };
 
 const calculateValue = (value) => {
-  return 2 ** value + 2;
+  return 2 ** value;
 };
 const LongSwap = ({ tokenSymbol, tokenImage, connectWallet, buttonText }) => {
   const [value, setValue] = useState(0);
@@ -48,8 +48,8 @@ const LongSwap = ({ tokenSymbol, tokenImage, connectWallet, buttonText }) => {
           <Slider
             value={value}
             min={1}
-            step={4}
-            max={30}
+            step={2}
+            max={12}
             scale={calculateValue}
             getAriaValueText={valueLabel}
             valueLabelFormat={valueLabel}

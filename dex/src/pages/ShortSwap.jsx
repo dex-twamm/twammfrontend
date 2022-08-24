@@ -28,7 +28,7 @@ const ShortSwap = ({ tokenSymbol, tokenImage, connectWallet, buttonText }) => {
         >
           {buttonText}
         </button>
-        <PopupModal errorDisplay={error ? true : false}></PopupModal>
+        {error && <PopupModal></PopupModal>}
       </div>
     </div>
   );
