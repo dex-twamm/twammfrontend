@@ -27,14 +27,14 @@ const ShortSwap = ({ tokenSymbol, tokenImage, connectWallet, buttonText }) => {
           
           {showSettings && <PopupSettings/>}
         </div>
-        <Swap tokenSymbol={tokenSymbol} tokenImage={tokenImage} />
-        <button
+        <Swap tokenSymbol={tokenSymbol} tokenImage={tokenImage} connectWallet={connectWallet} buttonText={buttonText} />
+        {/* <button
           className={classnames(styles.btn, styles.btnConnect)}
           onClick={connectWallet}
         >
           {buttonText}
-        </button>
-        <PopupModal></PopupModal>
+        </button> */}
+        {error && <PopupModal/>}
       </div>
     </div>
   );
