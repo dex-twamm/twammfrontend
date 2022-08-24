@@ -7,9 +7,15 @@ import classnames from "classnames";
 import { ShortSwapContext } from "../providers";
 import { useContext } from "react";
 import PopupModal from "../components/PopupModal";
+import PopupSettings from "../components/PopupSettings";
 
 const ShortSwap = ({ tokenSymbol, tokenImage, connectWallet, buttonText }) => {
   const { error } = useContext(ShortSwapContext);
+
+  const [showSettings, setShowSettings] = useState(false)
+
+  const handleToggleSetting = () => setShowSettings(!showSettings)
+
   return (
     <div className={styles.container}>
       <div className={styles.mainBody}>
@@ -18,8 +24,12 @@ const ShortSwap = ({ tokenSymbol, tokenImage, connectWallet, buttonText }) => {
             <a className={styles.textLink} href="/">
               Swap
             </a>
-            <FontAwesomeIcon icon={faGear} />
+            <FontAwesomeIcon className={styles.settingsIcon} onClick={handleToggleSetting} icon={faGear} />
           </div>
+          
+          {showSettings && (
+            <PopupSettings/>
+          )}
         </div>
         <Swap tokenSymbol={tokenSymbol} tokenImage={tokenImage} />
         <button

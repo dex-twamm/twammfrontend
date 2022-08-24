@@ -26,6 +26,7 @@
 
 .swap {
   padding: 6px 12px 8px;
+  position: relative
 }
 
 .textLink {
@@ -35,6 +36,11 @@
   color: #000;
   font-weight: 500;
 }
+
+.settingsIcon{
+  cursor: pointer;
+}
+
 
 .btnConnect {
   margin-top: 10px;
