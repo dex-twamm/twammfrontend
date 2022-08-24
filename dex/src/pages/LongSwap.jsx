@@ -20,7 +20,7 @@ const valueLabel = (value) => {
     unitIndex += 1;
     scaledValue /= 60;
   }
-  return `${scaledValue} ${sliderUnits[unitIndex]}`;
+  return `${scaledValue.toFixed(1)} ${sliderUnits[unitIndex]}`;
 };
 
 const calculateValue = (value) => {

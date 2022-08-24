@@ -7,8 +7,10 @@ import Input from "./Input";
 import styles from "../css/Swap.module.css";
 import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from "../utils";
 import { useEffect } from "react";
+import classNames from "classnames";
 
-const Swap = () => {
+const Swap = (props) => {
+  const { connectWallet, buttonText } = props;
   
   const [display, setDisplay] = useState(false);
   const [selectToken, setSelectToken] = useState("0");
@@ -87,6 +89,13 @@ const Swap = () => {
           setTokenA={setTokenA}
           setTokenB={setTokenB}
         />
+
+        <button
+          className={classNames(styles.btn, styles.btnConnect)}
+          onClick={connectWallet}
+        >
+          {buttonText}
+        </button>
       </form>
     </Fragment>
   );

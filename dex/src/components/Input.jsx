@@ -23,7 +23,7 @@ const Input = (props) => {
         <div className={styles.inputSelectContainer}>
           <input
             className={styles.textField}
-            type="text"
+            type="number"
             placeholder="0.0"
             value={input}
             onChange={onChange}
