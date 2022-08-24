@@ -14,8 +14,16 @@ const Navbar = ({
   accountStatus,
   connectWallet,
 }) => {
-  const [selectedText, setSelectedText] = useState("Select network");
-  const handleSelect = (e) => setSelectedText(e.target.innerText);
+  const [selectedNetwork, setSelectedNetwork] = useState({
+    network: "Select Network",
+    logo: "/ethereum.png",
+  });
+
+  const handleSelect = (networkName, logo) =>
+    setSelectedNetwork({
+      network: networkName,
+      logo: logo,
+    });
 
   const { setError } = useContext(ShortSwapContext);
   const tabOptions = [
@@ -51,51 +59,45 @@ const Navbar = ({
   ];
   const optionsList = options.map((option, index) => {
     return (
-      <a key={index} className={styles.options} href="">
+      <a key={index} className={styles.options} href="/">
         {option}
       </a>
     );
   });
 
   const networks = [
-    // { name: "Select Network", chainId: "0" },
-    { name: "Ethereum", chainId: "1" },
-    { name: "Goerli", chainId: "5" },
-    { name: "Coming Soon", chainId: "0" },
+    { name: "Ethereum", chainId: "1", logo: "/ethereum.png" },
+    { name: "Goerli", chainId: "5", logo: "/dai.png" },
+    { name: "Coming Soon", chainId: "0", logo: "/ethereum.png" },
   ];
 
-  const handleChangeId = (e) => {
-    const network = e.currentTarget;
-    const id = network.children[1].innerHTML;
-    console.log("Chain ID", id);
+  const networkList = networks.map((network, index) => {
+    return (
+      <p
+        key={index}
+        className={styles.networkName}
+        value={network.chainId}
+        onClick={() => handleSelect(network.name, network.logo)}
+      >
+        {network.name}
+      </p>
+    );
+  });
+
+  const handleChangeId = async (e) => {
+    const id = e.target.value;
     if (window.ethereum.networkVersion !== id) {
       try {
-        window.ethereum.request({
+        await window.ethereum.request({
           method: "wallet_switchEthereumChain",
           params: [{ chainId: toHex(id) }],
         });
       } catch (err) {
         console.error(err);
-        setError("Network Error");
+        setError(err);
       }
     }
   };
-
-  const networkList = networks.map((network, index) => {
-    return (
-      <div onClick={handleChangeId}>
-        <p
-          key={index}
-          className={styles.networkName}
-          value={network.chainId}
-          onClick={handleSelect}
-        >
-          {network.name}
-        </p>
-        <p style={{ display: "none" }}>{network.chainId}</p>
-      </div>
-    );
-  });
   return (
     <header className={styles.header} id="header">
       <div className={styles.row}>
@@ -115,11 +117,11 @@ const Navbar = ({
             <div className={styles.container}>
               <div id="networkType" className={styles.dropdownContainer}>
                 <img
-                  src="/ethereum.png"
+                  src={selectedNetwork.logo}
                   className={styles.logo}
                   alt="Etherium"
                 />
-                <span>{selectedText}</span>
+                <span>{selectedNetwork.network}</span>
                 <RiArrowDropDownLine className={styles.dropdownIcon} />
               </div>
 
@@ -149,12 +151,6 @@ const Navbar = ({
             ) : (
               <button
                 className={classNames(styles.btn, styles.btnConnect)}
-                style={{
-                  height: "fit-content",
-                  // width: "200%",
-                  fontSize: "small",
-                  margin: "0",
-                }}
                 onClick={connectWallet}
               >
                 Connect Wallet

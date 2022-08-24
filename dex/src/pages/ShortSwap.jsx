@@ -9,6 +9,7 @@ import { useContext } from "react";
 import PopupModal from "../components/PopupModal";
 
 const ShortSwap = ({ tokenSymbol, tokenImage, connectWallet, buttonText }) => {
+  const { error } = useContext(ShortSwapContext);
   return (
     <div className={styles.container}>
       <div className={styles.mainBody}>

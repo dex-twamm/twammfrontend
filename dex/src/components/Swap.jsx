@@ -9,28 +9,21 @@ import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from "../utils";
 import { useEffect } from "react";
 
 const Swap = () => {
-  // Handle Select Token Modal display
+  
   const [display, setDisplay] = useState(false);
   const [selectToken, setSelectToken] = useState("0");
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
 
-  // useContext To Get swapAmount From InputField
   const { equivalentAmount, setEquivalentAmount, swapAmount, setSwapAmount } =
     useContext(ShortSwapContext);
 
-  // const handleInputChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setSwapAmount({ [name]: value });
-  //   console.log("Input values", swapAmount);
-  // };
   const handleDisplay = (event) => {
     console.log("Current Target Id", event.currentTarget.id);
     setSelectToken(event.currentTarget.id);
     display ? setDisplay(false) : setDisplay(true);
   };
 
-  // Set Default Token A & Token B
   const [tokenA, setTokenA] = useState({
     symbol: "Faucet",
     image: "/ethereum.png",
@@ -44,12 +37,12 @@ const Swap = () => {
     address: MATIC_TOKEN_ADDRESS,
   });
 
-  // Prevents Re-rendering the Form
   const handleSubmit = (e) => {
     e.preventDefault();
     setFormErrors(validate(swapAmount));
     setIsSubmit(true);
   };
+
   useEffect(() => {
     console.log(formErrors);
     if (Object.keys(formErrors).length === 0 && isSubmit) {

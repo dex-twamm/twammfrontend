@@ -1,0 +1,94 @@
+
+.settingsContainer{
+  position: absolute;
+  right: 20px;
+  top: 40px;
+  background-color: rgb(237, 238, 242);
+  padding: 16px;
+  z-index: 99;
+  min-width: 20.125rem;
+  border: 2px solid #d3d3d3;
+  border-radius: 12px;
+  user-select: none;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: #565a69;
+  font-size: 14px;
+}
+
+.settingsTitle{
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.settings{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.slippage {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  user-select: none;
+}
+
+.btnAuto{
+  background-color: #e8006f;
+  color: #ffffff;
+  border: 1px solid #888d9b;
+  height: 2rem;
+  padding: 1px 8px;
+  font-size: 1rem;
+  border-radius: 36px;
+}
+
+.slippageTolerance{
+  display: flex;
+  gap: 8px;
+}
+
+.inputContainer{
+  padding: 0px 12px;
+  /* flex-grow: 1; */
+  border-radius: 16px;
+
+  border: 1px solid #ced0d9;
+  outline: none;
+
+  display: flex;
+  align-items: center;
+  user-select: none;
+}
+
+.inputContainer > input{
+  background-color: transparent;
+  outline: none;
+  border: none;
+  color: #565a69;
+  height: 2rem;
+  padding: 1px 8px;
+
+  user-select: none;
+}
+
+.inputSlippageTolerance{
+  flex-grow: 1;
+  text-align: right;
+  margin-right: 2px;
+  width: 100%;
+}
+
+.transactionDeadline{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.transactionDeadline > .inputContainer {
+  max-width: 60px;
+}
+
