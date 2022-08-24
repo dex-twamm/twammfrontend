@@ -124,16 +124,24 @@
   border-radius: 20px;
   box-shadow: rgb(0 0 0 / 1%) 0px 0px 1px, rgb(0 0 0 / 4%) 0px 4px 8px, rgb(0 0 0 / 4%) 0px 16px 24px, rgb(0 0 0 / 1%) 0px 24px 32px;
   width: fit-content;
-  /* z-index: 100; */
 }
 
 .container:hover .currency{
   display: block;
 }
 
+.container:focus .currency{
+  display: block;
+}
+
+.container:blur .currency{
+  display: none;
+}
+
 .list > p{
   padding-bottom: 12px;
   white-space: nowrap;
+  font-weight: 600;
 }
 
 .networkName{
