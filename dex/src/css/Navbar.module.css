@@ -114,6 +114,7 @@
   display: none;
   position: absolute;
   top: 0;
+  z-index: 99;
 }
 
 .list{
@@ -123,6 +124,7 @@
   border-radius: 20px;
   box-shadow: rgb(0 0 0 / 1%) 0px 0px 1px, rgb(0 0 0 / 4%) 0px 4px 8px, rgb(0 0 0 / 4%) 0px 16px 24px, rgb(0 0 0 / 1%) 0px 24px 32px;
   width: fit-content;
+  /* z-index: 100; */
 }
 
 .container:hover .currency{
@@ -139,6 +141,10 @@
   white-space: nowrap;
   cursor: pointer;
   border-radius: 5px;
+  color: #73788b;
+  font-weight: 600;
+  transition: all 250ms ease-in-out;
+  user-select: none;
 }
 
 .networkName:hover{
@@ -174,23 +180,20 @@
 
 
 .btnConnect {
-  margin-top: 10px;
-  height: 60px;
-  background-color: rgb(245, 212, 224);
-  width: 100%;
-  border-radius: 20px;
-  float: left;
-  border: 0px solid;
+  background-color: #fdeaf1;
   outline: none;
-  cursor: pointer;
+  border: 1px solid #fff;
+  border-radius: 14px;
+  transition: all 0.2s ease-in-out;
   padding: 10px;
-  transition: 0.3s;
-  font-size: large;
-  font-weight: 500;
+  font-size: 16px;
+  color: #d50066;
+  font-weight: 600;
+  cursor: pointer;
 }
 
-.btnConnect:focus {
-  background-color: rgb(240, 142, 178);
+.btnConnect:hover {
+  background-color: #ffd6e5;
 }
 
 input[type="number"]:focus {
@@ -209,7 +212,7 @@ input[type="number"]:focus {
 }
 
 .menuThreeDot {
-  width: 100%;
+  width: 42px;
   margin: 0px;
   height: 40px;
   background-color: rgb(255, 255, 255);
@@ -222,7 +225,7 @@ input[type="number"]:focus {
 .menuThreeDot:focus {
   cursor: pointer;
   outline: none;
-  border: 1px solid rgb(206, 208, 217);
+  border: 1px solid #ced0d9;
 }
 
 
@@ -239,7 +242,7 @@ input[type="number"]:focus {
   font-size: 16px;
   position: absolute;
   top: 5rem;
-  z-index: 100;
+  z-index: 95;
   right: 1rem;
   display: none;
 }
@@ -254,7 +257,7 @@ input[type="number"]:focus {
   padding: 0.5rem;
   -webkit-box-pack: justify;
   justify-content: space-between;
-  color: rgb(86, 90, 105);
+  color: #73788b;
 }
 
 .tabButton {
@@ -278,10 +281,10 @@ input[type="number"]:focus {
 }
 
 .options {
-  display: flex;
-  -webkit-box-align: center;
-  align-items: center;
-  -webkit-box-pack: justify;
-  justify-content: space-between;
-  width: 100%;
+  transition: all 250ms ease-in-out;
+  font-weight: 600;
+}
+
+.options:hover {
+  color: #000;
 }
