@@ -6,6 +6,9 @@ import { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Slider from "@mui/material/Slider";
+import PopupSettings from "../components/PopupSettings";
+import classNames from "classnames";
+import styles from "../css/ShortSwap.module.css"
 
 const valueLabel = (value) => {
   const sliderUnits = ["Min", "Hours", "Days", "Week"];
@@ -23,6 +26,7 @@ const calculateValue = (value) => {
 };
 const LongSwap = ({ tokenSymbol, tokenImage, connectWallet, buttonText }) => {
   const [value, setValue] = useState(0);
+  const [showSettings, setShowSettings] = useState(false)
 
   const handleChange = (e, newValue) => {
     if (typeof newValue === "number") {
@@ -30,44 +34,49 @@ const LongSwap = ({ tokenSymbol, tokenImage, connectWallet, buttonText }) => {
     }
   };
   return (
-    <div className="main-body">
-      <div className="swap">
-        <div className="swapOptions">
-          <a className="textLink" href="/">
-            Long Term Swap
-          </a>
-          <FontAwesomeIcon icon={faGear} />
+    <div className={styles.container}>
+      <div className={styles.mainBody}>
+        <div className={styles.swap}>
+          <div className={styles.swapOptions}>
+            <a className={styles.textLink} href="/">
+              Long Term Swap
+            </a>
+            <FontAwesomeIcon className={styles.settingsIcon} icon={faGear} onClick={() => setShowSettings(!showSettings)} />
+          </div>
+
+          {showSettings && <PopupSettings/>}
         </div>
-      </div>
-      <Swap tokenSymbol={tokenSymbol} tokenImage={tokenImage} />
-      <div className="range-select">
-        <Box sx={{ width: 250 }}>
-          <Typography id="non-linear-slider" gutterBottom>
-            Time: {valueLabel(calculateValue(value))}
-          </Typography>
-          <Slider
-            value={value}
-            min={1}
-            step={2}
-            max={12}
-            scale={calculateValue}
-            getAriaValueText={valueLabel}
-            valueLabelFormat={valueLabel}
-            onChange={handleChange}
-            valueLabelDisplay="auto"
-            aria-labelledby="non-linear-slider"
-          />
-        </Box>
-      </div>
-      <button className="btn btn-connect" onClick={connectWallet}>
-        {buttonText}
-      </button>
-      <div className="label-history">
-        <p>Your LongTerm Orders</p>
-        <FontAwesomeIcon icon={faArrowDown} />
-      </div>
-      <div className="history-details">
-        <p>Connect To Wallet To Load Your List</p>
+        <Swap tokenSymbol={tokenSymbol} tokenImage={tokenImage} />
+        
+        <div className="range-select">
+          <Box sx={{ width: 250 }}>
+            <Typography id="non-linear-slider" gutterBottom>
+              Time: {valueLabel(calculateValue(value))}
+            </Typography>
+            <Slider
+              value={value}
+              min={1}
+              step={2}
+              max={12}
+              scale={calculateValue}
+              getAriaValueText={valueLabel}
+              valueLabelFormat={valueLabel}
+              onChange={handleChange}
+              valueLabelDisplay="auto"
+              aria-labelledby="non-linear-slider"
+            />
+          </Box>
+        </div>
+        <button className={classNames(styles.btn, styles.btnConnect)} onClick={connectWallet}>
+          {buttonText}
+        </button>
+        <div className="label-history">
+          <p>Your LongTerm Orders</p>
+          <FontAwesomeIcon icon={faArrowDown} />
+        </div>
+        <div className="history-details">
+          <p>Connect To Wallet To Load Your List</p>
+        </div>
       </div>
     </div>
   );
