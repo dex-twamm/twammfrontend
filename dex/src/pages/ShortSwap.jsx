@@ -12,7 +12,7 @@ import PopupSettings from "../components/PopupSettings";
 const ShortSwap = ({ tokenSymbol, tokenImage, connectWallet, buttonText }) => {
   const { error } = useContext(ShortSwapContext);
 
-  const [showSettings, setShowSettings] = useState(false)
+  const [showSettings, setShowSettings] = useState(false);
 
   return (
     <div className={styles.container}>
@@ -22,10 +22,14 @@ const ShortSwap = ({ tokenSymbol, tokenImage, connectWallet, buttonText }) => {
             <a className={styles.textLink} href="/">
               Swap
             </a>
-            <FontAwesomeIcon className={styles.settingsIcon} icon={faGear} onClick={()=>setShowSettings(!showSettings)} />
+            <FontAwesomeIcon
+              className={styles.settingsIcon}
+              icon={faGear}
+              onClick={() => setShowSettings(!showSettings)}
+            />
           </div>
-          
-          {showSettings && <PopupSettings/>}
+
+          {showSettings && <PopupSettings />}
         </div>
         <Swap tokenSymbol={tokenSymbol} tokenImage={tokenImage} />
         <button
