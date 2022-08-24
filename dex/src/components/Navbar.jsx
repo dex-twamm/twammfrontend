@@ -5,11 +5,8 @@ import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { toHex } from "../utils";
 import { ShortSwapContext } from "../providers";
 import styles from "../css/Navbar.module.css";
-import { useEffect } from "react";
 import classNames from "classnames";
-import {RiArrowDropDownLine} from "react-icons/ri"
-
-
+import { RiArrowDropDownLine } from "react-icons/ri";
 
 const Navbar = ({
   walletBalance,
@@ -17,7 +14,6 @@ const Navbar = ({
   accountStatus,
   connectWallet,
 }) => {
-
   const [selectedText, setSelectedText] = useState("Select network");
   const handleSelect = (e) => setSelectedText(e.target.innerText);
 
@@ -40,7 +36,6 @@ const Navbar = ({
   const tabList = tabOptions.map((option, index) => (
     <div key={index} className={styles.tabButton}>
       <a href={option.path}>{option.value}</a>
-
     </div>
   ));
 
@@ -69,51 +64,61 @@ const Navbar = ({
     { name: "Coming Soon", chainId: "0" },
   ];
 
-  const networkList = networks.map((network, index) => {
-    return <p key={index} className={styles.networkName} value={network.chainId} onClick={handleSelect}>{network.name}</p>
-
-  });
-
-  const handleChangeId = async (e) => {
-    const id = e.target.value;
+  const handleChangeId = (e) => {
+    const network = e.currentTarget;
+    const id = network.children[1].innerHTML;
+    console.log("Chain ID", id);
     if (window.ethereum.networkVersion !== id) {
       try {
-        await window.ethereum.request({
+        window.ethereum.request({
           method: "wallet_switchEthereumChain",
           params: [{ chainId: toHex(id) }],
         });
       } catch (err) {
         console.error(err);
-        setError(err);
+        setError("Network Error");
       }
     }
   };
+
+  const networkList = networks.map((network, index) => {
+    return (
+      <div onClick={handleChangeId}>
+        <p
+          key={index}
+          className={styles.networkName}
+          value={network.chainId}
+          onClick={handleSelect}
+        >
+          {network.name}
+        </p>
+        <p style={{ display: "none" }}>{network.chainId}</p>
+      </div>
+    );
+  });
   return (
-      <header className={styles.header} id="header">
-        <div className={styles.row}>
+    <header className={styles.header} id="header">
+      <div className={styles.row}>
         <div className={styles.tabContainerLeft}>
-        <a href="/">
-            <img className={styles.logo} src="unicorn.png" alt="logo" width="20px" />
+          <a href="/">
+            <img
+              className={styles.logo}
+              src="unicorn.png"
+              alt="logo"
+              width="20px"
+            />
           </a>
           <div className={styles.tabContainerCenter}>{tabList}</div>
-          </div>
-          <div className={styles.tabContainerRight}>
-            <div className={styles.dropdown}>
-              {/* <div className={styles.dropdownItem}>
-                <img src="./ethereum.png"></img>
-              </div> */}
-              {/* <select
-                placeholder="Select Network"
-                id="networkType"
-                className={styles.currency}
-                onChange={handleChangeId}
-              >
-                {networkList}
-              </select> */}
-            
+        </div>
+        <div className={styles.tabContainerRight}>
+          <div className={styles.dropdown}>
             <div className={styles.container}>
               <div id="networkType" className={styles.dropdownContainer}>
-                <img src="/ethereum.png" className={styles.logo} alt="Etherium" />
+                <img
+                  src="/ethereum.png"
+                  className={styles.logo}
+                  alt="Etherium"
+                />
                 <span>{selectedText}</span>
                 <RiArrowDropDownLine className={styles.dropdownIcon} />
               </div>
@@ -121,54 +126,52 @@ const Navbar = ({
               <div className={styles.currency}>
                 <div className={styles.list}>
                   <p>Select a network</p>
-                  <div className={styles.networkList}>
-                      {networkList}
-                  </div>
+                  <div className={styles.networkList}>{networkList}</div>
                 </div>
               </div>
             </div>
-            </div>
+          </div>
 
-            <div className={styles.walletBalance}>
-              {accountStatus ? (
-                <>
-                  <button className={styles.btnWallet}>{walletBalance}</button>
-                  <button
-                    className={styles.btnWallet}
-                    style={{
-                      backgroundColor: "rgb(244,248,250)",
-                      borderRadius: "14px",
-                    }}
-                  >
-                    {walletAddress}
-                  </button>
-                </>
-              ) : (
+          <div className={styles.walletBalance}>
+            {accountStatus ? (
+              <>
+                <button className={styles.btnWallet}>{walletBalance}</button>
                 <button
-                    className={classNames(styles.btn, styles.btnConnect)}
+                  className={styles.btnWallet}
                   style={{
-                    height: "fit-content",
-                    // width: "200%",
-                    fontSize: "small",
-                    margin: "0",
+                    backgroundColor: "rgb(244,248,250)",
+                    borderRadius: "14px",
                   }}
-                  onClick={connectWallet}
                 >
-                  Connect Wallet
+                  {walletAddress}
                 </button>
-              )}
-            </div>
-            <div className={styles.menuOption}>
-              <button className={styles.menuThreeDot} onClick={showDropdown}>
-                <FontAwesomeIcon icon={faEllipsis} />
+              </>
+            ) : (
+              <button
+                className={classNames(styles.btn, styles.btnConnect)}
+                style={{
+                  height: "fit-content",
+                  // width: "200%",
+                  fontSize: "small",
+                  margin: "0",
+                }}
+                onClick={connectWallet}
+              >
+                Connect Wallet
               </button>
-              <span className={styles.menuList} id="menu-dropdown">
-                {optionsList}
-              </span>
-            </div>
+            )}
+          </div>
+          <div className={styles.menuOption}>
+            <button className={styles.menuThreeDot} onClick={showDropdown}>
+              <FontAwesomeIcon icon={faEllipsis} />
+            </button>
+            <span className={styles.menuList} id="menu-dropdown">
+              {optionsList}
+            </span>
           </div>
         </div>
-      </header>
+      </div>
+    </header>
   );
 };
 

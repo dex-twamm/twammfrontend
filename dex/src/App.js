@@ -18,6 +18,7 @@ import { MAX_UINT256 } from "./constants";
 import { toHex, truncateAddress } from "./utils";
 import AllProviders, { ShortSwapContext } from "./providers";
 import { placeLongTermOrder } from "./utils/longSwap";
+import { Backdrop } from "@mui/material";
 
 function App() {
   const [provider, setProvider] = useState();
@@ -25,22 +26,21 @@ function App() {
   const [account, setAccount] = useState();
   const [balance, setBalance] = useState();
   const [ethBalance, setEthBalance] = useState();
-  const [loading, setLoading] = useState(false);
   const [isWallletConnceted, setWalletConnected] = useState(false);
 
 
 
-  const { srcAddress, destAddress, swapAmount, setError } = useContext(ShortSwapContext);
+  const { srcAddress, destAddress, swapAmount, setError, setLoading, setSuccess } = useContext(ShortSwapContext);
 
 
   const connectWallet = async () => {
+
     try {
       await getProvider();
-      // setWalletConnected(true);
       console.log("Wallet Connected Info", isWallletConnceted);
-
     } catch (err) {
       console.error(err);
+      setError("Wallet Connection Rejected");
     }
   };
 
@@ -67,7 +67,9 @@ function App() {
       if (provider) {
         setWalletConnected(true);
       }
+      setSuccess("Wallet Connected Successfully");
       return web3Provider;
+
     } catch (err) {
       setError("Wallet Connection Rejected");
     }
@@ -103,7 +105,6 @@ function App() {
       if (swapAmountWei > 0) {
         const signer = await getProvider(true);
         console.log(signer);
-        setLoading(true);
         const assetIn = srcAddress;
         const assetOut = destAddress;
         const walletAddress = account;
@@ -112,10 +113,6 @@ function App() {
           console.error(err);
           setError("Transaction Error");
         });
-        setLoading(false);
-        // Get all the updated amounts after the swap
-        // await getAmounts();
-        // setSwapAmount("");
       }
     } catch (err) {
       console.error(err);
@@ -145,6 +142,7 @@ function App() {
   async function ShortSwapButtonClick() {
     console.log("I am Being Clicked");
     console.log("Wallet Connection", isWallletConnceted);
+
     try {
       if (!isWallletConnceted) {
         await connectWallet();;
