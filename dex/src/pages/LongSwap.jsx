@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import Slider from "@mui/material/Slider";
 import PopupSettings from "../components/PopupSettings";
 import classNames from "classnames";
-import styles from "../css/ShortSwap.module.css"
+import styles from "../css/ShortSwap.module.css";
 
 const valueLabel = (value) => {
   const sliderUnits = ["Min", "Hours", "Days", "Week"];
@@ -26,7 +26,7 @@ const calculateValue = (value) => {
 };
 const LongSwap = ({ tokenSymbol, tokenImage, connectWallet, buttonText }) => {
   const [value, setValue] = useState(0);
-  const [showSettings, setShowSettings] = useState(false)
+  const [showSettings, setShowSettings] = useState(false);
 
   const handleChange = (e, newValue) => {
     if (typeof newValue === "number") {
@@ -41,13 +41,17 @@ const LongSwap = ({ tokenSymbol, tokenImage, connectWallet, buttonText }) => {
             <a className={styles.textLink} href="/">
               Long Term Swap
             </a>
-            <FontAwesomeIcon className={styles.settingsIcon} icon={faGear} onClick={() => setShowSettings(!showSettings)} />
+            <FontAwesomeIcon
+              className={styles.settingsIcon}
+              icon={faGear}
+              onClick={() => setShowSettings(!showSettings)}
+            />
           </div>
 
-          {showSettings && <PopupSettings/>}
+          {showSettings && <PopupSettings />}
         </div>
         <Swap tokenSymbol={tokenSymbol} tokenImage={tokenImage} />
-        
+
         <div className="range-select">
           <Box sx={{ width: 250 }}>
             <Typography id="non-linear-slider" gutterBottom>
@@ -58,6 +62,7 @@ const LongSwap = ({ tokenSymbol, tokenImage, connectWallet, buttonText }) => {
               min={1}
               step={2}
               max={12}
+              sx={{ height: 15, width: 450 }}
               scale={calculateValue}
               getAriaValueText={valueLabel}
               valueLabelFormat={valueLabel}
@@ -67,16 +72,12 @@ const LongSwap = ({ tokenSymbol, tokenImage, connectWallet, buttonText }) => {
             />
           </Box>
         </div>
-        <button className={classNames(styles.btn, styles.btnConnect)} onClick={connectWallet}>
+        <button
+          className={classNames(styles.btn, styles.btnConnect)}
+          onClick={connectWallet}
+        >
           {buttonText}
         </button>
-        <div className="label-history">
-          <p>Your LongTerm Orders</p>
-          <FontAwesomeIcon icon={faArrowDown} />
-        </div>
-        <div className="history-details">
-          <p>Connect To Wallet To Load Your List</p>
-        </div>
       </div>
     </div>
   );
