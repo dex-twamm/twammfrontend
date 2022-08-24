@@ -8,6 +8,7 @@ import styles from "../css/Swap.module.css";
 import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from "../utils";
 import { useEffect } from "react";
 import classNames from "classnames";
+import { Alert, Backdrop } from "@mui/material";
 
 const Swap = (props) => {
   const { connectWallet, buttonText } = props;
@@ -75,7 +76,9 @@ const Swap = (props) => {
           setTokenA={setTokenA}
           setTokenB={setTokenB}
         />
+
         <FontAwesomeIcon className={styles.iconDown} icon={faArrowDown} />
+
         <Input
           id={2}
           input={equivalentAmount}
@@ -89,6 +92,14 @@ const Swap = (props) => {
           setTokenA={setTokenA}
           setTokenB={setTokenB}
         />
+
+        {formErrors.swapAmount && (
+          <Backdrop open={formErrors.swapAmount}>
+            <Alert severity="error" onClose={() => setFormErrors({})}>
+              {formErrors.swapAmount}
+            </Alert>
+          </Backdrop>
+        )}
 
         <button
           className={classNames(styles.btn, styles.btnConnect)}
