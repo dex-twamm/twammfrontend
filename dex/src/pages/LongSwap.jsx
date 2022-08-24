@@ -9,6 +9,8 @@ import Slider from "@mui/material/Slider";
 import PopupSettings from "../components/PopupSettings";
 import classNames from "classnames";
 import styles from "../css/ShortSwap.module.css";
+import { createTheme, ThemeProvider } from "@mui/system";
+import { orange } from "@mui/material/colors";
 
 const valueLabel = (value) => {
   const sliderUnits = ["Min", "Hours", "Days", "Week"];
@@ -62,7 +64,11 @@ const LongSwap = ({ tokenSymbol, tokenImage, connectWallet, buttonText }) => {
               min={1}
               step={2}
               max={12}
-              sx={{ height: 15, width: 450 }}
+              sx={{
+                height: 15,
+                width: 450,
+                color: "secondary.main",
+              }}
               scale={calculateValue}
               getAriaValueText={valueLabel}
               valueLabelFormat={valueLabel}

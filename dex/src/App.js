@@ -34,7 +34,6 @@ function App() {
 
 
   const connectWallet = async () => {
-
     try {
       await getProvider();
       console.log("Wallet Connected Info", isWallletConnceted);
@@ -45,6 +44,7 @@ function App() {
   };
 
   const getProvider = async (needSigner = false) => {
+    setLoading(true);
     try {
       const provider = await web3Modal.connect();
       const web3Provider = new providers.Web3Provider(provider);
@@ -68,6 +68,7 @@ function App() {
         setWalletConnected(true);
       }
       setSuccess("Wallet Connected Successfully");
+      setLoading(false)
       return web3Provider;
 
     } catch (err) {

@@ -1,4 +1,4 @@
-import { Alert, Backdrop, Collapse, Snackbar } from "@mui/material";
+import { Alert, Backdrop, CircularProgress } from "@mui/material";
 import e from "cors";
 import { useEffect } from "react";
 import { useContext } from "react";
@@ -7,14 +7,13 @@ import { ShortSwapContext } from "../providers";
 
 const PopupModal = (props) => {
   // const { errorDisplay } = props;
-  const { error, setError, success, setSuccess, loading, setLoading } =
+  const { error, setError, success, setSuccess, loading } =
     useContext(ShortSwapContext);
   useEffect(() => {
     let timer = setTimeout(() => {
       setError("");
       setSuccess("");
-      setLoading("");
-    }, 5000);
+    }, 3000);
     return () => {
       clearTimeout(timer);
     };
@@ -35,9 +34,7 @@ const PopupModal = (props) => {
         )}
         {loading && (
           <Backdrop open={loading}>
-            <Alert severity="error" onClose={() => setLoading("")}>
-              {loading}
-            </Alert>
+            <CircularProgress />
           </Backdrop>
         )}
         {success && (
