@@ -9,17 +9,19 @@ import { useEffect } from "react";
 import classNames from "classnames";
 import {RiArrowDropDownLine} from "react-icons/ri"
 
+
+
 const Navbar = ({
   walletBalance,
   walletAddress,
   accountStatus,
   connectWallet,
 }) => {
-  const [selectedText, setSelectedText] = useState("Select network")
 
-  const handleSelect = (e) => setSelectedText(e.target.innerText)
+  const [selectedText, setSelectedText] = useState("Select network");
+  const handleSelect = (e) => setSelectedText(e.target.innerText);
 
-
+  const { setError } = useContext(ShortSwapContext);
   const tabOptions = [
     {
       value: "Swap",
@@ -38,6 +40,7 @@ const Navbar = ({
   const tabList = tabOptions.map((option, index) => (
     <div key={index} className={styles.tabButton}>
       <a href={option.path}>{option.value}</a>
+
     </div>
   ));
 
@@ -81,6 +84,7 @@ const Navbar = ({
         });
       } catch (err) {
         console.error(err);
+        setError(err);
       }
     }
   };

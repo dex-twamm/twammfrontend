@@ -70,6 +70,7 @@ button {
 }
 
 .tab-container-center {
+ 
   border-radius: 16px;
   justify-self: center;
   width: fit-content;
@@ -90,6 +91,7 @@ button {
 
 @media (max-width: 960px) {
   .tab-container-center {
+     width: max-content;
     flex-direction: row;
     -webkit-box-pack: justify;
     justify-content: space-between;
@@ -124,7 +126,7 @@ button {
   transition: 0.3s;
 }
 
-.tabButton:hover {
+.tabButton:hover, .tabButton:active{
   background-color: antiquewhite;
   border-radius: 20px;
 }
