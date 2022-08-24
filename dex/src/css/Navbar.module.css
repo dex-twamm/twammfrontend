@@ -1,0 +1,287 @@
+.header{
+  padding: 10px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tabContainerLeft{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.logo {
+  height: 20px;
+  width: 20px;
+}
+
+.tabContainerCenter {
+  position: fixed;
+  width: fit-content;
+  bottom: 0;
+  right: 50%;
+  transform: translate(50%, -50%);
+  z-index: 99;
+  background-color: #fff;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 16px;
+  margin: 0 auto;
+  padding: 2px;
+
+  box-shadow: rgb(0 0 0 / 2%) 0px 6px 10px;
+}
+
+@media (min-width: 1000px) {
+  .row{
+    display: flex;
+  }
+
+  .tabContainerCenter {
+    position: unset;
+    transform: none;
+    margin: 0;
+  }
+}
+
+@media (min-width: 1280px) {
+  /* .tabContainerLeft{
+    flex-grow: 1;
+  } */
+
+  .tabContainerCenter {
+    position: absolute;
+    margin: 0 auto;
+    height: fit-content;
+    top: 40px;
+    right: 50%;
+    transform: translate(50%,-50%);
+
+  }
+}
+
+.tabContainerRight{
+  display: flex;
+  flex-direction: row;
+  -webkit-box-align: center;
+  align-items: center;
+  justify-self: flex-end;
+}
+
+.container{
+  position: relative;
+}
+
+.dropdownContainer{
+  background-color: #fff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 8px;
+  border-radius: 15px;
+  font-size: 16px;
+
+  cursor: pointer;
+}
+
+.dropdownContainer>span{
+  white-space: nowrap;
+
+  display: none;
+}
+
+@media (min-width: 600px){
+  .dropdownContainer>span{
+    display: block;
+  }
+}
+
+.dropdownIcon{
+  width: 20px;
+  height: 20px;
+}
+
+
+.currency {
+  display: none;
+  position: absolute;
+  top: 0;
+}
+
+.list{
+  margin-top: 55px;
+  background-color: #fff;
+  padding: 16px;
+  border-radius: 20px;
+  box-shadow: rgb(0 0 0 / 1%) 0px 0px 1px, rgb(0 0 0 / 4%) 0px 4px 8px, rgb(0 0 0 / 4%) 0px 16px 24px, rgb(0 0 0 / 1%) 0px 24px 32px;
+  width: fit-content;
+}
+
+.container:hover .currency{
+  display: block;
+}
+
+.list > p{
+  padding-bottom: 12px;
+  white-space: nowrap;
+}
+
+.networkName{
+  padding: 10px 12px;
+  white-space: nowrap;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.networkName:hover{
+  background-color: #efefef;
+}
+
+.networkList{
+  width: 200px;
+}
+
+.walletBalance {
+  align-items: center;
+  white-space: nowrap;
+  width: 100%;
+  margin: 0.5rem;
+  display: flex;
+  border: 2px solid white;
+  border-radius: 16px;
+  background-color: rgb(255, 255, 255);
+}
+
+.btnWallet {
+  text-align: justify;
+  margin: 0.2rem;
+  align-items: center;
+  font-size: x-small;
+  background-color: inherit;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+
+.btnConnect {
+  margin-top: 10px;
+  height: 60px;
+  background-color: rgb(245, 212, 224);
+  width: 100%;
+  border-radius: 20px;
+  float: left;
+  border: 0px solid;
+  outline: none;
+  cursor: pointer;
+  padding: 10px;
+  transition: 0.3s;
+  font-size: large;
+  font-weight: 500;
+}
+
+.btnConnect:focus {
+  background-color: rgb(240, 142, 178);
+}
+
+input[type="number"]:focus {
+  opacity: 1;
+}
+
+.menuOption {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  height: 40;
+  width: 40;
+  background-color: white;
+  border: 1px solid white;
+  border-radius: 16px;
+}
+
+.menuThreeDot {
+  width: 100%;
+  margin: 0px;
+  height: 40px;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(255, 255, 255);
+  padding: 0.15rem 0.5rem;
+  border-radius: 16px;
+}
+
+.menuThreeDot:hover,
+.menuThreeDot:focus {
+  cursor: pointer;
+  outline: none;
+  border: 1px solid rgb(206, 208, 217);
+}
+
+
+.menuList {
+  min-width: 196px;
+  max-height: 350px;
+  background-color: rgb(247, 248, 250);
+  box-shadow: rgb(0 0 0 / 1%) 0px 0px 1px, rgb(0 0 0 / 4%) 0px 4px 8px,
+    rgb(0 0 0 / 4%) 0px 16px 24px, rgb(0 0 0 / 1%) 0px 24px 32px;
+  border: 1px solid rgb(255, 255, 255);
+  border-radius: 12px;
+  padding: 0.5rem;
+  flex-direction: column;
+  font-size: 16px;
+  position: absolute;
+  top: 5rem;
+  z-index: 100;
+  right: 1rem;
+  display: none;
+}
+
+.menuList a {
+  text-decoration: none;
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: row;
+  -webkit-box-align: center;
+  align-items: center;
+  padding: 0.5rem;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  color: rgb(86, 90, 105);
+}
+
+.tabButton {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 10px;
+  height: 100%;
+  transition: 0.3s;
+}
+
+.tabButton:hover {
+  background-color: antiquewhite;
+  border-radius: 16px;
+}
+
+.tabButton > a {
+  text-decoration: none;
+  color: #000;
+  white-space: nowrap;
+}
+
+.options {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  width: 100%;
+}
