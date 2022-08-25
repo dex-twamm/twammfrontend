@@ -1,16 +1,14 @@
 import React from "react";
 import Swap from "../components/Swap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGear, faArrowDown } from "@fortawesome/free-solid-svg-icons";
+import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Slider from "@mui/material/Slider";
 import PopupSettings from "../components/PopupSettings";
-import classNames from "classnames";
 import styles from "../css/ShortSwap.module.css";
-import { createTheme, ThemeProvider } from "@mui/system";
-import { orange } from "@mui/material/colors";
+import lsStyles from "../css/LongSwap.module.css";
 
 const valueLabel = (value) => {
   const sliderUnits = ["Min", "Hours", "Days", "Week"];
@@ -52,11 +50,16 @@ const LongSwap = ({ tokenSymbol, tokenImage, connectWallet, buttonText }) => {
 
           {showSettings && <PopupSettings />}
         </div>
-        <Swap tokenSymbol={tokenSymbol} tokenImage={tokenImage} />
+        <Swap
+          tokenSymbol={tokenSymbol}
+          tokenImage={tokenImage}
+          connectWallet={connectWallet}
+          buttonText={buttonText}
+        />
 
-        <div className="range-select">
-          <Box sx={{ width: 250 }}>
-            <Typography id="non-linear-slider" gutterBottom>
+        <div className={lsStyles.rangeSelect}>
+          <Box sx={{ width: '90%', margin: "0 auto" }}>
+            <Typography fontWeight={600} id="non-linear-slider" gutterBottom>
               Time: {valueLabel(calculateValue(value))}
             </Typography>
             <Slider
@@ -66,8 +69,8 @@ const LongSwap = ({ tokenSymbol, tokenImage, connectWallet, buttonText }) => {
               max={12}
               sx={{
                 height: 15,
-                width: 450,
-                color: "secondary.main",
+                width: 1,
+                color: "#ffaac9",
               }}
               scale={calculateValue}
               getAriaValueText={valueLabel}
@@ -78,12 +81,6 @@ const LongSwap = ({ tokenSymbol, tokenImage, connectWallet, buttonText }) => {
             />
           </Box>
         </div>
-        <button
-          className={classNames(styles.btn, styles.btnConnect)}
-          onClick={connectWallet}
-        >
-          {buttonText}
-        </button>
       </div>
     </div>
   );
