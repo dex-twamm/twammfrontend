@@ -77,6 +77,14 @@ const Swap = (props) => {
           setTokenB={setTokenB}
         />
 
+        {formErrors.swapAmount && (
+          <div className={styles.errorAlert}>
+            <Alert severity="error" onClose={() => setFormErrors({})}>
+              {formErrors.swapAmount}
+            </Alert>
+          </div>
+        )}
+
         <FontAwesomeIcon className={styles.iconDown} icon={faArrowDown} />
 
         <Input
@@ -92,14 +100,6 @@ const Swap = (props) => {
           setTokenA={setTokenA}
           setTokenB={setTokenB}
         />
-
-        {formErrors.swapAmount && (
-          <Backdrop open={formErrors.swapAmount}>
-            <Alert severity="error" onClose={() => setFormErrors({})}>
-              {formErrors.swapAmount}
-            </Alert>
-          </Backdrop>
-        )}
 
         <button
           className={classNames(styles.btn, styles.btnConnect)}
