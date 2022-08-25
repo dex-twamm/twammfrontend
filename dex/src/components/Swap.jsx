@@ -9,6 +9,7 @@ import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from "../utils";
 import { useEffect } from "react";
 import classNames from "classnames";
 import { Alert } from "@mui/material";
+import PopupModal from "./PopupModal";
 
 const Swap = (props) => {
   const { connectWallet, buttonText } = props;
@@ -78,14 +79,16 @@ const Swap = (props) => {
 
       {formErrors.swapAmount && (
         <div className={styles.errorAlert}>
-          <Alert severity="error" sx={{borderRadius: "16px"}} onClose={() => setFormErrors({})}>
+          <Alert
+            severity="error"
+            sx={{ borderRadius: "16px" }}
+            onClose={() => setFormErrors({})}
+          >
             {formErrors.swapAmount}
           </Alert>
         </div>
       )}
-
       <FontAwesomeIcon className={styles.iconDown} icon={faArrowDown} />
-
       <Input
         id={2}
         input={equivalentAmount}
@@ -99,13 +102,13 @@ const Swap = (props) => {
         setTokenA={setTokenA}
         setTokenB={setTokenB}
       />
-
       <button
         className={classNames(styles.btn, styles.btnConnect)}
         onClick={connectWallet}
       >
         {buttonText}
       </button>
+      <PopupModal></PopupModal>
     </form>
   );
 };

@@ -10,25 +10,38 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 import { useLocation } from "react-router-dom";
 
 const Navbar = (props) => {
-
-  const location = useLocation()
+  const location = useLocation();
   const currentPath = location.pathname;
-  
 
   const { walletBalance, walletAddress, accountStatus, connectWallet } = props;
+  const { setError } = useContext(ShortSwapContext);
 
   const [selectedNetwork, setSelectedNetwork] = useState({
     network: "Select Network",
     logo: "/ethereum.png",
+    chainId: "",
   });
 
-  const handleSelect = (networkName, logo) =>
+  const handleSelect = async (networkName, logo, chainId, e) => {
     setSelectedNetwork({
       network: networkName,
       logo: logo,
-  });
-
-  const { setError } = useContext(ShortSwapContext);
+      chainId: chainId,
+    });
+    console.log(chainId);
+    const id = chainId;
+    if (window.ethereum.networkVersion !== id) {
+      try {
+        await window.ethereum.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: toHex(id) }],
+        });
+      } catch (err) {
+        console.error(err);
+        setError("Failed To Switch Network");
+      }
+    }
+  };
 
   const tabOptions = [
     {
@@ -46,8 +59,12 @@ const Navbar = (props) => {
   ];
 
   const tabList = tabOptions.map((option, index) => (
-    <div key={index}
-      className={classNames(styles.tabButton, currentPath === option.path && styles.activeTab)}
+    <div
+      key={index}
+      className={classNames(
+        styles.tabButton,
+        currentPath === option.path && styles.activeTab
+      )}
     >
       <a href={option.path}>{option.value}</a>
     </div>
@@ -83,27 +100,14 @@ const Navbar = (props) => {
         key={index}
         className={styles.networkName}
         value={network.chainId}
-        onClick={() => handleSelect(network.name, network.logo)}
+        onClick={() =>
+          handleSelect(network.name, network.logo, network.chainId)
+        }
       >
         {network.name}
       </p>
     );
   });
-
-  const handleChangeId = async (e) => {
-    const id = e.target.value;
-    if (window.ethereum.networkVersion !== id) {
-      try {
-        await window.ethereum.request({
-          method: "wallet_switchEthereumChain",
-          params: [{ chainId: toHex(id) }],
-        });
-      } catch (err) {
-        console.error(err);
-        setError(err);
-      }
-    }
-  };
   return (
     <header className={styles.header} id="header">
       <div className={styles.row}>
@@ -143,8 +147,14 @@ const Navbar = (props) => {
           <div className={styles.walletBalance}>
             {accountStatus ? (
               <>
-                <button className={classNames(styles.btnWallet, styles.leftRadius)}>{walletBalance}</button>
-                <button className={classNames(styles.btnWallet, styles.rightRadius)}>
+                <button
+                  className={classNames(styles.btnWallet, styles.leftRadius)}
+                >
+                  {walletBalance}
+                </button>
+                <button
+                  className={classNames(styles.btnWallet, styles.rightRadius)}
+                >
                   {walletAddress}
                 </button>
               </>

@@ -21,6 +21,7 @@ const PopupModal = () => {
   }, []);
 
   const handleClose = () => {
+    setLoading("");
     setError("");
     setSuccess("");
   };
@@ -32,19 +33,19 @@ const PopupModal = () => {
     <>
       <div style={AlertStyle}>
         {error && (
-          <Backdrop open={error} onClose={handleClose}>
+          <Backdrop open={error ? true : false} onClose={handleClose}>
             <Alert severity="error" onClose={handleClose}>
               {error}
             </Alert>
           </Backdrop>
         )}
         {loading && (
-          <Backdrop open={loading} onClose={handleClose}>
+          <Backdrop open={loading ? true : false} onClose={handleClose}>
             <CircularProgress />
           </Backdrop>
         )}
         {success && (
-          <Backdrop open={success} onClose={handleClose}>
+          <Backdrop open={success ? true : false} onClose={handleClose}>
             <Alert severity="success" onClose={handleClose}>
               {success}
             </Alert>

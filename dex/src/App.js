@@ -44,7 +44,7 @@ function App() {
   };
 
   const getProvider = async (needSigner = false) => {
-    setLoading(true)
+    setLoading(true);
     try {
       const provider = await web3Modal.connect();
       const web3Provider = new providers.Web3Provider(provider);
@@ -67,10 +67,11 @@ function App() {
         setWalletConnected(true);
       }
       setSuccess("Wallet Connected")
-      setLoading(false)
+      setLoading(false);
       return web3Provider;
 
     } catch (err) {
+      setLoading(false);
       setError("Wallet Connection Rejected");
 
     }

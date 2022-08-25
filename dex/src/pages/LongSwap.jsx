@@ -56,9 +56,8 @@ const LongSwap = ({ tokenSymbol, tokenImage, connectWallet, buttonText }) => {
           connectWallet={connectWallet}
           buttonText={buttonText}
         />
-
         <div className={lsStyles.rangeSelect}>
-          <Box sx={{ width: '90%', margin: "0 auto" }}>
+          <Box sx={{ width: "90%", margin: "0 auto" }}>
             <Typography fontWeight={600} id="non-linear-slider" gutterBottom>
               Time: {valueLabel(calculateValue(value))}
             </Typography>
