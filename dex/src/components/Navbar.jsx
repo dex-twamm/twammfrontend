@@ -143,14 +143,8 @@ const Navbar = (props) => {
           <div className={styles.walletBalance}>
             {accountStatus ? (
               <>
-                <button className={styles.btnWallet}>{walletBalance}</button>
-                <button
-                  className={styles.btnWallet}
-                  style={{
-                    backgroundColor: "rgb(244,248,250)",
-                    borderRadius: "14px",
-                  }}
-                >
+                <button className={classNames(styles.btnWallet, styles.leftRadius)}>{walletBalance}</button>
+                <button className={classNames(styles.btnWallet, styles.rightRadius)}>
                   {walletAddress}
                 </button>
               </>

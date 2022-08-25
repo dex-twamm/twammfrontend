@@ -82,6 +82,7 @@
 
 .dropdownContainer{
   background-color: #fff;
+  border: 2px solid #fff;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -94,6 +95,7 @@
 }
 
 .dropdownContainer>span{
+  font-weight: 600;
   white-space: nowrap;
 
   display: none;
@@ -173,19 +175,28 @@
   display: flex;
   border: 2px solid white;
   border-radius: 16px;
-  background-color: rgb(255, 255, 255);
+  background-color: #ffffff;
 }
 
 .btnWallet {
-  text-align: justify;
-  margin: 0.2rem;
-  align-items: center;
-  font-size: x-small;
-  background-color: inherit;
-  border: none;
   outline: none;
+  border: 1px solid #fff;
+  transition: all 0.2s ease-in-out;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
-  transition: 0.3s;
+  background-color: transparent;
+}
+
+.leftRadius{
+  border-top-left-radius: 14px;
+  border-bottom-left-radius: 14px;
+}
+
+.rightRadius{
+  border-radius: 14px;
+  background-color: #f1f1f1;
 }
 
 
@@ -216,8 +227,8 @@ input[type="number"]:focus {
   align-items: center;
   height: 40;
   width: 40;
-  background-color: white;
-  border: 1px solid white;
+  background-color: #fff;
+  border: 1px solid #fff;
   border-radius: 16px;
 }
 
@@ -225,8 +236,8 @@ input[type="number"]:focus {
   width: 42px;
   margin: 0px;
   height: 40px;
-  background-color: rgb(255, 255, 255);
-  border: 1px solid rgb(255, 255, 255);
+  background-color: #fff;
+  border: 1px solid #fff;
   padding: 0.15rem 0.5rem;
   border-radius: 16px;
 }
