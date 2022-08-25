@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { useContext } from "react";
@@ -8,7 +8,7 @@ import styles from "../css/Swap.module.css";
 import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from "../utils";
 import { useEffect } from "react";
 import classNames from "classnames";
-import { Alert, Backdrop } from "@mui/material";
+import { Alert } from "@mui/material";
 
 const Swap = (props) => {
   const { connectWallet, buttonText } = props;
@@ -61,54 +61,52 @@ const Swap = (props) => {
     return errors;
   };
   return (
-    <Fragment>
-      <form onSubmit={handleSubmit}>
-        <Input
-          id={1}
-          input={swapAmount !== "" ? swapAmount : ""}
-          onChange={(e) => setSwapAmount(e.target.value)}
-          imgSrc={tokenA.image}
-          symbol={tokenA.symbol}
-          handleDisplay={handleDisplay}
-          selectToken={selectToken}
-          display={display}
-          setDisplay={setDisplay}
-          setTokenA={setTokenA}
-          setTokenB={setTokenB}
-        />
+    <form onSubmit={handleSubmit}>
+      <Input
+        id={1}
+        input={swapAmount !== "" ? swapAmount : ""}
+        onChange={(e) => setSwapAmount(e.target.value)}
+        imgSrc={tokenA.image}
+        symbol={tokenA.symbol}
+        handleDisplay={handleDisplay}
+        selectToken={selectToken}
+        display={display}
+        setDisplay={setDisplay}
+        setTokenA={setTokenA}
+        setTokenB={setTokenB}
+      />
 
-        {formErrors.swapAmount && (
-          <div className={styles.errorAlert}>
-            <Alert severity="error" onClose={() => setFormErrors({})}>
-              {formErrors.swapAmount}
-            </Alert>
-          </div>
-        )}
+      {formErrors.swapAmount && (
+        <div className={styles.errorAlert}>
+          <Alert severity="error" sx={{borderRadius: "16px"}} onClose={() => setFormErrors({})}>
+            {formErrors.swapAmount}
+          </Alert>
+        </div>
+      )}
 
-        <FontAwesomeIcon className={styles.iconDown} icon={faArrowDown} />
+      <FontAwesomeIcon className={styles.iconDown} icon={faArrowDown} />
 
-        <Input
-          id={2}
-          input={equivalentAmount}
-          onChange={(e) => setEquivalentAmount(e.target.value)}
-          imgSrc={tokenB.image}
-          symbol={tokenB.symbol}
-          handleDisplay={handleDisplay}
-          selectToken={selectToken}
-          display={display}
-          setDisplay={setDisplay}
-          setTokenA={setTokenA}
-          setTokenB={setTokenB}
-        />
+      <Input
+        id={2}
+        input={equivalentAmount}
+        onChange={(e) => setEquivalentAmount(e.target.value)}
+        imgSrc={tokenB.image}
+        symbol={tokenB.symbol}
+        handleDisplay={handleDisplay}
+        selectToken={selectToken}
+        display={display}
+        setDisplay={setDisplay}
+        setTokenA={setTokenA}
+        setTokenB={setTokenB}
+      />
 
-        <button
-          className={classNames(styles.btn, styles.btnConnect)}
-          onClick={connectWallet}
-        >
-          {buttonText}
-        </button>
-      </form>
-    </Fragment>
+      <button
+        className={classNames(styles.btn, styles.btnConnect)}
+        onClick={connectWallet}
+      >
+        {buttonText}
+      </button>
+    </form>
   );
 };
 
