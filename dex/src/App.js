@@ -44,14 +44,13 @@ function App() {
   };
 
   const getProvider = async (needSigner = false) => {
-    setLoading(true);
+    setLoading(true)
     try {
       const provider = await web3Modal.connect();
       const web3Provider = new providers.Web3Provider(provider);
       const accounts = await web3Provider.listAccounts();
       setweb3provider(web3Provider);
       setProvider(provider);
-
       console.log(accounts);
       const walletBalance = await web3Provider.getBalance(accounts[0]);
       const ethBalance = ethers.utils.formatEther(walletBalance);
@@ -67,12 +66,13 @@ function App() {
       if (provider) {
         setWalletConnected(true);
       }
-      setSuccess("Wallet Connected Successfully");
+      setSuccess("Wallet Connected")
       setLoading(false)
       return web3Provider;
 
     } catch (err) {
       setError("Wallet Connection Rejected");
+
     }
 
 
@@ -143,7 +143,6 @@ function App() {
   async function ShortSwapButtonClick() {
     console.log("I am Being Clicked");
     console.log("Wallet Connection", isWallletConnceted);
-
     try {
       if (!isWallletConnceted) {
         await connectWallet();;

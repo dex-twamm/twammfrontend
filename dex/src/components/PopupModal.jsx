@@ -5,19 +5,25 @@ import { useContext } from "react";
 import { useState } from "react";
 import { ShortSwapContext } from "../providers";
 
-const PopupModal = (props) => {
-  // const { errorDisplay } = props;
-  const { error, setError, success, setSuccess, loading } =
+const PopupModal = () => {
+  const { error, setError, success, setSuccess, loading, setLoading } =
     useContext(ShortSwapContext);
+
+  // Timeout For Backdrop
   useEffect(() => {
     let timer = setTimeout(() => {
       setError("");
       setSuccess("");
-    }, 3000);
+    }, 5000);
     return () => {
       clearTimeout(timer);
     };
   }, []);
+
+  const handleClose = () => {
+    setError("");
+    setSuccess("");
+  };
 
   const AlertStyle = {
     margin: "5px",
@@ -26,20 +32,20 @@ const PopupModal = (props) => {
     <>
       <div style={AlertStyle}>
         {error && (
-          <Backdrop open={error}>
-            <Alert severity="error" onClose={() => setError("")}>
+          <Backdrop open={error} onClose={handleClose}>
+            <Alert severity="error" onClose={handleClose}>
               {error}
             </Alert>
           </Backdrop>
         )}
         {loading && (
-          <Backdrop open={loading}>
+          <Backdrop open={loading} onClose={handleClose}>
             <CircularProgress />
           </Backdrop>
         )}
         {success && (
-          <Backdrop open={success}>
-            <Alert severity="success" onClose={() => setSuccess("")}>
+          <Backdrop open={success} onClose={handleClose}>
+            <Alert severity="success" onClose={handleClose}>
               {success}
             </Alert>
           </Backdrop>

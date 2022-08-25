@@ -12,7 +12,7 @@ import { Alert, Backdrop } from "@mui/material";
 
 const Swap = (props) => {
   const { connectWallet, buttonText } = props;
-  
+
   const [display, setDisplay] = useState(false);
   const [selectToken, setSelectToken] = useState("0");
   const [formErrors, setFormErrors] = useState({});
