@@ -7,13 +7,16 @@ import { ShortSwapContext } from "../providers";
 import styles from "../css/Navbar.module.css";
 import classNames from "classnames";
 import { RiArrowDropDownLine } from "react-icons/ri";
+import { useLocation } from "react-router-dom";
 
-const Navbar = ({
-  walletBalance,
-  walletAddress,
-  accountStatus,
-  connectWallet,
-}) => {
+const Navbar = (props) => {
+
+  const location = useLocation()
+  const currentPath = location.pathname;
+  
+
+  const { walletBalance, walletAddress, accountStatus, connectWallet } = props;
+
   const [selectedNetwork, setSelectedNetwork] = useState({
     network: "Select Network",
     logo: "/ethereum.png",
@@ -23,9 +26,10 @@ const Navbar = ({
     setSelectedNetwork({
       network: networkName,
       logo: logo,
-    });
+  });
 
   const { setError } = useContext(ShortSwapContext);
+
   const tabOptions = [
     {
       value: "Swap",
@@ -42,7 +46,9 @@ const Navbar = ({
   ];
 
   const tabList = tabOptions.map((option, index) => (
-    <div key={index} className={styles.tabButton}>
+    <div key={index}
+      className={classNames(styles.tabButton, currentPath === option.path && styles.activeTab)}
+    >
       <a href={option.path}>{option.value}</a>
     </div>
   ));
