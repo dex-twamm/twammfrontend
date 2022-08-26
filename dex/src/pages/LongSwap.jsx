@@ -11,10 +11,14 @@ import styles from "../css/ShortSwap.module.css";
 import lsStyles from "../css/LongSwap.module.css";
 
 const valueLabel = (value) => {
-  const sliderUnits = ["Min", "Hours", "Days", "Week"];
+  const sliderUnits = ["Min", "Hours", "Days", "Week", "Month"];
   let unitIndex = 0;
   let scaledValue = value;
 
+  if (scaledValue > 43200 && unitIndex < sliderUnits.length - 1) {
+    unitIndex = 4;
+    scaledValue /= 43200;
+  }
   if (scaledValue >= 10080 && unitIndex < sliderUnits.length - 1) {
     unitIndex = 3;
     scaledValue /= 10080;
@@ -42,7 +46,7 @@ const calculateValue = (value) => {
   const minp = 0;
   const maxp = 100;
   const minV = Math.log(60);
-  const maxV = Math.log(10080);
+  const maxV = Math.log(43200);
   var scale = (maxV - minV) / (maxp - minp);
   return Math.exp(minV + scale * (value - minp));
 };
