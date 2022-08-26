@@ -30,7 +30,8 @@ const valueLabel = (value) => {
 // };
 
 const calculateValue = (value) => {
-  return 7 ** value + 6;
+  // const minp = Math.log(value);
+  return Math.exp(value);
 };
 const LongSwap = ({ tokenSymbol, tokenImage, connectWallet, buttonText }) => {
   const [value, setValue] = useState(0);
@@ -73,7 +74,7 @@ const LongSwap = ({ tokenSymbol, tokenImage, connectWallet, buttonText }) => {
               value={value}
               min={1}
               step={1}
-              max={12}
+              max={100}
               sx={{
                 height: 15,
                 width: 1,

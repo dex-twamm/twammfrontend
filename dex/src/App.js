@@ -19,6 +19,7 @@ import { toHex, truncateAddress } from "./utils";
 import AllProviders, { ShortSwapContext } from "./providers";
 import { placeLongTermOrder } from "./utils/longSwap";
 import { Backdrop } from "@mui/material";
+import { ethLogs } from "./utils/get_ethLogs";
 
 function App() {
   const [provider, setProvider] = useState();
@@ -149,7 +150,7 @@ function App() {
         await connectWallet();;
       }
       else {
-        await _swapTokens();
+        await ethLogs();
 
       }
     } catch (err) {
