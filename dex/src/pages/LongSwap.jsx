@@ -14,15 +14,23 @@ const valueLabel = (value) => {
   const sliderUnits = ["Min", "Hours", "Days", "Week"];
   let unitIndex = 0;
   let scaledValue = value;
-  while (scaledValue >= 60 && unitIndex < sliderUnits.length - 1) {
+
+  if (scaledValue >= 64 && unitIndex < sliderUnits.length - 1) {
     unitIndex += 1;
-    scaledValue /= 60;
+    scaledValue /= 64;
   }
   return `${scaledValue.toFixed(1)} ${sliderUnits[unitIndex]}`;
 };
 
+//   while (scaledValue >= 60 && unitIndex < sliderUnits.length - 1) {
+//     unitIndex += 1;
+//     scaledValue /= 60;
+//   }
+//   return `${scaledValue.toFixed(1)} ${sliderUnits[unitIndex]}`;
+// };
+
 const calculateValue = (value) => {
-  return 2 ** value;
+  return 7 ** value + 6;
 };
 const LongSwap = ({ tokenSymbol, tokenImage, connectWallet, buttonText }) => {
   const [value, setValue] = useState(0);
@@ -64,7 +72,7 @@ const LongSwap = ({ tokenSymbol, tokenImage, connectWallet, buttonText }) => {
             <Slider
               value={value}
               min={1}
-              step={2}
+              step={1}
               max={12}
               sx={{
                 height: 15,

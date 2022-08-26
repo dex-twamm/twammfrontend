@@ -14,7 +14,7 @@ const Navbar = (props) => {
   const currentPath = location.pathname;
 
   const { walletBalance, walletAddress, accountStatus, connectWallet } = props;
-  const { setError } = useContext(ShortSwapContext);
+  const { setError, setLoading } = useContext(ShortSwapContext);
 
   const [selectedNetwork, setSelectedNetwork] = useState({
     network: "Select Network",
@@ -31,13 +31,16 @@ const Navbar = (props) => {
     console.log(chainId);
     const id = chainId;
     if (window.ethereum.networkVersion !== id) {
+      setLoading(true);
       try {
         await window.ethereum.request({
           method: "wallet_switchEthereumChain",
           params: [{ chainId: toHex(id) }],
         });
+        setLoading(false);
       } catch (err) {
         console.error(err);
+        setLoading(false);
         setError("Failed To Switch Network");
       }
     }
