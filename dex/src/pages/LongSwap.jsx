@@ -15,11 +15,19 @@ const valueLabel = (value) => {
   let unitIndex = 0;
   let scaledValue = value;
 
-  if (scaledValue >= 64 && unitIndex < sliderUnits.length - 1) {
-    unitIndex += 1;
-    scaledValue /= 64;
+  if (scaledValue >= 10080 && unitIndex < sliderUnits.length - 1) {
+    unitIndex = 3;
+    scaledValue /= 10080;
+  } else if (scaledValue >= 1440 && unitIndex < sliderUnits.length - 1) {
+    unitIndex = 2;
+    scaledValue /= 1440;
+  } else if (scaledValue >= 300 && unitIndex < sliderUnits.length - 1) {
+    unitIndex = 1;
+    scaledValue /= 300;
+  } else if (scaledValue >= 60 && unitIndex < sliderUnits.length - 1) {
+    scaledValue /= 60;
   }
-  return `${scaledValue.toFixed(1)} ${sliderUnits[unitIndex]}`;
+  return `${scaledValue.toFixed(0)} ${sliderUnits[unitIndex]}`;
 };
 
 //   while (scaledValue >= 60 && unitIndex < sliderUnits.length - 1) {
@@ -30,8 +38,13 @@ const valueLabel = (value) => {
 // };
 
 const calculateValue = (value) => {
-  // const minp = Math.log(value);
-  return Math.exp(value);
+  // position will be between 0 and 100
+  const minp = 0;
+  const maxp = 100;
+  const minV = Math.log(60);
+  const maxV = Math.log(10080);
+  var scale = (maxV - minV) / (maxp - minp);
+  return Math.exp(minV + scale * (value - minp));
 };
 const LongSwap = ({ tokenSymbol, tokenImage, connectWallet, buttonText }) => {
   const [value, setValue] = useState(0);
@@ -73,7 +86,7 @@ const LongSwap = ({ tokenSymbol, tokenImage, connectWallet, buttonText }) => {
             <Slider
               value={value}
               min={1}
-              step={1}
+              step={2}
               max={100}
               sx={{
                 height: 15,
