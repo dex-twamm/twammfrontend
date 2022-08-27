@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
-import { useContext } from "react";
 import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
 import Input from "./Input";
 import styles from "../css/Swap.module.css";
 import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from "../utils";
-import { useEffect } from "react";
 import classNames from "classnames";
 import { Alert, Box, Slider, Typography } from "@mui/material";
 import PopupModal from "./PopupModal";
