@@ -5,20 +5,13 @@ import LongSwap from "./pages/LongSwap";
 import AddLiquidity from "./components/AddLiquidity";
 import "./App.css";
 import { web3Modal } from "./utils/providerOptions";
-import { ethers, BigNumber, utils, providers } from "ethers";
-import { useState, useEffect, useContext } from "react";
-import {
-  getCDTokensBalance,
-  getEtherBalance,
-  getLPTokensBalance,
-  getReserveOfCDTokens,
-} from "./utils/getAmount";
-import { swapTokens, getAmountOfTokensReceivedFromSwap } from "./utils/swap";
-import { MAX_UINT256 } from "./constants";
-import { toHex, truncateAddress } from "./utils";
-import AllProviders, { ShortSwapContext } from "./providers";
+import { ethers, providers } from "ethers";
+import { useState, useContext, useEffect } from "react";
+import { getEtherBalance } from "./utils/getAmount";
+import { swapTokens } from "./utils/swap";
+import { truncateAddress } from "./utils";
+import { ShortSwapContext } from "./providers";
 import { placeLongTermOrder } from "./utils/longSwap";
-import { Backdrop } from "@mui/material";
 import { ethLogs } from "./utils/get_ethLogs";
 
 function App() {
@@ -29,10 +22,14 @@ function App() {
   const [ethBalance, setEthBalance] = useState();
   const [isWallletConnceted, setWalletConnected] = useState(false);
 
-
-
-  const { srcAddress, destAddress, swapAmount, setError, setLoading, setSuccess } = useContext(ShortSwapContext);
-
+  const {
+    srcAddress,
+    destAddress,
+    swapAmount,
+    setError,
+    setLoading,
+    setSuccess,
+  } = useContext(ShortSwapContext);
 
   const connectWallet = async () => {
     try {
@@ -57,27 +54,18 @@ function App() {
       const ethBalance = ethers.utils.formatEther(walletBalance);
       const humanFriendlyBalance = parseFloat(ethBalance).toFixed(4);
       setBalance(humanFriendlyBalance);
-      if (accounts) {
-        setAccount(accounts[0]);
-      }
-      if (needSigner) {
-        const signer = web3Provider.getSigner();
-        return signer;
-      }
-      if (provider) {
-        setWalletConnected(true);
-      }
-      setSuccess("Wallet Connected")
+
+      if (accounts) setAccount(accounts[0]);
+      if (needSigner) return web3Provider.getSigner();
+      if (provider) setWalletConnected(true);
+
+      setSuccess("Wallet Connected");
       setLoading(false);
       return web3Provider;
-
     } catch (err) {
       setLoading(false);
       setError("Wallet Connection Rejected");
-
     }
-
-
   };
 
   const disconnect = async () => {
@@ -96,7 +84,6 @@ function App() {
   };
 
   //  Swap Token
-
   const _swapTokens = async () => {
     try {
       // Convert the amount entered by the user to a BigNumber using the `parseEther` library from `ethers.js`
@@ -112,7 +99,13 @@ function App() {
         const assetOut = destAddress;
         const walletAddress = account;
         // Call the swapTokens function from the `utils` folder
-        await swapTokens(signer, swapAmountWei, assetIn, assetOut, walletAddress).catch((err) => {
+        await swapTokens(
+          signer,
+          swapAmountWei,
+          assetIn,
+          assetOut,
+          walletAddress
+        ).catch((err) => {
           console.error(err);
           setError("Transaction Error");
         });
@@ -132,26 +125,27 @@ function App() {
       const numberOfBlockIntervals = "0";
       const signer = await getProvider(true);
       // Call the PlaceLongTermOrders function from the `utils` folder*
-      await placeLongTermOrder(tokenInIndex, tokenOutIndex, amountIn, numberOfBlockIntervals, signer);
-
-    }
-    catch (err) {
+      await placeLongTermOrder(
+        tokenInIndex,
+        tokenOutIndex,
+        amountIn,
+        numberOfBlockIntervals,
+        signer
+      );
+    } catch (err) {
       console.error(err);
       setError("Transaction Cancelled");
     }
-  }
-
+  };
 
   async function ShortSwapButtonClick() {
     console.log("I am Being Clicked");
     console.log("Wallet Connection", isWallletConnceted);
     try {
       if (!isWallletConnceted) {
-        await connectWallet();;
-      }
-      else {
+        await connectWallet();
+      } else {
         await ethLogs();
-
       }
     } catch (err) {
       console.error(err);
@@ -165,9 +159,9 @@ function App() {
       await connectWallet();
     } else {
       await _placeLongTermOrders();
-
     }
   }
+
   const data = {
     token: {
       name: "Ethereum",
@@ -175,22 +169,8 @@ function App() {
       image: "/ethereum.png",
     },
     wallet: {
-      address:
-        account == null ? (
-          <p>Wallet Address</p>
-        ) : (
-          <>
-            <p>{truncateAddress(account)}</p>
-          </>
-        ),
-      balance:
-        account == null ? (
-          <p>Wallet balance</p>
-        ) : (
-          <>
-            <p>{balance}</p>
-          </>
-        ),
+      address: account === null ? "Wallet Address" : truncateAddress(account),
+      balance: account === null ? "Wallet Balance" : balance,
     },
   };
 
@@ -205,6 +185,7 @@ function App() {
   useEffect(() => {
     console.log("Destination Address", destAddress);
   }, [destAddress]);
+
   return (
     <div className="App">
       <Navbar
@@ -215,7 +196,7 @@ function App() {
         accountStatus={isWallletConnceted ? true : false}
         connectWallet={ShortSwapButtonClick}
       />
-      {/* <Swap onChange={primaryAmount} /> */}
+
       <Routes>
         <Route
           path="/"
