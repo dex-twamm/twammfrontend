@@ -26,7 +26,7 @@ const Swap = (props) => {
   const handleDisplay = (event) => {
     console.log("Current Target Id", event.currentTarget.id);
     setSelectToken(event.currentTarget.id);
-    display ? setDisplay(false) : setDisplay(true);
+    setDisplay(!display);
   };
 
   const [tokenA, setTokenA] = useState({
@@ -44,8 +44,12 @@ const Swap = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setFormErrors(validate(swapAmount));
     setIsSubmit(true);
+  };
+
+  const handleClick = () => {
+    buttonText === "Swap" && setFormErrors(validate(swapAmount));
+    connectWallet();
   };
 
   useEffect(() => {
@@ -56,8 +60,9 @@ const Swap = (props) => {
   }, [formErrors]);
 
   const validate = (values) => {
+    const valueInt = parseFloat(values);
     const errors = {};
-    if (!values.swapAmount) {
+    if (!valueInt > 0) {
       errors.swapAmount = "Swap Amount Is Required";
     }
     return errors;
@@ -141,7 +146,7 @@ const Swap = (props) => {
 
       <button
         className={classNames(styles.btn, styles.btnConnect)}
-        onClick={connectWallet}
+        onClick={handleClick}
       >
         {buttonText}
       </button>
