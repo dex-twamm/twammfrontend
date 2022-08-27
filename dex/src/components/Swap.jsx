@@ -8,16 +8,19 @@ import styles from "../css/Swap.module.css";
 import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from "../utils";
 import { useEffect } from "react";
 import classNames from "classnames";
-import { Alert } from "@mui/material";
+import { Alert, Box, Slider, Typography } from "@mui/material";
 import PopupModal from "./PopupModal";
+import lsStyles from "../css/LongSwap.module.css";
+import { valueLabel, calculateValue } from "../methods/longSwapMethod";
 
 const Swap = (props) => {
-  const { connectWallet, buttonText } = props;
+  const { connectWallet, buttonText, swapType } = props;
 
   const [display, setDisplay] = useState(false);
   const [selectToken, setSelectToken] = useState("0");
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
+  const [value, setValue] = useState(0);
 
   const { equivalentAmount, setEquivalentAmount, swapAmount, setSwapAmount } =
     useContext(ShortSwapContext);
@@ -61,6 +64,13 @@ const Swap = (props) => {
     }
     return errors;
   };
+
+  const handleChange = (e, newValue) => {
+    if (typeof newValue === "number") {
+      setValue(newValue);
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit}>
       <Input
@@ -102,12 +112,42 @@ const Swap = (props) => {
         setTokenA={setTokenA}
         setTokenB={setTokenB}
       />
+
+      {swapType === "long" && (
+        <div className={lsStyles.rangeSelect}>
+          <Box sx={{ width: "90%", margin: "0 auto" }}>
+            <Typography fontWeight={600} id="non-linear-slider" gutterBottom>
+              Time:
+              {valueLabel(calculateValue(value))}
+            </Typography>
+            <Slider
+              value={value}
+              min={1}
+              step={2}
+              max={100}
+              sx={{
+                height: 15,
+                width: 1,
+                color: "#ffaac9",
+              }}
+              scale={calculateValue}
+              getAriaValueText={valueLabel}
+              valueLabelFormat={valueLabel}
+              onChange={handleChange}
+              valueLabelDisplay="auto"
+              aria-labelledby="non-linear-slider"
+            />
+          </Box>
+        </div>
+      )}
+
       <button
         className={classNames(styles.btn, styles.btnConnect)}
         onClick={connectWallet}
       >
         {buttonText}
       </button>
+
       <PopupModal></PopupModal>
     </form>
   );
