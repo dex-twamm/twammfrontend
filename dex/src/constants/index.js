@@ -423,7 +423,7 @@ export const TOKEN_CONTRACT_ABI = [
 export const TOKEN_CONTRACT_ADDRESS =
   "0x4E5696E26D085D13Cd8C6d1cf8c6bEE70D4c48df";
 
-export const EXCHANGE_CONTRACT_ABI = [
+export const VAULT_CONTRACT_ABI = [
   {
     inputs: [
       {
@@ -1603,5 +1603,5 @@ export const EXCHANGE_CONTRACT_ABI = [
   },
 ];
 
-export const EXCHANGE_CONTRACT_ADDRESS =
+export const VAULT_CONTRACT_ADDRESS =
   "0xBA12222222228d8Ba445958a75a0704d566BF2C8";

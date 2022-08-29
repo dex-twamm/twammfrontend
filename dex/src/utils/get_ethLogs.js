@@ -10,12 +10,12 @@ export async function ethLogs() {
     const filterId = await provider.getLogs(
         {
             "jsonrpc": "2.0",
-            "id": 0,
+            "id": 1,
             "method": "eth_getLogs",
             "params": [
                 {
-                    "fromBlock": "",
-                    "toBlock": "",
+                    "fromBlock": "earliest",
+                    "toBlock": "latest",
                     "address": "0x16110DAFbCBEeCdb29ac69210EbffCb526893fda",
                     "topics": [
                         "0x049cb9f702614451e12929b92b408d8132fb92a057f8994fd518e38f567218ad",

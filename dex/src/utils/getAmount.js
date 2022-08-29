@@ -1,8 +1,8 @@
 import { Contract } from "ethers";
 
 import {
-  EXCHANGE_CONTRACT_ABI,
-  EXCHANGE_CONTRACT_ADDRESS,
+  VAULT_CONTRACT_ABI,
+  VAULT_CONTRACT_ADDRESS,
   TOKEN_CONTRACT_ABI,
   TOKEN_CONTRACT_ADDRESS,
 } from "../constants";
@@ -11,7 +11,7 @@ import {
 export const getEtherBalance = async (provider, address, contract = false) => {
   try {
     if (contract) {
-      const balance = await provider.getBalance(EXCHANGE_CONTRACT_ADDRESS);
+      const balance = await provider.getBalance(VAULT_CONTRACT_ADDRESS);
       return balance;
     } else {
       const balance = await provider.getBalance(address);
@@ -44,8 +44,8 @@ export const getCDTokensBalance = async (provider, address) => {
 export const getLPTokensBalance = async (provider, address) => {
   try {
     const exchangeContract = new Contract(
-      EXCHANGE_CONTRACT_ADDRESS,
-      EXCHANGE_CONTRACT_ABI,
+      VAULT_CONTRACT_ADDRESS,
+      VAULT_CONTRACT_ABI,
       provider
     );
     const balanceOfLPTokens = await exchangeContract.balanceOf(address);
@@ -57,13 +57,13 @@ export const getLPTokensBalance = async (provider, address) => {
 
 /**
  * getReserveOfCDTokens: Retrieves the amount of CD tokens in the
- * exchange contract address
+ * Vault contract address
  */
 export const getReserveOfCDTokens = async (provider) => {
   try {
     const exchangeContract = new Contract(
-      EXCHANGE_CONTRACT_ADDRESS,
-      EXCHANGE_CONTRACT_ABI,
+      VAULT_CONTRACT_ADDRESS,
+      VAULT_CONTRACT_ABI,
       provider
     );
     const reserve = await exchangeContract.getReserve();

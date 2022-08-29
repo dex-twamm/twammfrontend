@@ -1,5 +1,5 @@
 import { Contract, ethers, utils } from "ethers";
-import { EXCHANGE_CONTRACT_ABI, EXCHANGE_CONTRACT_ADDRESS } from "../constants";
+import { VAULT_CONTRACT_ABI, VAULT_CONTRACT_ADDRESS } from "../constants";
 import { POOL_ID, FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS, OWNER_ADDRESS, MAX_UINT256 } from ".";
 
 export async function placeLongTermOrder(
@@ -7,8 +7,8 @@ export async function placeLongTermOrder(
     amountIn, numberOfBlockIntervals, signer) {
 
     const exchangeContract = new Contract(
-        EXCHANGE_CONTRACT_ADDRESS,
-        EXCHANGE_CONTRACT_ABI,
+        VAULT_CONTRACT_ADDRESS,
+        VAULT_CONTRACT_ABI,
         signer
     );
     const abiEncode = ethers.utils.defaultAbiCoder;
