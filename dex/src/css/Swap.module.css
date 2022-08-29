@@ -1,4 +1,8 @@
-.errorAlert{
+.form {
+  position: relative;
+}
+
+.errorAlert {
   margin: 10px 0;
 }
 
@@ -31,6 +35,6 @@
   font-weight: 600;
 }
 
-.btnConnect:hover{
+.btnConnect:hover {
   background-color: #ffdeea;
 }

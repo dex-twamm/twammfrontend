@@ -5,9 +5,16 @@ import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import PopupSettings from "../components/PopupSettings";
 import styles from "../css/ShortSwap.module.css";
+import LongTermOrderCard from "../components/LongTermOrderCard";
 
 const LongSwap = (props) => {
-  const { tokenSymbol, tokenImage, connectWallet, buttonText } = props;
+  const {
+    tokenSymbol,
+    tokenImage,
+    connectWallet,
+    buttonText,
+    isPlacedLongTermOrder,
+  } = props;
 
   const [showSettings, setShowSettings] = useState(false);
 
@@ -36,6 +43,12 @@ const LongSwap = (props) => {
           buttonText={buttonText}
         />
       </div>
+      {/* isPlacedLongTermOrder && */}
+      {
+        <div className={styles.longTermOrderCard}>
+          <LongTermOrderCard />
+        </div>
+      }
     </div>
   );
 };

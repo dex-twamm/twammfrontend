@@ -75,7 +75,7 @@ const Swap = (props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className={styles.form}>
       <Input
         id={1}
         input={swapAmount !== "" ? swapAmount : ""}

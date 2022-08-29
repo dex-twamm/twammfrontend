@@ -21,6 +21,7 @@ function App() {
   const [balance, setBalance] = useState();
   const [ethBalance, setEthBalance] = useState();
   const [isWallletConnceted, setWalletConnected] = useState(false);
+  const [isPlacedLongTermOrder, setIsPlacedLongTermOrder] = useState(false);
 
   const {
     srcAddress,
@@ -132,6 +133,7 @@ function App() {
         numberOfBlockIntervals,
         signer
       );
+      setIsPlacedLongTermOrder(true);
     } catch (err) {
       console.error(err);
       setError("Transaction Cancelled");
@@ -218,6 +220,7 @@ function App() {
               tokenImage={data.token.image}
               buttonText={!isWallletConnceted ? "Connect Wallet" : "Swap"}
               connectWallet={LongSwapButtonClick}
+              isPlacedLongTermOrder={isPlacedLongTermOrder}
             />
           }
         />
