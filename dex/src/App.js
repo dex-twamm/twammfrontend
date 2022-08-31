@@ -27,7 +27,9 @@ function App() {
     srcAddress,
     destAddress,
     swapAmount,
+    error,
     setError,
+    loading,
     setLoading,
     setSuccess,
   } = useContext(ShortSwapContext);
@@ -150,8 +152,6 @@ function App() {
   };
 
   async function ShortSwapButtonClick() {
-    console.log("I am Being Clicked");
-    console.log("Wallet Connection", isWallletConnceted);
     try {
       if (!isWallletConnceted) {
         await connectWallet();
@@ -164,8 +164,6 @@ function App() {
   }
 
   async function LongSwapButtonClick() {
-    console.log("I am Being Clicked");
-    console.log("Wallet Connection", isWallletConnceted);
     if (!isWallletConnceted) {
       await connectWallet();
     } else {
@@ -194,6 +192,17 @@ function App() {
       setBalance(balance);
     }
   }, []);
+
+  useEffect(() => {
+    let timeout = setTimeout(() => {
+      setError();
+      setLoading(false);
+    }, 3000);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [loading, error]);
 
   useEffect(() => {
     console.log("Swap Amount", swapAmount);
