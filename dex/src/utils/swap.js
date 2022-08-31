@@ -1,5 +1,5 @@
 import { Contract, ethers } from "ethers";
-import {    VAULT_CONTRACT_ABI,    VAULT_CONTRACT_ADDRESS } from "../constants";
+import { VAULT_CONTRACT_ABI, VAULT_CONTRACT_ADDRESS } from "../constants";
 import { POOL_ID, MAX_UINT256, toHex } from ".";
 
 
@@ -10,8 +10,8 @@ import { POOL_ID, MAX_UINT256, toHex } from ".";
 export const swapTokens = async (signer, swapAmountWei, assetIn, assetOut, walletAddress) => {
   // Create a new instance of the exchange contract
   const exchangeContract = new Contract(
-       VAULT_CONTRACT_ADDRESS,
-       VAULT_CONTRACT_ABI,
+    VAULT_CONTRACT_ADDRESS,
+    VAULT_CONTRACT_ABI,
     signer
   );
 

@@ -86,6 +86,7 @@ function App() {
 
   //  Swap Token
   const _swapTokens = async () => {
+    setLoading(true);
     try {
       // Convert the amount entered by the user to a BigNumber using the `parseEther` library from `ethers.js`
       const swapAmountWei = ethers.utils.parseEther(swapAmount);
@@ -110,10 +111,12 @@ function App() {
           console.error(err);
           setError("Transaction Error");
         });
+        setLoading(false);
       }
     } catch (err) {
       console.error(err);
       setError("Transaction Cancelled");
+      setLoading(false);
       // setSwapAmount("");
     }
   };
@@ -147,7 +150,7 @@ function App() {
       if (!isWallletConnceted) {
         await connectWallet();
       } else {
-        await ethLogs();
+        await _swapTokens();
       }
     } catch (err) {
       console.error(err);
