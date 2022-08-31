@@ -5,11 +5,11 @@ import LongSwap from "./pages/LongSwap";
 import AddLiquidity from "./components/AddLiquidity";
 import "./App.css";
 import { web3Modal } from "./utils/providerOptions";
-import { ethers, providers } from "ethers";
+import { BigNumber, ethers, providers } from "ethers";
 import { useState, useContext, useEffect } from "react";
 import { getEtherBalance } from "./utils/getAmount";
 import { swapTokens } from "./utils/swap";
-import { truncateAddress } from "./utils";
+import { toHex, truncateAddress } from "./utils";
 import { ShortSwapContext } from "./providers";
 import { placeLongTermOrder } from "./utils/longSwap";
 import { ethLogs } from "./utils/get_ethLogs";
@@ -20,6 +20,7 @@ function App() {
   const [account, setAccount] = useState();
   const [balance, setBalance] = useState();
   const [ethBalance, setEthBalance] = useState();
+  const [nonce, setNonce] = useState();
   const [isWallletConnceted, setWalletConnected] = useState(false);
 
   const {
@@ -54,6 +55,9 @@ function App() {
       const ethBalance = ethers.utils.formatEther(walletBalance);
       const humanFriendlyBalance = parseFloat(ethBalance).toFixed(4);
       setBalance(humanFriendlyBalance);
+      const nonce = web3Provider.getTransactionCount(accounts[0]);
+      console.log(nonce);
+      setNonce(nonce);
 
       if (accounts) setAccount(accounts[0]);
       if (needSigner) return web3Provider.getSigner();
@@ -88,12 +92,14 @@ function App() {
     setLoading(true);
     try {
       // Convert the amount entered by the user to a BigNumber using the `parseEther` library from `ethers.js`
-      const swapAmountWei = ethers.utils.parseEther(swapAmount);
-      console.log(swapAmountWei);
+      const swapAmountWei = ethers.utils.parseUnits(swapAmount, "ether");
+      // const swapAmountWei = toHex(amount);
+
 
       // Check if the user entered zero
       // We are here using the `eq` method from BigNumber class in `ethers.js`
-      if (swapAmountWei > 0) {
+      if (swapAmountWei) {
+        console.log("swapAmountWei", swapAmountWei);
         const signer = await getProvider(true);
         console.log(signer);
         const assetIn = srcAddress;
@@ -105,7 +111,7 @@ function App() {
           swapAmountWei,
           assetIn,
           assetOut,
-          walletAddress
+          walletAddress,
         ).catch((err) => {
           console.error(err);
           setError("Transaction Error");
@@ -119,6 +125,8 @@ function App() {
       // setSwapAmount("");
     }
   };
+
+
 
   const _placeLongTermOrders = async () => {
     try {

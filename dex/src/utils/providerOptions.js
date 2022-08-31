@@ -6,7 +6,7 @@ export const providerOptions = {
   coinbasewallet: {
     package: CoinbaseWalletSDK,
     options: {
-      appName: "Web 3 Demo",
+      appName: "TWAMM",
       infuraid: { 3: `https://goerli.infura.io/v3/${process.env.INFURA_KEY}` },
     },
   },

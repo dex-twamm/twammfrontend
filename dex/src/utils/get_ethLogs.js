@@ -10,7 +10,7 @@ export async function ethLogs() {
     const filterId = await provider.getLogs(
         {
             "jsonrpc": "2.0",
-            "id": 1,
+            "id": 0,
             "method": "eth_getLogs",
             "params": [
                 {

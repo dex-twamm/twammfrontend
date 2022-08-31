@@ -13,12 +13,12 @@ const Modal = ({ display, setDisplay, selectToken, setTokenA, setTokenB }) => {
     {
       symbol: "Faucet",
       image: "/ethereum.png",
-      address: MATIC_TOKEN_ADDRESS,
+      address: FAUCET_TOKEN_ADDRESS,
     },
     {
       symbol: "Matic",
       image: "/dai.png",
-      address: FAUCET_TOKEN_ADDRESS,
+      address: MATIC_TOKEN_ADDRESS,
     },
   ];
 
@@ -64,7 +64,7 @@ const Modal = ({ display, setDisplay, selectToken, setTokenA, setTokenB }) => {
         <div className={styles.modalTokenSymbol} onClick={handleModalClose}>
           {token.symbol}
         </div>
-        <p style={{ display: "none" }}>{token.address}</p>
+        <p>{token.address}</p>
       </div>
     );
   });

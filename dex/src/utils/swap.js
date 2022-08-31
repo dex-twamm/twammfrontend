@@ -14,7 +14,9 @@ export const swapTokens = async (signer, swapAmountWei, assetIn, assetOut, walle
     VAULT_CONTRACT_ABI,
     signer
   );
-
+  const deadline = ethers.constants.MaxUint256;
+  console.log("deadline", deadline);
+  const gas_price = "2";
   const kind = 0; // GivenIn
   const swapTx = await exchangeContract.swap(
     {
@@ -32,11 +34,12 @@ export const swapTokens = async (signer, swapAmountWei, assetIn, assetOut, walle
       toInternalBalance: false,
     },
     kind === 0 ? 0 : MAX_UINT256, // 0 if given in, infinite if given out.
-    1663213774,
+    deadline,
     {
-      gasLimit: 100000
+      gasLimit: 2000000
     }
   );
+
 
   const swapResult = await swapTx.wait();
   console.log(swapResult);
