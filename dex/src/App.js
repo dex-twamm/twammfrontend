@@ -45,24 +45,32 @@ function App() {
   const getProvider = async (needSigner = false) => {
     setLoading(true);
     try {
-      const provider = await web3Modal.connect();
-      const web3Provider = new providers.Web3Provider(provider);
-      const accounts = await web3Provider.listAccounts();
-      setweb3provider(web3Provider);
-      setProvider(provider);
-      console.log(accounts);
-      const walletBalance = await web3Provider.getBalance(accounts[0]);
-      const ethBalance = ethers.utils.formatEther(walletBalance);
-      const humanFriendlyBalance = parseFloat(ethBalance).toFixed(4);
-      setBalance(humanFriendlyBalance);
+      if (!isWallletConnceted) {
+        const provider = await web3Modal.connect();
+        const web3Provider = new providers.Web3Provider(provider);
+        const accounts = await web3Provider.listAccounts();
 
-      if (accounts) setAccount(accounts[0]);
-      if (needSigner) return web3Provider.getSigner();
-      if (provider) setWalletConnected(true);
+        localStorage.setItem("account", accounts);
 
-      setSuccess("Wallet Connected");
-      setLoading(false);
-      return web3Provider;
+        setweb3provider(web3Provider);
+        setProvider(provider);
+
+        const walletBalance = await web3Provider.getBalance(accounts[0]);
+        const ethBalance = ethers.utils.formatEther(walletBalance);
+        const humanFriendlyBalance = parseFloat(ethBalance).toFixed(4);
+
+        localStorage.setItem("balance", humanFriendlyBalance);
+
+        setBalance(humanFriendlyBalance);
+
+        if (accounts) setAccount(accounts[0]);
+        if (needSigner) return web3Provider.getSigner();
+        if (provider) setWalletConnected(true);
+
+        setSuccess("Wallet Connected");
+        setLoading(false);
+        return web3Provider;
+      }
     } catch (err) {
       setLoading(false);
       setError("Wallet Connection Rejected");
@@ -178,6 +186,16 @@ function App() {
       balance: account === null ? "Wallet Balance" : balance,
     },
   };
+
+  useEffect(() => {
+    const account = localStorage.getItem("account");
+    const balance = localStorage.getItem("balance");
+    if (account && balance) {
+      setAccount(account);
+      setWalletConnected(true);
+      setBalance(balance);
+    }
+  }, []);
 
   useEffect(() => {
     console.log("Swap Amount", swapAmount);
