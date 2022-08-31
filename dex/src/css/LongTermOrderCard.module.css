@@ -2,159 +2,128 @@
   margin: 0 auto;
   padding-bottom: 20px;
 
-  display: flex;
+  /* display: flex;
   flex-direction: column;
   gap: 20px;
 
-  overflow: hidden;
+  overflow: hidden; */
 }
 
 .topSection {
   display: flex;
+  gap: 10px;
   align-items: center;
   justify-content: space-between;
+  padding: 20px 10px;
+  /* background-color: #ededed; */
+  border-bottom: 2px solid #f3f3f3;
 }
 
 .orderId {
-  width: 90px;
-  height: 90px;
-  clip-path: circle(100% at 0% 0%);
-  color: #d50066;
-  background-color: rgba(214, 0, 104, 0.05);
-
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-
-  position: relative;
-}
-
-.orderId > p {
-  padding-left: 10px;
-}
-
-.transactionLink {
-  width: 90px;
-  height: 90px;
-  clip-path: circle(100% at 100% 0%);
-  color: #d50066;
-  background-color: rgba(214, 0, 104, 0.05);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  position: relative;
-}
-
-.transactionLink > p {
-  font-size: 18px;
-  padding-right: 10px;
-
+  font-size: 16px;
   font-weight: 600;
 }
 
-.icon {
-  position: absolute;
+.iconExternalLink {
+  width: 20px;
+  height: 20px;
   cursor: pointer;
-
-  top: 20px;
-  right: 20px;
 }
 
-.progressWrapper {
-  padding: 0 10px;
+.iconExternalLink:hover {
+  color: #d50066;
+}
+
+.bottomSection {
+  padding: 10px;
+
   display: flex;
-  gap: 20px;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 50px;
 }
 
 .tokenContainer {
-  max-width: 120px;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 
-  border-radius: 12px;
-
-  text-align: center;
-  border: 2px solid #f3f3f3;
-  padding: 10px;
+  margin: 0 60px;
 }
 
-.token {
-  font-size: 30px;
+.tokenIcon {
+  width: 70px;
+  height: 70px;
+}
+
+.tokenText {
+  font-size: 10px;
+  text-align: center;
   font-weight: 600;
+  margin-top: 5px;
 }
 
-.progressContainer {
-  flex-grow: 1;
-  text-align: center;
-}
-
-.progressText {
-  font-size: 12px;
-  color: #d50066;
-
-  margin-bottom: 10px;
-}
-
-.progress {
-  width: 100%;
-  height: 10px;
-  border-radius: 10px;
-  background-color: #fdeaf1;
+.greenText {
+  color: green;
 }
 
 .timeRemaining {
-  margin-top: 10px;
+  margin-bottom: 5px;
+  color: green;
+  font-size: 14px;
+}
+
+.progress {
+  height: 10px;
+  background-color: #f3f3f3;
+  border-radius: 10px;
 }
 
 .activeProgress {
-  height: 100%;
+  height: 10px;
+  background-color: #c7c7c7;
   border-radius: 10px;
-  background-color: #d50066;
 }
 
-.middleSection {
-  padding: 0 10px;
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  justify-content: space-around;
+.arrow {
+  grid-column: span 2 / span 2;
 
-  text-align: center;
+  justify-self: center;
+  place-self: center;
+  margin-bottom: 30px;
+}
+
+.extrasContainer {
+  margin-top: -20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .fees,
 .averagePrice {
-  display: flex;
-  flex-direction: column;
-}
-
-.fees > span:first-child,
-.averagePrice > span:first-child {
-  font-size: 20px;
+  background-color: #707070;
+  color: #fff;
+  font-size: 12px;
   font-weight: 600;
-}
 
-.buttonContainer {
-  padding: 0 10px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 5px 10px;
+  border-radius: 10px;
 }
 
 .cancelButton {
-  padding: 15px 40px;
+  text-align: center;
+  width: 100%;
+  padding: 16px;
+  border-radius: 16px;
 
-  outline: none;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-
+  font-size: 16px;
   font-weight: 600;
-  color: #d50066;
+  border: none;
+  outline: none;
+
   background-color: #fdeaf1;
+  color: #d50066;
+  cursor: pointer;
 
   transition: all 0.2s ease-in-out;
 }
