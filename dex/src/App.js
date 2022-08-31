@@ -45,32 +45,30 @@ function App() {
   const getProvider = async (needSigner = false) => {
     setLoading(true);
     try {
-      if (!isWallletConnceted) {
-        const provider = await web3Modal.connect();
-        const web3Provider = new providers.Web3Provider(provider);
-        const accounts = await web3Provider.listAccounts();
+      const provider = await web3Modal.connect();
+      const web3Provider = new providers.Web3Provider(provider);
+      const accounts = await web3Provider.listAccounts();
 
-        localStorage.setItem("account", accounts);
+      localStorage.setItem("account", accounts);
 
-        setweb3provider(web3Provider);
-        setProvider(provider);
+      setweb3provider(web3Provider);
+      setProvider(provider);
 
-        const walletBalance = await web3Provider.getBalance(accounts[0]);
-        const ethBalance = ethers.utils.formatEther(walletBalance);
-        const humanFriendlyBalance = parseFloat(ethBalance).toFixed(4);
+      const walletBalance = await web3Provider.getBalance(accounts[0]);
+      const ethBalance = ethers.utils.formatEther(walletBalance);
+      const humanFriendlyBalance = parseFloat(ethBalance).toFixed(4);
 
-        localStorage.setItem("balance", humanFriendlyBalance);
+      localStorage.setItem("balance", humanFriendlyBalance);
 
-        setBalance(humanFriendlyBalance);
+      setBalance(humanFriendlyBalance);
 
-        if (accounts) setAccount(accounts[0]);
-        if (needSigner) return web3Provider.getSigner();
-        if (provider) setWalletConnected(true);
+      if (accounts) setAccount(accounts[0]);
+      if (needSigner) return web3Provider.getSigner();
+      if (provider) setWalletConnected(true);
 
-        setSuccess("Wallet Connected");
-        setLoading(false);
-        return web3Provider;
-      }
+      setSuccess("Wallet Connected");
+      setLoading(false);
+      return web3Provider;
     } catch (err) {
       setLoading(false);
       setError("Wallet Connection Rejected");

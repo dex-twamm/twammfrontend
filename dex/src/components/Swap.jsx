@@ -57,6 +57,11 @@ const Swap = (props) => {
     if (Object.keys(formErrors).length === 0 && isSubmit) {
       console.log(swapAmount);
     }
+
+    const timer = setTimeout(() => {
+      setFormErrors({});
+    }, 3000);
+    return () => clearTimeout(timer);
   }, [formErrors]);
 
   const validate = (values) => {
