@@ -22,12 +22,15 @@ function App() {
   const [ethBalance, setEthBalance] = useState();
   const [nonce, setNonce] = useState();
   const [isWallletConnceted, setWalletConnected] = useState(false);
+  const [isPlacedLongTermOrder, setIsPlacedLongTermOrder] = useState(false);
 
   const {
     srcAddress,
     destAddress,
     swapAmount,
+    error,
     setError,
+    loading,
     setLoading,
     setSuccess,
   } = useContext(ShortSwapContext);
@@ -48,12 +51,18 @@ function App() {
       const provider = await web3Modal.connect();
       const web3Provider = new providers.Web3Provider(provider);
       const accounts = await web3Provider.listAccounts();
+
+      localStorage.setItem("account", accounts);
+
       setweb3provider(web3Provider);
       setProvider(provider);
-      console.log(accounts);
+
       const walletBalance = await web3Provider.getBalance(accounts[0]);
       const ethBalance = ethers.utils.formatEther(walletBalance);
       const humanFriendlyBalance = parseFloat(ethBalance).toFixed(4);
+
+      localStorage.setItem("balance", humanFriendlyBalance);
+
       setBalance(humanFriendlyBalance);
       const nonce = web3Provider.getTransactionCount(accounts[0]);
       console.log(nonce);
@@ -143,6 +152,7 @@ function App() {
         numberOfBlockIntervals,
         signer
       );
+      setIsPlacedLongTermOrder(true);
     } catch (err) {
       console.error(err);
       setError("Transaction Cancelled");
@@ -150,8 +160,6 @@ function App() {
   };
 
   async function ShortSwapButtonClick() {
-    console.log("I am Being Clicked");
-    console.log("Wallet Connection", isWallletConnceted);
     try {
       if (!isWallletConnceted) {
         await connectWallet();
@@ -164,8 +172,6 @@ function App() {
   }
 
   async function LongSwapButtonClick() {
-    console.log("I am Being Clicked");
-    console.log("Wallet Connection", isWallletConnceted);
     if (!isWallletConnceted) {
       await connectWallet();
     } else {
@@ -184,6 +190,27 @@ function App() {
       balance: account === null ? "Wallet Balance" : balance,
     },
   };
+
+  useEffect(() => {
+    const account = localStorage.getItem("account");
+    const balance = localStorage.getItem("balance");
+    if (account && balance) {
+      setAccount(account);
+      setWalletConnected(true);
+      setBalance(balance);
+    }
+  }, []);
+
+  useEffect(() => {
+    let timeout = setTimeout(() => {
+      setError();
+      setLoading(false);
+    }, 3000);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [loading, error]);
 
   useEffect(() => {
     console.log("Swap Amount", swapAmount);
@@ -229,6 +256,7 @@ function App() {
               tokenImage={data.token.image}
               buttonText={!isWallletConnceted ? "Connect Wallet" : "Swap"}
               connectWallet={LongSwapButtonClick}
+              isPlacedLongTermOrder={isPlacedLongTermOrder}
             />
           }
         />

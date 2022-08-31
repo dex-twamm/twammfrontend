@@ -7,7 +7,7 @@ import { ShortSwapContext } from "../providers";
 import styles from "../css/Navbar.module.css";
 import classNames from "classnames";
 import { RiArrowDropDownLine } from "react-icons/ri";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Navbar = (props) => {
   const location = useLocation();
@@ -69,7 +69,7 @@ const Navbar = (props) => {
         currentPath === option.path && styles.activeTab
       )}
     >
-      <a href={option.path}>{option.value}</a>
+      <Link to={option.path}>{option.value}</Link>
     </div>
   ));
 
@@ -85,9 +85,9 @@ const Navbar = (props) => {
   ];
   const optionsList = options.map((option, index) => {
     return (
-      <a key={index} className={styles.options} href="/">
+      <Link key={index} className={styles.options} to="/">
         {option}
-      </a>
+      </Link>
     );
   });
 
@@ -115,14 +115,14 @@ const Navbar = (props) => {
     <header className={styles.header} id="header">
       <div className={styles.row}>
         <div className={styles.tabContainerLeft}>
-          <a href="/">
+          <Link to="/">
             <img
               className={styles.logo}
               src="unicorn.png"
               alt="logo"
               width="20px"
             />
-          </a>
+          </Link>
           <div className={styles.tabContainerCenter}>{tabList}</div>
         </div>
         <div className={styles.tabContainerRight}>

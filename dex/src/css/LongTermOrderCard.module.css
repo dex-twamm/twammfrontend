@@ -1,0 +1,133 @@
+.container {
+  margin: 0 auto;
+  padding-bottom: 20px;
+
+  /* display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  overflow: hidden; */
+}
+
+.topSection {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 10px;
+  /* background-color: #ededed; */
+  border-bottom: 2px solid #f3f3f3;
+}
+
+.orderId {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.iconExternalLink {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.iconExternalLink:hover {
+  color: #d50066;
+}
+
+.bottomSection {
+  padding: 10px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.tokenContainer {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+  margin: 0 60px;
+}
+
+.tokenIcon {
+  width: 70px;
+  height: 70px;
+}
+
+.tokenText {
+  font-size: 10px;
+  text-align: center;
+  font-weight: 600;
+  margin-top: 5px;
+}
+
+.greenText {
+  color: green;
+}
+
+.timeRemaining {
+  margin-bottom: 5px;
+  color: green;
+  font-size: 14px;
+}
+
+.progress {
+  height: 10px;
+  background-color: #f3f3f3;
+  border-radius: 10px;
+}
+
+.activeProgress {
+  height: 10px;
+  background-color: #c7c7c7;
+  border-radius: 10px;
+}
+
+.arrow {
+  grid-column: span 2 / span 2;
+
+  justify-self: center;
+  place-self: center;
+  margin-bottom: 30px;
+}
+
+.extrasContainer {
+  margin-top: -20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.fees,
+.averagePrice {
+  background-color: #707070;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+
+.cancelButton {
+  text-align: center;
+  width: 100%;
+  padding: 16px;
+  border-radius: 16px;
+
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  outline: none;
+
+  background-color: #fdeaf1;
+  color: #d50066;
+  cursor: pointer;
+
+  transition: all 0.2s ease-in-out;
+}
+
+.cancelButton:hover {
+  background-color: #ffdeea;
+}
