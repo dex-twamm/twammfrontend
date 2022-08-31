@@ -43,12 +43,12 @@ const LongSwap = (props) => {
           buttonText={buttonText}
         />
       </div>
-      {/* isPlacedLongTermOrder && */}
-      {
+
+      {isPlacedLongTermOrder && (
         <div className={styles.longTermOrderCard}>
           <LongTermOrderCard />
         </div>
-      }
+      )}
     </div>
   );
 };
