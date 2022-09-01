@@ -84,7 +84,11 @@ const LongTermOrderCard = () => {
             </svg>
           </div>
           <div>
-            <img className={styles.tokenIcon} src="/dai.png" alt="dai" />
+            <img
+              className={styles.tokenIcon}
+              src={tokenB.image}
+              alt={tokenB.symbol}
+            />
             <p className={classNames(styles.tokenText, styles.greenText)}>
               3201.2 GOER
             </p>

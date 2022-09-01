@@ -30,6 +30,10 @@ const Swap = (props) => {
     sliderValueUnit,
     setSliderValueUnit,
     setSliderValueInSec,
+    tokenA,
+    tokenB,
+    setTokenA,
+    setTokenB,
   } = useContext(LongSwapContext);
 
   const handleDisplay = (event) => {
@@ -38,18 +42,18 @@ const Swap = (props) => {
     setDisplay(!display);
   };
 
-  const [tokenA, setTokenA] = useState({
-    symbol: "Faucet",
-    image: "/ethereum.png",
-    address: FAUCET_TOKEN_ADDRESS,
-  });
+  // const [tokenA, setTokenA] = useState({
+  //   symbol: "Faucet",
+  //   image: "/ethereum.png",
+  //   address: FAUCET_TOKEN_ADDRESS,
+  // });
 
-  const [tokenB, setTokenB] = useState({
-    symbol: "Matic",
-    image:
-      "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png",
-    address: MATIC_TOKEN_ADDRESS,
-  });
+  // const [tokenB, setTokenB] = useState({
+  //   symbol: "Matic",
+  //   image:
+  //     "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png",
+  //   address: MATIC_TOKEN_ADDRESS,
+  // });
 
   const handleSubmit = (e) => {
     e.preventDefault();
