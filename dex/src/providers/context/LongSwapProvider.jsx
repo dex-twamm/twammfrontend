@@ -3,6 +3,8 @@ import { useState, createContext } from "react";
 export const LongSwapProvider = ({ children }) => {
   const [sliderValue, setSliderValue] = useState(1);
 
+  const [sliderValueInSec, setSliderValueInSec] = useState(60);
+
   const [sliderValueUnit, setSliderValueUnit] = useState("Min");
 
   return (
@@ -12,6 +14,8 @@ export const LongSwapProvider = ({ children }) => {
         setSliderValue,
         sliderValueUnit,
         setSliderValueUnit,
+        sliderValueInSec,
+        setSliderValueInSec,
       }}
     >
       {children}

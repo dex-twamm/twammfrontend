@@ -4,20 +4,31 @@ import { HiExternalLink } from "react-icons/hi";
 import { CgArrowLongRight } from "react-icons/cg";
 import classNames from "classnames";
 import { LongSwapContext } from "../providers";
+import moment from "moment";
 
 const LongTermOrderCard = () => {
-  const [progress, setProgress] = React.useState(40);
-  const { sliderValue } = React.useContext(LongSwapContext);
+  const { sliderValueInSec } = React.useContext(LongSwapContext);
+
+  const initialValue = Math.ceil(sliderValueInSec);
+
+  const [progress, setProgress] = React.useState(1);
+  const [remainingTime, setRemainingTime] = React.useState(initialValue);
+
+  let value = Math.ceil(sliderValueInSec);
 
   React.useEffect(() => {
     const interval = setInterval(() => {
-      console.log(Math.ceil(Date.now() / 1000));
+      value = value - 1;
+      let percent = (value * 100) / initialValue;
+      let remainingPercent = 100 - percent;
+      setProgress(remainingPercent);
+      setRemainingTime(value);
     }, 1000);
 
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [sliderValueInSec]);
 
   const dummyOrder = {
     orderId: "001abc",
@@ -71,7 +82,9 @@ const LongTermOrderCard = () => {
         </div>
 
         <div>
-          <p className={styles.timeRemaining}>2 minutes remaining...</p>
+          <p className={styles.timeRemaining}>
+            {remainingTime} seconds remaining...
+          </p>
           <div className={styles.progress}>
             <div
               style={{ width: `${progress}%` }}

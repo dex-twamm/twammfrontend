@@ -24,8 +24,13 @@ const Swap = (props) => {
   const { equivalentAmount, setEquivalentAmount, swapAmount, setSwapAmount } =
     useContext(ShortSwapContext);
 
-  const { sliderValue, setSliderValue, sliderValueUnit, setSliderValueUnit } =
-    useContext(LongSwapContext);
+  const {
+    sliderValue,
+    setSliderValue,
+    sliderValueUnit,
+    setSliderValueUnit,
+    setSliderValueInSec,
+  } = useContext(LongSwapContext);
 
   const handleDisplay = (event) => {
     console.log("Current Target Id", event.currentTarget.id);
@@ -80,6 +85,7 @@ const Swap = (props) => {
   const handleChange = (e, newValue) => {
     if (typeof newValue === "number") {
       setValue(newValue);
+      setSliderValueInSec(calculateValue(newValue));
       setSliderValue(valueLabel(calculateValue(newValue)).scaledValue);
       setSliderValueUnit(valueLabel(calculateValue(newValue)).sliderUnits);
     }
