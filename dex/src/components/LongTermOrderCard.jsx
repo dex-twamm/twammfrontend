@@ -32,10 +32,8 @@ const LongTermOrderCard = () => {
         setProgress(remainingPercent);
         setRemainingTime(value);
 
-        const converted = (swapAmount - (percent * swapAmount) / 100).toFixed(
-          2
-        );
-        setRemainingToken(swapAmount - converted);
+        const converted = swapAmount - (percent * swapAmount) / 100;
+        setRemainingToken((swapAmount - converted).toFixed(2));
 
         setConvertedTokenAmount((converted * rate).toFixed(2));
       } else {
