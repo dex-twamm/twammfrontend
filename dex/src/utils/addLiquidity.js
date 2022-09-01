@@ -28,23 +28,20 @@ export async function joinPool(walletAddress, signer) {
     console.log(joinPoolResult);
 }
 
-export async function exitPool(walletAdress, signer) {
+export async function exitPool(walletAdress, signer, bptAmountIn) {
     const poolContract = new Contract(
         VAULT_CONTRACT_ADDRESS,
         VAULT_CONTRACT_ABI,
         signer
     )
-    const encodedRequest = defaultAbiCoder.encode(
-        ["uint256", "uint256[]", "uint256"],
-        [0, [fp(1e-12), fp(1.0)], 1]
-    );
+    const encodedRequest = defaultAbiCoder.encode(['uint256', 'uint256'], [1, bptAmountIn]);
     const exitPoolTx = await poolContract.exitPool(
         POOL_ID,
         walletAdress,
         walletAdress,
         {
             assets: [MATIC_TOKEN_ADDRESS, FAUCET_TOKEN_ADDRESS],
-            minAmountsOut: [MAX_UINT256, MAX_UINT256],
+            minAmountsOut: [0, 0],
             userData: encodedRequest,
             toInternalBalance: false,
 

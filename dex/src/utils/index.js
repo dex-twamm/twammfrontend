@@ -65,7 +65,6 @@ function parseScientific(num) {
 
 
 export const MAX_UINT256 = ethers.constants.MaxUint256;
-export const MIN_UNIT256 = ethers.constants.MinInt256;
 export const ZERO = ethers.constants.Zero;
 
 export const POOL_ID =

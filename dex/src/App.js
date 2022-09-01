@@ -203,12 +203,13 @@ function App() {
   //  ExitPool
   const _exitPool = async () => {
     try {
+      const bptAmountIn = ethers.utils.parseUnits("0.001", "ether");
       const walletAddress = account;
       const signer = await getProvider(true);
       if (!isWallletConnceted) {
         await connectWallet();
       }
-      await exitPool(walletAddress, signer);
+      await exitPool(walletAddress, signer, bptAmountIn);
 
     } catch (e) {
       console.log(e);
