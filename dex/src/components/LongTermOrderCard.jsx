@@ -16,9 +16,12 @@ const LongTermOrderCard = () => {
 
   const [progress, setProgress] = React.useState(1);
   const [remainingTime, setRemainingTime] = React.useState(initialValue);
+  const [remainingToken, setRemainingToken] = React.useState(swapAmount);
+  const [convertedTokenAmount, setConvertedTokenAmount] = React.useState(0);
 
   let value = Math.ceil(sliderValueInSec);
 
+  const rate = 67.789; // What is the rate of conversion from one token to another?
   React.useEffect(() => {
     const interval = setInterval(() => {
       value = value - 1;
@@ -28,6 +31,13 @@ const LongTermOrderCard = () => {
       if (progress != 100) {
         setProgress(remainingPercent);
         setRemainingTime(value);
+
+        const converted = (swapAmount - (percent * swapAmount) / 100).toFixed(
+          2
+        );
+        setRemainingToken(swapAmount - converted);
+
+        setConvertedTokenAmount((converted * rate).toFixed(2));
       } else {
         setProgress(100);
       }
@@ -40,12 +50,12 @@ const LongTermOrderCard = () => {
     return () => {
       clearInterval(interval);
     };
-  }, [sliderValueInSec]);
+  }, [sliderValueInSec, swapAmount]);
 
   const dummyOrder = {
     orderId: "001abc",
     transactionLink: "https://somelink.com",
-    amount: 100,
+    amount: swapAmount,
     fees: "3%",
     averagePrice: "0.3 ETH",
   };
@@ -68,7 +78,9 @@ const LongTermOrderCard = () => {
               alt={tokenA.symbol}
             />
             <p className={styles.tokenText}>
-              <span>40 {tokenA.symbol}</span>{" "}
+              <span>
+                {remainingToken} {tokenA.symbol}
+              </span>{" "}
               <span>
                 of {swapAmount} {tokenA.symbol}
               </span>
@@ -95,7 +107,7 @@ const LongTermOrderCard = () => {
               alt={tokenB.symbol}
             />
             <p className={classNames(styles.tokenText, styles.greenText)}>
-              3201.2 {tokenB.symbol}
+              {convertedTokenAmount} {tokenB.symbol}
             </p>
           </div>
         </div>
