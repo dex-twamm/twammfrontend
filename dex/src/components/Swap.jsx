@@ -10,6 +10,7 @@ import { Alert, Box, Slider, Typography } from "@mui/material";
 import PopupModal from "./PopupModal";
 import lsStyles from "../css/LongSwap.module.css";
 import { valueLabel, calculateValue } from "../methods/longSwapMethod";
+import { LongSwapContext } from "../providers";
 
 const Swap = (props) => {
   const { connectWallet, buttonText, swapType } = props;
@@ -22,6 +23,9 @@ const Swap = (props) => {
 
   const { equivalentAmount, setEquivalentAmount, swapAmount, setSwapAmount } =
     useContext(ShortSwapContext);
+
+  const { sliderValue, setSliderValue, sliderValueUnit, setSliderValueUnit } =
+    useContext(LongSwapContext);
 
   const handleDisplay = (event) => {
     console.log("Current Target Id", event.currentTarget.id);
@@ -76,6 +80,8 @@ const Swap = (props) => {
   const handleChange = (e, newValue) => {
     if (typeof newValue === "number") {
       setValue(newValue);
+      setSliderValue(valueLabel(calculateValue(newValue)).scaledValue);
+      setSliderValueUnit(valueLabel(calculateValue(newValue)).sliderUnits);
     }
   };
 
@@ -125,8 +131,8 @@ const Swap = (props) => {
         <div className={lsStyles.rangeSelect}>
           <Box sx={{ width: "90%", margin: "0 auto" }}>
             <Typography fontWeight={600} id="non-linear-slider" gutterBottom>
-              Time:
-              {valueLabel(calculateValue(value))}
+              Time: {`${sliderValue} ${sliderValueUnit}`}
+              {/* {valueLabel(calculateValue(value))} */}
             </Typography>
             <Slider
               value={value}
@@ -138,9 +144,9 @@ const Swap = (props) => {
                 width: 1,
                 color: "#ffaac9",
               }}
-              scale={calculateValue}
-              getAriaValueText={valueLabel}
-              valueLabelFormat={valueLabel}
+              // scale={calculateValue}
+              // getAriaValueText={valueLabel}
+              // valueLabelFormat={valueLabel}
               onChange={handleChange}
               valueLabelDisplay="auto"
               aria-labelledby="non-linear-slider"

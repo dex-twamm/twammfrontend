@@ -14,16 +14,16 @@ const PopupModal = () => {
     let timer = setTimeout(() => {
       setError("");
       setSuccess("");
-      setLoading(false);
+      // setLoading(false);
     }, 5000);
 
-    let loaderTimer = setTimeout(() => {
-      setLoading(false);
-    }, 3000);
+    // let loaderTimer = setTimeout(() => {
+    //   setLoading(false);
+    // }, 3000);
 
     return () => {
       clearTimeout(timer);
-      clearTimeout(loaderTimer);
+      // clearTimeout(loaderTimer);
     };
   }, []);
 

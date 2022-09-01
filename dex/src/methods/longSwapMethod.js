@@ -19,7 +19,20 @@ const valueLabel = (value) => {
   } else if (scaledValue >= 60 && unitIndex < sliderUnits.length - 1) {
     scaledValue /= 60;
   }
-  return `${scaledValue.toFixed(0)} ${sliderUnits[unitIndex]}`;
+
+  const values = {
+    scaledValue: scaledValue.toFixed(0),
+    sliderUnits: sliderUnits[unitIndex],
+  };
+  return values;
+  // sliderUnits: sliderUnits[unitIndex],}
+  // return sliderUnits[unitIndex];
+  // scaledValue.toFixed(0);
+  //   `${scaledValue.toFixed(0)} ${
+  //   sliderUnits[unitIndex]
+  // }`;
+  // scaledValue: scaledValue.toFixed(0),
+  // sliderUnits: sliderUnits[unitIndex],
 };
 
 const calculateValue = (value) => {
