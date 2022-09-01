@@ -1,10 +1,8 @@
 import React from "react";
 import styles from "../css/LongTermOrderCard.module.css";
 import { HiExternalLink } from "react-icons/hi";
-import { CgArrowLongRight } from "react-icons/cg";
 import classNames from "classnames";
 import { LongSwapContext } from "../providers";
-import moment from "moment";
 
 const LongTermOrderCard = () => {
   const { sliderValueInSec } = React.useContext(LongSwapContext);
