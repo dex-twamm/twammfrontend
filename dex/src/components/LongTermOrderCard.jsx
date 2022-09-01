@@ -5,7 +5,10 @@ import classNames from "classnames";
 import { LongSwapContext } from "../providers";
 
 const LongTermOrderCard = () => {
-  const { sliderValueInSec } = React.useContext(LongSwapContext);
+  const remainingTimeRef = React.useRef();
+
+  const { sliderValueInSec, tokenA, tokenB } =
+    React.useContext(LongSwapContext);
 
   const initialValue = Math.ceil(sliderValueInSec);
 
@@ -19,9 +22,18 @@ const LongTermOrderCard = () => {
       value = value - 1;
       let percent = (value * 100) / initialValue;
       let remainingPercent = 100 - percent;
-      setProgress(remainingPercent);
-      setRemainingTime(value);
+
+      if (progress != 100) {
+        setProgress(remainingPercent);
+        setRemainingTime(value);
+      } else {
+        setProgress(100);
+      }
     }, 1000);
+
+    setTimeout(function () {
+      clearInterval(interval);
+    }, initialValue * 1000);
 
     return () => {
       clearInterval(interval);
@@ -50,8 +62,8 @@ const LongTermOrderCard = () => {
           <div>
             <img
               className={styles.tokenIcon}
-              src="/ethereum.png"
-              alt="ethereum"
+              src={tokenA.image}
+              alt={tokenA.symbol}
             />
             <p className={styles.tokenText}>
               <span>40 ETH</span> <span>of {dummyOrder.amount} ETH</span>
@@ -80,13 +92,18 @@ const LongTermOrderCard = () => {
         </div>
 
         <div>
-          <p className={styles.timeRemaining}>
-            {remainingTime} seconds remaining...
+          <p className={styles.timeRemaining} ref={remainingTimeRef}>
+            {remainingTime != 0
+              ? `${remainingTime} seconds remaining...`
+              : "Completed.."}
           </p>
           <div className={styles.progress}>
             <div
               style={{ width: `${progress}%` }}
-              className={styles.activeProgress}
+              className={classNames(
+                styles.activeProgress,
+                remainingTime == 0 && styles.greenProgress
+              )}
             ></div>
           </div>
         </div>
@@ -98,7 +115,14 @@ const LongTermOrderCard = () => {
           </div>
         </div>
 
-        <button className={styles.cancelButton}>Cancel</button>
+        <button
+          className={classNames(
+            styles.button,
+            remainingTime != 0 ? styles.cancelButton : styles.successButton
+          )}
+        >
+          {remainingTime != 0 ? "Cancel" : "Completed"}
+        </button>
       </div>
     </div>
   );
