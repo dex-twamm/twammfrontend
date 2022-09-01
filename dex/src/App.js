@@ -123,8 +123,9 @@ function App() {
       }
     } catch (err) {
       console.error(err);
-      setError("Transaction Cancelled");
       setLoading(false);
+      setError("Transaction Cancelled");
+
       // setSwapAmount("");
     }
   };
@@ -147,6 +148,7 @@ function App() {
       setIsPlacedLongTermOrder(true);
     } catch (err) {
       console.error(err);
+      setLoading(false);
       setError("Transaction Cancelled");
     }
   };
@@ -192,29 +194,6 @@ function App() {
       setBalance(balance);
     }
   }, []);
-
-  useEffect(() => {
-    let timeout = setTimeout(() => {
-      setError();
-      setLoading(false);
-    }, 3000);
-
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [loading, error]);
-
-  useEffect(() => {
-    console.log("Swap Amount", swapAmount);
-  }, [swapAmount]);
-
-  useEffect(() => {
-    console.log("Source Address", srcAddress);
-  }, [srcAddress]);
-
-  useEffect(() => {
-    console.log("Destination Address", destAddress);
-  }, [destAddress]);
 
   return (
     <div className="App">

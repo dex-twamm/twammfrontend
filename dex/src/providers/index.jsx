@@ -1,11 +1,13 @@
-import { ShortSwapProvider } from "./context";
+import { LongSwapProvider, ShortSwapProvider } from "./context";
 
-const AllProviders = ({children}) => {
-    return <ShortSwapProvider>
-        {children}
+const AllProviders = ({ children }) => {
+  return (
+    <ShortSwapProvider>
+      <LongSwapProvider>{children}</LongSwapProvider>
     </ShortSwapProvider>
-}
+  );
+};
 
 export default AllProviders;
 
-export * from './context';
+export * from "./context";

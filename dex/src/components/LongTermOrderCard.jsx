@@ -3,15 +3,38 @@ import styles from "../css/LongTermOrderCard.module.css";
 import { HiExternalLink } from "react-icons/hi";
 import { CgArrowLongRight } from "react-icons/cg";
 import classNames from "classnames";
+import { LongSwapContext } from "../providers";
 
 const LongTermOrderCard = () => {
   const [progress, setProgress] = React.useState(40);
+  const { sliderValue } = React.useContext(LongSwapContext);
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      console.log(Math.ceil(Date.now() / 1000));
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  const dummyOrder = {
+    orderId: "001abc",
+    transactionLink: "https://somelink.com",
+    amount: 100,
+    fees: "3%",
+    averagePrice: "0.3 ETH",
+  };
 
   return (
     <div className={styles.container}>
       <div className={styles.topSection}>
-        <p className={styles.orderId}>order_id</p>
-        <HiExternalLink className={styles.iconExternalLink} />
+        <p className={styles.orderId}>{dummyOrder.orderId}</p>
+        <HiExternalLink
+          className={styles.iconExternalLink}
+          onClick={() => window.open(dummyOrder.transactionLink, "_blank")}
+        />
       </div>
       <div className={styles.bottomSection}>
         <div className={styles.tokenContainer}>
@@ -22,7 +45,7 @@ const LongTermOrderCard = () => {
               alt="ethereum"
             />
             <p className={styles.tokenText}>
-              <span>40 ETH</span> <span>of 100 ETH</span>
+              <span>40 ETH</span> <span>of {dummyOrder.amount} ETH</span>
             </p>
           </div>
           <div className={styles.arrow}>
@@ -58,8 +81,10 @@ const LongTermOrderCard = () => {
         </div>
 
         <div className={styles.extrasContainer}>
-          <div className={styles.fees}>3% fees</div>
-          <div className={styles.averagePrice}>0.2 ETH Average Price</div>
+          <div className={styles.fees}>{dummyOrder.fees} fees</div>
+          <div className={styles.averagePrice}>
+            {dummyOrder.averagePrice} Average Price
+          </div>
         </div>
 
         <button className={styles.cancelButton}>Cancel</button>

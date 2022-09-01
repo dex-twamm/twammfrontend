@@ -43,7 +43,7 @@ const ShortSwap = ({ tokenSymbol, tokenImage, connectWallet, buttonText }) => {
         >
           {buttonText}
         </button> */}
-        <PopupModal />
+        {/* <PopupModal /> */}
       </div>
     </div>
   );
