@@ -105,7 +105,6 @@ function App() {
       const swapAmountWei = ethers.utils.parseUnits(swapAmount, "ether");
       // const swapAmountWei = toHex(amount);
 
-
       // Check if the user entered zero
       // We are here using the `eq` method from BigNumber class in `ethers.js`
       if (swapAmountWei) {
@@ -121,7 +120,7 @@ function App() {
           swapAmountWei,
           assetIn,
           assetOut,
-          walletAddress,
+          walletAddress
         ).catch((err) => {
           console.error(err);
           setError("Transaction Error");
@@ -136,8 +135,6 @@ function App() {
       // setSwapAmount("");
     }
   };
-
-
 
   const _placeLongTermOrders = async () => {
 
@@ -182,7 +179,9 @@ function App() {
     if (!isWallletConnceted) {
       await connectWallet();
     } else {
-      await _placeLongTermOrders();
+      if (swapAmount > 0) {
+        await _placeLongTermOrders();
+      }
     }
   }
 

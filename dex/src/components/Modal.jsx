@@ -45,6 +45,7 @@ const Modal = ({ display, setDisplay, selectToken, setTokenA, setTokenB }) => {
         image: token.children[0].src.slice(21, token.length),
       });
     }
+    handleModalClose();
   };
 
   // Mapping The Token Details Objects
@@ -61,10 +62,15 @@ const Modal = ({ display, setDisplay, selectToken, setTokenA, setTokenB }) => {
           src={token.image}
           style={{ marginRight: "8px", width: "20px" }}
         />
+<<<<<<< HEAD
         <div className={styles.modalTokenSymbol} onClick={handleModalClose}>
           {token.symbol}
         </div>
         <p style={{ display: "none" }}>{token.address}</p>
+=======
+        <div className={styles.modalTokenSymbol}>{token.symbol}</div>
+        <p className={styles.tokenAddress}>{token.address}</p>
+>>>>>>> 4cc7562708fc5ee4c3300d4ab475242683b6f9ab
       </div>
     );
   });

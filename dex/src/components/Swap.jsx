@@ -24,8 +24,17 @@ const Swap = (props) => {
   const { equivalentAmount, setEquivalentAmount, swapAmount, setSwapAmount } =
     useContext(ShortSwapContext);
 
-  const { sliderValue, setSliderValue, sliderValueUnit, setSliderValueUnit } =
-    useContext(LongSwapContext);
+  const {
+    sliderValue,
+    setSliderValue,
+    sliderValueUnit,
+    setSliderValueUnit,
+    setSliderValueInSec,
+    tokenA,
+    tokenB,
+    setTokenA,
+    setTokenB,
+  } = useContext(LongSwapContext);
 
   const handleDisplay = (event) => {
     console.log("Current Target Id", event.currentTarget.id);
@@ -33,18 +42,18 @@ const Swap = (props) => {
     setDisplay(!display);
   };
 
-  const [tokenA, setTokenA] = useState({
-    symbol: "Faucet",
-    image: "/ethereum.png",
-    address: FAUCET_TOKEN_ADDRESS,
-  });
+  // const [tokenA, setTokenA] = useState({
+  //   symbol: "Faucet",
+  //   image: "/ethereum.png",
+  //   address: FAUCET_TOKEN_ADDRESS,
+  // });
 
-  const [tokenB, setTokenB] = useState({
-    symbol: "Matic",
-    image:
-      "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png",
-    address: MATIC_TOKEN_ADDRESS,
-  });
+  // const [tokenB, setTokenB] = useState({
+  //   symbol: "Matic",
+  //   image:
+  //     "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png",
+  //   address: MATIC_TOKEN_ADDRESS,
+  // });
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -68,6 +77,7 @@ const Swap = (props) => {
   const handleChange = (e, newValue) => {
     if (typeof newValue === "number") {
       setValue(newValue);
+      setSliderValueInSec(calculateValue(newValue));
       setSliderValue(valueLabel(calculateValue(newValue)).scaledValue);
       setSliderValueUnit(valueLabel(calculateValue(newValue)).sliderUnits);
     }
