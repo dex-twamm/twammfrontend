@@ -9,6 +9,7 @@ import { BigNumber, ethers, providers } from "ethers";
 import { useState, useContext, useEffect } from "react";
 import { getEtherBalance } from "./utils/getAmount";
 import { swapTokens } from "./utils/swap";
+import { joinPool, exitPool } from "./utils/addLiquidity";
 import { toHex, truncateAddress } from "./utils";
 import { ShortSwapContext } from "./providers";
 import { placeLongTermOrder } from "./utils/longSwap";
@@ -139,19 +140,23 @@ function App() {
 
 
   const _placeLongTermOrders = async () => {
+
     try {
       const tokenInIndex = "0";
-      const tokenOutIndex = "0";
-      const amountIn = "100000";
-      const numberOfBlockIntervals = "0";
+      const tokenOutIndex = "1";
+      const amountIn = ethers.utils.parseUnits("0.001", "ether")
+      console.log("amountIn", amountIn);
+      const numberOfBlockIntervals = "3";
       const signer = await getProvider(true);
+      const walletAddress = account;
       // Call the PlaceLongTermOrders function from the `utils` folder*
       await placeLongTermOrder(
         tokenInIndex,
         tokenOutIndex,
         amountIn,
         numberOfBlockIntervals,
-        signer
+        signer,
+        walletAddress
       );
       setIsPlacedLongTermOrder(true);
     } catch (err) {
@@ -178,6 +183,36 @@ function App() {
       await connectWallet();
     } else {
       await _placeLongTermOrders();
+    }
+  }
+
+  //  JoinPool
+  const _joinPool = async () => {
+    try {
+      const walletAddress = account;
+      const signer = await getProvider(true);
+      if (!isWallletConnceted) {
+        await connectWallet();
+      }
+      await joinPool(walletAddress, signer);
+
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  //  ExitPool
+  const _exitPool = async () => {
+    try {
+      const walletAddress = account;
+      const signer = await getProvider(true);
+      if (!isWallletConnceted) {
+        await connectWallet();
+      }
+      await exitPool(walletAddress, signer);
+
+    } catch (e) {
+      console.log(e);
     }
   }
 
@@ -240,7 +275,8 @@ function App() {
           }
         />
 
-        <Route path="/liquidity" element={<AddLiquidity />} />
+        {/* Replace _exitPool with _joinPool When Needed To Join Pool */}
+        <Route path="/liquidity" element={<AddLiquidity connect={_exitPool} />} />
       </Routes>
     </div>
   );

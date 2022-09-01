@@ -64,7 +64,7 @@ const Modal = ({ display, setDisplay, selectToken, setTokenA, setTokenB }) => {
         <div className={styles.modalTokenSymbol} onClick={handleModalClose}>
           {token.symbol}
         </div>
-        <p>{token.address}</p>
+        <p style={{ display: "none" }}>{token.address}</p>
       </div>
     );
   });
