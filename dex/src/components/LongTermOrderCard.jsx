@@ -2,10 +2,12 @@ import React from "react";
 import styles from "../css/LongTermOrderCard.module.css";
 import { HiExternalLink } from "react-icons/hi";
 import classNames from "classnames";
-import { LongSwapContext } from "../providers";
+import { LongSwapContext, ShortSwapContext } from "../providers";
 
 const LongTermOrderCard = () => {
   const remainingTimeRef = React.useRef();
+
+  const { swapAmount } = React.useContext(ShortSwapContext);
 
   const { sliderValueInSec, tokenA, tokenB } =
     React.useContext(LongSwapContext);
@@ -66,7 +68,10 @@ const LongTermOrderCard = () => {
               alt={tokenA.symbol}
             />
             <p className={styles.tokenText}>
-              <span>40 ETH</span> <span>of {dummyOrder.amount} ETH</span>
+              <span>40 {tokenA.symbol}</span>{" "}
+              <span>
+                of {swapAmount} {tokenA.symbol}
+              </span>
             </p>
           </div>
           <div className={styles.arrow}>
@@ -90,7 +95,7 @@ const LongTermOrderCard = () => {
               alt={tokenB.symbol}
             />
             <p className={classNames(styles.tokenText, styles.greenText)}>
-              3201.2 GOER
+              3201.2 {tokenB.symbol}
             </p>
           </div>
         </div>
