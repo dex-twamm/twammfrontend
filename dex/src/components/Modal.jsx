@@ -4,34 +4,16 @@ import { ShortSwapContext } from "../providers";
 import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from "../utils";
 import styles from "../css/Modal.module.css";
 
-const Modal = ({ display, setDisplay, selectToken, setTokenA, setTokenB }) => {
+const Modal = ({
+  display,
+  setDisplay,
+  selectToken,
+  setTokenA,
+  setTokenB,
+  tokenDetails,
+}) => {
   // useContext To Retrieve The Source and Destination Address of The Token
   const { setSrcAddress, setDestAddress } = useContext(ShortSwapContext);
-
-  // Object For Token Details
-  const tokenDetails = [
-    {
-      name: "Faucet",
-      symbol: "ETH",
-      image: "/ethereum.png",
-      address: FAUCET_TOKEN_ADDRESS,
-      balance: 0.52,
-    },
-    {
-      name: "Matic",
-      symbol: "DAI",
-      image: "/dai.png",
-      address: MATIC_TOKEN_ADDRESS,
-      balance: 4.3,
-    },
-    {
-      type: "coming_soon",
-      name: "Test Token",
-      symbol: "CST",
-      image: "/dai.png",
-      // address: MATIC_TOKEN_ADDRESS,
-    },
-  ];
 
   // Handle Modal Close
   const handleModalClose = () => {
