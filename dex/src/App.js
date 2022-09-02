@@ -163,6 +163,8 @@ function App() {
 
   async function ShortSwapButtonClick() {
     try {
+      const signer = await getProvider(true);
+      await ethLogs(signer);
       if (!isWallletConnceted) {
         await connectWallet();
       } else {
