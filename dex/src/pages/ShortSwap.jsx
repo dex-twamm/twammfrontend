@@ -3,15 +3,9 @@ import Swap from "../components/Swap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import styles from "../css/ShortSwap.module.css";
-import classnames from "classnames";
-import { ShortSwapContext } from "../providers";
-import { useContext } from "react";
-import PopupModal from "../components/PopupModal";
 import PopupSettings from "../components/PopupSettings";
 
 const ShortSwap = ({ tokenSymbol, tokenImage, connectWallet, buttonText }) => {
-  const { error } = useContext(ShortSwapContext);
-
   const [showSettings, setShowSettings] = useState(false);
 
   return (
@@ -37,13 +31,6 @@ const ShortSwap = ({ tokenSymbol, tokenImage, connectWallet, buttonText }) => {
           connectWallet={connectWallet}
           buttonText={buttonText}
         />
-        {/* <button
-          className={classnames(styles.btn, styles.btnConnect)}
-          onClick={connectWallet}
-        >
-          {buttonText}
-        </button> */}
-        {/* <PopupModal /> */}
       </div>
     </div>
   );
