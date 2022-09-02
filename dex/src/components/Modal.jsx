@@ -4,23 +4,16 @@ import { ShortSwapContext } from "../providers";
 import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from "../utils";
 import styles from "../css/Modal.module.css";
 
-const Modal = ({ display, setDisplay, selectToken, setTokenA, setTokenB }) => {
+const Modal = ({
+  display,
+  setDisplay,
+  selectToken,
+  setTokenA,
+  setTokenB,
+  tokenDetails,
+}) => {
   // useContext To Retrieve The Source and Destination Address of The Token
   const { setSrcAddress, setDestAddress } = useContext(ShortSwapContext);
-
-  // Object For Token Details
-  const tokenDetails = [
-    {
-      symbol: "Faucet",
-      image: "/ethereum.png",
-      address: FAUCET_TOKEN_ADDRESS,
-    },
-    {
-      symbol: "Matic",
-      image: "/dai.png",
-      address: MATIC_TOKEN_ADDRESS,
-    },
-  ];
 
   // Handle Modal Close
   const handleModalClose = () => {
@@ -60,10 +53,30 @@ const Modal = ({ display, setDisplay, selectToken, setTokenA, setTokenB }) => {
           className={styles.modalTokenImg}
           alt="ETH logo"
           src={token.image}
-          style={{ marginRight: "8px", width: "20px" }}
+          style={{ width: "25px" }}
         />
+<<<<<<< HEAD
         <div className={styles.modalTokenSymbol}>{token.symbol}</div>
-        <p className={styles.tokenAddress}>{token.address}</p>
+        <p className={styles.tokenAddress} style={{ display: "none" }}>
+          {token.address}
+        </p>
+=======
+        <p style={{ display: "none" }}>{token.name}</p>
+        <div className={styles.modalTokenSymbol}>
+          <div>
+            <p className={styles.tokenName}>{token.name}</p>
+            <p className={styles.tokenSymbol}>{token.symbol}</p>
+          </div>
+          <p>{token.balance}</p>
+        </div>
+        {/* <p className={styles.tokenAddress}>{token.address}</p> */}
+
+        {token.type === "coming_soon" && (
+          <div className={styles.comingSoon}>
+            <span>coming soon...</span>
+          </div>
+        )}
+>>>>>>> 4f72e8a3edf35ca85c1f60cc186fe334bb52273b
       </div>
     );
   });
@@ -92,9 +105,11 @@ const Modal = ({ display, setDisplay, selectToken, setTokenA, setTokenB }) => {
             </svg>
           </div>
           <div className={styles.modalTokenList}>{tokenList}</div>
-          <div>
+          {/* <div>
             <button className={styles.btnManageToken}>Manage Token List</button>
-          </div>
+          </div> */}
+
+          {/* coming soon */}
         </div>
       </div>
     )

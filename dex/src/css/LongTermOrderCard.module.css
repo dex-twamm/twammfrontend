@@ -1,12 +1,11 @@
 .container {
   margin: 0 auto;
-  padding-bottom: 20px;
 
-  /* display: flex;
-  flex-direction: column;
-  gap: 20px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #f3f3f3;
 
-  overflow: hidden; */
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 }
 
 .topSection {
@@ -14,13 +13,13 @@
   gap: 10px;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 10px;
-  /* background-color: #ededed; */
+
+  padding: 5px 10px;
   border-bottom: 2px solid #f3f3f3;
 }
 
 .orderId {
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 600;
 }
 
@@ -39,7 +38,7 @@
 
   display: flex;
   flex-direction: column;
-  gap: 50px;
+  gap: 15px;
 }
 
 .tokenContainer {
@@ -47,12 +46,19 @@
   gap: 10px;
   grid-template-columns: repeat(4, minmax(0, 1fr));
 
-  margin: 0 60px;
+  margin: 0 10px;
+}
+
+.tokenWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .tokenIcon {
-  width: 70px;
-  height: 70px;
+  width: 30px;
+  height: 30px;
 }
 
 .tokenText {
@@ -69,18 +75,18 @@
 .timeRemaining {
   margin-bottom: 5px;
   color: green;
-  font-size: 14px;
+  font-size: 10px;
 }
 
 .progress {
-  height: 10px;
-  background-color: #f3f3f3;
+  height: 5px;
+  background-color: #ededed;
   border-radius: 10px;
 }
 
 .activeProgress {
-  height: 10px;
-  background-color: #c7c7c7;
+  height: 5px;
+  background-color: #d7d7d7;
   border-radius: 10px;
 }
 
@@ -89,11 +95,11 @@
 
   justify-self: center;
   place-self: center;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
 }
 
 .extrasContainer {
-  margin-top: -20px;
+  /* margin-top: -20px; */
   display: flex;
   align-items: center;
   gap: 10px;
@@ -103,31 +109,45 @@
 .averagePrice {
   background-color: #707070;
   color: #fff;
-  font-size: 12px;
+  font-size: 8px;
   font-weight: 600;
+  white-space: nowrap;
 
   padding: 5px 10px;
   border-radius: 10px;
 }
 
-.cancelButton {
+.button {
   text-align: center;
   width: 100%;
-  padding: 16px;
+  padding: 8px;
   border-radius: 16px;
 
-  font-size: 16px;
+  /* font-size: 16px; */
   font-weight: 600;
   border: none;
   outline: none;
 
-  background-color: #fdeaf1;
-  color: #d50066;
   cursor: pointer;
 
   transition: all 0.2s ease-in-out;
 }
 
+.cancelButton {
+  background-color: #fedfe9;
+  color: #d50066;
+}
+
 .cancelButton:hover {
-  background-color: #ffdeea;
+  background-color: #ffd7e3;
+}
+
+.successButton {
+  background-color: #eaffea;
+  color: green;
+}
+
+.greenProgress {
+  background-color: green;
+  opacity: 0.5;
 }

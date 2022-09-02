@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
 import Input from "./Input";
 import styles from "../css/Swap.module.css";
-import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from "../utils";
 import classNames from "classnames";
 import { Alert, Box, Slider, Typography } from "@mui/material";
 import PopupModal from "./PopupModal";
@@ -30,6 +29,10 @@ const Swap = (props) => {
     sliderValueUnit,
     setSliderValueUnit,
     setSliderValueInSec,
+    tokenA,
+    tokenB,
+    setTokenA,
+    setTokenB,
   } = useContext(LongSwapContext);
 
   const handleDisplay = (event) => {
@@ -38,18 +41,18 @@ const Swap = (props) => {
     setDisplay(!display);
   };
 
-  const [tokenA, setTokenA] = useState({
-    symbol: "Faucet",
-    image: "/ethereum.png",
-    address: FAUCET_TOKEN_ADDRESS,
-  });
+  // const [tokenA, setTokenA] = useState({
+  //   symbol: "Faucet",
+  //   image: "/ethereum.png",
+  //   address: FAUCET_TOKEN_ADDRESS,
+  // });
 
-  const [tokenB, setTokenB] = useState({
-    symbol: "Matic",
-    image:
-      "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png",
-    address: MATIC_TOKEN_ADDRESS,
-  });
+  // const [tokenB, setTokenB] = useState({
+  //   symbol: "Matic",
+  //   image:
+  //     "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png",
+  //   address: MATIC_TOKEN_ADDRESS,
+  // });
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -60,18 +63,6 @@ const Swap = (props) => {
     buttonText === "Swap" && setFormErrors(validate(swapAmount));
     connectWallet();
   };
-
-  useEffect(() => {
-    console.log(formErrors);
-    if (Object.keys(formErrors).length === 0 && isSubmit) {
-      console.log(swapAmount);
-    }
-
-    const timer = setTimeout(() => {
-      setFormErrors({});
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, [formErrors]);
 
   const validate = (values) => {
     const valueInt = parseFloat(values);
@@ -121,8 +112,6 @@ const Swap = (props) => {
       <FontAwesomeIcon className={styles.iconDown} icon={faArrowDown} />
       <Input
         id={2}
-        input={equivalentAmount}
-        onChange={(e) => setEquivalentAmount(e.target.value)}
         imgSrc={tokenB.image}
         symbol={tokenB.symbol}
         handleDisplay={handleDisplay}

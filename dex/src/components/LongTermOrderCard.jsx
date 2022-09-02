@@ -2,36 +2,58 @@ import React from "react";
 import styles from "../css/LongTermOrderCard.module.css";
 import { HiExternalLink } from "react-icons/hi";
 import classNames from "classnames";
-import { LongSwapContext } from "../providers";
+import { LongSwapContext, ShortSwapContext } from "../providers";
 
 const LongTermOrderCard = () => {
-  const { sliderValueInSec } = React.useContext(LongSwapContext);
+  const remainingTimeRef = React.useRef();
+
+  const { swapAmount } = React.useContext(ShortSwapContext);
+
+  const { sliderValueInSec, tokenA, tokenB } =
+    React.useContext(LongSwapContext);
 
   const initialValue = Math.ceil(sliderValueInSec);
 
   const [progress, setProgress] = React.useState(1);
   const [remainingTime, setRemainingTime] = React.useState(initialValue);
+  const [remainingToken, setRemainingToken] = React.useState(swapAmount);
+  const [convertedTokenAmount, setConvertedTokenAmount] = React.useState(0);
 
   let value = Math.ceil(sliderValueInSec);
 
+  const rate = 67.789; // What is the rate of conversion from one token to another?
   React.useEffect(() => {
     const interval = setInterval(() => {
       value = value - 1;
       let percent = (value * 100) / initialValue;
       let remainingPercent = 100 - percent;
-      setProgress(remainingPercent);
-      setRemainingTime(value);
+
+      if (progress != 100) {
+        setProgress(remainingPercent);
+        setRemainingTime(value);
+
+        const converted = swapAmount - (percent * swapAmount) / 100;
+        setRemainingToken((swapAmount - converted).toFixed(2));
+
+        setConvertedTokenAmount((converted * rate).toFixed(2));
+      } else {
+        setProgress(100);
+      }
     }, 1000);
+
+    setTimeout(function () {
+      clearInterval(interval);
+    }, initialValue * 1000);
 
     return () => {
       clearInterval(interval);
     };
-  }, [sliderValueInSec]);
+  }, [sliderValueInSec, swapAmount]);
 
   const dummyOrder = {
     orderId: "001abc",
     transactionLink: "https://somelink.com",
-    amount: 100,
+    amount: swapAmount,
     fees: "3%",
     averagePrice: "0.3 ETH",
   };
@@ -47,14 +69,19 @@ const LongTermOrderCard = () => {
       </div>
       <div className={styles.bottomSection}>
         <div className={styles.tokenContainer}>
-          <div>
+          <div className={styles.tokenWrapper}>
             <img
               className={styles.tokenIcon}
-              src="/ethereum.png"
-              alt="ethereum"
+              src={tokenA.image}
+              alt={tokenA.symbol}
             />
             <p className={styles.tokenText}>
-              <span>40 ETH</span> <span>of {dummyOrder.amount} ETH</span>
+              <span>
+                {remainingToken} {tokenA.symbol}
+              </span>{" "}
+              <span>
+                of {swapAmount} {tokenA.symbol}
+              </span>
             </p>
           </div>
           <div className={styles.arrow}>
@@ -72,21 +99,30 @@ const LongTermOrderCard = () => {
             </svg>
           </div>
           <div>
-            <img className={styles.tokenIcon} src="/dai.png" alt="dai" />
+            <img
+              className={styles.tokenIcon}
+              src={tokenB.image}
+              alt={tokenB.symbol}
+            />
             <p className={classNames(styles.tokenText, styles.greenText)}>
-              3201.2 GOER
+              {convertedTokenAmount} {tokenB.symbol}
             </p>
           </div>
         </div>
 
         <div>
-          <p className={styles.timeRemaining}>
-            {remainingTime} seconds remaining...
+          <p className={styles.timeRemaining} ref={remainingTimeRef}>
+            {remainingTime != 0
+              ? `${remainingTime} seconds remaining...`
+              : "Completed.."}
           </p>
           <div className={styles.progress}>
             <div
               style={{ width: `${progress}%` }}
-              className={styles.activeProgress}
+              className={classNames(
+                styles.activeProgress,
+                remainingTime == 0 && styles.greenProgress
+              )}
             ></div>
           </div>
         </div>
@@ -98,7 +134,14 @@ const LongTermOrderCard = () => {
           </div>
         </div>
 
-        <button className={styles.cancelButton}>Cancel</button>
+        <button
+          className={classNames(
+            styles.button,
+            remainingTime != 0 ? styles.cancelButton : styles.successButton
+          )}
+        >
+          {remainingTime != 0 ? "Cancel" : "Completed"}
+        </button>
       </div>
     </div>
   );

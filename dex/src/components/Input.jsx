@@ -1,6 +1,7 @@
 import Modal from "./Modal";
 import styles from "../css/Input.module.css";
 import classnames from "classnames";
+import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from "../utils";
 
 const Input = (props) => {
   const {
@@ -16,6 +17,30 @@ const Input = (props) => {
     setTokenA,
     setTokenB,
   } = props;
+
+  const tokenDetails = [
+    {
+      name: "Faucet",
+      symbol: "ETH",
+      image: "/ethereum.png",
+      address: FAUCET_TOKEN_ADDRESS,
+      balance: 0,
+    },
+    {
+      name: "Matic",
+      symbol: "DAI",
+      image: "/dai.png",
+      address: MATIC_TOKEN_ADDRESS,
+      balance: 0,
+    },
+    {
+      type: "coming_soon",
+      name: "Test Token",
+      symbol: "CST",
+      image: "/dai.png",
+      // address: MATIC_TOKEN_ADDRESS,
+    },
+  ];
 
   return (
     <>
@@ -85,7 +110,7 @@ const Input = (props) => {
             </button>
           )}
         </div>
-        <div className={styles.balance}></div>
+        <div className={styles.balance}>Balance: 0</div>
       </div>
 
       {display && (
@@ -95,6 +120,7 @@ const Input = (props) => {
           selectToken={selectToken}
           setTokenA={setTokenA}
           setTokenB={setTokenB}
+          tokenDetails={tokenDetails}
         />
       )}
     </>
