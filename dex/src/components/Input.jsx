@@ -24,14 +24,14 @@ const Input = (props) => {
       symbol: "ETH",
       image: "/ethereum.png",
       address: FAUCET_TOKEN_ADDRESS,
-      balance: 0.52,
+      balance: 0,
     },
     {
       name: "Matic",
       symbol: "DAI",
       image: "/dai.png",
       address: MATIC_TOKEN_ADDRESS,
-      balance: 4.3,
+      balance: 0,
     },
     {
       type: "coming_soon",

@@ -6,6 +6,7 @@ import { useState } from "react";
 import PopupSettings from "../components/PopupSettings";
 import styles from "../css/ShortSwap.module.css";
 import LongTermOrderCard from "../components/LongTermOrderCard";
+import lsStyles from "../css/LongSwap.module.css";
 
 const LongSwap = (props) => {
   const {
@@ -45,8 +46,12 @@ const LongSwap = (props) => {
       </div>
 
       {/* {isPlacedLongTermOrder && ( */}
-      <div className={styles.longTermOrderCard}>
-        <LongTermOrderCard />
+      <div className={lsStyles.ordersWrapper}>
+        <h4 className={lsStyles.longTermText}>Your Long Term Orders</h4>
+        <div className={lsStyles.longTermOrderCard}>
+          <LongTermOrderCard />
+          <LongTermOrderCard />
+        </div>
       </div>
       {/* )} */}
     </div>
