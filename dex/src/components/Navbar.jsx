@@ -22,7 +22,7 @@ const Navbar = (props) => {
     chainId: "",
   });
 
-  const handleSelect = async (networkName, logo, chainId, e) => {
+  const handleSelect = async (networkName, logo, chainId) => {
     setSelectedNetwork({
       network: networkName,
       logo: logo,

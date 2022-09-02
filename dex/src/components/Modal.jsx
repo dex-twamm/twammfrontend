@@ -55,12 +55,7 @@ const Modal = ({
           src={token.image}
           style={{ width: "25px" }}
         />
-<<<<<<< HEAD
-        <div className={styles.modalTokenSymbol}>{token.symbol}</div>
-        <p className={styles.tokenAddress} style={{ display: "none" }}>
-          {token.address}
-        </p>
-=======
+
         <p style={{ display: "none" }}>{token.name}</p>
         <div className={styles.modalTokenSymbol}>
           <div>
@@ -76,7 +71,6 @@ const Modal = ({
             <span>coming soon...</span>
           </div>
         )}
->>>>>>> 4f72e8a3edf35ca85c1f60cc186fe334bb52273b
       </div>
     );
   });
