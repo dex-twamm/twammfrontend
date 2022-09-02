@@ -63,7 +63,9 @@ const Modal = ({ display, setDisplay, selectToken, setTokenA, setTokenB }) => {
           style={{ marginRight: "8px", width: "20px" }}
         />
         <div className={styles.modalTokenSymbol}>{token.symbol}</div>
-        <p className={styles.tokenAddress}>{token.address}</p>
+        <p className={styles.tokenAddress} style={{ display: "none" }}>
+          {token.address}
+        </p>
       </div>
     );
   });

@@ -34,6 +34,7 @@ function App() {
     loading,
     setLoading,
     setSuccess,
+    equivalentAmount
   } = useContext(ShortSwapContext);
 
   const connectWallet = async () => {
@@ -52,7 +53,7 @@ function App() {
       const provider = await web3Modal.connect();
       const web3Provider = new providers.Web3Provider(provider);
       const accounts = await web3Provider.listAccounts();
-
+      console.log("accounts", accounts);
       localStorage.setItem("account", accounts);
 
       setweb3provider(web3Provider);
@@ -65,9 +66,7 @@ function App() {
       localStorage.setItem("balance", humanFriendlyBalance);
 
       setBalance(humanFriendlyBalance);
-      const nonce = web3Provider.getTransactionCount(accounts[0]);
-      console.log(nonce);
-      setNonce(nonce);
+
 
       if (accounts) setAccount(accounts[0]);
       if (needSigner) return web3Provider.getSigner();
@@ -99,34 +98,34 @@ function App() {
 
   //  Swap Token
   const _swapTokens = async () => {
-    setLoading(true);
-    try {
-      // Convert the amount entered by the user to a BigNumber using the `parseEther` library from `ethers.js`
-      const swapAmountWei = ethers.utils.parseUnits(swapAmount, "ether");
-      // const swapAmountWei = toHex(amount);
 
-      // Check if the user entered zero
-      // We are here using the `eq` method from BigNumber class in `ethers.js`
-      if (swapAmountWei) {
-        console.log("swapAmountWei", swapAmountWei);
-        const signer = await getProvider(true);
-        console.log(signer);
-        const assetIn = srcAddress;
-        const assetOut = destAddress;
-        const walletAddress = account;
-        // Call the swapTokens function from the `utils` folder
-        await swapTokens(
-          signer,
-          swapAmountWei,
-          assetIn,
-          assetOut,
-          walletAddress
-        ).catch((err) => {
-          console.error(err);
-          setError("Transaction Error");
-        });
-        setLoading(false);
-      }
+    setLoading(true);
+    const walletBalanceWei = ethers.utils.parseUnits(balance, "ether");
+    console.log("walletBalanceWei", walletBalanceWei);
+    const swapAmountWei = ethers.utils.parseUnits(swapAmount, "ether");
+    console.log("swapAmountWei", swapAmountWei);
+    walletBalanceWei > swapAmountWei ? console.log(true) : console.log(false);
+
+    try {
+      console.log("swapAmountWei", swapAmountWei);
+      const signer = await getProvider(true);
+      console.log(signer);
+      const assetIn = srcAddress;
+      const assetOut = destAddress;
+      const walletAddress = account;
+      // Call the swapTokens function from the `utils` folder
+      await swapTokens(
+        signer,
+        swapAmountWei,
+        assetIn,
+        assetOut,
+        walletAddress
+      ).catch((err) => {
+        console.error(err);
+        setError("Transaction Error");
+      });
+      setLoading(false);
+
     } catch (err) {
       console.error(err);
       setLoading(false);
@@ -137,11 +136,12 @@ function App() {
   };
 
   const _placeLongTermOrders = async () => {
-
+    const swapAmountWei = ethers.utils.parseUnits(swapAmount, "ether");
+    console.log("swapAmountWei", swapAmountWei);
     try {
       const tokenInIndex = "0";
       const tokenOutIndex = "1";
-      const amountIn = ethers.utils.parseUnits("0.001", "ether")
+      const amountIn = swapAmountWei;
       console.log("amountIn", amountIn);
       const numberOfBlockIntervals = "3";
       const signer = await getProvider(true);
@@ -179,9 +179,8 @@ function App() {
     if (!isWallletConnceted) {
       await connectWallet();
     } else {
-      if (swapAmount > 0) {
-        await _placeLongTermOrders();
-      }
+      await _placeLongTermOrders();
+
     }
   }
 

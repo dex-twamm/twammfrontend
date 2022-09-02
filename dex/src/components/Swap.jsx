@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
 import Input from "./Input";
 import styles from "../css/Swap.module.css";
-import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from "../utils";
 import classNames from "classnames";
 import { Alert, Box, Slider, Typography } from "@mui/material";
 import PopupModal from "./PopupModal";
@@ -113,8 +112,6 @@ const Swap = (props) => {
       <FontAwesomeIcon className={styles.iconDown} icon={faArrowDown} />
       <Input
         id={2}
-        input={equivalentAmount}
-        onChange={(e) => setEquivalentAmount(e.target.value)}
         imgSrc={tokenB.image}
         symbol={tokenB.symbol}
         handleDisplay={handleDisplay}
