@@ -1,5 +1,4 @@
-
-.settingsContainer{
+.settingsContainer {
   position: absolute;
   right: 20px;
   top: 40px;
@@ -18,12 +17,18 @@
   font-size: 14px;
 }
 
-.settingsTitle{
+@media (min-width: 1160px) {
+  .settingsContainer {
+    left: 490px;
+  }
+}
+
+.settingsTitle {
   font-size: 14px;
   font-weight: 600;
 }
 
-.settings{
+.settings {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -36,7 +41,7 @@
   user-select: none;
 }
 
-.btnAuto{
+.btnAuto {
   background-color: #e8006f;
   color: #ffffff;
   border: 1px solid #888d9b;
@@ -46,12 +51,12 @@
   border-radius: 36px;
 }
 
-.slippageTolerance{
+.slippageTolerance {
   display: flex;
   gap: 8px;
 }
 
-.inputContainer{
+.inputContainer {
   padding: 0px 12px;
   /* flex-grow: 1; */
   border-radius: 16px;
@@ -64,7 +69,7 @@
   user-select: none;
 }
 
-.inputContainer > input{
+.inputContainer > input {
   background-color: transparent;
   outline: none;
   border: none;
@@ -75,14 +80,14 @@
   user-select: none;
 }
 
-.inputSlippageTolerance{
+.inputSlippageTolerance {
   flex-grow: 1;
   text-align: right;
   margin-right: 2px;
   width: 100%;
 }
 
-.transactionDeadline{
+.transactionDeadline {
   display: flex;
   align-items: center;
   gap: 5px;
@@ -91,4 +96,3 @@
 .transactionDeadline > .inputContainer {
   max-width: 60px;
 }
-

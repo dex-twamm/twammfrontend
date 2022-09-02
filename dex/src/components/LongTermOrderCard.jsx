@@ -69,7 +69,7 @@ const LongTermOrderCard = () => {
       </div>
       <div className={styles.bottomSection}>
         <div className={styles.tokenContainer}>
-          <div>
+          <div className={styles.tokenWrapper}>
             <img
               className={styles.tokenIcon}
               src={tokenA.image}
