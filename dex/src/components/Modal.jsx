@@ -92,9 +92,9 @@ const Modal = ({ display, setDisplay, selectToken, setTokenA, setTokenB }) => {
             </svg>
           </div>
           <div className={styles.modalTokenList}>{tokenList}</div>
-          <div>
+          {/* <div>
             <button className={styles.btnManageToken}>Manage Token List</button>
-          </div>
+          </div> */}
         </div>
       </div>
     )
