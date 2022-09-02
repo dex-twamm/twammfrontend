@@ -62,15 +62,17 @@ const Navbar = (props) => {
   ];
 
   const tabList = tabOptions.map((option, index) => (
-    <div
-      key={index}
-      className={classNames(
-        styles.tabButton,
-        currentPath === option.path && styles.activeTab
-      )}
-    >
-      <Link to={option.path}>{option.value}</Link>
-    </div>
+    <Link to={option.path} key={index}>
+      <div
+        key={index}
+        className={classNames(
+          styles.tabButton,
+          currentPath === option.path && styles.activeTab
+        )}
+      >
+        {option.value}
+      </div>
+    </Link>
   ));
 
   const options = [
