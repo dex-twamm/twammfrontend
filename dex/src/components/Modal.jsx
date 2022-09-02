@@ -11,14 +11,25 @@ const Modal = ({ display, setDisplay, selectToken, setTokenA, setTokenB }) => {
   // Object For Token Details
   const tokenDetails = [
     {
-      symbol: "Faucet",
+      name: "Faucet",
+      symbol: "ETH",
       image: "/ethereum.png",
       address: FAUCET_TOKEN_ADDRESS,
+      balance: 0.52,
     },
     {
-      symbol: "Matic",
+      name: "Matic",
+      symbol: "DAI",
       image: "/dai.png",
       address: MATIC_TOKEN_ADDRESS,
+      balance: 4.3,
+    },
+    {
+      type: "coming_soon",
+      name: "Test Token",
+      symbol: "CST",
+      image: "/dai.png",
+      // address: MATIC_TOKEN_ADDRESS,
     },
   ];
 
@@ -60,10 +71,23 @@ const Modal = ({ display, setDisplay, selectToken, setTokenA, setTokenB }) => {
           className={styles.modalTokenImg}
           alt="ETH logo"
           src={token.image}
-          style={{ marginRight: "8px", width: "20px" }}
+          style={{ width: "25px" }}
         />
-        <div className={styles.modalTokenSymbol}>{token.symbol}</div>
-        <p className={styles.tokenAddress}>{token.address}</p>
+        <p style={{ display: "none" }}>{token.name}</p>
+        <div className={styles.modalTokenSymbol}>
+          <div>
+            <p className={styles.tokenName}>{token.name}</p>
+            <p className={styles.tokenSymbol}>{token.symbol}</p>
+          </div>
+          <p>{token.balance}</p>
+        </div>
+        {/* <p className={styles.tokenAddress}>{token.address}</p> */}
+
+        {token.type === "coming_soon" && (
+          <div className={styles.comingSoon}>
+            <span>coming soon...</span>
+          </div>
+        )}
       </div>
     );
   });
@@ -95,6 +119,8 @@ const Modal = ({ display, setDisplay, selectToken, setTokenA, setTokenB }) => {
           {/* <div>
             <button className={styles.btnManageToken}>Manage Token List</button>
           </div> */}
+
+          {/* coming soon */}
         </div>
       </div>
     )
