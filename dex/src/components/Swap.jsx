@@ -65,18 +65,6 @@ const Swap = (props) => {
     connectWallet();
   };
 
-  useEffect(() => {
-    console.log(formErrors);
-    if (Object.keys(formErrors).length === 0 && isSubmit) {
-      console.log(swapAmount);
-    }
-
-    const timer = setTimeout(() => {
-      setFormErrors({});
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, [formErrors]);
-
   const validate = (values) => {
     const valueInt = parseFloat(values);
     const errors = {};

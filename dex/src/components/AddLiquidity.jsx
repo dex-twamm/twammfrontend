@@ -7,7 +7,8 @@ import { FiChevronDown } from "react-icons/fi";
 import Input from "./Input";
 import classNames from "classnames";
 
-const AddLiquidity = () => {
+const AddLiquidity = (props) => {
+  const { connect } = props;
   const [display, setDisplay] = useState(false);
   const [primaryToken, setPrimaryToken] = useState("");
   const [secondaryToken, setSecondaryToken] = useState();
@@ -76,7 +77,7 @@ const AddLiquidity = () => {
               <Input />
               <button
                 className={classNames(styles.btn, styles.btnConnect)}
-                // onClick={connectWallet}
+                onClick={connect}
               >
                 {/* {buttonText} */}
                 Connect Wallet
