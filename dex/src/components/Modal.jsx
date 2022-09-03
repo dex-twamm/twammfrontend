@@ -55,17 +55,10 @@ const Modal = ({
           src={token.image}
           style={{ width: "25px" }}
         />
-
-        <p style={{ display: "none" }}>{token.name}</p>
-        <div className={styles.modalTokenSymbol}>
-          <div>
-            <p className={styles.tokenName}>{token.name}</p>
-            <p className={styles.tokenSymbol}>{token.symbol}</p>
-          </div>
-          <p>{token.balance}</p>
-        </div>
-        {/* <p className={styles.tokenAddress}>{token.address}</p> */}
-
+        <p>{token.name}</p>
+        <p className={styles.tokenAddress} style={{ display: "none" }}>
+          {token.address}
+        </p>
         {token.type === "coming_soon" && (
           <div className={styles.comingSoon}>
             <span>coming soon...</span>

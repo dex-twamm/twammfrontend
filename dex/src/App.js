@@ -87,14 +87,14 @@ function App() {
     await web3Modal.clearCachedProvider();
   };
 
-  const getAmounts = async () => {
-    const provider = await connectWallet();
-    const signer = await connectWallet();
-    const address = await signer.getAddress();
-    // get the amount of eth in the user's account
-    const _ethBalance = await getEtherBalance(provider, address);
-    setEthBalance(_ethBalance);
-  };
+  // const getAmounts = async () => {
+  //   const provider = await connectWallet();
+  //   const signer = await connectWallet();
+  //   const address = await signer.getAddress();
+  //   // get the amount of eth in the user's account
+  //   const _ethBalance = await getEtherBalance(provider, address);
+  //   setEthBalance(_ethBalance);
+  // };
 
   //  Swap Token
   const _swapTokens = async () => {
@@ -231,8 +231,7 @@ function App() {
   const tokenBalance = async () => {
     setLoading(true);
     try {
-      const provider = await getProvider(false);
-      const walletAddress = account;
+      const provider = await getProvider(true);
       getLPTokensBalance(provider);
       setLoading(false);
     } catch (e) {
@@ -289,7 +288,7 @@ function App() {
         />
 
         {/* Replace _exitPool with _joinPool When Needed To Join Pool */}
-        <Route path="/liquidity" element={<AddLiquidity connect={_exitPool} />} />
+        <Route path="/liquidity" element={<AddLiquidity connect={_joinPool} />} />
       </Routes>
     </div>
   );
