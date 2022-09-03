@@ -7,10 +7,10 @@ import "./App.css";
 import { web3Modal } from "./utils/providerOptions";
 import { BigNumber, ethers, providers } from "ethers";
 import { useState, useContext, useEffect } from "react";
-import { getEtherBalance } from "./utils/getAmount";
+import { getEtherBalance, getLPTokensBalance } from "./utils/getAmount";
 import { swapTokens } from "./utils/swap";
 import { joinPool, exitPool } from "./utils/addLiquidity";
-import { toHex, truncateAddress } from "./utils";
+import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS, toHex, truncateAddress } from "./utils";
 import { ShortSwapContext } from "./providers";
 import { placeLongTermOrder } from "./utils/longSwap";
 import { ethLogs } from "./utils/get_ethLogs";
@@ -228,8 +228,20 @@ function App() {
       balance: account === null ? "Wallet Balance" : balance,
     },
   };
-
+  const tokenBalance = async () => {
+    setLoading(true);
+    try {
+      const provider = await getProvider(false);
+      const walletAddress = account;
+      getLPTokensBalance(provider);
+      setLoading(false);
+    } catch (e) {
+      console.log(e);
+      setLoading(false);
+    }
+  }
   useEffect(() => {
+    tokenBalance();
     const account = localStorage.getItem("account");
     const balance = localStorage.getItem("balance");
     if (account && balance) {
