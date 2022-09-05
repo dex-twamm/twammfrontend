@@ -8,6 +8,7 @@ import { POOL_ID, MAX_UINT256, toHex } from ".";
   swapTokens: Swaps `swapAmountWei` of Eth/Crypto Dev tokens with `tokenToBeReceivedAfterSwap` amount of Eth/Crypto Dev tokens.
 */
 export const swapTokens = async (signer, swapAmountWei, assetIn, assetOut, walletAddress) => {
+  let txHash;
   // Create a new instance of the exchange contract
   const exchangeContract = new Contract(
     VAULT_CONTRACT_ADDRESS,
@@ -36,11 +37,9 @@ export const swapTokens = async (signer, swapAmountWei, assetIn, assetOut, walle
       gasLimit: 2000000
     }
   );
-
-
-  const swapResult = await swapTx.wait();
-  console.log(swapResult);
-
-
-
+  txHash = swapTx.hash;
+  console.log(txHash);
+  // const swapResult = await swapTx.wait();
+  // console.log(swapResult.transactionHash);
+  return txHash;
 };

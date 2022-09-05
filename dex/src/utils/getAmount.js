@@ -42,28 +42,53 @@ import {
  * of the provided `address`
  */
 
-export const getLPTokensBalance = (provider) => {
+// export const getLPTokensBalance = (provider) => {
+//   var tokenAddress = [FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS];
+//   tokenAddress.forEach(balanceContract);
+//   let newBalance = [];
+//   async function balanceContract(item, index) {
+//     const balanceContract = new Contract(
+//       item,
+//       TOKEN_CONTRACT_ABI,
+//       provider
+//     );
+//     const balanceOfLPTokens = await balanceContract.balanceOf("0x536eE2273Ba6F1c91362fa9FCcb4166450FCb7D3");
+//     newBalance.push(ethers.utils.formatEther(balanceOfLPTokens));
+//     console.log("Balance of_" + item + "_is=" + ethers.utils.formatEther(balanceOfLPTokens));
+//     // return balanceOfLPTokens;
+//   }
+
+// }
+
+// To Retrieve Token Balances 
+export const getLPTokensBalance = async (provider) => {
   var tokenAddress = [FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS];
-  tokenAddress.forEach(exchangeContract);
-  let newBalance = [];
-  async function exchangeContract(item, index) {
-    const exchangeContract = new Contract(
-      item,
+  const newBalance = [];
+  for (let index = 0; index < tokenAddress.length; index++) {
+    const element = tokenAddress[index];
+    const balances = await balanceContract(element);
+    const readableBalance = ethers.utils.formatEther(balances);
+    console.log("Balances", readableBalance);
+    newBalance.push(readableBalance);
+  }
+  async function balanceContract(element) {
+    const balanceContract = new Contract(
+      element,
       TOKEN_CONTRACT_ABI,
       provider
     );
-    const balanceOfLPTokens = await exchangeContract.balanceOf("0x536eE2273Ba6F1c91362fa9FCcb4166450FCb7D3");
-    newBalance.push(ethers.utils.formatEther(balanceOfLPTokens));
-    console.log("Balance of_" + item + "_is=" + ethers.utils.formatEther(balanceOfLPTokens));
+    const balanceOfLPTokens = await balanceContract.balanceOf("0x536eE2273Ba6F1c91362fa9FCcb4166450FCb7D3");
+    console.log("Balance of_" + element + "_is=" + ethers.utils.formatEther(balanceOfLPTokens));
     return balanceOfLPTokens;
   }
-  console.log("newBalance", newBalance);
+  console.log(newBalance);
+  return { tokenA: newBalance[0], tokenB: newBalance[1] };
 }
 
 /**
  * getReserveOfCDTokens: Retrieves the amount of CD tokens in the
  * Vault contract address
-//  */
+ */
 // export const getReserveOfCDTokens = async (provider) => {
 //   try {
 //     const exchangeContract = new Contract(

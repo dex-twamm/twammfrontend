@@ -6,7 +6,7 @@ import Input from "./Input";
 import styles from "../css/Swap.module.css";
 import classNames from "classnames";
 import { Alert, Box, Slider, Typography } from "@mui/material";
-import PopupModal from "./PopupModal";
+import PopupModal from "./alerts/PopupModal";
 import lsStyles from "../css/LongSwap.module.css";
 import { valueLabel, calculateValue } from "../methods/longSwapMethod";
 import { LongSwapContext } from "../providers";
@@ -83,82 +83,83 @@ const Swap = (props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className={styles.form}>
-      <Input
-        id={1}
-        input={swapAmount !== "" ? swapAmount : ""}
-        onChange={(e) => setSwapAmount(e.target.value)}
-        imgSrc={tokenA.image}
-        symbol={tokenA.symbol}
-        handleDisplay={handleDisplay}
-        selectToken={selectToken}
-        display={display}
-        setDisplay={setDisplay}
-        setTokenA={setTokenA}
-        setTokenB={setTokenB}
-      />
+    <>
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <Input
+          id={1}
+          input={swapAmount !== "" ? swapAmount : ""}
+          onChange={(e) => setSwapAmount(e.target.value)}
+          imgSrc={tokenA.image}
+          symbol={tokenA.symbol}
+          handleDisplay={handleDisplay}
+          selectToken={selectToken}
+          display={display}
+          setDisplay={setDisplay}
+          setTokenA={setTokenA}
+          setTokenB={setTokenB}
+        />
 
-      {formErrors.swapAmount && (
-        <div className={styles.errorAlert}>
-          <Alert
-            severity="error"
-            sx={{ borderRadius: "16px" }}
-            onClose={() => setFormErrors({})}
-          >
-            {formErrors.swapAmount}
-          </Alert>
-        </div>
-      )}
-      <FontAwesomeIcon className={styles.iconDown} icon={faArrowDown} />
-      <Input
-        id={2}
-        imgSrc={tokenB.image}
-        symbol={tokenB.symbol}
-        handleDisplay={handleDisplay}
-        selectToken={selectToken}
-        display={display}
-        setDisplay={setDisplay}
-        setTokenA={setTokenA}
-        setTokenB={setTokenB}
-      />
+        {formErrors.swapAmount && (
+          <div className={styles.errorAlert}>
+            <Alert
+              severity="error"
+              sx={{ borderRadius: "16px" }}
+              onClose={() => setFormErrors({})}
+            >
+              {formErrors.swapAmount}
+            </Alert>
+          </div>
+        )}
+        <FontAwesomeIcon className={styles.iconDown} icon={faArrowDown} />
+        <Input
+          id={2}
+          imgSrc={tokenB.image}
+          symbol={tokenB.symbol}
+          handleDisplay={handleDisplay}
+          selectToken={selectToken}
+          display={display}
+          setDisplay={setDisplay}
+          setTokenA={setTokenA}
+          setTokenB={setTokenB}
+        />
 
-      {swapType === "long" && (
-        <div className={lsStyles.rangeSelect}>
-          <Box sx={{ width: "90%", margin: "0 auto" }}>
-            <Typography fontWeight={600} id="non-linear-slider" gutterBottom>
-              Time: {`${sliderValue} ${sliderValueUnit}`}
-              {/* {valueLabel(calculateValue(value))} */}
-            </Typography>
-            <Slider
-              value={value}
-              min={1}
-              step={2}
-              max={100}
-              sx={{
-                height: 15,
-                width: 1,
-                color: "#ffaac9",
-              }}
-              // scale={calculateValue}
-              // getAriaValueText={valueLabel}
-              // valueLabelFormat={valueLabel}
-              onChange={handleChange}
-              valueLabelDisplay="auto"
-              aria-labelledby="non-linear-slider"
-            />
-          </Box>
-        </div>
-      )}
+        {swapType === "long" && (
+          <div className={lsStyles.rangeSelect}>
+            <Box sx={{ width: "90%", margin: "0 auto" }}>
+              <Typography fontWeight={600} id="non-linear-slider" gutterBottom>
+                Time: {`${sliderValue} ${sliderValueUnit}`}
+                {/* {valueLabel(calculateValue(value))} */}
+              </Typography>
+              <Slider
+                value={value}
+                min={1}
+                step={2}
+                max={100}
+                sx={{
+                  height: 15,
+                  width: 1,
+                  color: "#ffaac9",
+                }}
+                // scale={calculateValue}
+                // getAriaValueText={valueLabel}
+                // valueLabelFormat={valueLabel}
+                onChange={handleChange}
+                valueLabelDisplay="auto"
+                aria-labelledby="non-linear-slider"
+              />
+            </Box>
+          </div>
+        )}
 
-      <button
-        className={classNames(styles.btn, styles.btnConnect)}
-        onClick={handleClick}
-      >
-        {buttonText}
-      </button>
-
+        <button
+          className={classNames(styles.btn, styles.btnConnect)}
+          onClick={handleClick}
+        >
+          {buttonText}
+        </button>
+      </form>
       <PopupModal></PopupModal>
-    </form>
+    </>
   );
 };
 

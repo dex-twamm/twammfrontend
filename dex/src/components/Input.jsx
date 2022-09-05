@@ -2,6 +2,8 @@ import Modal from "./Modal";
 import styles from "../css/Input.module.css";
 import classnames from "classnames";
 import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from "../utils";
+import { useContext } from "react";
+import { ShortSwapContext } from "../providers";
 
 const Input = (props) => {
   const {
@@ -17,21 +19,20 @@ const Input = (props) => {
     setTokenA,
     setTokenB,
   } = props;
-
   const tokenDetails = [
     {
       name: "Faucet",
       symbol: "ETH",
       image: "/ethereum.png",
       address: FAUCET_TOKEN_ADDRESS,
-      balance: 0,
+      balance: 0.0,
     },
     {
       name: "Matic",
       symbol: "DAI",
       image: "/dai.png",
       address: MATIC_TOKEN_ADDRESS,
-      balance: 0,
+      balance: 0.0,
     },
     {
       type: "coming_soon",

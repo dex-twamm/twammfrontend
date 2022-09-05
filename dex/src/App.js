@@ -14,6 +14,7 @@ import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS, toHex, truncateAddress } fro
 import { ShortSwapContext } from "./providers";
 import { placeLongTermOrder } from "./utils/longSwap";
 import { ethLogs } from "./utils/get_ethLogs";
+import PopupModal from "./components/alerts/PopupModal";
 
 function App() {
   const [provider, setProvider] = useState();
@@ -25,6 +26,7 @@ function App() {
   const [isWallletConnceted, setWalletConnected] = useState(false);
   const [isPlacedLongTermOrder, setIsPlacedLongTermOrder] = useState(false);
 
+
   const {
     srcAddress,
     destAddress,
@@ -34,9 +36,12 @@ function App() {
     loading,
     setLoading,
     setSuccess,
-    equivalentAmount
+    equivalentAmount,
+    tokenBalances, setTokenBalances, setTransactionHash, transactionHash
   } = useContext(ShortSwapContext);
 
+  console.log(tokenBalances);
+  console.log("txHash From App.js", transactionHash)
   const connectWallet = async () => {
     try {
       await getProvider();
@@ -46,6 +51,7 @@ function App() {
       setError("Wallet Connection Rejected");
     }
   };
+
 
   const getProvider = async (needSigner = false) => {
     setLoading(true);
@@ -98,14 +104,12 @@ function App() {
 
   //  Swap Token
   const _swapTokens = async () => {
-
     setLoading(true);
     const walletBalanceWei = ethers.utils.parseUnits(balance, "ether");
     console.log("walletBalanceWei", walletBalanceWei);
     const swapAmountWei = ethers.utils.parseUnits(swapAmount, "ether");
     console.log("swapAmountWei", swapAmountWei);
     walletBalanceWei > swapAmountWei ? console.log(true) : console.log(false);
-
     try {
       console.log("swapAmountWei", swapAmountWei);
       const signer = await getProvider(true);
@@ -120,7 +124,7 @@ function App() {
         assetIn,
         assetOut,
         walletAddress
-      ).catch((err) => {
+      ).then((res) => setTransactionHash(res)).catch((err) => {
         console.error(err);
         setError("Transaction Error");
       });
@@ -232,7 +236,8 @@ function App() {
     setLoading(true);
     try {
       const provider = await getProvider(true);
-      getLPTokensBalance(provider);
+      // getLPTokensBalance(provider);
+      setTokenBalances(await getLPTokensBalance(provider));
       setLoading(false);
     } catch (e) {
       console.log(e);
@@ -251,7 +256,7 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
+    <>
       <Navbar
         tokenName={data.token.name}
         tokenImage={data.token.image}
@@ -290,7 +295,7 @@ function App() {
         {/* Replace _exitPool with _joinPool When Needed To Join Pool */}
         <Route path="/liquidity" element={<AddLiquidity connect={_joinPool} />} />
       </Routes>
-    </div>
+    </>
   );
 }
 
