@@ -82,7 +82,7 @@ export const getLPTokensBalance = async (provider) => {
     return balanceOfLPTokens;
   }
   console.log(newBalance);
-  return { tokenA: newBalance[0], tokenB: newBalance[1] };
+  return newBalance.map((item) => item);
 }
 
 /**

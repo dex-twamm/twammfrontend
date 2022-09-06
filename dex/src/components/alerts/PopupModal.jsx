@@ -1,16 +1,6 @@
-import {
-  Alert,
-  Backdrop,
-  Button,
-  CircularProgress,
-  Snackbar,
-  SnackbarContent,
-} from "@mui/material";
-import { Stack } from "@mui/system";
-import e from "cors";
+import { Alert, Backdrop, Button, CircularProgress } from "@mui/material";
 import { useEffect } from "react";
 import { useContext } from "react";
-import { useState } from "react";
 import { ShortSwapContext } from "../../providers";
 
 const PopupModal = () => {
@@ -48,7 +38,7 @@ const PopupModal = () => {
     window.open(`https://goerli.etherscan.io/tx/${transactionHash}`);
   };
 
-  const buttonAction = <button onClick={handleButtonClick}>View</button>;
+  const buttonAction = <Button onClick={handleButtonClick}>View</Button>;
 
   const AlertStyle = {
     margin: "5px",
@@ -78,14 +68,14 @@ const PopupModal = () => {
       </div>
       <div>
         {transactionHash && (
-          <Stack spacing={2} sx={{ maxWidth: 600 }}>
-            <SnackbarContent
-              message="Your Tx Details"
-              open={transactionHash ? true : false}
-              onClose={handleClose}
-              action={buttonAction}
-            ></SnackbarContent>
-          </Stack>
+          <Alert
+            variant="outlined"
+            severity="info"
+            action={buttonAction}
+            onClose={handleClose}
+          >
+            View Your Tx Progress
+          </Alert>
         )}
       </div>
     </>

@@ -3,7 +3,7 @@ import styles from "../css/Input.module.css";
 import classnames from "classnames";
 import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from "../utils";
 import { useContext } from "react";
-import { ShortSwapContext } from "../providers";
+import { LongSwapContext, ShortSwapContext } from "../providers";
 
 const Input = (props) => {
   const {
@@ -13,26 +13,32 @@ const Input = (props) => {
     imgSrc,
     symbol,
     handleDisplay,
-    selectToken,
     display,
     setDisplay,
     setTokenA,
     setTokenB,
   } = props;
+  const { tokenBalances, selectToken, ethBalance } =
+    useContext(ShortSwapContext);
+  const { tokenA, tokenB } = useContext(LongSwapContext);
+
+  console.log("Select Token Input.js", selectToken);
+  console.log("TOKEN A", tokenA);
+
   const tokenDetails = [
     {
       name: "Faucet",
       symbol: "ETH",
       image: "/ethereum.png",
       address: FAUCET_TOKEN_ADDRESS,
-      balance: 0.0,
+      balance: tokenBalances[0],
     },
     {
       name: "Matic",
       symbol: "DAI",
       image: "/dai.png",
       address: MATIC_TOKEN_ADDRESS,
-      balance: 0.0,
+      balance: tokenBalances[1],
     },
     {
       type: "coming_soon",
@@ -58,6 +64,7 @@ const Input = (props) => {
             <button
               className={classnames(styles.btn, styles.tokenSelect)}
               onClick={handleDisplay}
+              id={id}
             >
               <span className={styles.spnSelectToken}>
                 <div>
@@ -111,7 +118,9 @@ const Input = (props) => {
             </button>
           )}
         </div>
-        <div className={styles.balance}>Balance: 0</div>
+        <div className={styles.balance}>
+          Balance:{id == 1 ? tokenA.balance : tokenB.balance}
+        </div>
       </div>
 
       {display && (

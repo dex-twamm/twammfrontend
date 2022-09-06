@@ -4,16 +4,10 @@ import { ShortSwapContext } from "../providers";
 import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from "../utils";
 import styles from "../css/Modal.module.css";
 
-const Modal = ({
-  display,
-  setDisplay,
-  selectToken,
-  setTokenA,
-  setTokenB,
-  tokenDetails,
-}) => {
+const Modal = ({ display, setDisplay, setTokenA, setTokenB, tokenDetails }) => {
   // useContext To Retrieve The Source and Destination Address of The Token
-  const { setSrcAddress, setDestAddress } = useContext(ShortSwapContext);
+  const { setSrcAddress, setDestAddress, selectToken, setEthBalance } =
+    useContext(ShortSwapContext);
 
   // Handle Modal Close
   const handleModalClose = () => {
@@ -26,16 +20,20 @@ const Modal = ({
     const token = event.currentTarget;
     console.log("Modal:Handle", token.children[2].innerHTML);
     if (selectToken === "1") {
+      setEthBalance(parseFloat(token.children[3].innerHTML).toFixed(2));
       setSrcAddress(token.children[2].innerHTML);
       setTokenA({
         symbol: token.children[1].innerHTML,
         image: token.children[0].src.slice(21, token.length),
+        balance: token.children[3].innerHTML,
       });
     } else if (selectToken === "2") {
       setDestAddress(token.children[2].innerHTML);
+      setEthBalance(parseFloat(token.children[3].innerHTML).toFixed(2));
       setTokenB({
         symbol: token.children[1].innerHTML,
         image: token.children[0].src.slice(21, token.length),
+        balance: token.children[3].innerHTML,
       });
     }
     handleModalClose();
@@ -58,6 +56,9 @@ const Modal = ({
         <p>{token.name}</p>
         <p className={styles.tokenAddress} style={{ display: "none" }}>
           {token.address}
+        </p>
+        <p className={styles.comingSoon}>
+          {parseFloat(token.balance).toFixed(2)}
         </p>
         {token.type === "coming_soon" && (
           <div className={styles.comingSoon}>
@@ -92,11 +93,6 @@ const Modal = ({
             </svg>
           </div>
           <div className={styles.modalTokenList}>{tokenList}</div>
-          {/* <div>
-            <button className={styles.btnManageToken}>Manage Token List</button>
-          </div> */}
-
-          {/* coming soon */}
         </div>
       </div>
     )

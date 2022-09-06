@@ -10,18 +10,24 @@ import PopupModal from "./alerts/PopupModal";
 import lsStyles from "../css/LongSwap.module.css";
 import { valueLabel, calculateValue } from "../methods/longSwapMethod";
 import { LongSwapContext } from "../providers";
+import DisconnectWallet from "./disconnectWallet";
 
 const Swap = (props) => {
   const { connectWallet, buttonText, swapType } = props;
 
   const [display, setDisplay] = useState(false);
-  const [selectToken, setSelectToken] = useState("0");
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [value, setValue] = useState(0);
 
-  const { equivalentAmount, setEquivalentAmount, swapAmount, setSwapAmount } =
-    useContext(ShortSwapContext);
+  const {
+    equivalentAmount,
+    setEquivalentAmount,
+    swapAmount,
+    setSwapAmount,
+    selectToken,
+    setSelectToken,
+  } = useContext(ShortSwapContext);
 
   const {
     sliderValue,
@@ -158,7 +164,6 @@ const Swap = (props) => {
           {buttonText}
         </button>
       </form>
-      <PopupModal></PopupModal>
     </>
   );
 };

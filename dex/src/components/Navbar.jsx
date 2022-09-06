@@ -21,15 +21,14 @@ const Navbar = (props) => {
     logo: "/ethereum.png",
     chainId: "",
   });
-
   const handleSelect = async (networkName, logo, chainId) => {
+    const id = chainId;
+    console.log(chainId);
     setSelectedNetwork({
       network: networkName,
       logo: logo,
       chainId: chainId,
     });
-    console.log(chainId);
-    const id = chainId;
     if (window.ethereum.networkVersion !== id) {
       setLoading(true);
       try {
@@ -37,7 +36,9 @@ const Navbar = (props) => {
           method: "wallet_switchEthereumChain",
           params: [{ chainId: toHex(id) }],
         });
+
         setLoading(false);
+        window.location.reload();
       } catch (err) {
         console.error(err);
         setLoading(false);
@@ -113,6 +114,7 @@ const Navbar = (props) => {
       </p>
     );
   });
+
   return (
     <header className={styles.header} id="header">
       <div className={styles.row}>
@@ -134,7 +136,7 @@ const Navbar = (props) => {
                 <img
                   src={selectedNetwork.logo}
                   className={styles.logo}
-                  alt="Etherium"
+                  alt="Ethereum"
                 />
                 <span>{selectedNetwork.network}</span>
                 <RiArrowDropDownLine className={styles.dropdownIcon} />

@@ -3,19 +3,12 @@ const valueLabel = (value) => {
   let unitIndex = 0;
   let scaledValue = value;
 
-  if (scaledValue > 43200 && unitIndex < sliderUnits.length - 1) {
-    unitIndex = 4;
-    scaledValue /= 43200;
-  }
-  if (scaledValue >= 10080 && unitIndex < sliderUnits.length - 1) {
-    unitIndex = 3;
-    scaledValue /= 10080;
-  } else if (scaledValue >= 1440 && unitIndex < sliderUnits.length - 1) {
+  if (scaledValue >= 1440 && unitIndex < sliderUnits.length - 1) {
     unitIndex = 2;
-    scaledValue /= 1440;
+    scaledValue /= 60;
   } else if (scaledValue >= 300 && unitIndex < sliderUnits.length - 1) {
     unitIndex = 1;
-    scaledValue /= 300;
+    scaledValue /= 60;
   } else if (scaledValue >= 60 && unitIndex < sliderUnits.length - 1) {
     scaledValue /= 60;
   }
