@@ -275,7 +275,6 @@ function App() {
         walletAddress={data.wallet.address}
         accountStatus={isWallletConnceted ? true : false}
         connectWallet={ShortSwapButtonClick}
-      // disConnectWallet={disconnect}
       />
 
       <Routes>
