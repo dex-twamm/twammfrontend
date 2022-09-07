@@ -34,7 +34,7 @@ function App() {
 	const [nonce, setNonce] = useState();
 	const [isWallletConnceted, setWalletConnected] = useState(false);
 	const [isPlacedLongTermOrder, setIsPlacedLongTermOrder] = useState(false);
-	const [showRemoveLiquidity, setShowRemoveLiquidity] = useState(false);
+	const [showRemoveLiquidity, setShowRemoveLiquidity] = useState(true);
 
 	const {
 		srcAddress,
@@ -115,10 +115,9 @@ function App() {
 		setLoading(true);
 		const walletBalanceWei = ethers.utils.parseUnits(ethBalance, 'ether');
 		const swapAmountWei = ethers.utils.parseUnits(swapAmount, 'ether');
+		swapAmountWei.lte(walletBalanceWei && poolCash) ? console.log("True") : console.log("False");
 		if (
-			swapAmountWei.lte(walletBalanceWei) &&
-			swapAmountWei.lte(poolCash)
-		) {
+			swapAmountWei.lte(walletBalanceWei && poolCash)) {
 			try {
 				const signer = await getProvider(true);
 				console.log(signer);
@@ -295,7 +294,7 @@ function App() {
 				walletAddress={data.wallet.address}
 				accountStatus={isWallletConnceted ? true : false}
 				connectWallet={ShortSwapButtonClick}
-				// disConnectWallet={disconnect}
+			// disConnectWallet={disconnect}
 			/>
 
 			<Routes>
