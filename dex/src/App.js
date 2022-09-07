@@ -34,6 +34,7 @@ function App() {
 	const [nonce, setNonce] = useState();
 	const [isWallletConnceted, setWalletConnected] = useState(false);
 	const [isPlacedLongTermOrder, setIsPlacedLongTermOrder] = useState(false);
+	const [removeLiquidityOpen, setRemoveLiquidityOpen] = useState(true);
 
 	const {
 		srcAddress,
@@ -265,7 +266,12 @@ function App() {
 		}
 	}, []);
 
-	const liquidityMarkup = <AddLiquidity connect={_joinPool} />;
+	let liquidityMarkup = <AddLiquidity connect={_joinPool} />;
+
+	if (removeLiquidityOpen)
+		liquidityMarkup = (
+			<RemoveLiquidity openModal={setRemoveLiquidityOpen} />
+		);
 
 	return (
 		<>
