@@ -27,6 +27,7 @@ const Swap = (props) => {
     setSwapAmount,
     selectToken,
     setSelectToken,
+    setLoading,
   } = useContext(ShortSwapContext);
 
   const {
@@ -164,6 +165,7 @@ const Swap = (props) => {
           {buttonText}
         </button>
       </form>
+      <PopupModal></PopupModal>
     </>
   );
 };

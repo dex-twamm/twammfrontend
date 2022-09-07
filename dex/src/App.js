@@ -9,7 +9,7 @@ import { BigNumber, ethers, providers } from "ethers";
 import { useState, useContext, useEffect } from "react";
 import { getEtherBalance, getLPTokensBalance } from "./utils/getAmount";
 import { swapTokens } from "./utils/swap";
-import { joinPool, exitPool } from "./utils/addLiquidity";
+import { joinPool, exitPool, getPoolBalance } from "./utils/addLiquidity";
 import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS, toHex, truncateAddress } from "./utils";
 import { LongSwapContext, ShortSwapContext } from "./providers";
 import { placeLongTermOrder } from "./utils/longSwap";
@@ -31,14 +31,14 @@ function App() {
     srcAddress,
     destAddress,
     swapAmount,
-    error,
     setError,
-    loading,
     setLoading,
     setSuccess,
-    equivalentAmount,
-    selectToken,
-    tokenBalances, setTokenBalances, setTransactionHash, ethBalance
+    setTokenBalances,
+    setTransactionHash,
+    ethBalance,
+    setPoolCash, poolCash
+
   } = useContext(ShortSwapContext);
   const { tokenA, tokenB } = useContext(LongSwapContext);
   // console.log("TOKENS", tokenA, tokenB);
@@ -91,17 +91,23 @@ function App() {
     }
   };
 
-  const disconnect = async () => {
-    setAccount("");
-    await web3Modal.clearCachedProvider();
-  };
+  // const disconnect = async () => {
+  //   try {
+  //     await web3Modal.clearCachedProvider();
+  //     setAccount("");
+  //     setNetworkId("");
+  //     setLoading(false);
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
 
   //  Swap Token
   const _swapTokens = async () => {
     setLoading(true);
     const walletBalanceWei = ethers.utils.parseUnits(ethBalance, "ether");
     const swapAmountWei = ethers.utils.parseUnits(swapAmount, "ether");
-    if (swapAmountWei.lte(walletBalanceWei)) {
+    if (swapAmountWei.lte(walletBalanceWei) && swapAmountWei.lte(poolCash)) {
       try {
         const signer = await getProvider(true);
         console.log(signer);
@@ -233,9 +239,14 @@ function App() {
     setLoading(true);
     try {
       const provider = await getProvider(true);
+      const tokenAddress = FAUCET_TOKEN_ADDRESS;
       await getLPTokensBalance(provider, account).then((res) => {
         setTokenBalances(res);
         // console.log("Response From Token Balance Then Block", res)
+      });
+      await getPoolBalance(provider, tokenAddress).then((res) => {
+        setPoolCash(res);
+        console.log("===GET POOL BALANCE====", res)
       })
       setLoading(false);
     } catch (e) {
@@ -264,6 +275,7 @@ function App() {
         walletAddress={data.wallet.address}
         accountStatus={isWallletConnceted ? true : false}
         connectWallet={ShortSwapButtonClick}
+      // disConnectWallet={disconnect}
       />
 
       <Routes>
@@ -295,7 +307,6 @@ function App() {
         {/* Replace _exitPool with _joinPool When Needed To Join Pool */}
         <Route path="/liquidity" element={<AddLiquidity connect={_joinPool} />} />
       </Routes>
-      <PopupModal></PopupModal>
     </>
   );
 }

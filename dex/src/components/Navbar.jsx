@@ -13,7 +13,13 @@ const Navbar = (props) => {
   const location = useLocation();
   const currentPath = location.pathname;
 
-  const { walletBalance, walletAddress, accountStatus, connectWallet } = props;
+  const {
+    walletBalance,
+    walletAddress,
+    accountStatus,
+    connectWallet,
+    disConnectWallet,
+  } = props;
   const { setError, setLoading } = useContext(ShortSwapContext);
 
   const [selectedNetwork, setSelectedNetwork] = useState({
@@ -160,6 +166,7 @@ const Navbar = (props) => {
                 </button>
                 <button
                   className={classNames(styles.btnWallet, styles.rightRadius)}
+                  onClick={disConnectWallet}
                 >
                   {walletAddress}
                 </button>

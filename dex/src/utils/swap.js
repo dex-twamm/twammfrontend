@@ -16,6 +16,7 @@ export const swapTokens = async (signer, swapAmountWei, assetIn, assetOut, walle
     signer
   );
   const kind = 0; // GivenIn
+
   const swapTx = await exchangeContract.swap(
     {
       poolId: POOL_ID,
@@ -40,6 +41,7 @@ export const swapTokens = async (signer, swapAmountWei, assetIn, assetOut, walle
   txHash = swapTx.hash;
   console.log(txHash);
   return txHash;
+
   // const swapResult = await swapTx.wait();
   // console.log(swapResult.transactionHash);
 };

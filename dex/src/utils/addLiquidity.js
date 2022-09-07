@@ -1,11 +1,12 @@
-import { Contract } from "ethers";
+import { Contract, ethers } from "ethers";
 import { defaultAbiCoder } from "ethers/lib/utils";
 import { FAUCET_TOKEN_ADDRESS, fp, MATIC_TOKEN_ADDRESS, MAX_UINT256, POOL_ID } from ".";
-import { VAULT_CONTRACT_ABI, VAULT_CONTRACT_ADDRESS } from "../constants";
+import { TWAMM_POOL_ABI, VAULT_CONTRACT_ABI, VAULT_CONTRACT_ADDRESS } from "../constants";
 
 export async function joinPool(walletAddress, signer) {
     const encodedRequest = defaultAbiCoder.encode(
         ["uint256", "uint256[]", "uint256"],
+        // JoinKind, User Input AmountIn, MinimumBpt Out 
         [1, [fp(1e-12), fp(1.0)], 0]
     );
     const poolContract = new Contract(
@@ -19,6 +20,7 @@ export async function joinPool(walletAddress, signer) {
         walletAddress,
         {
             assets: [MATIC_TOKEN_ADDRESS, FAUCET_TOKEN_ADDRESS],
+            // Could Be User Input Same as Encoded Above -- Left to Figure It Out
             maxAmountsIn: [MAX_UINT256, MAX_UINT256],
             fromInternalBalance: false,
             userData: encodedRequest,
@@ -34,6 +36,7 @@ export async function exitPool(walletAdress, signer, bptAmountIn) {
         VAULT_CONTRACT_ABI,
         signer
     )
+    // bptAmountIn As User Input
     const encodedRequest = defaultAbiCoder.encode(['uint256', 'uint256'], [1, bptAmountIn]);
     const exitPoolTx = await poolContract.exitPool(
         POOL_ID,
@@ -53,3 +56,16 @@ export async function exitPool(walletAdress, signer, bptAmountIn) {
     const exitPoolResult = await exitPoolTx.wait();
     console.log(exitPoolResult);
 }
+
+export async function getPoolBalance(signer, tokenAddress) {
+    const poolContract = new Contract(
+        VAULT_CONTRACT_ADDRESS,
+        VAULT_CONTRACT_ABI,
+        signer
+    )
+    const poolBalance = await poolContract.getPoolTokenInfo(POOL_ID, tokenAddress);
+    const cash = poolBalance.cash._hex;
+    return cash;
+
+}
+

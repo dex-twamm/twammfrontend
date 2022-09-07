@@ -14,6 +14,7 @@ export const ShortSwapProvider = ({ children }) => {
   const [transactionHash, setTransactionHash] = useState();
   const [selectToken, setSelectToken] = useState("");
   const [ethBalance, setEthBalance] = useState("");
+  const [poolCash, setPoolCash] = useState("");
 
   return (
     <ShortSwapContext.Provider
@@ -42,6 +43,8 @@ export const ShortSwapProvider = ({ children }) => {
         setSelectToken,
         ethBalance,
         setEthBalance,
+        poolCash,
+        setPoolCash,
       }}
     >
       {children}
