@@ -141,21 +141,21 @@
 }
 
 .withdrawButton {
-	background-color: cadetblue;
-	color: white;
-}
-
-.withdrawButton:hover {
-	background-color: rgb(53, 138, 141);
-}
-
-.cancelButton {
 	background-color: #fedfe9;
 	color: #d50066;
 }
 
-.cancelButton:hover {
+.withdrawButton:hover {
 	background-color: #ffd7e3;
+}
+
+.cancelButton {
+	color: #fdeaf1;
+	background-color: #d50066;
+}
+
+.cancelButton:hover {
+	background-color: #e3036f;
 }
 
 .successButton {

@@ -6,29 +6,22 @@ import { useState } from 'react';
 
 import styles from '../../css/RemoveLiquidity.module.css';
 
-const RemoveLiquidity = ({ openModal }) => {
+const RemoveLiquidity = ({ showRemoveLiquidity }) => {
 	const [rangeValue, setRangeValue] = useState(0);
 	const [buttonEnabled, setButtonEnabled] = useState(false);
 
 	const clickHandler = () => {
-		openModal(false);
+		// Remove liquidity logic here
+		showRemoveLiquidity(false);
 	};
 
 	return (
-		<div
-			onClick={() => {
-				openModal(false);
-			}}
-			className={styles.modalWrapper}
-		>
-			<div
-				onClick={e => e.stopPropagation()}
-				className={styles.container}
-			>
+		<div className={styles.container}>
+			<div className={styles.mainBody}>
 				<div className={styles.modalContainer}>
 					<div className={styles.modalHeading}>
 						<FontAwesomeIcon
-							onClick={() => openModal(false)}
+							onClick={() => showRemoveLiquidity(false)}
 							className={styles.icon}
 							icon={faArrowLeft}
 						/>
@@ -150,8 +143,6 @@ const RemoveLiquidity = ({ openModal }) => {
 						Remove
 					</button>
 				</div>
-
-				<div className={styles.modalTokenList}></div>
 			</div>
 		</div>
 	);
