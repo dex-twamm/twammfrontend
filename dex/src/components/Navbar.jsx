@@ -8,6 +8,8 @@ import styles from "../css/Navbar.module.css";
 import classNames from "classnames";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { Link, Navigate, useLocation } from "react-router-dom";
+import { DisconnectWalletOption } from "./DisconnectWalletOption";
+
 
 const Navbar = (props) => {
   const location = useLocation();
@@ -15,7 +17,8 @@ const Navbar = (props) => {
 
   const { walletBalance, walletAddress, accountStatus, connectWallet } = props;
   const { setError, setLoading } = useContext(ShortSwapContext);
-  const [isOpen, setOpen] = useState(false);
+  // const [isOpen, setOpen] = useState(false);
+  const [showDisconnect,setShowDisconnect] = useState(false);
 
   const [selectedNetwork, setSelectedNetwork] = useState({
     network: "Select Network",
@@ -23,10 +26,9 @@ const Navbar = (props) => {
     chainId: "",
   });
 
-  //disconnect 
-  const handleDisconnect = () =>{
-    setOpen(true)
-  }
+  
+
+  
 
   const handleSelect = async (networkName, logo, chainId) => {
     setSelectedNetwork({
@@ -119,8 +121,18 @@ const Navbar = (props) => {
       </p>
     );
   });
+
+
+const handleDisconnect = () => {
+  walletAddress && setShowDisconnect(true)
+
+
+}
+
+
   return (
     <header className={styles.header} id="header">
+      { showDisconnect && <DisconnectWalletOption setOpen={setShowDisconnect} open={showDisconnect}/> }
       <div className={styles.row}>
         <div className={styles.tabContainerLeft}>
           <Link to="/">
@@ -165,7 +177,7 @@ const Navbar = (props) => {
                 >
                   {walletBalance}
                 </button>
-                <button onClick={handleDisconnect}
+                <button  onClick={handleDisconnect}
                   className={classNames(styles.btnWallet, styles.rightRadius)}
                 >
                   {walletAddress}

@@ -3,7 +3,6 @@
 // Sagar
 // import { Modal } from '@mui/material';
 import React,{useState} from 'react';
-import '../../css/LiquidityPools.css'
 import { Box, Button, Typography } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import AddIcon from '@mui/icons-material/Add';
@@ -38,19 +37,21 @@ const style = {
 	// border:'2px solid red',
   };
 
-const DisconnectWalletOption = () => {
-	const [open, setOpen] = useState(true);
+const DisconnectWalletOption = ({setOpen,open}) => {
+	// const [open, setOpen] = useState(true);
 
-
-	const handleOpen = () => setOpen(true);
+	// const handleOpen = () => setOpen(true);
 	const handleClose = () => setOpen(false);
+	
   
+
+
 	return(
 		
-		<Box sx={{display:'flex', justifyContent:'space-evenly',alignItems:'center',background:'white',borderRadius:4 ,minWidth:50, minHeight:300,}}>
-			<Button onClick={handleOpen}>Open modal</Button>
+		<Box sx={{display:'flex', justifyContent:'space-evenly',alignItems:'center',background:'white',borderRadius:4 ,minWidth:50,}}>
+			{/* <Button onClick={handleOpen}>Open modal</Button> */}
       <Modal
-        open={open}
+	  	open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"

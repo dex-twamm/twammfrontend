@@ -7,7 +7,7 @@ import { FiChevronDown } from 'react-icons/fi';
 import styles from '../../css/AddLiquidity.module.css';
 import FeeTierOptions from '../FeeTierOptions';
 import Input from '../Input';
-import { DisconnectWalletOption } from './DisconnectWalletOption';
+import { DisconnectWalletOption } from '../DisconnectWalletOption';
 import { LiquidityPools } from './LiquidityPools';
 
 const AddLiquidity = props => {
