@@ -327,12 +327,11 @@ function App() {
 						/>
 					}
 				/>
-
-				{/* Replace _exitPool with _joinPool When Needed To Join Pool */}
 				<Route path='/liquidity' element={liquidityMarkup} />
 			</Routes>
 		</>
 	);
+
 }
 
 export default App;

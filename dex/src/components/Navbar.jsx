@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import showDropdown from "../Helpers/showdropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
@@ -13,23 +13,43 @@ const Navbar = (props) => {
   const location = useLocation();
   const currentPath = location.pathname;
 
-  const {
-    walletBalance,
-    walletAddress,
-    accountStatus,
-    connectWallet,
-    disConnectWallet,
-  } = props;
+  const { walletBalance, walletAddress, accountStatus, connectWallet } = props;
   const { setError, setLoading } = useContext(ShortSwapContext);
+  const [netId, setNetId] = useState("");
+
+  // selector select and option value
+  const networks = [
+    { name: "Ethereum", chainId: "1", logo: "/ethereum.png" },
+    { name: "Goerli", chainId: "5", logo: "/dai.png" },
+    { name: "Coming Soon", chainId: "0", logo: "/ethereum.png" },
+  ];
+
+  const nId = window.ethereum.networkVersion;
+  const initialNetwork = networks.filter((id) => id.chainId === nId);
 
   const [selectedNetwork, setSelectedNetwork] = useState({
-    network: "Select Network",
+    network: "Select a Network",
     logo: "/ethereum.png",
-    chainId: "",
+    chainId: nId,
   });
+
+  const coin_name = localStorage.getItem("coin_name");
+  const coin_logo = localStorage.getItem("coin_logo");
+
+  useEffect(() => {
+    setSelectedNetwork((prevState) => ({
+      ...prevState,
+      network: coin_name ? coin_name : initialNetwork[0].name,
+      logo: coin_logo ? coin_logo : initialNetwork[0].logo,
+    }));
+  }, [coin_name]);
+
   const handleSelect = async (networkName, logo, chainId) => {
+    localStorage.setItem("coin_name", networkName);
+    localStorage.setItem("coin_logo", logo);
+
     const id = chainId;
-    console.log(chainId);
+    // console.log(chainId);
     setSelectedNetwork({
       network: networkName,
       logo: logo,
@@ -44,6 +64,7 @@ const Navbar = (props) => {
         });
 
         setLoading(false);
+        window.location.reload();
       } catch (err) {
         console.error(err);
         setLoading(false);
@@ -99,12 +120,6 @@ const Navbar = (props) => {
     );
   });
 
-  const networks = [
-    { name: "Ethereum", chainId: "1", logo: "/ethereum.png" },
-    { name: "Goerli", chainId: "5", logo: "/dai.png" },
-    { name: "Coming Soon", chainId: "0", logo: "/ethereum.png" },
-  ];
-
   const networkList = networks.map((network, index) => {
     return (
       <p
@@ -155,7 +170,7 @@ const Navbar = (props) => {
               </div>
             </div>
           </div>
-
+          {/* Wallent Balance haru yeta ba  */}
           <div className={styles.walletBalance}>
             {accountStatus ? (
               <>
@@ -166,7 +181,6 @@ const Navbar = (props) => {
                 </button>
                 <button
                   className={classNames(styles.btnWallet, styles.rightRadius)}
-                  onClick={disConnectWallet}
                 >
                   {walletAddress}
                 </button>
