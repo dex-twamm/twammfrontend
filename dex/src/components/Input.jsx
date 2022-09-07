@@ -22,9 +22,9 @@ const Input = (props) => {
     useContext(ShortSwapContext);
   const { tokenA, tokenB } = useContext(LongSwapContext);
 
-  console.log("Select Token Input.js", selectToken);
-  console.log("TOKEN A", tokenA);
-
+  // console.log("Select Token Input.js", selectToken);
+  // console.log("TOKEN A", tokenA);
+  console.log("====TOKEN BALANCES===", tokenBalances);
   const tokenDetails = [
     {
       name: "Faucet",
@@ -45,7 +45,6 @@ const Input = (props) => {
       name: "Test Token",
       symbol: "CST",
       image: "/dai.png",
-      // address: MATIC_TOKEN_ADDRESS,
     },
   ];
 

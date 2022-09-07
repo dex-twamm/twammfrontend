@@ -38,7 +38,6 @@ const Navbar = (props) => {
         });
 
         setLoading(false);
-        window.location.reload();
       } catch (err) {
         console.error(err);
         setLoading(false);

@@ -41,11 +41,11 @@ function App() {
     tokenBalances, setTokenBalances, setTransactionHash, ethBalance
   } = useContext(ShortSwapContext);
   const { tokenA, tokenB } = useContext(LongSwapContext);
-  console.log("TOKENS", tokenA, tokenB);
-  console.log("Select Token", selectToken);
-  console.log("Select Token From App", selectToken);
-  console.log("ETH Balances", ethBalance);
-  //  Connect Wallet
+  // console.log("TOKENS", tokenA, tokenB);
+  // console.log("Select Token", selectToken);
+  // console.log("Select Token From App", selectToken);
+  // console.log("ETH Balances", ethBalance);
+  // //  Connect Wallet
   const connectWallet = async () => {
     try {
       await getProvider();
