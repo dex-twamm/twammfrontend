@@ -7,7 +7,7 @@ import { ShortSwapContext } from "../providers";
 import styles from "../css/Navbar.module.css";
 import classNames from "classnames";
 import { RiArrowDropDownLine } from "react-icons/ri";
-import { Link, useLocation } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 
 const Navbar = (props) => {
   const location = useLocation();
@@ -15,12 +15,18 @@ const Navbar = (props) => {
 
   const { walletBalance, walletAddress, accountStatus, connectWallet } = props;
   const { setError, setLoading } = useContext(ShortSwapContext);
+  const [isOpen, setOpen] = useState(false);
 
   const [selectedNetwork, setSelectedNetwork] = useState({
     network: "Select Network",
     logo: "/ethereum.png",
     chainId: "",
   });
+
+  //disconnect 
+  const handleDisconnect = () =>{
+    setOpen(true)
+  }
 
   const handleSelect = async (networkName, logo, chainId) => {
     setSelectedNetwork({
@@ -149,6 +155,8 @@ const Navbar = (props) => {
             </div>
           </div>
 
+       
+
           <div className={styles.walletBalance}>
             {accountStatus ? (
               <>
@@ -157,7 +165,7 @@ const Navbar = (props) => {
                 >
                   {walletBalance}
                 </button>
-                <button
+                <button onClick={handleDisconnect}
                   className={classNames(styles.btnWallet, styles.rightRadius)}
                 >
                   {walletAddress}
@@ -181,6 +189,9 @@ const Navbar = (props) => {
             </span>
           </div>
         </div>
+
+      
+
       </div>
     </header>
   );

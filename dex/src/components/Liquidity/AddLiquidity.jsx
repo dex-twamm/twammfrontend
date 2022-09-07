@@ -1,11 +1,14 @@
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Box } from '@mui/material';
 import classNames from 'classnames';
 import React, { useState } from 'react';
 import { FiChevronDown } from 'react-icons/fi';
 import styles from '../../css/AddLiquidity.module.css';
 import FeeTierOptions from '../FeeTierOptions';
 import Input from '../Input';
+import { DisconnectWalletOption } from './DisconnectWalletOption';
+import { LiquidityPools } from './LiquidityPools';
 
 const AddLiquidity = props => {
 	const { connect } = props;
@@ -91,8 +94,23 @@ const AddLiquidity = props => {
 							</button>
 						</div>
 					</div>
+
+					{/* liquidity  pool  */}
 				</div>
+
+				
+				
 			</div>
+
+			<Box sx={{ minWidth:'50%'}}>
+			<LiquidityPools  />
+			</Box>
+
+			<Box sx={{ minWidth:'50%'}}>
+				<DisconnectWalletOption  />
+			</Box>
+
+
 		</div>
 
 		// <div className="add-liquidity">
