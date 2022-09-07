@@ -3,14 +3,7 @@ const valueLabel = (value) => {
   let unitIndex = 0;
   let scaledValue = value;
 
-  if (scaledValue > 43200 && unitIndex < sliderUnits.length - 1) {
-    unitIndex = 4;
-    scaledValue /= 43200;
-  }
-  if (scaledValue >= 10080 && unitIndex < sliderUnits.length - 1) {
-    unitIndex = 3;
-    scaledValue /= 10080;
-  } else if (scaledValue >= 1440 && unitIndex < sliderUnits.length - 1) {
+  if (scaledValue >= 1440 && unitIndex < sliderUnits.length - 1) {
     unitIndex = 2;
     scaledValue /= 1440;
   } else if (scaledValue >= 300 && unitIndex < sliderUnits.length - 1) {
@@ -33,6 +26,12 @@ const valueLabel = (value) => {
   // }`;
   // scaledValue: scaledValue.toFixed(0),
   // sliderUnits: sliderUnits[unitIndex],
+
+  // Block Interval Calculation 
+  //  Incoming Input as Seconds/ 12(Block Time) / Block
+  // const calculateValue = (value) => {
+  //   return log(value * blockInterval * blockTime);
+  // };
 };
 
 const calculateValue = (value) => {
