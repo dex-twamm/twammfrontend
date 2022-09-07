@@ -13,7 +13,13 @@ const Navbar = (props) => {
   const location = useLocation();
   const currentPath = location.pathname;
 
-  const { walletBalance, walletAddress, accountStatus, connectWallet } = props;
+  const {
+    walletBalance,
+    walletAddress,
+    accountStatus,
+    connectWallet,
+    disConnectWallet,
+  } = props;
   const { setError, setLoading } = useContext(ShortSwapContext);
 
   const [selectedNetwork, setSelectedNetwork] = useState({
@@ -21,15 +27,14 @@ const Navbar = (props) => {
     logo: "/ethereum.png",
     chainId: "",
   });
-
   const handleSelect = async (networkName, logo, chainId) => {
+    const id = chainId;
+    console.log(chainId);
     setSelectedNetwork({
       network: networkName,
       logo: logo,
       chainId: chainId,
     });
-    console.log(chainId);
-    const id = chainId;
     if (window.ethereum.networkVersion !== id) {
       setLoading(true);
       try {
@@ -37,6 +42,7 @@ const Navbar = (props) => {
           method: "wallet_switchEthereumChain",
           params: [{ chainId: toHex(id) }],
         });
+
         setLoading(false);
       } catch (err) {
         console.error(err);
@@ -113,6 +119,7 @@ const Navbar = (props) => {
       </p>
     );
   });
+
   return (
     <header className={styles.header} id="header">
       <div className={styles.row}>
@@ -134,7 +141,7 @@ const Navbar = (props) => {
                 <img
                   src={selectedNetwork.logo}
                   className={styles.logo}
-                  alt="Etherium"
+                  alt="Ethereum"
                 />
                 <span>{selectedNetwork.network}</span>
                 <RiArrowDropDownLine className={styles.dropdownIcon} />
@@ -159,6 +166,7 @@ const Navbar = (props) => {
                 </button>
                 <button
                   className={classNames(styles.btnWallet, styles.rightRadius)}
+                  onClick={disConnectWallet}
                 >
                   {walletAddress}
                 </button>

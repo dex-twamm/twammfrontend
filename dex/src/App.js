@@ -1,3 +1,4 @@
+import { chipClasses } from '@mui/material';
 import { BigNumber, ethers, providers } from 'ethers';
 import { useContext, useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
@@ -11,14 +12,14 @@ import {
 import Navbar from './components/Navbar';
 import LongSwap from './pages/LongSwap';
 import ShortSwap from './pages/ShortSwap';
-import { ShortSwapContext } from './providers';
+import { LongSwapContext, ShortSwapContext } from './providers';
 import {
 	FAUCET_TOKEN_ADDRESS,
 	MATIC_TOKEN_ADDRESS,
 	toHex,
 	truncateAddress,
 } from './utils';
-import { exitPool, joinPool } from './utils/addLiquidity';
+import { exitPool, getPoolBalance, joinPool } from './utils/addLiquidity';
 import { getEtherBalance, getLPTokensBalance } from './utils/getAmount';
 import { ethLogs } from './utils/get_ethLogs';
 import { placeLongTermOrder } from './utils/longSwap';
@@ -30,7 +31,6 @@ function App() {
 	const [web3provider, setweb3provider] = useState();
 	const [account, setAccount] = useState();
 	const [balance, setBalance] = useState();
-	const [ethBalance, setEthBalance] = useState();
 	const [nonce, setNonce] = useState();
 	const [isWallletConnceted, setWalletConnected] = useState(false);
 	const [isPlacedLongTermOrder, setIsPlacedLongTermOrder] = useState(false);
@@ -40,20 +40,21 @@ function App() {
 		srcAddress,
 		destAddress,
 		swapAmount,
-		error,
 		setError,
-		loading,
 		setLoading,
 		setSuccess,
-		equivalentAmount,
-		tokenBalances,
 		setTokenBalances,
 		setTransactionHash,
-		transactionHash,
+		ethBalance,
+		setPoolCash,
+		poolCash,
 	} = useContext(ShortSwapContext);
-
-	console.log(tokenBalances);
-	console.log('txHash From App.js', transactionHash);
+	const { tokenA, tokenB } = useContext(LongSwapContext);
+	// console.log("TOKENS", tokenA, tokenB);
+	// console.log("Select Token", selectToken);
+	// console.log("Select Token From App", selectToken);
+	// console.log("ETH Balances", ethBalance);
+	// //  Connect Wallet
 	const connectWallet = async () => {
 		try {
 			await getProvider();
@@ -64,6 +65,7 @@ function App() {
 		}
 	};
 
+	//  Get Provider
 	const getProvider = async (needSigner = false) => {
 		setLoading(true);
 		try {
@@ -97,61 +99,58 @@ function App() {
 		}
 	};
 
-	const disconnect = async () => {
-		setEthBalance('');
-		setAccount('');
-		await web3Modal.clearCachedProvider();
-	};
-
-	// const getAmounts = async () => {
-	//   const provider = await connectWallet();
-	//   const signer = await connectWallet();
-	//   const address = await signer.getAddress();
-	//   // get the amount of eth in the user's account
-	//   const _ethBalance = await getEtherBalance(provider, address);
-	//   setEthBalance(_ethBalance);
+	// const disconnect = async () => {
+	//   try {
+	//     await web3Modal.clearCachedProvider();
+	//     setAccount("");
+	//     setNetworkId("");
+	//     setLoading(false);
+	//   } catch (e) {
+	//     console.log(e);
+	//   }
 	// };
 
 	//  Swap Token
 	const _swapTokens = async () => {
 		setLoading(true);
-		const walletBalanceWei = ethers.utils.parseUnits(balance, 'ether');
-		console.log('walletBalanceWei', walletBalanceWei);
+		const walletBalanceWei = ethers.utils.parseUnits(ethBalance, 'ether');
 		const swapAmountWei = ethers.utils.parseUnits(swapAmount, 'ether');
-		console.log('swapAmountWei', swapAmountWei);
-		walletBalanceWei > swapAmountWei
-			? console.log(true)
-			: console.log(false);
-		try {
-			console.log('swapAmountWei', swapAmountWei);
-			const signer = await getProvider(true);
-			console.log(signer);
-			const assetIn = srcAddress;
-			const assetOut = destAddress;
-			const walletAddress = account;
-			// Call the swapTokens function from the `utils` folder
-			await swapTokens(
-				signer,
-				swapAmountWei,
-				assetIn,
-				assetOut,
-				walletAddress
-			)
-				.then(res => setTransactionHash(res))
-				.catch(err => {
-					console.error(err);
-					setError('Transaction Error');
-				});
+		if (
+			swapAmountWei.lte(walletBalanceWei) &&
+			swapAmountWei.lte(poolCash)
+		) {
+			try {
+				const signer = await getProvider(true);
+				console.log(signer);
+				const assetIn = srcAddress;
+				const assetOut = destAddress;
+				const walletAddress = account;
+				// Call the swapTokens function from the `utils` folder
+				await swapTokens(
+					signer,
+					swapAmountWei,
+					assetIn,
+					assetOut,
+					walletAddress
+				)
+					.then(res => setTransactionHash(res))
+					.catch(err => {
+						console.error(err);
+						setError('Transaction Error');
+					});
+				setLoading(false);
+			} catch (err) {
+				console.error(err);
+				setLoading(false);
+				setError('Transaction Cancelled');
+			}
+		} else {
 			setLoading(false);
-		} catch (err) {
-			console.error(err);
-			setLoading(false);
-			setError('Transaction Cancelled');
-
-			// setSwapAmount("");
+			setError('Insufficient Balance');
 		}
 	};
 
+	//  Long Term Swap
 	const _placeLongTermOrders = async () => {
 		const swapAmountWei = ethers.utils.parseUnits(swapAmount, 'ether');
 		console.log('swapAmountWei', swapAmountWei);
@@ -179,7 +178,7 @@ function App() {
 			setError('Transaction Cancelled');
 		}
 	};
-
+	//   Calling Swap
 	async function ShortSwapButtonClick() {
 		try {
 			const signer = await getProvider(true);
@@ -194,6 +193,7 @@ function App() {
 		}
 	}
 
+	//  Calling LongTermSwap
 	async function LongSwapButtonClick() {
 		if (!isWallletConnceted) {
 			await connectWallet();
@@ -243,20 +243,29 @@ function App() {
 			balance: account === null ? 'Wallet Balance' : balance,
 		},
 	};
-	const tokenBalance = async () => {
+
+	// Getting Each Token Balances
+	const tokenBalance = async account => {
 		setLoading(true);
 		try {
 			const provider = await getProvider(true);
-			// getLPTokensBalance(provider);
-			setTokenBalances(await getLPTokensBalance(provider));
+			const tokenAddress = FAUCET_TOKEN_ADDRESS;
+			await getLPTokensBalance(provider, account).then(res => {
+				setTokenBalances(res);
+				// console.log("Response From Token Balance Then Block", res)
+			});
+			await getPoolBalance(provider, tokenAddress).then(res => {
+				setPoolCash(res);
+				console.log('===GET POOL BALANCE====', res);
+			});
 			setLoading(false);
 		} catch (e) {
 			console.log(e);
 			setLoading(false);
 		}
 	};
+
 	useEffect(() => {
-		tokenBalance();
 		const account = localStorage.getItem('account');
 		const balance = localStorage.getItem('balance');
 		if (account && balance) {
@@ -264,6 +273,7 @@ function App() {
 			setWalletConnected(true);
 			setBalance(balance);
 		}
+		tokenBalance(account);
 	}, []);
 
 	let liquidityMarkup = <AddLiquidity connect={_joinPool} />;
@@ -282,6 +292,7 @@ function App() {
 				walletAddress={data.wallet.address}
 				accountStatus={isWallletConnceted ? true : false}
 				connectWallet={ShortSwapButtonClick}
+				// disConnectWallet={disconnect}
 			/>
 
 			<Routes>

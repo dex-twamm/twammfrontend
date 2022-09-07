@@ -10,8 +10,11 @@ export const ShortSwapProvider = ({ children }) => {
   const [error, setError] = useState();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState();
-  const [tokenBalances, setTokenBalances] = useState();
+  const [tokenBalances, setTokenBalances] = useState("");
   const [transactionHash, setTransactionHash] = useState();
+  const [selectToken, setSelectToken] = useState("");
+  const [ethBalance, setEthBalance] = useState("");
+  const [poolCash, setPoolCash] = useState("");
 
   return (
     <ShortSwapContext.Provider
@@ -36,6 +39,12 @@ export const ShortSwapProvider = ({ children }) => {
         setTokenBalances,
         transactionHash,
         setTransactionHash,
+        selectToken,
+        setSelectToken,
+        ethBalance,
+        setEthBalance,
+        poolCash,
+        setPoolCash,
       }}
     >
       {children}

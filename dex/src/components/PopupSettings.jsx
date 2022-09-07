@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import styles from "../css/PopupSettings.module.css";
 
 const PopupSettings = () => {
@@ -11,7 +11,12 @@ const PopupSettings = () => {
           <div className={styles.slippageTolerance}>
             <button className={styles.btnAuto}>Auto</button>
             <div className={styles.inputContainer}>
-              <input className={styles.inputSlippageTolerance} type="number" placeholder="0.10" defaultValue={0.10} />
+              <input
+                className={styles.inputSlippageTolerance}
+                type="number"
+                placeholder="0.10"
+                defaultValue={0.1}
+              />
               <p>%</p>
             </div>
           </div>
@@ -20,14 +25,14 @@ const PopupSettings = () => {
           <p>Transaction deadline ?</p>
           <div className={styles.transactionDeadline}>
             <div className={styles.inputContainer}>
-              <input type="number" placeholder="30" defaultValue={30}/>
+              <input type="number" placeholder="30" defaultValue={30} />
             </div>
             <p>minutes</p>
           </div>
         </div>
       </div>
     </span>
-  )
-}
+  );
+};
 
-export default PopupSettings
+export default PopupSettings;
