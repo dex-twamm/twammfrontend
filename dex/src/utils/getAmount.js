@@ -61,7 +61,7 @@ import {
 // }
 
 // To Retrieve Token Balances 
-export const getLPTokensBalance = async (provider) => {
+export const getLPTokensBalance = async (provider, walletAddress) => {
   var tokenAddress = [FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS];
   const newBalance = [];
   for (let index = 0; index < tokenAddress.length; index++) {
@@ -77,7 +77,7 @@ export const getLPTokensBalance = async (provider) => {
       TOKEN_CONTRACT_ABI,
       provider
     );
-    const balanceOfLPTokens = await balanceContract.balanceOf("0x536eE2273Ba6F1c91362fa9FCcb4166450FCb7D3");
+    const balanceOfLPTokens = await balanceContract.balanceOf(walletAddress);
     console.log("Balance of_" + element + "_is=" + ethers.utils.formatEther(balanceOfLPTokens));
     return balanceOfLPTokens;
   }

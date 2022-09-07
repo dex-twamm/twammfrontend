@@ -95,48 +95,40 @@ function App() {
     setAccount("");
     await web3Modal.clearCachedProvider();
   };
-  // const checkTokenBalance = () => {
-  //   if (selectToken == 1) {
-  //     setEthBalance(() => tokenBalances[0])
 
-  //   }
-  //   else {
-  //     setEthBalance(() => tokenBalances[1])
-
-  //   }
-  // }
   //  Swap Token
   const _swapTokens = async () => {
     setLoading(true);
     const walletBalanceWei = ethers.utils.parseUnits(ethBalance, "ether");
-    console.log("walletBalanceWei", walletBalanceWei);
     const swapAmountWei = ethers.utils.parseUnits(swapAmount, "ether");
-    console.log("SWAP AMOUNT WEI", swapAmountWei);
-    walletBalanceWei > swapAmountWei ? console.log(true) : console.log(false);
-    try {
-      console.log("swapAmountWei", swapAmountWei);
-      const signer = await getProvider(true);
-      console.log(signer);
-      const assetIn = srcAddress;
-      const assetOut = destAddress;
-      const walletAddress = account;
-      // Call the swapTokens function from the `utils` folder
-      await swapTokens(
-        signer,
-        swapAmountWei,
-        assetIn,
-        assetOut,
-        walletAddress
-      ).then((res) => setTransactionHash(res)).catch((err) => {
-        console.error(err);
-        setError("Transaction Error");
-      });
-      setLoading(false);
+    if (swapAmountWei.lte(walletBalanceWei)) {
+      try {
+        const signer = await getProvider(true);
+        console.log(signer);
+        const assetIn = srcAddress;
+        const assetOut = destAddress;
+        const walletAddress = account;
+        // Call the swapTokens function from the `utils` folder
+        await swapTokens(
+          signer,
+          swapAmountWei,
+          assetIn,
+          assetOut,
+          walletAddress
+        ).then((res) => setTransactionHash(res)).catch((err) => {
+          console.error(err);
+          setError("Transaction Error");
+        });
+        setLoading(false);
 
-    } catch (err) {
-      console.error(err);
+      } catch (err) {
+        console.error(err);
+        setLoading(false);
+        setError("Transaction Cancelled");
+      }
+    } else {
       setLoading(false);
-      setError("Transaction Cancelled");
+      setError("Insufficient Balance")
     }
   };
 
@@ -237,14 +229,13 @@ function App() {
   };
 
   // Getting Each Token Balances
-  const tokenBalance = async () => {
+  const tokenBalance = async (account) => {
     setLoading(true);
     try {
       const provider = await getProvider(true);
-      // getLPTokensBalance(provider);
-      await getLPTokensBalance(provider).then((res) => {
+      await getLPTokensBalance(provider, account).then((res) => {
         setTokenBalances(res);
-        console.log("Response From Token Balance Then Block", res)
+        // console.log("Response From Token Balance Then Block", res)
       })
       setLoading(false);
     } catch (e) {
@@ -253,11 +244,7 @@ function App() {
     }
   }
 
-
   useEffect(() => {
-    // checkTokenBalance();
-    console.log("token Balances", tokenBalances[0])
-    tokenBalance();
     const account = localStorage.getItem("account");
     const balance = localStorage.getItem("balance");
     if (account && balance) {
@@ -265,6 +252,7 @@ function App() {
       setWalletConnected(true);
       setBalance(balance);
     }
+    tokenBalance(account);
   }, []);
 
   return (

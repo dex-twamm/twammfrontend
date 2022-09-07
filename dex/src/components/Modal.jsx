@@ -29,7 +29,6 @@ const Modal = ({ display, setDisplay, setTokenA, setTokenB, tokenDetails }) => {
       });
     } else if (selectToken === "2") {
       setDestAddress(token.children[2].innerHTML);
-      setEthBalance(parseFloat(token.children[3].innerHTML).toFixed(2));
       setTokenB({
         symbol: token.children[1].innerHTML,
         image: token.children[0].src.slice(21, token.length),
