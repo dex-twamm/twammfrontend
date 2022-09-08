@@ -49,7 +49,7 @@ const Navbar = props => {
 		setSelectedNetwork(prevState => ({
 			...prevState,
 			network: coin_name ? coin_name : initialNetwork[0]?.name,
-			logo: coin_logo ? coin_logo : initialNetwork[0].logo,
+			logo: coin_logo ? coin_logo : initialNetwork[0]?.logo,
 		}));
 	}, [coin_name]);
 
@@ -145,7 +145,11 @@ const Navbar = props => {
 	});
 
 	return (
-		<header className={styles.header} id='header'>
+		<header
+			onClick={e => e.stopPropagation()}
+			className={styles.header}
+			id='header'
+		>
 			<div className={styles.row}>
 				<div className={styles.tabContainerLeft}>
 					<Link to='/'>

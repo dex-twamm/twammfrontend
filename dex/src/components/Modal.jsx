@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, { useContext, useEffect, useState } from 'react';
 import styles from '../css/Modal.module.css';
 import { LongSwapContext, ShortSwapContext } from '../providers';
@@ -73,18 +74,10 @@ const Modal = ({ display, setDisplay, setTokenA, setTokenB, tokenDetails }) => {
 
 	let tokensList;
 	let tokensDetail = tokenDetails;
-	if (selectToken === '2')
-		tokensDetail = tokenDetails.filter(
-			token => token.name !== tokenA.symbol
-		);
 
 	tokensList = tokensDetail.map(token => {
-		return (
-			<div
-				className={styles.modalToken}
-				key={token.symbol}
-				onClick={handleTokenSelection}
-			>
+		const markup = (
+			<>
 				<img
 					className={styles.modalTokenImg}
 					alt='ETH logo'
@@ -103,6 +96,27 @@ const Modal = ({ display, setDisplay, setTokenA, setTokenB, tokenDetails }) => {
 						<span>coming soon...</span>
 					</div>
 				)}
+			</>
+		);
+		if (token.name === tokenA.symbol)
+			return (
+				<div
+					className={classNames(
+						styles.modalToken,
+						styles.modalTokenDisabled
+					)}
+					key={token.symbol}
+				>
+					{markup}
+				</div>
+			);
+		return (
+			<div
+				className={styles.modalToken}
+				key={token.symbol}
+				onClick={handleTokenSelection}
+			>
+				{markup}
 			</div>
 		);
 	});

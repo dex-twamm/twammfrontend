@@ -63,7 +63,17 @@
 
 .modalToken:hover {
 	cursor: pointer;
+	background-color: #f8f4f4;
+}
+
+.modalTokenDisabled {
 	background-color: #e9e9e9;
+	opacity: 0.5;
+}
+
+.modalTokenDisabled:hover {
+	background-color: #e9e9e9;
+	cursor: not-allowed;
 }
 
 .modalTokenList {
