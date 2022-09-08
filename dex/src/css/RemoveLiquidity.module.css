@@ -3,12 +3,11 @@
 	height: 90vh;
 	display: flex;
 	justify-content: center;
-	margin-bottom: 80px;
 }
 
 .mainBody {
-	margin-top: 90px;
-	padding: 0px;
+	padding: 12px;
+	padding-top: 16px;
 	width: 95%;
 	max-width: 480px;
 	height: fit-content;
@@ -19,10 +18,9 @@
 		0 4px 6px -4px rgb(0 0 0 / 0.1);
 }
 
-@media (min-width: 960px) {
+@media (min-width: 450px) {
 	.mainBody {
-		margin-top: 135px;
-		padding: 10px;
+		padding: 20px;
 	}
 }
 
@@ -30,14 +28,15 @@
 	padding: 20px;
 }
 
-.modalHeading {
+.heading {
 	display: flex;
 	width: 100%;
 	justify-content: space-between;
 	font-size: 18px;
 	font-weight: 600;
-	padding-bottom: 26px;
+	padding-bottom: 16px;
 	color: #333333;
+	border-bottom: 2px solid #f0f0f0;
 }
 
 .icon {
@@ -47,6 +46,7 @@
 }
 
 .tokenRangeContainer {
+	padding-top: 16px;
 	display: flex;
 	justify-content: space-between;
 	color: #333333;
@@ -250,16 +250,20 @@
 
 .removeBtn {
 	width: 100%;
+	height: 60px;
+
 	padding: 12px 0;
-	background-color: #d50066;
-	color: #fdeaf1;
+	background-color: #fdeaf1;
+	color: #d50066;
 	font-size: 16px;
 	font-weight: 600;
 	border: none;
 	border-radius: 25px;
 	cursor: pointer;
+	padding: 10px;
+	transition: 0.3s;
 }
 
 .removeBtn:hover {
-	background-color: #e01678;
+	background-color: #ffdeea;
 }
