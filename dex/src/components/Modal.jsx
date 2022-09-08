@@ -74,52 +74,97 @@ const Modal = ({ display, setDisplay, setTokenA, setTokenB, tokenDetails }) => {
 
 	let tokensList;
 	let tokensDetail = tokenDetails;
+	const markup = <></>;
+	if (selectToken === '2') {
+		// tokensDetail = tokenDetails.filter(
+		//     token => token.name !== tokenA.symbol
+		// );
 
-	tokensList = tokensDetail.map(token => {
-		const markup = (
-			<>
-				<img
-					className={styles.modalTokenImg}
-					alt='ETH logo'
-					src={token.image}
-					style={{ width: '25px' }}
-				/>
-				<p>{token.name}</p>
-				<p className={styles.tokenAddress} style={{ display: 'none' }}>
-					{token.address}
-				</p>
-				<p className={styles.comingSoon}>
-					{parseFloat(token.balance).toFixed(2)}
-				</p>
-				{token.type === 'coming_soon' && (
-					<div className={styles.comingSoon}>
-						<span>coming soon...</span>
+		tokensList = tokensDetail.map(token => {
+			const markup = (
+				<>
+					<img
+						className={styles.modalTokenImg}
+						alt='ETH logo'
+						src={token.image}
+						style={{ width: '25px' }}
+					/>
+					<p>{token.name}</p>
+					<p
+						className={styles.tokenAddress}
+						style={{ display: 'none' }}
+					>
+						{token.address}
+					</p>
+					<p className={styles.comingSoon}>
+						{parseFloat(token.balance).toFixed(2)}
+					</p>
+					{token.type === 'coming_soon' && (
+						<div className={styles.comingSoon}>
+							<span>coming soon...</span>
+						</div>
+					)}
+				</>
+			);
+
+			if (token.name === tokenA.symbol) {
+				console.log('Here');
+				return (
+					<div
+						className={classNames(
+							styles.modalToken,
+							styles.modalTokenDisabled
+						)}
+						key={token.symbol}
+						// onClick={handleTokenSelection}
+					>
+						{markup}
 					</div>
-				)}
-			</>
-		);
-		if (token.name === tokenA.symbol)
+				);
+			}
 			return (
 				<div
-					className={classNames(
-						styles.modalToken,
-						styles.modalTokenDisabled
-					)}
+					className={styles.modalToken}
 					key={token.symbol}
+					onClick={handleTokenSelection}
 				>
 					{markup}
 				</div>
 			);
-		return (
-			<div
-				className={styles.modalToken}
-				key={token.symbol}
-				onClick={handleTokenSelection}
-			>
-				{markup}
-			</div>
-		);
-	});
+		});
+	} else {
+		tokensList = tokensDetail.map(token => {
+			return (
+				<div
+					className={styles.modalToken}
+					key={token.symbol}
+					onClick={handleTokenSelection}
+				>
+					<img
+						className={styles.modalTokenImg}
+						alt='ETH logo'
+						src={token.image}
+						style={{ width: '25px' }}
+					/>
+					<p>{token.name}</p>
+					<p
+						className={styles.tokenAddress}
+						style={{ display: 'none' }}
+					>
+						{token.address}
+					</p>
+					<p className={styles.comingSoon}>
+						{parseFloat(token.balance).toFixed(2)}
+					</p>
+					{token.type === 'coming_soon' && (
+						<div className={styles.comingSoon}>
+							<span>coming soon...</span>
+						</div>
+					)}
+				</div>
+			);
+		});
+	}
 
 	return (
 		display && (
