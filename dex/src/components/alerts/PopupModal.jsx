@@ -65,8 +65,6 @@ const PopupModal = () => {
             </Alert>
           </Backdrop>
         )}
-      </div>
-      <div>
         {transactionHash && (
           <Alert
             variant="outlined"

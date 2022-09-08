@@ -64,9 +64,8 @@ export async function getPoolBalance(signer, tokenAddress) {
         signer
     )
     const poolBalance = await poolContract.getPoolTokenInfo(POOL_ID, tokenAddress);
-    console.log("====Pool Balance====", ethers.utils.formatEther((poolBalance.cash._hex).toString()));
-    const cash = (poolBalance.cash._hex) * 0.3;
-    console.log("====Pool Cash====", ethers.utils.formatEther((cash).toString()));
+    const cash = (poolBalance.cash._hex);
+    console.log("====Pool Cash====", ethers.utils.formatEther(cash));
     return cash;
 
 }
