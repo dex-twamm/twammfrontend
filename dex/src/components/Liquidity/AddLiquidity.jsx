@@ -1,11 +1,13 @@
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { FiChevronDown } from 'react-icons/fi';
 import styles from '../../css/AddLiquidity.module.css';
+import { LongSwapContext, ShortSwapContext } from '../../providers';
 import FeeTierOptions from '../FeeTierOptions';
 import Input from '../Input';
+import Modal from '../Modal';
 
 const AddLiquidity = props => {
 	const { connect } = props;
@@ -13,11 +15,86 @@ const AddLiquidity = props => {
 	const [primaryToken, setPrimaryToken] = useState('');
 	const [secondaryToken, setSecondaryToken] = useState();
 	const [showSettings, setShowSettings] = useState(false);
+	const [showModal, setShowModal] = useState(false);
+	const [buttonText, setButtonText] = useState('Connect Wallet');
+	const [buttonDisabled, setButtonDisabled] = useState(true);
+
+	const { tokenA, tokenB, setTokenA, setTokenB } =
+		useContext(LongSwapContext);
+
+	const { selectToken, setSelectToken, swapAmount, setSwapAmount } =
+		useContext(ShortSwapContext);
 
 	const handleToggle = () => setDisplay(!display);
 
+	useEffect(() => {
+		if (tokenA.symbol === tokenB.symbol)
+			setTokenB({
+				symbol: 'Select Token',
+				image: '',
+				balance: '',
+				tokenIsSet: false,
+			});
+	}, [tokenA, tokenB, setTokenB]);
+
+	useEffect(() => {
+		console.log('Prabin Swap', typeof Number(swapAmount), swapAmount);
+		if (tokenB.tokenIsSet && Number(swapAmount) !== 0) {
+			setButtonText('Add Liquidity');
+			setButtonDisabled(false);
+		}
+		if (tokenB.tokenIsSet && Number(swapAmount) === 0) {
+			setButtonText('Enter a Value');
+			setButtonDisabled(true);
+		}
+		if (!tokenB.tokenIsSet) {
+			setButtonText('Select a Token');
+			setButtonDisabled(true);
+		}
+	}, [tokenB, buttonText, setButtonText, swapAmount]);
+
+	const tokenDetails = [
+		{
+			name: 'Faucet',
+			symbol: 'ETH',
+			image: '/ethereum.png',
+			address: 'sadfasdfsdaf',
+			balance: tokenA.balance,
+		},
+		{
+			name: 'Matic',
+			symbol: 'DAI',
+			image: '/dai.png',
+			address: 'sdfasdf',
+			balance: tokenB.balance,
+		},
+		{
+			type: 'coming_soon',
+			name: 'Test Token',
+			symbol: 'CST',
+			image: '/dai.png',
+		},
+	];
+
+	console.log('Prabin', tokenA, tokenB);
+
+	const handleDisplay = event => {
+		console.log('Current Target Id', event.currentTarget.id);
+		setSelectToken(event.currentTarget.id);
+		setDisplay(!display);
+	};
+
 	return (
 		<div className={styles.container}>
+			{showModal && (
+				<Modal
+					display={showModal}
+					setDisplay={setShowModal}
+					setTokenA={setTokenA}
+					setTokenB={setTokenB}
+					tokenDetails={tokenDetails}
+				/>
+			)}
 			<div className={styles.mainBody}>
 				<div className={styles.topBar}>
 					<p>Add Liquidity</p>
@@ -35,28 +112,54 @@ const AddLiquidity = props => {
 					<div className={styles.selectPairContainer}>
 						<p>Select Pair</p>
 						<div className={styles.pairContainer}>
-							<div className={styles.select}>
+							<div
+								onClick={() => {
+									setShowModal(true);
+									setSelectToken('1');
+								}}
+								className={styles.select}
+							>
 								<div className={styles.currencyWrap}>
 									<img
 										className={styles.cryptoImage}
-										src='/ethereum.png'
+										src={tokenA.image}
 										alt='Ethereum'
 									/>
-									<p>ETH</p>
+									<p>{tokenA.symbol}</p>
 								</div>
 								<FiChevronDown
 									className={styles.dropDownIcon}
 								/>
 							</div>
 
-							<div className={styles.select}>
+							<div
+								onClick={() => {
+									setShowModal(true);
+									setSelectToken('2');
+								}}
+								className={styles.select}
+							>
 								<div className={styles.currencyWrap}>
-									<img
-										className={styles.cryptoImage}
-										src='/ethereum.png'
-										alt='Ethereum'
-									/>
-									<p>ETH</p>
+									{tokenB.image !== '' && (
+										<img
+											className={styles.cryptoImage}
+											src={tokenB.image}
+											alt='Ethereum'
+										/>
+									)}
+									<p>
+										<span
+											style={{
+												paddingLeft: `${
+													tokenB.tokenIsSet
+														? '0px'
+														: '20px'
+												}`,
+											}}
+										>
+											{tokenB.symbol}
+										</span>
+									</p>
 								</div>
 								<FiChevronDown
 									className={styles.dropDownIcon}
@@ -77,17 +180,42 @@ const AddLiquidity = props => {
 					<div className={styles.depositAmountContainer}>
 						<p>Deposit Amounts</p>
 						<div className={styles.inputsWrap}>
-							<Input />
-							<Input />
+							<Input
+								id={1}
+								input={swapAmount !== '' ? swapAmount : ''}
+								onChange={e => {
+									setSwapAmount(e.target.value);
+								}}
+								imgSrc={tokenA.image}
+								symbol={tokenA.symbol}
+								handleDisplay={handleDisplay}
+								selectToken={selectToken}
+								display={display}
+								setDisplay={setDisplay}
+								setTokenA={setTokenA}
+								setTokenB={setTokenB}
+							/>
+							<Input
+								id={2}
+								imgSrc={tokenB.image}
+								symbol={tokenB.symbol}
+								handleDisplay={handleDisplay}
+								selectToken={selectToken}
+								display={display}
+								setDisplay={setDisplay}
+								setTokenA={setTokenA}
+								setTokenB={setTokenB}
+							/>
 							<button
 								className={classNames(
 									styles.btn,
 									styles.btnConnect
 								)}
+								disabled={buttonDisabled}
 								onClick={connect}
 							>
 								{/* {buttonText} */}
-								Connect Wallet
+								{buttonText}
 							</button>
 						</div>
 					</div>

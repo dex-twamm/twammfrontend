@@ -12,7 +12,7 @@ import {
 import Navbar from './components/Navbar';
 import LongSwap from './pages/LongSwap';
 import ShortSwap from './pages/ShortSwap';
-import { LongSwapContext, ShortSwapContext } from './providers';
+import { LongSwapContext, ShortSwapContext, UIContext } from './providers';
 import {
 	FAUCET_TOKEN_ADDRESS,
 	MATIC_TOKEN_ADDRESS,
@@ -34,7 +34,8 @@ function App() {
 	const [nonce, setNonce] = useState();
 	const [isWallletConnceted, setWalletConnected] = useState(false);
 	const [isPlacedLongTermOrder, setIsPlacedLongTermOrder] = useState(false);
-	const [showRemoveLiquidity, setShowRemoveLiquidity] = useState(true);
+	const [showRemoveLiquidity, setShowRemoveLiquidity] = useState(false);
+	const { setShowDropdown } = useContext(UIContext);
 
 	const {
 		srcAddress,
@@ -286,7 +287,7 @@ function App() {
 		);
 
 	return (
-		<>
+		<div onClick={() => setShowDropdown(false)}>
 			<Navbar
 				tokenName={data.token.name}
 				tokenImage={data.token.image}
@@ -328,7 +329,8 @@ function App() {
 				/>
 				<Route path='/liquidity' element={liquidityMarkup} />
 			</Routes>
-		</>
+			<button onClick={e => setShowRemoveLiquidity(true)}>Show</button>
+		</div>
 	);
 
 }
