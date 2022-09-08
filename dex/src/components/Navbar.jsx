@@ -1,7 +1,7 @@
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { RiArrowDropDownLine } from 'react-icons/ri';
 import { Link, useLocation } from 'react-router-dom';
 import styles from '../css/Navbar.module.css';
@@ -24,15 +24,41 @@ const Navbar = props => {
 		disConnectWallet,
 	} = props;
 	const { setError, setLoading } = useContext(ShortSwapContext);
+	const [netId, setNetId] = useState('');
+
+	// selector select and option value
+	const networks = [
+		{ name: 'Ethereum', chainId: '1', logo: '/ethereum.png' },
+		{ name: 'Goerli', chainId: '5', logo: '/dai.png' },
+		{ name: 'Coming Soon', chainId: '0', logo: '/ethereum.png' },
+	];
+
+	const nId = window.ethereum.networkVersion;
+	const initialNetwork = networks.filter(id => id.chainId === nId);
 
 	const [selectedNetwork, setSelectedNetwork] = useState({
-		network: 'Select Network',
+		network: 'Select a Network',
 		logo: '/ethereum.png',
-		chainId: '',
+		chainId: nId,
 	});
+
+	const coin_name = localStorage.getItem('coin_name');
+	const coin_logo = localStorage.getItem('coin_logo');
+
+	useEffect(() => {
+		setSelectedNetwork(prevState => ({
+			...prevState,
+			network: coin_name ? coin_name : initialNetwork[0]?.name,
+			logo: coin_logo ? coin_logo : initialNetwork[0].logo,
+		}));
+	}, [coin_name]);
+
 	const handleSelect = async (networkName, logo, chainId) => {
+		localStorage.setItem('coin_name', networkName);
+		localStorage.setItem('coin_logo', logo);
+
 		const id = chainId;
-		console.log(chainId);
+		// console.log(chainId);
 		setSelectedNetwork({
 			network: networkName,
 			logo: logo,
@@ -47,6 +73,7 @@ const Navbar = props => {
 				});
 
 				setLoading(false);
+				window.location.reload();
 			} catch (err) {
 				console.error(err);
 				setLoading(false);
@@ -102,12 +129,6 @@ const Navbar = props => {
 		);
 	});
 
-	const networks = [
-		{ name: 'Ethereum', chainId: '1', logo: '/ethereum.png' },
-		{ name: 'Goerli', chainId: '5', logo: '/dai.png' },
-		{ name: 'Coming Soon', chainId: '0', logo: '/ethereum.png' },
-	];
-
 	const networkList = networks.map((network, index) => {
 		return (
 			<p
@@ -124,11 +145,7 @@ const Navbar = props => {
 	});
 
 	return (
-		<header
-			onClick={e => e.stopPropagation()}
-			className={styles.header}
-			id='header'
-		>
+		<header className={styles.header} id='header'>
 			<div className={styles.row}>
 				<div className={styles.tabContainerLeft}>
 					<Link to='/'>

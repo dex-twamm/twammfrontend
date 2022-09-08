@@ -328,13 +328,12 @@ function App() {
 						/>
 					}
 				/>
-
-				{/* Replace _exitPool with _joinPool When Needed To Join Pool */}
 				<Route path='/liquidity' element={liquidityMarkup} />
 			</Routes>
 			<button onClick={e => setShowRemoveLiquidity(true)}>Show</button>
 		</div>
 	);
+
 }
 
 export default App;
