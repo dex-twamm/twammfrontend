@@ -96,7 +96,7 @@ const Swap = props => {
 			<form onSubmit={handleSubmit} className={styles.form}>
 				<Input
 					id={1}
-					input={swapAmount !== '' ? swapAmount : ''}
+					input={swapAmount ? swapAmount : ''}
 					onChange={e => {
 						setSwapAmount(Number(e.target.value));
 					}}
