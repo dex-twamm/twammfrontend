@@ -12,10 +12,13 @@ const valueLabel = (value) => {
   } else if (scaledValue >= 60 && unitIndex < sliderUnits.length - 1) {
     scaledValue /= 60;
   }
+  const currentDate = new Date();
+  currentDate.setSeconds(scaledValue);
 
   const values = {
     scaledValue: scaledValue.toFixed(0),
     sliderUnits: sliderUnits[unitIndex],
+    date: currentDate.toDateString(),
   };
   return values;
   // sliderUnits: sliderUnits[unitIndex],}
@@ -36,12 +39,10 @@ const valueLabel = (value) => {
 
 const calculateValue = (value) => {
   // position will be between 0 and 100
-  const minp = 0;
-  const maxp = 100;
-  const minV = Math.log(60);
-  const maxV = Math.log(43200);
-  var scale = (maxV - minV) / (maxp - minp);
-  return Math.exp(minV + scale * (value - minp));
+  const blockTime = 12;
+  const blockInterval = 2;
+  const calculateValue = (Math.log(Math.pow(10, value)) / blockTime / blockInterval);
+  return calculateValue;
 };
 
 export { valueLabel, calculateValue };

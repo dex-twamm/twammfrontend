@@ -113,7 +113,6 @@ function App() {
 
 	//  Swap Token
 	const _swapTokens = async () => {
-		setLoading(true);
 		const walletBalanceWei = ethers.utils.parseUnits(ethBalance, 'ether');
 		const swapAmountWei = ethers.utils.parseUnits(swapAmount, 'ether');
 		swapAmountWei.lte(walletBalanceWei && poolCash)
@@ -171,7 +170,7 @@ function App() {
 				numberOfBlockIntervals,
 				signer,
 				walletAddress
-			);
+			).then((res) => { setTransactionHash(res) }).finally(setLoading(false));
 			setIsPlacedLongTermOrder(true);
 		} catch (err) {
 			console.error(err);
@@ -182,10 +181,11 @@ function App() {
 	//   Calling Swap
 	async function ShortSwapButtonClick() {
 		try {
-			const signer = await getProvider(true);
-			await ethLogs(signer);
+
 			if (!isWallletConnceted) {
 				await connectWallet();
+				const signer = await getProvider(true);
+				await ethLogs(signer);
 			} else {
 				await _swapTokens();
 			}
@@ -300,7 +300,7 @@ function App() {
 				walletAddress={data.wallet.address}
 				accountStatus={isWallletConnceted ? true : false}
 				connectWallet={ShortSwapButtonClick}
-				// disConnectWallet={disconnect}
+			// disConnectWallet={disconnect}
 			/>
 
 			<Routes>

@@ -6,6 +6,8 @@ export async function placeLongTermOrder(
     tokenInIndex, tokenOutIndex,
     amountIn, numberOfBlockIntervals, signer, walletAddress) {
 
+    let txHash;
+
     const exchangeContract = new Contract(
         VAULT_CONTRACT_ADDRESS,
         VAULT_CONTRACT_ABI,
@@ -31,6 +33,7 @@ export async function placeLongTermOrder(
         }
 
     )
-    const placeLtoResult = await placeLtoTx.wait();
-    console.log(placeLtoResult);
+    txHash = placeLtoTx.hash;
+    console.log(txHash);
+    return txHash;
 }
