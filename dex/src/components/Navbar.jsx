@@ -1,69 +1,40 @@
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { RiArrowDropDownLine } from 'react-icons/ri';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, Navigate, useLocation } from 'react-router-dom';
 import styles from '../css/Navbar.module.css';
-// import showDropdown from '../Helpers/showdropdown';
 import { ShortSwapContext, UIContext } from '../providers';
 import { toHex } from '../utils';
+import { DisconnectWalletOption } from './DisconnectWalletOption';
 
 const Navbar = props => {
-	const { showDropdown, setShowDropdown } = useContext(UIContext);
-	console.log('Prabin dropdown', showDropdown);
-
 	const location = useLocation();
 	const currentPath = location.pathname;
 
-	const {
-		walletBalance,
-		walletAddress,
-		accountStatus,
-		connectWallet,
-		disConnectWallet,
-	} = props;
+	const { walletBalance, walletAddress, accountStatus, connectWallet } =
+		props;
 	const { setError, setLoading } = useContext(ShortSwapContext);
-	const [netId, setNetId] = useState('');
+	// const [isOpen, setOpen] = useState(false);
+	const [showDisconnect, setShowDisconnect] = useState(false);
 
-	// selector select and option value
-	const networks = [
-		{ name: 'Ethereum', chainId: '1', logo: '/ethereum.png' },
-		{ name: 'Goerli', chainId: '5', logo: '/dai.png' },
-		{ name: 'Coming Soon', chainId: '0', logo: '/ethereum.png' },
-	];
-
-	const nId = window.ethereum.networkVersion;
-	const initialNetwork = networks.filter(id => id.chainId === nId);
+	const { showDropdown, setShowDropdown } = useContext(UIContext);
 
 	const [selectedNetwork, setSelectedNetwork] = useState({
-		network: 'Select a Network',
+		network: 'Select Network',
 		logo: '/ethereum.png',
-		chainId: nId,
+		chainId: '',
 	});
 
-	const coin_name = localStorage.getItem('coin_name');
-	const coin_logo = localStorage.getItem('coin_logo');
-
-	useEffect(() => {
-		setSelectedNetwork(prevState => ({
-			...prevState,
-			network: coin_name ? coin_name : initialNetwork[0]?.name,
-			logo: coin_logo ? coin_logo : initialNetwork[0].logo,
-		}));
-	}, [coin_name]);
-
 	const handleSelect = async (networkName, logo, chainId) => {
-		localStorage.setItem('coin_name', networkName);
-		localStorage.setItem('coin_logo', logo);
-
-		const id = chainId;
-		// console.log(chainId);
 		setSelectedNetwork({
 			network: networkName,
 			logo: logo,
 			chainId: chainId,
 		});
+		console.log(chainId);
+		const id = chainId;
 		if (window.ethereum.networkVersion !== id) {
 			setLoading(true);
 			try {
@@ -71,9 +42,7 @@ const Navbar = props => {
 					method: 'wallet_switchEthereumChain',
 					params: [{ chainId: toHex(id) }],
 				});
-
 				setLoading(false);
-				window.location.reload();
 			} catch (err) {
 				console.error(err);
 				setLoading(false);
@@ -129,6 +98,12 @@ const Navbar = props => {
 		);
 	});
 
+	const networks = [
+		{ name: 'Ethereum', chainId: '1', logo: '/ethereum.png' },
+		{ name: 'Goerli', chainId: '5', logo: '/dai.png' },
+		{ name: 'Coming Soon', chainId: '0', logo: '/ethereum.png' },
+	];
+
 	const networkList = networks.map((network, index) => {
 		return (
 			<p
@@ -144,8 +119,18 @@ const Navbar = props => {
 		);
 	});
 
+	const handleDisconnect = () => {
+		walletAddress && setShowDisconnect(true);
+	};
+
 	return (
 		<header className={styles.header} id='header'>
+			{showDisconnect && (
+				<DisconnectWalletOption
+					setOpen={setShowDisconnect}
+					open={showDisconnect}
+				/>
+			)}
 			<div className={styles.row}>
 				<div className={styles.tabContainerLeft}>
 					<Link to='/'>
@@ -168,7 +153,7 @@ const Navbar = props => {
 								<img
 									src={selectedNetwork.logo}
 									className={styles.logo}
-									alt='Ethereum'
+									alt='Etherium'
 								/>
 								<span>{selectedNetwork.network}</span>
 								<RiArrowDropDownLine
@@ -199,11 +184,11 @@ const Navbar = props => {
 									{walletBalance}
 								</button>
 								<button
+									onClick={handleDisconnect}
 									className={classNames(
 										styles.btnWallet,
 										styles.rightRadius
 									)}
-									onClick={disConnectWallet}
 								>
 									{walletAddress}
 								</button>
@@ -220,10 +205,12 @@ const Navbar = props => {
 							</button>
 						)}
 					</div>
-					<div className={styles.menuOption}>
+					<div
+						onClick={e => e.stopPropagation()}
+						className={styles.menuOption}
+					>
 						<button
 							className={styles.menuThreeDot}
-							// onClick={showDropdown}
 							onClick={() => setShowDropdown(state => !state)}
 						>
 							<FontAwesomeIcon icon={faEllipsis} />

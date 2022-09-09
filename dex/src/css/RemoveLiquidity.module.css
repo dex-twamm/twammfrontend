@@ -99,7 +99,7 @@
 }
 
 .amount {
-	font-size: 17px;
+	font-size: 18px;
 	font-weight: 600;
 	padding-bottom: 12px;
 }
@@ -117,16 +117,18 @@
 
 .percentageBtns {
 	display: flex;
-	gap: 9px;
+	gap: 6px;
 }
 
 .percentage {
 	font-size: 12px;
 	padding: 6px 10px;
 	background-color: #e94393;
-	color: #fdeaf1;
+	color: white;
 	border-radius: 8px;
 	cursor: pointer;
+	font-weight: 600;
+	letter-spacing: 0.5px;
 }
 
 @media (min-width: 450px) {
@@ -134,8 +136,8 @@
 		font-size: 36px;
 	}
 	.percentage {
-		padding: 8px 12px;
-		font-size: 15px;
+		padding: 9px 13px;
+		font-size: 14px;
 	}
 }
 
@@ -163,8 +165,8 @@
 .inputRange::-webkit-slider-thumb {
 	-webkit-appearance: none;
 	border: none;
-	height: 32px;
-	width: 32px;
+	height: 26px;
+	width: 26px;
 	border-radius: 50%;
 	background: #d50066;
 	margin-top: -12px;
@@ -183,8 +185,8 @@
 
 .inputRange::-moz-range-thumb {
 	border: none;
-	height: 32px;
-	width: 32px;
+	height: 26px;
+	width: 26px;
 	border-radius: 50%;
 	background: #d50066;
 	margin-top: -12px;

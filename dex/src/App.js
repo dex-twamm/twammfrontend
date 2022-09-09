@@ -116,9 +116,10 @@ function App() {
 		setLoading(true);
 		const walletBalanceWei = ethers.utils.parseUnits(ethBalance, 'ether');
 		const swapAmountWei = ethers.utils.parseUnits(swapAmount, 'ether');
-		swapAmountWei.lte(walletBalanceWei && poolCash) ? console.log("True") : console.log("False");
-		if (
-			swapAmountWei.lte(walletBalanceWei && poolCash)) {
+		swapAmountWei.lte(walletBalanceWei && poolCash)
+			? console.log('True')
+			: console.log('False');
+		if (swapAmountWei.lte(walletBalanceWei && poolCash)) {
 			try {
 				const signer = await getProvider(true);
 				console.log(signer);
@@ -276,6 +277,10 @@ function App() {
 		tokenBalance(account);
 	}, []);
 
+	useEffect(() => {
+		document.body.onclick = () => setShowDropdown(false);
+	});
+
 	let liquidityMarkup = <AddLiquidity connect={_joinPool} />;
 
 	// Condition of Liquidity existing
@@ -287,7 +292,7 @@ function App() {
 		);
 
 	return (
-		<div onClick={() => setShowDropdown(false)}>
+		<div>
 			<Navbar
 				tokenName={data.token.name}
 				tokenImage={data.token.image}
@@ -295,7 +300,7 @@ function App() {
 				walletAddress={data.wallet.address}
 				accountStatus={isWallletConnceted ? true : false}
 				connectWallet={ShortSwapButtonClick}
-			// disConnectWallet={disconnect}
+				// disConnectWallet={disconnect}
 			/>
 
 			<Routes>
@@ -332,7 +337,6 @@ function App() {
 			<button onClick={e => setShowRemoveLiquidity(true)}>Show</button>
 		</div>
 	);
-
 }
 
 export default App;
