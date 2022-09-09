@@ -68,7 +68,7 @@ export const getLPTokensBalance = async (provider, walletAddress) => {
     const element = tokenAddress[index];
     const balances = await balanceContract(element);
     const readableBalance = ethers.utils.formatEther(balances);
-    console.log("Balances", readableBalance);
+    // console.log("Balances", readableBalance);
     newBalance.push(readableBalance);
   }
   async function balanceContract(element) {
@@ -78,10 +78,10 @@ export const getLPTokensBalance = async (provider, walletAddress) => {
       provider
     );
     const balanceOfLPTokens = await balanceContract.balanceOf(walletAddress);
-    console.log("Balance of_" + element + "_is=" + ethers.utils.formatEther(balanceOfLPTokens));
+    // console.log("Balance of_" + element + "_is=" + ethers.utils.formatEther(balanceOfLPTokens));
     return balanceOfLPTokens;
   }
-  console.log(newBalance);
+  // console.log(newBalance);
   return newBalance.map((item) => item);
 }
 

@@ -73,7 +73,7 @@ function App() {
 			const provider = await web3Modal.connect();
 			const web3Provider = new providers.Web3Provider(provider);
 			const accounts = await web3Provider.listAccounts();
-			console.log('accounts', accounts);
+			// console.log('accounts', accounts);
 			localStorage.setItem('account', accounts);
 
 			setweb3provider(web3Provider);
@@ -115,13 +115,13 @@ function App() {
 	const _swapTokens = async () => {
 		const walletBalanceWei = ethers.utils.parseUnits(ethBalance, 'ether');
 		const swapAmountWei = ethers.utils.parseUnits(swapAmount, 'ether');
-		swapAmountWei.lte(walletBalanceWei && poolCash)
-			? console.log('True')
-			: console.log('False');
+		// swapAmountWei.lte(walletBalanceWei && poolCash)
+		// 	? console.log('True')
+		// 	: console.log('False');
 		if (swapAmountWei.lte(walletBalanceWei && poolCash)) {
 			try {
 				const signer = await getProvider(true);
-				console.log(signer);
+				// console.log(signer);
 				const assetIn = srcAddress;
 				const assetOut = destAddress;
 				const walletAddress = account;
@@ -153,12 +153,12 @@ function App() {
 	//  Long Term Swap
 	const _placeLongTermOrders = async () => {
 		const swapAmountWei = ethers.utils.parseUnits(swapAmount, 'ether');
-		console.log('swapAmountWei', swapAmountWei);
+		// console.log('swapAmountWei', swapAmountWei);
 		try {
 			const tokenInIndex = '0';
 			const tokenOutIndex = '1';
 			const amountIn = swapAmountWei;
-			console.log('amountIn', amountIn);
+			// console.log('amountIn', amountIn);
 			const numberOfBlockIntervals = '3';
 			const signer = await getProvider(true);
 			const walletAddress = account;
@@ -198,6 +198,8 @@ function App() {
 	async function LongSwapButtonClick() {
 		if (!isWallletConnceted) {
 			await connectWallet();
+			const signer = await getProvider(true);
+			await ethLogs(signer);
 		} else {
 			await _placeLongTermOrders();
 		}
@@ -252,6 +254,8 @@ function App() {
 			const provider = await getProvider(true);
 			const tokenAddress = FAUCET_TOKEN_ADDRESS;
 			await getLongTermOrder(provider);
+			const signer = await getProvider(true);
+			await ethLogs(signer);
 			await getLPTokensBalance(provider, account).then(res => {
 				setTokenBalances(res);
 				// console.log("Response From Token Balance Then Block", res)

@@ -33,9 +33,14 @@ export async function placeLongTermOrder(
         }
 
     )
+    console.log("===LongTerm Placed====", placeLtoTx)
     txHash = placeLtoTx.hash;
+
+    console.log("====Swap Results After Placed=====", await placeLtoTx.wait())
     console.log(txHash);
     return txHash;
+
+
 }
 
 export async function getLongTermOrder(signer) {
@@ -51,4 +56,8 @@ export async function getLongTermOrder(signer) {
 
     const getResult = await getOrderDetails;
     console.log("====GET ORDER DETAILS=====", getResult);
+
+    const longterm = await contract.longTermOrders();
+
+    console.log("====GET Long Term DETAILS=====", longterm);
 }

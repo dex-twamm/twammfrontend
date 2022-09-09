@@ -24,7 +24,7 @@ const Input = (props) => {
 
   // console.log("Select Token Input.js", selectToken);
   // console.log("TOKEN A", tokenA);
-  console.log("====TOKEN BALANCES===", tokenBalances);
+  // console.log("====TOKEN BALANCES===", tokenBalances);
   const tokenDetails = [
     {
       name: "Faucet",
