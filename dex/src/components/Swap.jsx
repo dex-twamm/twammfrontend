@@ -99,7 +99,7 @@ const Swap = (props) => {
           id={1}
           input={swapAmount ? swapAmount : ""}
           onChange={(e) => {
-            setSwapAmount(Number(e.target.value));
+            setSwapAmount(e.target.value);
           }}
           imgSrc={tokenA.image}
           symbol={tokenA.symbol}
@@ -127,6 +127,7 @@ const Swap = (props) => {
           id={2}
           imgSrc={tokenB.image}
           symbol={tokenB.symbol}
+          onChange={(e) => e.target.value}
           handleDisplay={handleDisplay}
           selectToken={selectToken}
           display={display}

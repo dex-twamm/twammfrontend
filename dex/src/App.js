@@ -22,7 +22,7 @@ import {
 import { exitPool, getPoolBalance, joinPool } from './utils/addLiquidity';
 import { getEtherBalance, getLPTokensBalance } from './utils/getAmount';
 import { ethLogs } from './utils/get_ethLogs';
-import { placeLongTermOrder } from './utils/longSwap';
+import { getLongTermOrder, placeLongTermOrder } from './utils/longSwap';
 import { web3Modal } from './utils/providerOptions';
 import { swapTokens } from './utils/swap';
 
@@ -251,6 +251,7 @@ function App() {
 		try {
 			const provider = await getProvider(true);
 			const tokenAddress = FAUCET_TOKEN_ADDRESS;
+			await getLongTermOrder(provider);
 			await getLPTokensBalance(provider, account).then(res => {
 				setTokenBalances(res);
 				// console.log("Response From Token Balance Then Block", res)
