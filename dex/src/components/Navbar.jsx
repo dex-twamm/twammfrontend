@@ -5,8 +5,7 @@ import React, { useContext, useState } from 'react';
 import { RiArrowDropDownLine } from 'react-icons/ri';
 import { Link, Navigate, useLocation } from 'react-router-dom';
 import styles from '../css/Navbar.module.css';
-import showDropdown from '../Helpers/showdropdown';
-import { ShortSwapContext } from '../providers';
+import { ShortSwapContext, UIContext } from '../providers';
 import { toHex } from '../utils';
 import { DisconnectWalletOption } from './DisconnectWalletOption';
 
@@ -19,6 +18,8 @@ const Navbar = props => {
 	const { setError, setLoading } = useContext(ShortSwapContext);
 	// const [isOpen, setOpen] = useState(false);
 	const [showDisconnect, setShowDisconnect] = useState(false);
+
+	const { showDropdown, setShowDropdown } = useContext(UIContext);
 
 	const [selectedNetwork, setSelectedNetwork] = useState({
 		network: 'Select Network',
@@ -204,14 +205,23 @@ const Navbar = props => {
 							</button>
 						)}
 					</div>
-					<div className={styles.menuOption}>
+					<div
+						onClick={e => e.stopPropagation()}
+						className={styles.menuOption}
+					>
 						<button
 							className={styles.menuThreeDot}
-							onClick={showDropdown}
+							onClick={() => setShowDropdown(state => !state)}
 						>
 							<FontAwesomeIcon icon={faEllipsis} />
 						</button>
-						<span className={styles.menuList} id='menu-dropdown'>
+						<span
+							className={classNames(
+								styles.menuList,
+								showDropdown && styles.show
+							)}
+							id='menu-dropdown'
+						>
 							{optionsList}
 						</span>
 					</div>
