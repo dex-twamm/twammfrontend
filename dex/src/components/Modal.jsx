@@ -74,39 +74,36 @@ const Modal = ({ display, setDisplay, setTokenA, setTokenB, tokenDetails }) => {
 
 	let tokensList;
 	let tokensDetail = tokenDetails;
-	const markup = <></>;
+	const getMarkup = token => {
+		return (
+			<>
+				<img
+					className={styles.modalTokenImg}
+					alt='ETH logo'
+					src={token.image}
+					style={{ width: '25px' }}
+				/>
+				<p>{token.name}</p>
+				<p className={styles.tokenAddress} style={{ display: 'none' }}>
+					{token.address}
+				</p>
+				<p className={styles.comingSoon}>
+					{parseFloat(token.balance).toFixed(2)}
+				</p>
+				{token.type === 'coming_soon' && (
+					<div className={styles.comingSoon}>
+						<span>coming soon...</span>
+					</div>
+				)}
+			</>
+		);
+	};
 	if (selectToken === '2') {
 		// tokensDetail = tokenDetails.filter(
 		//     token => token.name !== tokenA.symbol
 		// );
 
 		tokensList = tokensDetail.map(token => {
-			const markup = (
-				<>
-					<img
-						className={styles.modalTokenImg}
-						alt='ETH logo'
-						src={token.image}
-						style={{ width: '25px' }}
-					/>
-					<p>{token.name}</p>
-					<p
-						className={styles.tokenAddress}
-						style={{ display: 'none' }}
-					>
-						{token.address}
-					</p>
-					<p className={styles.comingSoon}>
-						{parseFloat(token.balance).toFixed(2)}
-					</p>
-					{token.type === 'coming_soon' && (
-						<div className={styles.comingSoon}>
-							<span>coming soon...</span>
-						</div>
-					)}
-				</>
-			);
-
 			if (token.name === tokenA.symbol) {
 				console.log('Here');
 				return (
@@ -116,9 +113,8 @@ const Modal = ({ display, setDisplay, setTokenA, setTokenB, tokenDetails }) => {
 							styles.modalTokenDisabled
 						)}
 						key={token.symbol}
-						// onClick={handleTokenSelection}
 					>
-						{markup}
+						{getMarkup(token)}
 					</div>
 				);
 			}
@@ -128,7 +124,7 @@ const Modal = ({ display, setDisplay, setTokenA, setTokenB, tokenDetails }) => {
 					key={token.symbol}
 					onClick={handleTokenSelection}
 				>
-					{markup}
+					{getMarkup(token)}
 				</div>
 			);
 		});
@@ -140,27 +136,7 @@ const Modal = ({ display, setDisplay, setTokenA, setTokenB, tokenDetails }) => {
 					key={token.symbol}
 					onClick={handleTokenSelection}
 				>
-					<img
-						className={styles.modalTokenImg}
-						alt='ETH logo'
-						src={token.image}
-						style={{ width: '25px' }}
-					/>
-					<p>{token.name}</p>
-					<p
-						className={styles.tokenAddress}
-						style={{ display: 'none' }}
-					>
-						{token.address}
-					</p>
-					<p className={styles.comingSoon}>
-						{parseFloat(token.balance).toFixed(2)}
-					</p>
-					{token.type === 'coming_soon' && (
-						<div className={styles.comingSoon}>
-							<span>coming soon...</span>
-						</div>
-					)}
+					{getMarkup(token)}
 				</div>
 			);
 		});
