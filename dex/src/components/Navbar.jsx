@@ -1,7 +1,7 @@
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { RiArrowDropDownLine } from 'react-icons/ri';
 import { Link, Navigate, useLocation } from 'react-router-dom';
 import styles from '../css/Navbar.module.css';
@@ -10,24 +10,59 @@ import { toHex } from '../utils';
 import { DisconnectWalletOption } from './DisconnectWalletOption';
 
 const Navbar = props => {
+	const { showDropdown, setShowDropdown } = useContext(UIContext);
+	console.log('Prabin dropdown', showDropdown);
+
 	const location = useLocation();
 	const currentPath = location.pathname;
 
-	const { walletBalance, walletAddress, accountStatus, connectWallet } =
-		props;
+	const {
+		walletBalance,
+		walletAddress,
+		accountStatus,
+		connectWallet,
+		disConnectWallet,
+	} = props;
 	const { setError, setLoading } = useContext(ShortSwapContext);
+	const [netId, setNetId] = useState('');
 	// const [isOpen, setOpen] = useState(false);
+
+
 	const [showDisconnect, setShowDisconnect] = useState(false);
+   const networks = [
+   		{ name: 'Ethereum', chainId: '1', logo: '/ethereum.png' },
+   		{ name: 'Goerli', chainId: '5', logo: '/dai.png' },
+   		{ name: 'Coming Soon', chainId: '0', logo: '/ethereum.png' },
+   	];
+
+   	const nId = window.ethereum.networkVersion;
+    const initialNetwork = networks.filter(id => id.chainId === nId);
 
 	const { showDropdown, setShowDropdown } = useContext(UIContext);
 
 	const [selectedNetwork, setSelectedNetwork] = useState({
-		network: 'Select Network',
+		network: 'Select a Network',
 		logo: '/ethereum.png',
-		chainId: '',
+		chainId: nId,
 	});
 
+	const coin_name = localStorage.getItem('coin_name');
+	const coin_logo = localStorage.getItem('coin_logo');
+
+	useEffect(() => {
+		setSelectedNetwork(prevState => ({
+			...prevState,
+			network: coin_name ? coin_name : initialNetwork[0]?.name,
+			logo: coin_logo ? coin_logo : initialNetwork[0].logo,
+		}));
+	}, [coin_name]);
+
 	const handleSelect = async (networkName, logo, chainId) => {
+		localStorage.setItem('coin_name', networkName);
+		localStorage.setItem('coin_logo', logo);
+
+		const id = chainId;
+		// console.log(chainId);
 		setSelectedNetwork({
 			network: networkName,
 			logo: logo,
@@ -43,6 +78,7 @@ const Navbar = props => {
 					params: [{ chainId: toHex(id) }],
 				});
 				setLoading(false);
+				window.location.reload();
 			} catch (err) {
 				console.error(err);
 				setLoading(false);
@@ -98,12 +134,6 @@ const Navbar = props => {
 		);
 	});
 
-	const networks = [
-		{ name: 'Ethereum', chainId: '1', logo: '/ethereum.png' },
-		{ name: 'Goerli', chainId: '5', logo: '/dai.png' },
-		{ name: 'Coming Soon', chainId: '0', logo: '/ethereum.png' },
-	];
-
 	const networkList = networks.map((network, index) => {
 		return (
 			<p
@@ -153,7 +183,7 @@ const Navbar = props => {
 								<img
 									src={selectedNetwork.logo}
 									className={styles.logo}
-									alt='Etherium'
+									alt='Ethereum'
 								/>
 								<span>{selectedNetwork.network}</span>
 								<RiArrowDropDownLine
