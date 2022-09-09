@@ -185,7 +185,7 @@ const AddLiquidity = props => {
 						<div className={styles.inputsWrap}>
 							<Input
 								id={1}
-								input={swapAmount !== '' ? swapAmount : ''}
+								input={swapAmount ? swapAmount : ''}
 								onChange={e => {
 									setSwapAmount(e.target.value);
 								}}

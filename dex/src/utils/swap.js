@@ -32,8 +32,8 @@ export const swapTokens = async (signer, swapAmountWei, assetIn, assetOut, walle
       recipient: walletAddress,
       toInternalBalance: false,
     },
-    kind === 0 ? 0 : MAX_UINT256, // 0 if given in, infinite if given out.
-    MAX_UINT256,
+    kind === 0 ? 0 : MAX_UINT256, // 0 if given in, infinite if given out.  // Slippage  // TODO // Need To QueryBatchSwap Price - 1%
+    MAX_UINT256, // Deadline 
     {
       gasLimit: 2000000
     }
