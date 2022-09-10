@@ -8,6 +8,7 @@ import styles from "../css/Navbar.module.css";
 import { ShortSwapContext, UIContext } from "../providers";
 import { toHex } from "../utils";
 import { DisconnectWalletOption } from "./DisconnectWalletOption";
+import NavOptionDropdwon from "./navbarDropdown/NavOptionDropdwon";
 
 const Navbar = (props) => {
   const { showDropdown, setShowDropdown } = useContext(UIContext);
@@ -57,7 +58,6 @@ const Navbar = (props) => {
     localStorage.setItem("coin_name", networkName);
     localStorage.setItem("coin_logo", logo);
 
-    const id = chainId;
     // console.log(chainId);
     setSelectedNetwork({
       network: networkName,
@@ -65,6 +65,7 @@ const Navbar = (props) => {
       chainId: chainId,
     });
     console.log(chainId);
+    const id = chainId;
     if (window.ethereum.networkVersion !== id) {
       setLoading(true);
       try {
@@ -224,15 +225,18 @@ const Navbar = (props) => {
             >
               <FontAwesomeIcon icon={faEllipsis} />
             </button>
-            <span
-              className={classNames(
-                styles.menuList,
-                showDropdown && styles.show
-              )}
-              id="menu-dropdown"
-            >
-              {optionsList}
-            </span>
+
+            {showDropdown && (
+              <span
+                className={classNames(
+                  styles.menuList,
+                  showDropdown && styles.show
+                )}
+                id="menu-dropdown"
+              >
+                {<NavOptionDropdwon />}
+              </span>
+            )}
           </div>
         </div>
       </div>

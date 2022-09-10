@@ -32,9 +32,7 @@ const style = {
 	boxShadow: 24,
 	borderRadius:4,
 	pt: 2,
-	// mr: '5px',
-	// ml:'5px'
-	// border:'2px solid red',
+
   };
 
 const DisconnectWalletOption = ({setOpen,open}) => {

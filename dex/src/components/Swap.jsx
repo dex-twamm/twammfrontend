@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Alert, Box, Slider, Typography } from "@mui/material";
@@ -49,6 +50,16 @@ const Swap = (props) => {
     setSelectToken(event.currentTarget.id);
     setDisplay(!display);
   };
+
+  useEffect(() => {
+    if (tokenA.symbol === tokenB.symbol)
+      setTokenB({
+        symbol: "Select Token",
+        image: "",
+        balance: "",
+        tokenIsSet: false,
+      });
+  }, [tokenA, tokenB, setTokenB]);
 
   // const [tokenA, setTokenA] = useState({
   //   symbol: "Faucet",
@@ -170,8 +181,17 @@ const Swap = (props) => {
         <button
           className={classNames(styles.btn, styles.btnConnect)}
           onClick={handleClick}
+          disabled={
+            !tokenA.tokenIsSet || !tokenB.tokenIsSet || !swapAmount
+              ? true
+              : false
+          }
         >
-          {buttonText}
+          {!tokenA.tokenIsSet || !tokenB.tokenIsSet
+            ? "Select a Token"
+            : !swapAmount
+            ? "Enter an Amount"
+            : buttonText}
         </button>
       </form>
       <PopupModal></PopupModal>

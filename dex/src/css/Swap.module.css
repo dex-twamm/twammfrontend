@@ -35,6 +35,13 @@
   font-weight: 600;
 }
 
-.btnConnect:hover {
+.btnConnect:disabled{
+  opacity:0.7;
+  cursor: not-allowed;
+}
+
+.btnConnect:enabled:hover {
   background-color: #ffdeea;
 }
+
+
