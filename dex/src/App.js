@@ -21,7 +21,7 @@ import {
 } from './utils';
 import { exitPool, getPoolBalance, joinPool } from './utils/addLiquidity';
 import { getEtherBalance, getLPTokensBalance } from './utils/getAmount';
-import { ethLogs } from './utils/get_ethLogs';
+import { ethLogs, getEthLogs } from './utils/get_ethLogs';
 import { getLongTermOrder, placeLongTermOrder } from './utils/longSwap';
 import { web3Modal } from './utils/providerOptions';
 import { swapTokens } from './utils/swap';
@@ -50,12 +50,7 @@ function App() {
 		setPoolCash,
 		poolCash,
 	} = useContext(ShortSwapContext);
-	const { tokenA, tokenB } = useContext(LongSwapContext);
-	// console.log("TOKENS", tokenA, tokenB);
-	// console.log("Select Token", selectToken);
-	// console.log("Select Token From App", selectToken);
-	// console.log("ETH Balances", ethBalance);
-	// //  Connect Wallet
+	const { tokenA, tokenB, ethLogs, setEthLogs } = useContext(LongSwapContext);
 	const connectWallet = async () => {
 		try {
 			await getProvider();
@@ -255,7 +250,7 @@ function App() {
 			const tokenAddress = FAUCET_TOKEN_ADDRESS;
 			await getLongTermOrder(provider);
 			const signer = await getProvider(true);
-			await ethLogs(signer);
+			await getEthLogs(signer).then(res => { setEthLogs(res) });
 			await getLPTokensBalance(provider, account).then(res => {
 				setTokenBalances(res);
 				// console.log("Response From Token Balance Then Block", res)
