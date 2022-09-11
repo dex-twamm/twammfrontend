@@ -21,8 +21,6 @@ const LongSwap = (props) => {
   const [showSettings, setShowSettings] = useState(false);
   const { ethLogs } = useContext(LongSwapContext);
   const ethLogsCount = ethLogs.length;
-  console.log("====EthLogs Count====", ethLogsCount);
-  const longTermOrderCardList = Array(ethLogsCount).fill(<LongTermOrderCard />);
   const cardListCount = ethLogsCount;
 
   return (
@@ -61,7 +59,7 @@ const LongSwap = (props) => {
               cardListCount > 2 && lsStyles.scrollable
             )}
           >
-            {longTermOrderCardList}
+            <LongTermOrderCard></LongTermOrderCard>
           </div>
         </div>
       </div>

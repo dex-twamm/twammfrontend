@@ -17,10 +17,16 @@ export async function getEthLogs(signer) {
 
 
   const abiCoder = ethers.utils.defaultAbiCoder;
-  const logs = abiCoder.decode(["uint256", "uint256", "uint256"], eventsWith[0].data);
-  console.log("=====ETH LOGS DECODE=====", logs);
+  const eventDecoded = [];
+  for (let i = 0; i < eventsWith.length; i++) {
+    const logs = abiCoder.decode(["uint256", "uint256", "uint256"], eventsWith[i].data);
+    eventDecoded.push(logs);
+    // console.log("=== ETH Logs Decoded ===",logs)
+  }
 
-  return eventsWith;
+
+
+  return eventDecoded.map((item) => item);
 
 
 

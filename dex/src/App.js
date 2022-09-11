@@ -250,7 +250,10 @@ function App() {
 			const tokenAddress = FAUCET_TOKEN_ADDRESS;
 			await getLongTermOrder(provider);
 			const signer = await getProvider(true);
-			await getEthLogs(signer).then(res => { setEthLogs(res) });
+			await getEthLogs(signer).then(res => {
+				setEthLogs(res);
+				// console.log("=== Response === ", res)
+			});
 			await getLPTokensBalance(provider, account).then(res => {
 				setTokenBalances(res);
 				// console.log("Response From Token Balance Then Block", res)
