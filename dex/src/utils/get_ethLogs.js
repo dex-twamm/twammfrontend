@@ -18,15 +18,22 @@ export async function getEthLogs(signer) {
 
   const abiCoder = ethers.utils.defaultAbiCoder;
   const eventDecoded = [];
+  console.log("==== Event Decoded  ==== ", typeof eventDecoded);
   for (let i = 0; i < eventsWith.length; i++) {
     const logs = abiCoder.decode(["uint256", "uint256", "uint256"], eventsWith[i].data);
-    eventDecoded.push(logs);
+    eventDecoded.push({
+      'orderId': logs[0],
+      'salesRate': logs[1],
+      'expirationBlock': logs[2],
+
+    });
     console.log("=== ETH Logs Decoded ===", logs)
   }
 
+  // console.log("=== ETH Logs Decoded ===", eventDecoded)
 
 
-  return eventsWith;
+  return ({ eventsWith, eventDecoded });
 
 
 

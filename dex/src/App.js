@@ -45,7 +45,7 @@ function App() {
 		setPoolCash,
 		poolCash,
 	} = useContext(ShortSwapContext);
-	const { orderLogs, setOrderLogs } = useContext(LongSwapContext);
+	const { setOrderLogs, setOrderLogsDecoded } = useContext(LongSwapContext);
 	const connectWallet = async () => {
 		try {
 			await getProvider();
@@ -246,8 +246,9 @@ function App() {
 			await getLongTermOrder(provider);
 			const signer = await getProvider(true);
 			await getEthLogs(signer).then(res => {
-				setOrderLogs(res);
-				// console.log("=== Response === ", res)
+				setOrderLogs(res.eventsWith);
+				setOrderLogsDecoded(res.eventDecoded);
+				console.log("=== Response === ", res.eventDecoded)
 			});
 			await getLPTokensBalance(provider, account).then(res => {
 				setTokenBalances(res);
