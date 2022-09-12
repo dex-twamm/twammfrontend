@@ -24,6 +24,19 @@ const Modal = ({ display, setDisplay, setTokenA, setTokenB, tokenDetails }) => {
 		if (selectToken === '1') {
 			setEthBalance(parseFloat(token.children[3].innerHTML).toFixed(2));
 			setSrcAddress(token.children[2].innerHTML);
+			if (token.children[1].innerHTML === tokenB.symbol) {
+				setTokenB({
+					symbol: tokenA.symbol,
+					image: tokenA.image,
+					balance: tokenA.balance,
+					tokenIsSet: true,
+				});
+			}
+			console.log(
+				'Prabin TokenHandle',
+				token.children[1].innerHTML,
+				tokenB.symbol
+			);
 			setTokenA({
 				symbol: token.children[1].innerHTML,
 				image: token.children[0].src.slice(21, token.length),

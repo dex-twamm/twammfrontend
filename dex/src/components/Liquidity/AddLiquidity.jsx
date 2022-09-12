@@ -1,4 +1,4 @@
-import { faGear } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faGear } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Box } from '@mui/material';
 import classNames from 'classnames';
@@ -13,7 +13,7 @@ import Modal from '../Modal';
 import { LiquidityPools } from './LiquidityPools';
 
 const AddLiquidity = props => {
-	const { connect } = props;
+	const { connect, showAddLiquidity } = props;
 	const [display, setDisplay] = useState(false);
 	const [primaryToken, setPrimaryToken] = useState('');
 	const [secondaryToken, setSecondaryToken] = useState();
@@ -99,12 +99,17 @@ const AddLiquidity = props => {
 				/>
 			)}
 			<div className={styles.mainBody}>
-				<div className={styles.topBar}>
-					<p>Add Liquidity</p>
+				<div className={`unselectable ${styles.topBar}`}>
+					<FontAwesomeIcon
+						onClick={() => showAddLiquidity(false)}
+						className={styles.icon}
+						icon={faArrowLeft}
+					/>
+					<p className={styles.topHeader}>Add Liquidity</p>
 					<div className={styles.rightTopBar}>
 						<div className={styles.currencyName}>ETH</div>
 						<FontAwesomeIcon
-							className={styles.settingsIcon}
+							className={`${styles.icon} ${styles.settingsIcon}`}
 							icon={faGear}
 							onClick={() => setShowSettings(!showSettings)}
 						/>
@@ -112,8 +117,10 @@ const AddLiquidity = props => {
 				</div>
 
 				<div className={styles.mainContent}>
-					<div className={styles.selectPairContainer}>
-						<p>Select Pair</p>
+					<div
+						className={`unselectable ${styles.selectPairContainer}`}
+					>
+						<p className={styles.mainHeader}>Select Pair</p>
 						<div className={styles.pairContainer}>
 							<div
 								onClick={() => {
@@ -128,7 +135,9 @@ const AddLiquidity = props => {
 										src={tokenA.image}
 										alt='Ethereum'
 									/>
-									<p>{tokenA.symbol}</p>
+									<p className={styles.tokenSymbol}>
+										{tokenA.symbol}
+									</p>
 								</div>
 								<FiChevronDown
 									className={styles.dropDownIcon}
@@ -150,13 +159,13 @@ const AddLiquidity = props => {
 											alt='Ethereum'
 										/>
 									)}
-									<p>
+									<p className={styles.tokenSymbol}>
 										<span
 											style={{
 												paddingLeft: `${
 													tokenB.tokenIsSet
 														? '0px'
-														: '20px'
+														: '10px'
 												}`,
 											}}
 										>
@@ -171,7 +180,7 @@ const AddLiquidity = props => {
 						</div>
 					</div>
 
-					<div className={styles.FeeTierContainer}>
+					<div className={`unselectable ${styles.FeeTierContainer}`}>
 						<div className={styles.leftContent}>
 							<p>0.3% fee tier</p>
 							<div className={styles.feeSelect}>86% select</div>
@@ -181,7 +190,11 @@ const AddLiquidity = props => {
 					</div>
 
 					<div className={styles.depositAmountContainer}>
-						<p>Deposit Amounts</p>
+						<p
+							className={`${styles.mainHeaderAmount} ${styles.mainHeader}`}
+						>
+							Deposit Amounts
+						</p>
 						<div className={styles.inputsWrap}>
 							<Input
 								id={1}
@@ -222,18 +235,8 @@ const AddLiquidity = props => {
 							</button>
 						</div>
 					</div>
-
-					{/* liquidity  pool  */}
 				</div>
 			</div>
-
-			<Box sx={{ minWidth: '50%' }}>
-				<LiquidityPools />
-			</Box>
-
-			<Box sx={{ minWidth: '50%' }}>
-				<DisconnectWalletOption />
-			</Box>
 		</div>
 
 		// <div className="add-liquidity">

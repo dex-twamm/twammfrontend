@@ -32,7 +32,6 @@ const Input = props => {
 			image: '/ethereum.png',
 			address: FAUCET_TOKEN_ADDRESS,
 			balance: tokenBalances[0],
-			balance: 0,
 		},
 		{
 			name: 'Matic',
@@ -61,7 +60,7 @@ const Input = props => {
 						value={input}
 						onChange={onChange}
 					/>
-					{!selectToken ? (
+					{/* {!selectToken ? (
 						<button
 							className={classnames(
 								styles.btn,
@@ -131,7 +130,47 @@ const Input = props => {
 								</div>
 							</span>
 						</button>
-					)}
+                    )} */}
+					<button
+						className={classnames(
+							styles.btn,
+							styles.currencySelect
+						)}
+						onClick={handleDisplay}
+						id={id}
+					>
+						<span className={styles.spnCurrency}>
+							<div className={styles.currency}>
+								{id === 2 && !tokenB.tokenIsSet ? (
+									<></>
+								) : (
+									<img
+										className={styles.tokenImage}
+										src={imgSrc}
+										alt='tokenImage'
+									/>
+								)}
+								<p className={styles.tokenContainer}>
+									{symbol}
+								</p>
+								<svg
+									xmlns='http://www.w3.org/2000/svg'
+									width='24'
+									height='24'
+									viewBox='0 0 24 24'
+									fill='none'
+									stroke='currentColor'
+									strokeWidth='2'
+									strokeLinecap='round'
+									strokeLinejoin='round'
+									className='sc-w04zhs-16 lfEMTx'
+									style={{ color: '#333333' }}
+								>
+									<polyline points='6 9 12 15 18 9'></polyline>
+								</svg>
+							</div>
+						</span>
+					</button>
 				</div>
 				<div className={styles.balance}>
 					Balance:{id === 1 ? tokenA.balance : tokenB.balance}

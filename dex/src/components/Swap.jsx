@@ -1,9 +1,8 @@
-import {useEffect} from 'react'
 import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Alert, Box, Slider, Typography } from '@mui/material';
 import classNames from 'classnames';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import lsStyles from '../css/LongSwap.module.css';
 import styles from '../css/Swap.module.css';
 import { calculateValue, valueLabel } from '../methods/longSwapMethod';
@@ -21,8 +20,6 @@ const Swap = props => {
 	const [isSubmit, setIsSubmit] = useState(false);
 	const [value, setValue] = useState(0.0);
 
- 
-
 	const {
 		equivalentAmount,
 		setEquivalentAmount,
@@ -31,7 +28,6 @@ const Swap = props => {
 		selectToken,
 		setSelectToken,
 		setLoading,
-   
 	} = useContext(ShortSwapContext);
 
 	const {
@@ -46,9 +42,7 @@ const Swap = props => {
 		setTokenB,
 	} = useContext(LongSwapContext);
 
-
-
-  useEffect(() => {
+	useEffect(() => {
 		if (tokenA.symbol === tokenB.symbol)
 			setTokenB({
 				symbol: 'Select Token',
@@ -63,9 +57,6 @@ const Swap = props => {
 
 		setSelectToken(event.currentTarget.id);
 		setDisplay(!display);
-
-
-   
 	};
 
 	// const [tokenA, setTokenA] = useState({
@@ -192,9 +183,17 @@ const Swap = props => {
 				<button
 					className={classNames(styles.btn, styles.btnConnect)}
 					onClick={handleClick}
-          disabled={!tokenA.tokenIsSet || !tokenB.tokenIsSet || !swapAmount ? true :false }
+					disabled={
+						!tokenA.tokenIsSet || !tokenB.tokenIsSet || !swapAmount
+							? true
+							: false
+					}
 				>
-					{!tokenA.tokenIsSet || !tokenB.tokenIsSet ? 'Select a Token' : !swapAmount ? 'Enter an Amount' : buttonText}
+					{!tokenA.tokenIsSet || !tokenB.tokenIsSet
+						? 'Select a Token'
+						: !swapAmount
+						? 'Enter an Amount'
+						: buttonText}
 				</button>
 			</form>
 			<PopupModal></PopupModal>
