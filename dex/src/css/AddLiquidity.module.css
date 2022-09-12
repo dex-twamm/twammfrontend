@@ -39,9 +39,18 @@
 	justify-content: space-between;
 	padding-bottom: 10px;
 	border-bottom: 2px solid #f0f0f0;
-	font-size: 18px;
 	padding-top: 5px;
+}
+
+.topHeader {
+	font-size: 20px;
+	color: #333333;
 	font-weight: 600;
+}
+
+.icon {
+	font-size: 18px;
+	cursor: pointer;
 }
 
 .rightTopBar {
@@ -54,7 +63,8 @@
 	background-color: #ededed;
 	padding: 6px 8px;
 	border-radius: 16px;
-	font-weight: 400;
+	font-size: 15px;
+	font-weight: 500;
 }
 
 .mainContent {
@@ -62,6 +72,21 @@
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
+}
+
+.mainHeader {
+	font-size: 18px;
+	font-weight: 500;
+	padding-left: 4px;
+	padding-bottom: 3px;
+}
+
+.mainHeaderAmount {
+	padding-bottom: 10px;
+}
+
+.mainHeader:nth-child(2) {
+	padding-bottom: 12px;
 }
 
 .selectPairContainer {
@@ -80,7 +105,7 @@
 .select {
 	flex-grow: 1;
 	padding: 15px 10px;
-	font-size: 20px;
+	font-size: 22px;
 	font-weight: 600;
 
 	display: flex;
@@ -94,6 +119,11 @@
 	font-size: 16px;
 }
 
+.tokenSymbol {
+	font-size: 18px;
+	font-weight: 500;
+}
+
 .currencyWrap {
 	display: flex;
 	align-items: center;
@@ -101,8 +131,8 @@
 }
 
 .cryptoImage {
-	width: 20px;
-	height: 20px;
+	width: 26px;
+	height: 26px;
 }
 
 .FeeTierContainer {
@@ -115,11 +145,18 @@
 	justify-content: space-between;
 }
 
+.leftContent {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	font-weight: 500;
+}
+
 .feeSelect {
 	margin-top: 5px;
 	width: fit-content;
 
-	font-size: 10px;
+	font-size: 12px;
 	background-color: #ebebeb;
 	padding: 4px 8px;
 
@@ -133,6 +170,7 @@
 	background-color: #f3f3f3;
 	font-size: 14px;
 	border-radius: 16px;
+	font-weight: 500;
 
 	cursor: pointer;
 	transition: all 0.2s ease-in-out;
@@ -166,6 +204,11 @@
 .btnConnect:disabled {
 	cursor: not-allowed;
 	opacity: 0.5;
+}
+
+.btn {
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 600;
 }
 
 /* 

@@ -24,7 +24,9 @@ const RemoveLiquidity = ({ showRemoveLiquidity }) => {
 						className={styles.icon}
 						icon={faArrowLeft}
 					/>
-					<span>Remove Liquidity</span>
+					<span className={styles.headingTitle}>
+						Remove Liquidity
+					</span>
 					<FontAwesomeIcon className={styles.icon} icon={faGear} />
 				</div>
 
@@ -35,54 +37,54 @@ const RemoveLiquidity = ({ showRemoveLiquidity }) => {
 								className={styles.tokenImage}
 								src='https://seeklogo.com/images/E/ethereum-logo-EC6CDBA45B-seeklogo.com.png'
 								alt='#'
-								width={24}
+								width={20}
 							/>
 							<img
 								className={styles.tokenImage}
 								src='https://seeklogo.com/images/U/uniswap-uni-logo-7B6173C76E-seeklogo.com.png'
 								alt='#'
-								width={24}
+								width={20}
 							/>
 						</div>
 						<span>UNI/ETH</span>
 					</div>
 					<div className={styles.range}>
 						<div className={styles.status}></div>
-						In range
+						In Range
 					</div>
 				</div>
 
 				<div className={styles.amountContainer}>
 					<h4 className={styles.amount}>Amount</h4>
 					<div className={styles.percentages}>
-						<span className={styles.percentageRange}>
-							{rangeValue}%
-						</span>
+						<div className={styles.percentageRange}>
+							{rangeValue + '%'}
+						</div>
 						<div className={styles.percentageBtns}>
-							<span
+							<button
 								onClick={() => setRangeValue(25)}
 								className={styles.percentage}
 							>
 								25%
-							</span>
-							<span
+							</button>
+							<button
 								onClick={() => setRangeValue(50)}
 								className={styles.percentage}
 							>
 								50%
-							</span>
-							<span
+							</button>
+							<button
 								onClick={() => setRangeValue(75)}
 								className={styles.percentage}
 							>
 								75%
-							</span>
-							<span
+							</button>
+							<button
 								onClick={() => setRangeValue(100)}
 								className={styles.percentage}
 							>
 								Max
-							</span>
+							</button>
 						</div>
 					</div>
 					<input
@@ -97,22 +99,22 @@ const RemoveLiquidity = ({ showRemoveLiquidity }) => {
 
 				<div className={styles.pooled}>
 					<div className={styles.pooledToken}>
-						<div>Pooled UNI:</div>
+						<div>Pooled UNI</div>
 						<div className={styles.pooledTokenIcon}>
 							0.12437
 							<img
-								src='https://seeklogo.com/images/E/ethereum-logo-EC6CDBA45B-seeklogo.com.png'
+								src='https://seeklogo.com/images/U/uniswap-uni-logo-7B6173C76E-seeklogo.com.png'
 								alt='#'
 								width={18}
 							/>
 						</div>
 					</div>
 					<div className={styles.pooledToken}>
-						<div>Pooled ETH:</div>
+						<div>Pooled ETH</div>
 						<div className={styles.pooledTokenIcon}>
 							0.99951
 							<img
-								src='https://seeklogo.com/images/U/uniswap-uni-logo-7B6173C76E-seeklogo.com.png'
+								src='https://seeklogo.com/images/E/ethereum-logo-EC6CDBA45B-seeklogo.com.png'
 								alt='#'
 								width={18}
 							/>
@@ -121,7 +123,7 @@ const RemoveLiquidity = ({ showRemoveLiquidity }) => {
 				</div>
 
 				<div className={styles.collect}>
-					<span>Collect as WETH</span>
+					<span className={styles.collectTitle}>Collect as WETH</span>
 					<button
 						onClick={() => setButtonEnabled(state => !state)}
 						className={styles.collectBtn}

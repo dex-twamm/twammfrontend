@@ -5,6 +5,7 @@ import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import {
 	AddLiquidity,
+	LiquidityPools,
 	RemoveLiquidity,
 } from './components/Liquidity';
 import Navbar from './components/Navbar';
@@ -30,6 +31,7 @@ function App() {
 	const [isWallletConnceted, setWalletConnected] = useState(false);
 	const [isPlacedLongTermOrder, setIsPlacedLongTermOrder] = useState(false);
 	const [showRemoveLiquidity, setShowRemoveLiquidity] = useState(false);
+	const [showAddLiquidity, setShowAddLiquidity] = useState(false);
 	const { setShowDropdown } = useContext(UIContext);
 
 	const {
@@ -280,15 +282,27 @@ function App() {
 		document.body.onclick = () => setShowDropdown(false);
 	});
 
-	let liquidityMarkup = <AddLiquidity connect={_joinPool} />;
+	let liquidityMarkup = (
+		<LiquidityPools
+			showRemoveLiquidity={setShowRemoveLiquidity}
+			showAddLiquidity={setShowAddLiquidity}
+		/>
+	);
 
-	// Condition of Liquidity existing
-	// if(liquidityExists) liquidityMarkup = <LiquidityPools/>
-
-	if (showRemoveLiquidity)
+	if (showAddLiquidity) {
+		liquidityMarkup = (
+			<AddLiquidity
+				connect={_joinPool}
+				showAddLiquidity={setShowAddLiquidity}
+			/>
+		);
+	} else if (showRemoveLiquidity)
 		liquidityMarkup = (
 			<RemoveLiquidity showRemoveLiquidity={setShowRemoveLiquidity} />
 		);
+
+	// Condition of Liquidity existing
+	// if(liquidityExists) liquidityMarkup = <LiquidityPools/>
 
 	return (
 		<div>
@@ -333,7 +347,6 @@ function App() {
 				/>
 				<Route path='/liquidity' element={liquidityMarkup} />
 			</Routes>
-			<button onClick={e => setShowRemoveLiquidity(true)}>Show</button>
 		</div>
 	);
 }
