@@ -10,6 +10,7 @@ export const LongSwapProvider = ({ children }) => {
   const [sliderValueUnit, setSliderValueUnit] = useState("Min");
   const [orderLogs, setOrderLogs] = useState([]);
   const [orderLogsDecoded, setOrderLogsDecoded] = useState();
+  const [latestBlock, setLatestBlock] = useState("");
 
   const [sliderDate, setSliderDate] = useState("");
   const { tokenBalances } = useContext(ShortSwapContext);
@@ -50,6 +51,8 @@ export const LongSwapProvider = ({ children }) => {
         setOrderLogs,
         orderLogsDecoded,
         setOrderLogsDecoded,
+        latestBlock,
+        setLatestBlock,
       }}
     >
       {children}

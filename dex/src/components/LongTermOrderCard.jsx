@@ -6,21 +6,28 @@ import { useEffect } from "react";
 import { HiExternalLink } from "react-icons/hi";
 import styles from "../css/LongTermOrderCard.module.css";
 import { LongSwapContext, ShortSwapContext } from "../providers";
+import { getLongTermOrder } from "../utils/longSwap";
 
 const LongTermOrderCard = () => {
   const remainingTimeRef = React.useRef();
 
   const { swapAmount } = React.useContext(ShortSwapContext);
 
-  const { sliderValueInSec, tokenA, tokenB, orderLogs, orderLogsDecoded } =
-    React.useContext(LongSwapContext);
+  const {
+    sliderValueInSec,
+    tokenA,
+    tokenB,
+    orderLogs,
+    orderLogsDecoded,
+    latestBlock,
+  } = React.useContext(LongSwapContext);
 
   const initialValue = Math.ceil(sliderValueInSec);
 
   const [progress, setProgress] = React.useState(1);
   const [remainingTime, setRemainingTime] = React.useState(initialValue);
   const [remainingToken, setRemainingToken] = React.useState("");
-  const [convertedTokenAmount, setConvertedTokenAmount] = React.useState(0);
+  const [convertedTokenAmount, setConvertedTokenAmount] = useState("");
   const [orderLogsId, setOrderId] = useState("");
   const [salesRate, setSalesRate] = useState("");
   const [expirationBlock, setExpirationBlock] = useState("");
@@ -42,7 +49,7 @@ const LongTermOrderCard = () => {
         const converted = swapAmount - (percent * swapAmount) / 100;
         // setRemainingToken((swapAmount - converted).toFixed(2));
 
-        setConvertedTokenAmount((converted * rate).toFixed(2));
+        // setConvertedTokenAmount((converted * rate).toFixed(2));
       } else {
         setProgress(100);
       }
@@ -77,9 +84,12 @@ const LongTermOrderCard = () => {
       const expBlock = ethers.utils.formatEther(item.expirationBlock._hex);
       setExpirationBlock(expBlock);
       // console.log("=== Expired At Block ===", expBlock);
-      const remainigToken = (expBlock - startBlock) * salesRate;
-      console.log("=== Remainig Token ===", remainigToken);
-      setRemainingToken(remainigToken);
+
+      let amountOf = (expBlock - startBlock) * salesRate;
+      console.log("=== Amount Of  Token ===", amountOf);
+      setConvertedTokenAmount(amountOf);
+      let reToken = (latestBlock - startBlock) * salesRate;
+      setRemainingToken(reToken);
     });
   }
 
@@ -90,6 +100,7 @@ const LongTermOrderCard = () => {
 
   return orderLogs
     .map((item, index) => {
+      let convertedAmount = ethers.utils.formatEther(item.topics[2]);
       let orderId;
       orderLogsDecoded.map((item, idx) => {
         return index == idx && (orderId = item.orderId._hex);
@@ -124,9 +135,7 @@ const LongTermOrderCard = () => {
                   <span>
                     {remainingToken} {tokenA.symbol}
                   </span>
-                  <span>
-                    of {swapAmount} {tokenA.symbol}
-                  </span>
+                  <span>of {convertedTokenAmount}</span>
                 </p>
               </div>
               <div className={styles.arrow}>
@@ -150,7 +159,7 @@ const LongTermOrderCard = () => {
                   alt={tokenB.symbol}
                 />
                 <p className={classNames(styles.tokenText, styles.greenText)}>
-                  {convertedTokenAmount} {tokenB.symbol}
+                  {convertedAmount} {tokenB.symbol}
                 </p>
               </div>
             </div>

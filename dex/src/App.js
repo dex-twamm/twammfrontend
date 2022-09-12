@@ -47,7 +47,7 @@ function App() {
 		setPoolCash,
 		poolCash,
 	} = useContext(ShortSwapContext);
-	const { setOrderLogs, setOrderLogsDecoded } = useContext(LongSwapContext);
+	const { setOrderLogs, setOrderLogsDecoded, setLatestBlock } = useContext(LongSwapContext);
 	const connectWallet = async () => {
 		try {
 			await getProvider();
@@ -245,7 +245,7 @@ function App() {
 		try {
 			const provider = await getProvider(true);
 			const tokenAddress = FAUCET_TOKEN_ADDRESS;
-			await getLongTermOrder(provider);
+			await getLongTermOrder(provider).then(res => { setLatestBlock(res) });
 			const signer = await getProvider(true);
 			await getEthLogs(signer).then(res => {
 				setOrderLogs(res.eventsWith);
