@@ -206,6 +206,11 @@
 	opacity: 0.5;
 }
 
+.btn {
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 600;
+}
+
 /* 
 .add-liquidity {
   display: flex;

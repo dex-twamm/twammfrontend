@@ -25,8 +25,13 @@ const AddLiquidity = props => {
 	const { tokenA, tokenB, setTokenA, setTokenB } =
 		useContext(LongSwapContext);
 
-	const { selectToken, setSelectToken, swapAmount, setSwapAmount } =
-		useContext(ShortSwapContext);
+	const {
+		selectToken,
+		setSelectToken,
+		swapAmount,
+		setSwapAmount,
+		tokenBalances,
+	} = useContext(ShortSwapContext);
 
 	const handleToggle = () => setDisplay(!display);
 
@@ -62,14 +67,14 @@ const AddLiquidity = props => {
 			symbol: 'ETH',
 			image: '/ethereum.png',
 			address: 'sadfasdfsdaf',
-			balance: tokenA.balance,
+			balance: tokenBalances[0],
 		},
 		{
 			name: 'Matic',
 			symbol: 'DAI',
 			image: '/dai.png',
 			address: 'sdfasdf',
-			balance: tokenB.balance,
+			balance: tokenBalances[1],
 		},
 		{
 			type: 'coming_soon',
