@@ -1,7 +1,6 @@
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
-import React, { useState } from 'react';
 import LongTermOrderCard from '../components/LongTermOrderCard';
 import PopupSettings from '../components/PopupSettings';
 import Swap from '../components/Swap';
@@ -15,9 +14,9 @@ const LongSwap = props => {
 		connectWallet,
 		buttonText,
 		isPlacedLongTermOrder,
+		showSettings,
+		setShowSettings,
 	} = props;
-
-	const [showSettings, setShowSettings] = useState(false);
 
 	const longTermOrderCardList = Array(3).fill(<LongTermOrderCard />);
 	const cardListCount = longTermOrderCardList.length;
@@ -33,7 +32,10 @@ const LongSwap = props => {
 						<FontAwesomeIcon
 							className={styles.settingsIcon}
 							icon={faGear}
-							onClick={() => setShowSettings(!showSettings)}
+							onClick={e => {
+								e.stopPropagation();
+								setShowSettings(!showSettings);
+							}}
 						/>
 					</div>
 

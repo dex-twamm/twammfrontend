@@ -5,14 +5,14 @@ import React, { useContext, useEffect, useState } from 'react';
 import { RiArrowDropDownLine } from 'react-icons/ri';
 import { Link, Navigate, useLocation } from 'react-router-dom';
 import styles from '../css/Navbar.module.css';
-import { ShortSwapContext, UIContext } from '../providers';
-import { toHex } from '../utils';
+import { LongSwapContext, ShortSwapContext, UIContext } from '../providers';
+import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS, toHex } from '../utils';
 import { DisconnectWalletOption } from './DisconnectWalletOption';
 import NavOptionDropdwon from './navbarDropdown/NavOptionDropdwon';
 
 const Navbar = props => {
 	const { showDropdown, setShowDropdown } = useContext(UIContext);
-	console.log('Prabin dropdown', showDropdown);
+	const { setTokenA, setTokenB } = useContext(LongSwapContext);
 
 	const location = useLocation();
 	const currentPath = location.pathname;
@@ -24,21 +24,20 @@ const Navbar = props => {
 		connectWallet,
 		disConnectWallet,
 	} = props;
-	const { setError, setLoading } = useContext(ShortSwapContext);
+	const { setError, setLoading, setSwapAmount } =
+		useContext(ShortSwapContext);
 	const [netId, setNetId] = useState('');
 	// const [isOpen, setOpen] = useState(false);
 
-
 	const [showDisconnect, setShowDisconnect] = useState(false);
-   const networks = [
-   		{ name: 'Ethereum', chainId: '1', logo: '/ethereum.png' },
-   		{ name: 'Goerli', chainId: '5', logo: '/dai.png' },
-   		{ name: 'Coming Soon', chainId: '0', logo: '/ethereum.png' },
-   	];
+	const networks = [
+		{ name: 'Ethereum', chainId: '1', logo: '/ethereum.png' },
+		{ name: 'Goerli', chainId: '5', logo: '/dai.png' },
+		{ name: 'Coming Soon', chainId: '0', logo: '/ethereum.png' },
+	];
 
-   	const nId = window.ethereum.networkVersion;
-    const initialNetwork = networks.filter(id => id.chainId === nId);
-
+	const nId = window.ethereum.networkVersion;
+	const initialNetwork = networks.filter(id => id.chainId === nId);
 
 	const [selectedNetwork, setSelectedNetwork] = useState({
 		network: 'Select a Network',
@@ -101,9 +100,28 @@ const Navbar = props => {
 		},
 	];
 
+	const onNavLinkClick = () => {
+		setSwapAmount('');
+		setTokenA({
+			symbol: 'Faucet',
+			image: '/ethereum.png',
+			address: FAUCET_TOKEN_ADDRESS,
+			balance: 0,
+			tokenIsSet: true,
+		});
+		setTokenB({
+			symbol: 'Select Token',
+			image: '',
+			address: MATIC_TOKEN_ADDRESS,
+			balance: 0,
+			tokenIsSet: false,
+		});
+	};
+
 	const tabList = tabOptions.map((option, index) => (
 		<Link to={option.path} key={index}>
 			<div
+				onClick={onNavLinkClick}
 				key={index}
 				className={classNames(
 					styles.tabButton,
@@ -244,18 +262,18 @@ const Navbar = props => {
 						>
 							<FontAwesomeIcon icon={faEllipsis} />
 						</button>
-						
-						{ showDropdown && <span
-							className={classNames(
-								styles.menuList,
-								showDropdown && styles.show
-							)}
-							id='menu-dropdown'
-						>
-							{  <NavOptionDropdwon/>}
-						</span>
-						}
-						
+
+						{showDropdown && (
+							<span
+								className={classNames(
+									styles.menuList,
+									showDropdown && styles.show
+								)}
+								id='menu-dropdown'
+							>
+								{<NavOptionDropdwon />}
+							</span>
+						)}
 					</div>
 				</div>
 			</div>

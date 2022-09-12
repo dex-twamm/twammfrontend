@@ -1,6 +1,7 @@
 // Prabin
 import { faArrowLeft, faGear } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Slider } from '@mui/material';
 import classNames from 'classnames';
 import { useState } from 'react';
 
@@ -87,14 +88,21 @@ const RemoveLiquidity = ({ showRemoveLiquidity }) => {
 							</button>
 						</div>
 					</div>
-					<input
-						className={styles.inputRange}
-						type='range'
-						max={100}
-						min={0}
-						value={rangeValue}
-						onChange={e => setRangeValue(e.target.value)}
-					/>
+					<div style={{ paddingLeft: '0px' }}>
+						<Slider
+							value={rangeValue}
+							min={0}
+							step={1}
+							max={100}
+							sx={{
+								height: 15,
+								width: 1,
+								color: '#ffaac9',
+							}}
+							onChange={e => setRangeValue(e.target.value)}
+							aria-labelledby='non-linear-slider'
+						/>
+					</div>
 				</div>
 
 				<div className={styles.pooled}>
@@ -137,7 +145,11 @@ const RemoveLiquidity = ({ showRemoveLiquidity }) => {
 					</button>
 				</div>
 
-				<button onClick={clickHandler} className={styles.removeBtn}>
+				<button
+					disabled={rangeValue === 0}
+					onClick={clickHandler}
+					className={styles.removeBtn}
+				>
 					Remove
 				</button>
 			</div>

@@ -16,7 +16,7 @@ export const LongSwapProvider = ({ children }) => {
 		image: '/ethereum.png',
 		address: FAUCET_TOKEN_ADDRESS,
 		balance: 0,
-		tokenIsSet: false,
+		tokenIsSet: true,
 	});
 
 	// const [tokenB, setTokenB] = useState({
