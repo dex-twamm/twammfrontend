@@ -21,12 +21,12 @@ export async function getEthLogs(signer) {
   for (let i = 0; i < eventsWith.length; i++) {
     const logs = abiCoder.decode(["uint256", "uint256", "uint256"], eventsWith[i].data);
     eventDecoded.push(logs);
-    // console.log("=== ETH Logs Decoded ===",logs)
+    console.log("=== ETH Logs Decoded ===", logs)
   }
 
 
 
-  return eventDecoded.map((item) => item);
+  return eventsWith;
 
 
 

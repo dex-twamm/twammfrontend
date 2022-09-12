@@ -50,7 +50,7 @@ const Navbar = (props) => {
     setSelectedNetwork((prevState) => ({
       ...prevState,
       network: coin_name ? coin_name : initialNetwork[0]?.name,
-      logo: coin_logo ? coin_logo : initialNetwork[0].logo,
+      logo: coin_logo ? coin_logo : initialNetwork[0]?.logo,
     }));
   }, [coin_name]);
 

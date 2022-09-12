@@ -1,5 +1,8 @@
 import classNames from "classnames";
+import { ethers } from "ethers";
 import React, { useContext } from "react";
+import { useState } from "react";
+import { useEffect } from "react";
 import { HiExternalLink } from "react-icons/hi";
 import styles from "../css/LongTermOrderCard.module.css";
 import { LongSwapContext, ShortSwapContext } from "../providers";
@@ -9,7 +12,7 @@ const LongTermOrderCard = () => {
 
   const { swapAmount } = React.useContext(ShortSwapContext);
 
-  const { sliderValueInSec, tokenA, tokenB, ethLogs } =
+  const { sliderValueInSec, tokenA, tokenB, orderLogs } =
     React.useContext(LongSwapContext);
 
   const initialValue = Math.ceil(sliderValueInSec);
@@ -18,6 +21,7 @@ const LongTermOrderCard = () => {
   const [remainingTime, setRemainingTime] = React.useState(initialValue);
   const [remainingToken, setRemainingToken] = React.useState(swapAmount);
   const [convertedTokenAmount, setConvertedTokenAmount] = React.useState(0);
+  const [orderLogsId, setOrderId] = useState();
 
   let value = Math.ceil(sliderValueInSec);
 
@@ -58,14 +62,36 @@ const LongTermOrderCard = () => {
     averagePrice: "0.3 ETH",
   };
 
-  return ethLogs.map((item, index) => {
+  // Decoded Order Logs
+  useEffect(() => {
+    const abiCoder = ethers.utils.defaultAbiCoder;
+    let orderId = [];
+    for (let i = 0; i < orderLogs.length; i++) {
+      const logs = abiCoder.decode(
+        ["uint256", "uint256", "uint256"],
+        orderLogs[i].data
+      );
+      orderId.push(logs);
+    }
+    orderId.map((item) => {
+      console.log("Items", item[0]._hex);
+      setOrderId(item[0]._hex);
+    });
+  }, [orderLogsId]);
+
+  return orderLogs.map((item, index) => {
     return (
       <div className={styles.container}>
         <div className={styles.topSection}>
-          <p className={styles.orderId}>{item[0]?._hex}</p>
+          <p className={styles.orderId}>{orderLogsId}</p>
           <HiExternalLink
             className={styles.iconExternalLink}
-            onClick={() => window.open(dummyOrder.transactionLink, "_blank")}
+            onClick={() =>
+              window.open(
+                `https://goerli.etherscan.io/tx/${item.transactionHash}`,
+                "_blank"
+              )
+            }
           />
         </div>
         <div className={styles.bottomSection}>

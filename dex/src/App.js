@@ -1,12 +1,10 @@
-import { chipClasses } from '@mui/material';
-import { BigNumber, ethers, providers } from 'ethers';
+
+import { ethers, providers } from 'ethers';
 import { useContext, useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
-import PopupModal from './components/alerts/PopupModal';
 import {
 	AddLiquidity,
-	LiquidityPools,
 	RemoveLiquidity,
 } from './components/Liquidity';
 import Navbar from './components/Navbar';
@@ -14,14 +12,11 @@ import LongSwap from './pages/LongSwap';
 import ShortSwap from './pages/ShortSwap';
 import { LongSwapContext, ShortSwapContext, UIContext } from './providers';
 import {
-	FAUCET_TOKEN_ADDRESS,
-	MATIC_TOKEN_ADDRESS,
-	toHex,
-	truncateAddress,
+	FAUCET_TOKEN_ADDRESS, truncateAddress,
 } from './utils';
 import { exitPool, getPoolBalance, joinPool } from './utils/addLiquidity';
-import { getEtherBalance, getLPTokensBalance } from './utils/getAmount';
-import { ethLogs, getEthLogs } from './utils/get_ethLogs';
+import { getLPTokensBalance } from './utils/getAmount';
+import { getEthLogs } from './utils/get_ethLogs';
 import { getLongTermOrder, placeLongTermOrder } from './utils/longSwap';
 import { web3Modal } from './utils/providerOptions';
 import { swapTokens } from './utils/swap';
@@ -50,7 +45,7 @@ function App() {
 		setPoolCash,
 		poolCash,
 	} = useContext(ShortSwapContext);
-	const { tokenA, tokenB, ethLogs, setEthLogs } = useContext(LongSwapContext);
+	const { orderLogs, setOrderLogs } = useContext(LongSwapContext);
 	const connectWallet = async () => {
 		try {
 			await getProvider();
@@ -180,7 +175,7 @@ function App() {
 			if (!isWallletConnceted) {
 				await connectWallet();
 				const signer = await getProvider(true);
-				await ethLogs(signer);
+				await getEthLogs(signer);
 			} else {
 				await _swapTokens();
 			}
@@ -194,7 +189,7 @@ function App() {
 		if (!isWallletConnceted) {
 			await connectWallet();
 			const signer = await getProvider(true);
-			await ethLogs(signer);
+			await getEthLogs(signer);
 		} else {
 			await _placeLongTermOrders();
 		}
@@ -251,7 +246,7 @@ function App() {
 			await getLongTermOrder(provider);
 			const signer = await getProvider(true);
 			await getEthLogs(signer).then(res => {
-				setEthLogs(res);
+				setOrderLogs(res);
 				// console.log("=== Response === ", res)
 			});
 			await getLPTokensBalance(provider, account).then(res => {

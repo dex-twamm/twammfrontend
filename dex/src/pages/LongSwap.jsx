@@ -19,8 +19,8 @@ const LongSwap = (props) => {
   } = props;
 
   const [showSettings, setShowSettings] = useState(false);
-  const { ethLogs } = useContext(LongSwapContext);
-  const ethLogsCount = ethLogs.length;
+  const { orderLogs } = useContext(LongSwapContext);
+  const ethLogsCount = orderLogs.length;
   const cardListCount = ethLogsCount;
 
   return (

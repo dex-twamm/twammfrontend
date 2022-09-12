@@ -8,7 +8,7 @@ export const LongSwapProvider = ({ children }) => {
   const [sliderValueInSec, setSliderValueInSec] = useState(60);
 
   const [sliderValueUnit, setSliderValueUnit] = useState("Min");
-  const [ethLogs, setEthLogs] = useState([]);
+  const [orderLogs, setOrderLogs] = useState([]);
 
   const [sliderDate, setSliderDate] = useState("");
   const { tokenBalances } = useContext(ShortSwapContext);
@@ -21,14 +21,6 @@ export const LongSwapProvider = ({ children }) => {
     balance: 0,
     tokenIsSet: false,
   });
-
-  // const [tokenB, setTokenB] = useState({
-  // 	symbol: 'Matic',
-  // 	image: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png',
-  // 	address: MATIC_TOKEN_ADDRESS,
-  // 	balance: '',
-  // 	tokenIsSet: true,
-  // });
 
   const [tokenB, setTokenB] = useState({
     symbol: "Select Token",
@@ -53,8 +45,8 @@ export const LongSwapProvider = ({ children }) => {
         setTokenB,
         sliderDate,
         setSliderDate,
-        ethLogs,
-        setEthLogs,
+        orderLogs,
+        setOrderLogs,
       }}
     >
       {children}
