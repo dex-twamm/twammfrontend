@@ -10,7 +10,6 @@ import { calculateValue, valueLabel } from "../methods/longSwapMethod";
 import { LongSwapContext } from "../providers";
 import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
 import PopupModal from "./alerts/PopupModal";
-import DisconnectWallet from "./disconnectWallet";
 import Input from "./Input";
 
 const Swap = (props) => {

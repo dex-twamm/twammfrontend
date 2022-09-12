@@ -19,7 +19,7 @@ const LongTermOrderCard = () => {
 
   const [progress, setProgress] = React.useState(1);
   const [remainingTime, setRemainingTime] = React.useState(initialValue);
-  const [remainingToken, setRemainingToken] = React.useState(swapAmount);
+  const [remainingToken, setRemainingToken] = React.useState("");
   const [convertedTokenAmount, setConvertedTokenAmount] = React.useState(0);
   const [orderLogsId, setOrderId] = useState("");
   const [salesRate, setSalesRate] = useState("");
@@ -90,7 +90,7 @@ const LongTermOrderCard = () => {
 
   return orderLogs
     .map((item, index) => {
-      let orderId, salesRate, expirationBlock;
+      let orderId;
       orderLogsDecoded.map((item, idx) => {
         return index == idx && (orderId = item.orderId._hex);
       });

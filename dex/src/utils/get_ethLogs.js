@@ -14,6 +14,9 @@ export async function getEthLogs(signer) {
   let eventsWith = await exchangeContract.queryFilter(filter);
   console.log("=====ETH LOGS=====", eventsWith);
 
+  console.log("==== Amount In ====", ethers.utils.formatUnits(eventsWith[0].topics[1], "ether"))
+  console.log("==== Amount Out ====", ethers.utils.formatUnits(eventsWith[0].topics[2], "ether"))
+
 
 
   const abiCoder = ethers.utils.defaultAbiCoder;
@@ -30,7 +33,7 @@ export async function getEthLogs(signer) {
     console.log("=== ETH Logs Decoded ===", logs)
   }
 
-  // console.log("=== ETH Logs Decoded ===", eventDecoded)
+  // console.log("=== ETH Logs Decoded ===", eventDecoded.map((item) => item))
 
 
   return ({ eventsWith, eventDecoded });
