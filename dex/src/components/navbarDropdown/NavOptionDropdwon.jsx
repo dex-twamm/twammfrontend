@@ -18,7 +18,7 @@ const NavOptionDropdwon = () => {
 					style={{
 						display: 'flex',
 						flexDirection: 'column',
-						gap: '10px',
+						gap: '16px',
 					}}
 				>
 					<div
@@ -30,11 +30,13 @@ const NavOptionDropdwon = () => {
 							cursor: 'pointer',
 							fontSize: '18px',
 							color: '#565A69',
+							fontFamily:'Open Sans'
+
 						}}
 					>
 						<p>About</p>
 						<InfoOutlinedIcon
-							sx={{ fontSize: 17, color: '#565A69' }}
+							sx={{ fontSize:19, color: '#565A69' }}
 						/>
 					</div>
 					<div
@@ -45,12 +47,14 @@ const NavOptionDropdwon = () => {
 							width: '100%',
 							cursor: 'pointer',
 							color: '#565A69',
-							fontSize: '14px',
+							fontSize: '18px',
+							fontFamily:'Open Sans'
+
 						}}
 					>
 						<p>Help Center</p>
 						<HelpOutlineOutlinedIcon
-							sx={{ fontSize: 17, color: '#565A69' }}
+							sx={{ fontSize:19, color: '#565A69' }}
 						/>
 					</div>
 					<div
@@ -61,12 +65,14 @@ const NavOptionDropdwon = () => {
 							width: '100%',
 							cursor: 'pointer',
 							color: '#565A69',
-							fontSize: '14px',
+							fontSize: '18px',
+							fontFamily:'Open Sans'
+
 						}}
 					>
 						<p>Request Features</p>
 						<FreeBreakfastOutlinedIcon
-							sx={{ fontSize: 17, color: '#565A69' }}
+							sx={{ fontSize:19, color: '#565A69' }}
 						/>
 					</div>
 					<div
@@ -77,12 +83,14 @@ const NavOptionDropdwon = () => {
 							width: '100%',
 							cursor: 'pointer',
 							color: '#565A69',
-							fontSize: '14px',
+							fontSize: '18px',
+							fontFamily:'Open Sans'
+
 						}}
 					>
 						<p>Discord</p>
 						<ChatBubbleOutlineTwoToneIcon
-							sx={{ fontSize: 17, color: '#565A69' }}
+							sx={{ fontSize:19, color: '#565A69' }}
 						/>
 					</div>
 					<div
@@ -93,12 +101,14 @@ const NavOptionDropdwon = () => {
 							width: '100%',
 							cursor: 'pointer',
 							color: '#565A69',
-							fontSize: '14px',
+							fontSize:'18px',
+							fontFamily:'Open Sans'
+
 						}}
 					>
 						<p>Language</p>
 						<LanguageOutlinedIcon
-							sx={{ fontSize: 17, color: '#565A69' }}
+							sx={{ fontSize:19, color: '#565A69' }}
 						/>
 					</div>
 					<div
@@ -109,12 +119,14 @@ const NavOptionDropdwon = () => {
 							width: '100%',
 							cursor: 'pointer',
 							color: '#565A69',
-							fontSize: '14px',
+							fontSize:'18px',
+							fontFamily:'Open Sans'
+
 						}}
 					>
 						<p>Light theme</p>
 						<DarkModeOutlinedIcon
-							sx={{ fontSize: 17, color: '#565A69' }}
+							sx={{ fontSize:19, color: '#565A69' }}
 						/>
 					</div>
 
@@ -126,12 +138,13 @@ const NavOptionDropdwon = () => {
 							width: '100%',
 							cursor: 'pointer',
 							color: '#565A69',
-							fontSize: '14px',
+							fontFamily:'Open Sans',
+							fontSize:'18px',
 						}}
 					>
 						<p>Docs</p>
 						<ImportContactsOutlinedIcon
-							sx={{ fontSize: 17, color: '#565A69' }}
+							sx={{ fontSize:19, color: '#565A69' }}
 						/>
 					</div>
 					<div
@@ -142,13 +155,14 @@ const NavOptionDropdwon = () => {
 							width: '100%',
 							cursor: 'pointer',
 							color: '#565A69',
-							fontSize: '14px',
+							fontSize:'18px',
+							fontFamily:'Open Sans'
 						}}
 					>
 						<p>Legal & Privacy</p>
 						<DescriptionOutlinedIcon
 							sx={{
-								fontSize: 17,
+								fontSize:19,
 								color: '#565A69',
 								opacity: 0.8,
 								background: 'white',
@@ -156,8 +170,8 @@ const NavOptionDropdwon = () => {
 						/>
 					</div>
 				</div>
-
 				<button className='btn'>Claim UNI</button>
+
 			</div>
 		</>
 	);
