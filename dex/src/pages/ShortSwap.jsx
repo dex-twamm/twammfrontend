@@ -1,51 +1,50 @@
-import { faGear } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import PopupModal from '../components/alerts/PopupModal';
-import PopupSettings from '../components/PopupSettings';
-import Swap from '../components/Swap';
-import styles from '../css/ShortSwap.module.css';
+import { faGear } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import PopupModal from "../components/alerts/PopupModal";
+import PopupSettings from "../components/PopupSettings";
+import Swap from "../components/Swap";
+import styles from "../css/ShortSwap.module.css";
 
 const ShortSwap = ({
-	tokenSymbol,
-	tokenImage,
-	connectWallet,
-	buttonText,
-	showSettings,
-	setShowSettings,
+  tokenSymbol,
+  tokenImage,
+  connectWallet,
+  buttonText,
+  showSettings,
+  setShowSettings,
 }) => {
-	//   const [showSettings, setShowSettings] = useState(false);
+  //   const [showSettings, setShowSettings] = useState(false);
 
-	return (
-		<>
-			<div className={styles.container}>
-				<div className={styles.mainBody}>
-					<div className={styles.swap}>
-						<div className={styles.swapOptions}>
-							<a className={styles.textLink} href='/'>
-								Swap
-							</a>
-							<FontAwesomeIcon
-								className={styles.settingsIcon}
-								icon={faGear}
-								onClick={e => {
-									e.stopPropagation();
-									setShowSettings(!showSettings);
-								}}
-							/>
-						</div>
-
-						{showSettings && <PopupSettings />}
-					</div>
-					<Swap
-						tokenSymbol={tokenSymbol}
-						tokenImage={tokenImage}
-						connectWallet={connectWallet}
-						buttonText={buttonText}
-					/>
-				</div>
-			</div>
-		</>
-	);
+  return (
+    <>
+      <div className={styles.container}>
+        <div className={styles.mainBody}>
+          <div className={styles.swap}>
+            <div className={styles.swapOptions}>
+              <a className={styles.textLink} href="/">
+                Swap
+              </a>
+              <FontAwesomeIcon
+                className={styles.settingsIcon}
+                icon={faGear}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowSettings(!showSettings);
+                }}
+              />
+            </div>
+            {showSettings && <PopupSettings />}
+          </div>
+          <Swap
+            tokenSymbol={tokenSymbol}
+            tokenImage={tokenImage}
+            connectWallet={connectWallet}
+            buttonText={buttonText}
+          />
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default ShortSwap;

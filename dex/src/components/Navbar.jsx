@@ -34,7 +34,7 @@ const Navbar = (props) => {
     { name: "Coming Soon", chainId: "0", logo: "/ethereum.png" },
   ];
 
-  const nId = window.ethereum.networkVersion;
+  const nId = window.ethereum?.networkVersion;
   const initialNetwork = networks.filter((id) => id.chainId === nId);
 
   const [selectedNetwork, setSelectedNetwork] = useState({

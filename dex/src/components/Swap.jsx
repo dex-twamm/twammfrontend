@@ -149,7 +149,12 @@ const Swap = (props) => {
         {swapType === "long" && (
           <div className={lsStyles.rangeSelect}>
             <Box sx={{ width: "90%", margin: "0 auto" }}>
-              <Typography fontWeight={600} id="non-linear-slider" gutterBottom>
+              <Typography
+                component={"span"}
+                fontWeight={600}
+                id="non-linear-slider"
+                gutterBottom
+              >
                 <Box sx={{ width: "90%", flexDirection: "row" }}>
                   {" "}
                   Time: {`${sliderValue} ${sliderValueUnit}`}

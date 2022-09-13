@@ -16,6 +16,8 @@ const LongSwap = (props) => {
     connectWallet,
     buttonText,
     isPlacedLongTermOrder,
+    cancelPool,
+    withdrawPool,
   } = props;
 
   const [showSettings, setShowSettings] = useState(false);
@@ -38,7 +40,7 @@ const LongSwap = (props) => {
             />
           </div>
 
-          {showSettings && <PopupSettings />}
+          {/* {showSettings && <PopupSettings />} */}
         </div>
         <Swap
           swapType="long"
@@ -58,7 +60,10 @@ const LongSwap = (props) => {
               cardListCount > 2 && lsStyles.scrollable
             )}
           >
-            <LongTermOrderCard></LongTermOrderCard>
+            <LongTermOrderCard
+              cancelPool={cancelPool}
+              withdrawPool={withdrawPool}
+            ></LongTermOrderCard>
           </div>
         </div>
       </div>

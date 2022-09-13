@@ -4,14 +4,18 @@ import React, { useContext } from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { HiExternalLink } from "react-icons/hi";
+import { getProviderDescription } from "web3modal";
 import styles from "../css/LongTermOrderCard.module.css";
 import { LongSwapContext, ShortSwapContext } from "../providers";
+import { exitPool } from "../utils/addLiquidity";
 import { getLongTermOrder } from "../utils/longSwap";
 
-const LongTermOrderCard = () => {
+const LongTermOrderCard = (props) => {
+  const { cancelPool, withdrawPool } = props;
   const remainingTimeRef = React.useRef();
 
-  const { swapAmount } = React.useContext(ShortSwapContext);
+  const { swapAmount, account, isWallletConnceted } =
+    React.useContext(ShortSwapContext);
 
   const {
     sliderValueInSec,
@@ -98,12 +102,22 @@ const LongTermOrderCard = () => {
     getData();
   }, [orderLogsDecoded]);
 
+  // Mapping Data from EthLogs
   return orderLogs
     .map((item, index) => {
-      let convertedAmount = ethers.utils.formatEther(item.topics[2]);
-      let orderId;
-      orderLogsDecoded.map((item, idx) => {
-        return index == idx && (orderId = item.orderId._hex);
+      let stBlock = ethers.utils.formatEther(item.blockNumber);
+      let orderId, amountOf, reToken, convertedAmount;
+      // Sub Mapping Data From Decoded Eth Logs
+      orderLogsDecoded.map((it, idx) => {
+        convertedAmount = ethers.utils.formatEther(item.topics[2]);
+        let sRate = ethers.utils.formatEther(it.salesRate._hex);
+        let expBlock = ethers.utils.formatEther(it.expirationBlock._hex);
+        amountOf = (expBlock - stBlock) * sRate;
+        reToken = (latestBlock - stBlock) * sRate;
+        return (
+          index == idx &&
+          ((orderId = it.orderId._hex), amountOf, reToken, convertedAmount)
+        );
       });
 
       return (
@@ -133,9 +147,9 @@ const LongTermOrderCard = () => {
                 />
                 <p className={styles.tokenText}>
                   <span>
-                    {remainingToken} {tokenA.symbol}
+                    {reToken} {tokenA.symbol}
                   </span>
-                  <span>of {convertedTokenAmount}</span>
+                  <span>of {amountOf}</span>
                 </p>
               </div>
               <div className={styles.arrow}>
@@ -196,6 +210,7 @@ const LongTermOrderCard = () => {
                     ? styles.cancelButton
                     : styles.successButton
                 )}
+                onClick={cancelPool}
               >
                 {remainingTime !== 0 ? "Cancel" : "Completed"}
               </button>
@@ -203,6 +218,7 @@ const LongTermOrderCard = () => {
               {remainingTime !== 0 && (
                 <button
                   className={classNames(styles.button, styles.withdrawButton)}
+                  onClick={withdrawPool}
                 >
                   Withdraw
                 </button>

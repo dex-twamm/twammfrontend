@@ -16,6 +16,7 @@ import {
 	FAUCET_TOKEN_ADDRESS, truncateAddress,
 } from './utils';
 import { exitPool, getPoolBalance, joinPool } from './utils/addLiquidity';
+import { runQueryBatchSwap } from './utils/batchSwap';
 import { getLPTokensBalance } from './utils/getAmount';
 import { getEthLogs } from './utils/get_ethLogs';
 import { getLongTermOrder, placeLongTermOrder } from './utils/longSwap';
@@ -25,10 +26,8 @@ import { swapTokens } from './utils/swap';
 function App() {
 	const [provider, setProvider] = useState();
 	const [web3provider, setweb3provider] = useState();
-	const [account, setAccount] = useState();
 	const [balance, setBalance] = useState();
 	const [nonce, setNonce] = useState();
-	const [isWallletConnceted, setWalletConnected] = useState(false);
 	const [isPlacedLongTermOrder, setIsPlacedLongTermOrder] = useState(false);
 	const [showRemoveLiquidity, setShowRemoveLiquidity] = useState(false);
 	const [showAddLiquidity, setShowAddLiquidity] = useState(false);
@@ -47,6 +46,9 @@ function App() {
 		ethBalance,
 		setPoolCash,
 		poolCash,
+		account,
+		setAccount,
+		isWallletConnceted, setWalletConnected
 	} = useContext(ShortSwapContext);
 	const { setOrderLogs, setOrderLogsDecoded, setLatestBlock } = useContext(LongSwapContext);
 	const connectWallet = async () => {
@@ -107,11 +109,12 @@ function App() {
 	//  Swap Token
 	const _swapTokens = async () => {
 		const walletBalanceWei = ethers.utils.parseUnits(ethBalance, 'ether');
+		const pCash = ethers.utils.parseUnits(poolCash, 'ether')
 		const swapAmountWei = ethers.utils.parseUnits(swapAmount, 'ether');
 		// swapAmountWei.lte(walletBalanceWei && poolCash)
 		// 	? console.log('True')
 		// 	: console.log('False');
-		if (swapAmountWei.lte(walletBalanceWei && poolCash)) {
+		if (swapAmountWei.lte(walletBalanceWei && pCash)) {
 			try {
 				const signer = await getProvider(true);
 				// console.log(signer);
@@ -213,7 +216,8 @@ function App() {
 	};
 
 	//  ExitPool
-	const _exitPool = async () => {
+	const _exitPool = async (joinKind) => {
+		setLoading(true)
 		try {
 			const bptAmountIn = ethers.utils.parseUnits('0.001', 'ether');
 			const walletAddress = account;
@@ -221,9 +225,12 @@ function App() {
 			if (!isWallletConnceted) {
 				await connectWallet();
 			}
-			await exitPool(walletAddress, signer, bptAmountIn);
+			await exitPool(walletAddress, signer, bptAmountIn, joinKind);
+			setLoading(false)
 		} catch (e) {
 			console.log(e);
+			setLoading(false)
+
 		}
 	};
 
@@ -239,6 +246,14 @@ function App() {
 			balance: account === null ? 'Wallet Balance' : balance,
 		},
 	};
+	//Spot Prices 
+	const spotPrices = async () => {
+		const swapAmountWei = ethers.utils.parseUnits(swapAmount, 'ether');
+		const assetIn = srcAddress;
+		const assetOut = destAddress;
+		const spotPrices = await runQueryBatchSwap(assetIn, assetOut, swapAmountWei).then((res) => { console.log("Response From Query Batch Swap", res) });
+		return spotPrices;
+	}
 
 	// Getting Each Token Balances
 	const tokenBalance = async account => {
@@ -248,6 +263,7 @@ function App() {
 			const tokenAddress = FAUCET_TOKEN_ADDRESS;
 			await getLongTermOrder(provider).then(res => { setLatestBlock(res) });
 			const signer = await getProvider(true);
+
 			await getEthLogs(signer).then(res => {
 				setOrderLogs(res.eventsWith);
 				setOrderLogsDecoded(res.eventDecoded);
@@ -269,6 +285,7 @@ function App() {
 	};
 
 	useEffect(() => {
+		console.log("SpotPrices", spotPrices());
 		const account = localStorage.getItem('account');
 		const balance = localStorage.getItem('balance');
 		if (account && balance) {
@@ -277,7 +294,7 @@ function App() {
 			setBalance(balance);
 		}
 		tokenBalance(account);
-	}, []);
+	}, [swapAmount]);
 
 	useEffect(() => {
 		document.body.onclick = () => {
@@ -350,6 +367,8 @@ function App() {
 							isPlacedLongTermOrder={isPlacedLongTermOrder}
 							showSettings={showSettings}
 							setShowSettings={setShowSettings}
+							cancelPool={() => _exitPool(4)}
+							withdrawPool={() => { _exitPool(5) }}
 						/>
 					}
 				/>
