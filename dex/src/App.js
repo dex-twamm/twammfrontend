@@ -1,9 +1,8 @@
-import { chipClasses } from '@mui/material';
-import { BigNumber, ethers, providers } from 'ethers';
+
+import { ethers, providers } from 'ethers';
 import { useContext, useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
-import PopupModal from './components/alerts/PopupModal';
 import {
 	AddLiquidity,
 	LiquidityPools,
@@ -14,15 +13,12 @@ import LongSwap from './pages/LongSwap';
 import ShortSwap from './pages/ShortSwap';
 import { LongSwapContext, ShortSwapContext, UIContext } from './providers';
 import {
-	FAUCET_TOKEN_ADDRESS,
-	MATIC_TOKEN_ADDRESS,
-	toHex,
-	truncateAddress,
+	FAUCET_TOKEN_ADDRESS, truncateAddress,
 } from './utils';
 import { exitPool, getPoolBalance, joinPool } from './utils/addLiquidity';
-import { getEtherBalance, getLPTokensBalance } from './utils/getAmount';
-import { ethLogs } from './utils/get_ethLogs';
-import { placeLongTermOrder } from './utils/longSwap';
+import { getLPTokensBalance } from './utils/getAmount';
+import { getEthLogs } from './utils/get_ethLogs';
+import { getLongTermOrder, placeLongTermOrder } from './utils/longSwap';
 import { web3Modal } from './utils/providerOptions';
 import { swapTokens } from './utils/swap';
 
@@ -52,12 +48,7 @@ function App() {
 		setPoolCash,
 		poolCash,
 	} = useContext(ShortSwapContext);
-	const { tokenA, tokenB } = useContext(LongSwapContext);
-	// console.log("TOKENS", tokenA, tokenB);
-	// console.log("Select Token", selectToken);
-	// console.log("Select Token From App", selectToken);
-	// console.log("ETH Balances", ethBalance);
-	// //  Connect Wallet
+	const { setOrderLogs, setOrderLogsDecoded, setLatestBlock } = useContext(LongSwapContext);
 	const connectWallet = async () => {
 		try {
 			await getProvider();
@@ -75,7 +66,7 @@ function App() {
 			const provider = await web3Modal.connect();
 			const web3Provider = new providers.Web3Provider(provider);
 			const accounts = await web3Provider.listAccounts();
-			console.log('accounts', accounts);
+			// console.log('accounts', accounts);
 			localStorage.setItem('account', accounts);
 
 			setweb3provider(web3Provider);
@@ -115,16 +106,15 @@ function App() {
 
 	//  Swap Token
 	const _swapTokens = async () => {
-		setLoading(true);
 		const walletBalanceWei = ethers.utils.parseUnits(ethBalance, 'ether');
 		const swapAmountWei = ethers.utils.parseUnits(swapAmount, 'ether');
-		swapAmountWei.lte(walletBalanceWei && poolCash)
-			? console.log('True')
-			: console.log('False');
+		// swapAmountWei.lte(walletBalanceWei && poolCash)
+		// 	? console.log('True')
+		// 	: console.log('False');
 		if (swapAmountWei.lte(walletBalanceWei && poolCash)) {
 			try {
 				const signer = await getProvider(true);
-				console.log(signer);
+				// console.log(signer);
 				const assetIn = srcAddress;
 				const assetOut = destAddress;
 				const walletAddress = account;
@@ -156,12 +146,12 @@ function App() {
 	//  Long Term Swap
 	const _placeLongTermOrders = async () => {
 		const swapAmountWei = ethers.utils.parseUnits(swapAmount, 'ether');
-		console.log('swapAmountWei', swapAmountWei);
+		// console.log('swapAmountWei', swapAmountWei);
 		try {
 			const tokenInIndex = '0';
 			const tokenOutIndex = '1';
 			const amountIn = swapAmountWei;
-			console.log('amountIn', amountIn);
+			// console.log('amountIn', amountIn);
 			const numberOfBlockIntervals = '3';
 			const signer = await getProvider(true);
 			const walletAddress = account;
@@ -173,7 +163,7 @@ function App() {
 				numberOfBlockIntervals,
 				signer,
 				walletAddress
-			);
+			).then((res) => { setTransactionHash(res) }).finally(setLoading(false));
 			setIsPlacedLongTermOrder(true);
 		} catch (err) {
 			console.error(err);
@@ -184,10 +174,11 @@ function App() {
 	//   Calling Swap
 	async function ShortSwapButtonClick() {
 		try {
-			const signer = await getProvider(true);
-			await ethLogs(signer);
+
 			if (!isWallletConnceted) {
 				await connectWallet();
+				const signer = await getProvider(true);
+				await getEthLogs(signer);
 			} else {
 				await _swapTokens();
 			}
@@ -200,6 +191,8 @@ function App() {
 	async function LongSwapButtonClick() {
 		if (!isWallletConnceted) {
 			await connectWallet();
+			const signer = await getProvider(true);
+			await getEthLogs(signer);
 		} else {
 			await _placeLongTermOrders();
 		}
@@ -253,6 +246,13 @@ function App() {
 		try {
 			const provider = await getProvider(true);
 			const tokenAddress = FAUCET_TOKEN_ADDRESS;
+			await getLongTermOrder(provider).then(res => { setLatestBlock(res) });
+			const signer = await getProvider(true);
+			await getEthLogs(signer).then(res => {
+				setOrderLogs(res.eventsWith);
+				setOrderLogsDecoded(res.eventDecoded);
+				console.log("=== Response === ", res.eventDecoded)
+			});
 			await getLPTokensBalance(provider, account).then(res => {
 				setTokenBalances(res);
 				// console.log("Response From Token Balance Then Block", res)
@@ -317,7 +317,7 @@ function App() {
 				walletAddress={data.wallet.address}
 				accountStatus={isWallletConnceted ? true : false}
 				connectWallet={ShortSwapButtonClick}
-				// disConnectWallet={disconnect}
+			// disConnectWallet={disconnect}
 			/>
 
 			<Routes>

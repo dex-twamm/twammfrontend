@@ -33,7 +33,9 @@ export const swapTokens = async (signer, swapAmountWei, assetIn, assetOut, walle
       toInternalBalance: false,
     },
     kind === 0 ? 0 : MAX_UINT256, // 0 if given in, infinite if given out.  // Slippage  // TODO // Need To QueryBatchSwap Price - 1%
-    MAX_UINT256, // Deadline 
+    // swapAmountWei * SpotPrice *( 1- Slippage can be 0.005, 0.01, 0.02) Type Big Number
+
+    MAX_UINT256, // Deadline // Minutes Into Seconds Then Type BigNumber  
     {
       gasLimit: 2000000
     }

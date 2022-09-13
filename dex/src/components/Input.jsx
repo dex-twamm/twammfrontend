@@ -1,26 +1,26 @@
-import classnames from 'classnames';
-import { useContext } from 'react';
-import styles from '../css/Input.module.css';
-import { LongSwapContext, ShortSwapContext } from '../providers';
-import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from '../utils';
-import Modal from './Modal';
+import classnames from "classnames";
+import { useContext } from "react";
+import styles from "../css/Input.module.css";
+import { LongSwapContext, ShortSwapContext } from "../providers";
+import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from "../utils";
+import Modal from "./Modal";
 
-const Input = props => {
-	const {
-		id,
-		onChange,
-		input,
-		imgSrc,
-		symbol,
-		handleDisplay,
-		display,
-		setDisplay,
-		setTokenA,
-		setTokenB,
-	} = props;
-	const { tokenBalances, selectToken, ethBalance } =
-		useContext(ShortSwapContext);
-	const { tokenA, tokenB } = useContext(LongSwapContext);
+const Input = (props) => {
+  const {
+    id,
+    onChange,
+    input,
+    imgSrc,
+    symbol,
+    handleDisplay,
+    display,
+    setDisplay,
+    setTokenA,
+    setTokenB,
+  } = props;
+  const { tokenBalances, selectToken, ethBalance } =
+    useContext(ShortSwapContext);
+  const { tokenA, tokenB } = useContext(LongSwapContext);
 
 	// console.log("Select Token Input.js", selectToken);
 	// console.log("TOKEN A", tokenA);
@@ -177,18 +177,18 @@ const Input = props => {
 				</div>
 			</div>
 
-			{display && (
-				<Modal
-					display={display}
-					setDisplay={setDisplay}
-					selectToken={selectToken}
-					setTokenA={setTokenA}
-					setTokenB={setTokenB}
-					tokenDetails={tokenDetails}
-				/>
-			)}
-		</>
-	);
+      {display && (
+        <Modal
+          display={display}
+          setDisplay={setDisplay}
+          selectToken={selectToken}
+          setTokenA={setTokenA}
+          setTokenB={setTokenB}
+          tokenDetails={tokenDetails}
+        />
+      )}
+    </>
+  );
 };
 
 export default Input;
