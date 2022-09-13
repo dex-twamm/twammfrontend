@@ -135,6 +135,7 @@ const Swap = (props) => {
         <FontAwesomeIcon className={styles.iconDown} icon={faArrowDown} />
         <Input
           id={2}
+          input={equivalentAmount}
           imgSrc={tokenB.image}
           symbol={tokenB.symbol}
           onChange={(e) => e.target.value}

@@ -48,9 +48,9 @@ function App() {
 		poolCash,
 		account,
 		setAccount,
-		isWallletConnceted, setWalletConnected
+		isWallletConnceted, setWalletConnected, setEquivalentAmount
 	} = useContext(ShortSwapContext);
-	const { setOrderLogs, setOrderLogsDecoded, setLatestBlock } = useContext(LongSwapContext);
+	const { setOrderLogsDecoded, setLatestBlock } = useContext(LongSwapContext);
 	const connectWallet = async () => {
 		try {
 			await getProvider();
@@ -251,23 +251,25 @@ function App() {
 		const swapAmountWei = ethers.utils.parseUnits(swapAmount, 'ether');
 		const assetIn = srcAddress;
 		const assetOut = destAddress;
-		const spotPrices = await runQueryBatchSwap(assetIn, assetOut, swapAmountWei).then((res) => { console.log("Response From Query Batch Swap", res) });
-		return spotPrices;
+		const batchPrice = await runQueryBatchSwap(assetIn, assetOut, swapAmountWei).then((res) => { console.log("Response From Query Batch Swap", res); setEquivalentAmount(res) });
+		return batchPrice;
 	}
-
+	useEffect(() => {
+		spotPrices();
+	}, [swapAmount, srcAddress, destAddress])
 	// Getting Each Token Balances
 	const tokenBalance = async account => {
 		setLoading(true);
 		try {
 			const provider = await getProvider(true);
 			const tokenAddress = FAUCET_TOKEN_ADDRESS;
-			await getLongTermOrder(provider).then(res => { setLatestBlock(res) });
+			await getLongTermOrder(provider).then(res => { console.log("Latest Block", res); setLatestBlock(res) });
 			const signer = await getProvider(true);
 
 			await getEthLogs(signer).then(res => {
-				setOrderLogs(res.eventsWith);
-				setOrderLogsDecoded(res.eventDecoded);
-				console.log("=== Response === ", res.eventDecoded)
+				console.log("=== Order Logs === ", res)
+				setOrderLogsDecoded(res);
+
 			});
 			await getLPTokensBalance(provider, account).then(res => {
 				setTokenBalances(res);
@@ -285,7 +287,6 @@ function App() {
 	};
 
 	useEffect(() => {
-		console.log("SpotPrices", spotPrices());
 		const account = localStorage.getItem('account');
 		const balance = localStorage.getItem('balance');
 		if (account && balance) {

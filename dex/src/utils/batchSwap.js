@@ -32,7 +32,8 @@ export async function runQueryBatchSwap(assetIn, assetOut, swapAmount) {
         assets,
     });
     console.log("Logs From Query Batch", deltas.toString());
-    return deltas;
+    const spotPrices = deltas[1] / deltas[0];
+    return Math.abs(spotPrices);
 }
 
 

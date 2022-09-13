@@ -24,7 +24,7 @@ const Navbar = (props) => {
     disConnectWallet,
   } = props;
   const { setError, setLoading } = useContext(ShortSwapContext);
-  const [netId, setNetId] = useState("");
+  // const [netId, setNetId] = useState("");
   // const [isOpen, setOpen] = useState(false);
 
   const [showDisconnect, setShowDisconnect] = useState(false);
@@ -111,24 +111,6 @@ const Navbar = (props) => {
       </div>
     </Link>
   ));
-
-  const options = [
-    "About",
-    "Help Center",
-    "Request Feature",
-    "Discord",
-    "Language",
-    "Dark Theme",
-    "Docs",
-    "Legal Privacy",
-  ];
-  const optionsList = options.map((option, index) => {
-    return (
-      <Link key={index} className={styles.options} to="/">
-        {option}
-      </Link>
-    );
-  });
 
   const networkList = networks.map((network, index) => {
     return (

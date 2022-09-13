@@ -12,12 +12,10 @@ export async function getEthLogs(signer) {
   let filter = exchangeContract.filters.LongTermOrderPlaced(null, null, null, null, '0x536ee2273ba6f1c91362fa9fccb4166450fcb7d3');
 
   let eventsWith = await exchangeContract.queryFilter(filter);
-  // console.log("=====ETH LOGS=====", eventsWith);
+  console.log("=====ETH LOGS=====", eventsWith);
 
   // console.log("==== Amount In ====", ethers.utils.formatUnits(eventsWith[0].topics[1], "ether"))
   // console.log("==== Amount Out ====", ethers.utils.formatUnits(eventsWith[0].topics[2], "ether"))
-
-
 
   const abiCoder = ethers.utils.defaultAbiCoder;
   const eventDecoded = [];
@@ -28,15 +26,17 @@ export async function getEthLogs(signer) {
       'orderId': logs[0],
       'salesRate': logs[1],
       'expirationBlock': logs[2],
+      'transactionHash': eventsWith[i].transactionHash,
+      'startBlock': eventsWith[i].blockNumber,
 
     });
-    // console.log("=== ETH Logs Decoded ===", logs)
+    // console.log("=== ETH Logs Decoded ===", eventsWith)
   }
 
-  // console.log("=== ETH Logs Decoded ===", eventDecoded.map((item) => item))
+  console.log("=== ETH Logs Decoded ===", eventDecoded)
 
 
-  return ({ eventsWith, eventDecoded });
+  return (eventDecoded);
 
 
 

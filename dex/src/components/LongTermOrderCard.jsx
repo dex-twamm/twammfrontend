@@ -1,7 +1,9 @@
+import { ListItem } from "@mui/material";
 import classNames from "classnames";
 import { ethers } from "ethers";
 import React, { useContext } from "react";
 import { useState } from "react";
+import { useRef } from "react";
 import { useEffect } from "react";
 import { HiExternalLink } from "react-icons/hi";
 import { getProviderDescription } from "web3modal";
@@ -12,30 +14,17 @@ import { getLongTermOrder } from "../utils/longSwap";
 
 const LongTermOrderCard = (props) => {
   const { cancelPool, withdrawPool } = props;
-  const remainingTimeRef = React.useRef();
+  const remainingTimeRef = useRef();
 
-  const { swapAmount, account, isWallletConnceted } =
-    React.useContext(ShortSwapContext);
+  const { swapAmount } = useContext(ShortSwapContext);
 
-  const {
-    sliderValueInSec,
-    tokenA,
-    tokenB,
-    orderLogs,
-    orderLogsDecoded,
-    latestBlock,
-  } = React.useContext(LongSwapContext);
+  const { sliderValueInSec, tokenA, tokenB, orderLogsDecoded, latestBlock } =
+    useContext(LongSwapContext);
 
   const initialValue = Math.ceil(sliderValueInSec);
 
   const [progress, setProgress] = React.useState(1);
   const [remainingTime, setRemainingTime] = React.useState(initialValue);
-  const [remainingToken, setRemainingToken] = React.useState("");
-  const [convertedTokenAmount, setConvertedTokenAmount] = useState("");
-  const [orderLogsId, setOrderId] = useState("");
-  const [salesRate, setSalesRate] = useState("");
-  const [expirationBlock, setExpirationBlock] = useState("");
-  const [startBlock, setStartBlock] = useState("");
 
   let value = Math.ceil(sliderValueInSec);
 
@@ -76,159 +65,171 @@ const LongTermOrderCard = (props) => {
     averagePrice: "0.3 ETH",
   };
 
-  async function getData() {
-    await orderLogs.map((item) => {
-      const stBlock = ethers.utils.formatEther(item.blockNumber);
-      setStartBlock(stBlock);
-    });
-    await orderLogsDecoded.map((item) => {
-      const sRate = ethers.utils.formatEther(item.salesRate._hex);
-      setSalesRate(sRate);
-      // console.log("=== Sales Rate ===", sRate);
-      const expBlock = ethers.utils.formatEther(item.expirationBlock._hex);
-      setExpirationBlock(expBlock);
-      // console.log("=== Expired At Block ===", expBlock);
+  // async function getData() {
+  //   await orderLogs.map((item) => {
+  //     const stBlock = ethers.utils.formatEther(item.blockNumber);
+  //     setStartBlock(stBlock);
+  //   });
+  //   await orderLogsDecoded.map((item) => {
+  //     const sRate = ethers.utils.formatEther(item.salesRate._hex);
+  //     setSalesRate(sRate);
+  //     // console.log("=== Sales Rate ===", sRate);
+  //     const expBlock = ethers.utils.formatEther(item.expirationBlock._hex);
+  //     setExpirationBlock(expBlock);
+  //     // console.log("=== Expired At Block ===", expBlock);
 
-      let amountOf = (expBlock - startBlock) * salesRate;
-      console.log("=== Amount Of  Token ===", amountOf);
-      setConvertedTokenAmount(amountOf);
-      let reToken = (latestBlock - startBlock) * salesRate;
-      setRemainingToken(reToken);
-    });
-  }
+  //     let amountOf = (expBlock - startBlock) * salesRate;
+  //     console.log("=== Amount Of  Token ===", amountOf);
+  //     setConvertedTokenAmount(amountOf);
+  //     let reToken = (latestBlock - startBlock) * salesRate;
+  //     setRemainingToken(reToken);
+  //   });
+  // }
 
   // Decoded Order Logs
-  useEffect(() => {
-    getData();
-  }, [orderLogsDecoded]);
+  // useEffect(() => {
+  //   console.log("Logs", orderLogsDecoded);
+  // }, []);
 
   // Mapping Data from EthLogs
-  return orderLogs
-    .map((item, index) => {
-      let stBlock = ethers.utils.formatEther(item.blockNumber);
-      let orderId, amountOf, reToken, convertedAmount;
-      // Sub Mapping Data From Decoded Eth Logs
-      orderLogsDecoded.map((it, idx) => {
-        convertedAmount = ethers.utils.formatEther(item.topics[2]);
-        let sRate = ethers.utils.formatEther(it.salesRate._hex);
-        let expBlock = ethers.utils.formatEther(it.expirationBlock._hex);
-        amountOf = (expBlock - stBlock) * sRate;
-        reToken = (latestBlock - stBlock) * sRate;
-        return (
-          index == idx &&
-          ((orderId = it.orderId._hex), amountOf, reToken, convertedAmount)
-        );
-      });
 
-      return (
-        <div className={styles.container} key={item.transactionHash}>
-          <div className={styles.topSection}>
-            <p className={styles.orderId} key={orderId}>
-              {orderId}
-            </p>
-
-            <HiExternalLink
-              className={styles.iconExternalLink}
-              onClick={() =>
-                window.open(
-                  `https://goerli.etherscan.io/tx/${item.transactionHash}`,
-                  "_blank"
-                )
-              }
-            />
-          </div>
-          <div className={styles.bottomSection}>
-            <div className={styles.tokenContainer}>
-              <div className={styles.tokenWrapper}>
-                <img
-                  className={styles.tokenIcon}
-                  src={tokenA.image}
-                  alt={tokenA.symbol}
-                />
-                <p className={styles.tokenText}>
-                  <span>
-                    {reToken} {tokenA.symbol}
-                  </span>
-                  <span>of {amountOf}</span>
+  return orderLogsDecoded ? (
+    <>
+      {orderLogsDecoded
+        .map((it, idx) => {
+          const stBlock = it.startBlock;
+          const convertedAmount = 500;
+          const sRate = ethers.utils.formatEther(it.salesRate.toNumber());
+          // console.log("Sales rate", sRate);
+          const expBlock = it.expirationBlock.toNumber();
+          const amountOf = ((expBlock - stBlock) * sRate).toFixed(4);
+          // console.log("StartBlock", stBlock);
+          // console.log("Exp BLock", expBlock);
+          // console.log("latestBlock", latestBlock);
+          // console.log("Amount of", amountOf);
+          const reToken =
+            latestBlock > expBlock
+              ? amountOf
+              : ((latestBlock - stBlock) * sRate).toFixed(4);
+          // console.log("Items Or card", it);
+          return (
+            <div className={styles.container} key={it.transactionHash}>
+              <div className={styles.topSection}>
+                <p className={styles.orderId} key={it.orderId.toNumber()}>
+                  {it.orderId.toNumber()}
                 </p>
-              </div>
-              <div className={styles.arrow}>
-                <svg
-                  width="95"
-                  height="8"
-                  viewBox="0 0 95 8"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M94.3536 4.35355C94.5488 4.15829 94.5488 3.84171 94.3536 3.64645L91.1716 0.464466C90.9763 0.269204 90.6597 0.269204 90.4645 0.464466C90.2692 0.659728 90.2692 0.976311 90.4645 1.17157L93.2929 4L90.4645 6.82843C90.2692 7.02369 90.2692 7.34027 90.4645 7.53553C90.6597 7.7308 90.9763 7.7308 91.1716 7.53553L94.3536 4.35355ZM0 4.5H94V3.5H0V4.5Z"
-                    fill="#ABABAB"
-                  />
-                </svg>
-              </div>
-              <div>
-                <img
-                  className={styles.tokenIcon}
-                  src={tokenB.image}
-                  alt={tokenB.symbol}
-                />
-                <p className={classNames(styles.tokenText, styles.greenText)}>
-                  {convertedAmount} {tokenB.symbol}
-                </p>
-              </div>
-            </div>
 
-            <div>
-              <p className={styles.timeRemaining} ref={remainingTimeRef}>
-                {remainingTime != 0
-                  ? `${remainingTime} seconds remaining...`
-                  : "Completed.."}
-              </p>
-              <div className={styles.progress}>
-                <div
-                  style={{ width: `${progress}%` }}
-                  className={classNames(
-                    styles.activeProgress,
-                    remainingTime == 0 && styles.greenProgress
+                <HiExternalLink
+                  className={styles.iconExternalLink}
+                  onClick={() =>
+                    window.open(
+                      `https://goerli.etherscan.io/tx/${it.transactionHash}`,
+                      "_blank"
+                    )
+                  }
+                />
+              </div>
+              <div className={styles.bottomSection}>
+                <div className={styles.tokenContainer}>
+                  <div className={styles.tokenWrapper}>
+                    <img
+                      className={styles.tokenIcon}
+                      src={tokenA.image}
+                      alt={tokenA.symbol}
+                    />
+                    <p className={styles.tokenText}>
+                      <span>
+                        {reToken} {tokenA.symbol}
+                      </span>
+                      <span> of {amountOf}</span>
+                    </p>
+                  </div>
+                  <div className={styles.arrow}>
+                    <svg
+                      width="95"
+                      height="8"
+                      viewBox="0 0 95 8"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M94.3536 4.35355C94.5488 4.15829 94.5488 3.84171 94.3536 3.64645L91.1716 0.464466C90.9763 0.269204 90.6597 0.269204 90.4645 0.464466C90.2692 0.659728 90.2692 0.976311 90.4645 1.17157L93.2929 4L90.4645 6.82843C90.2692 7.02369 90.2692 7.34027 90.4645 7.53553C90.6597 7.7308 90.9763 7.7308 91.1716 7.53553L94.3536 4.35355ZM0 4.5H94V3.5H0V4.5Z"
+                        fill="#ABABAB"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <img
+                      className={styles.tokenIcon}
+                      src={tokenB.image}
+                      alt={tokenB.symbol}
+                    />
+                    <p
+                      className={classNames(styles.tokenText, styles.greenText)}
+                    >
+                      {convertedAmount} {tokenB.symbol}
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  <p className={styles.timeRemaining} ref={remainingTimeRef}>
+                    {remainingTime != 0
+                      ? `${remainingTime} seconds remaining...`
+                      : "Completed.."}
+                  </p>
+                  <div className={styles.progress}>
+                    <div
+                      style={{ width: `${progress}%` }}
+                      className={classNames(
+                        styles.activeProgress,
+                        remainingTime == 0 && styles.greenProgress
+                      )}
+                    ></div>
+                  </div>
+                </div>
+
+                <div className={styles.extrasContainer}>
+                  <div className={styles.fees}>{dummyOrder.fees} fees</div>
+                  <div className={styles.averagePrice}>
+                    {dummyOrder.averagePrice} Average Price
+                  </div>
+                </div>
+
+                <div className={styles.buttonContainer}>
+                  <button
+                    className={classNames(
+                      styles.button,
+                      remainingTime !== 0
+                        ? styles.cancelButton
+                        : styles.successButton
+                    )}
+                    onClick={cancelPool}
+                  >
+                    {remainingTime !== 0 ? "Cancel" : "Completed"}
+                  </button>
+
+                  {remainingTime !== 0 && (
+                    <button
+                      className={classNames(
+                        styles.button,
+                        styles.withdrawButton
+                      )}
+                      onClick={withdrawPool}
+                    >
+                      Withdraw
+                    </button>
                   )}
-                ></div>
+                </div>
               </div>
             </div>
-
-            <div className={styles.extrasContainer}>
-              <div className={styles.fees}>{dummyOrder.fees} fees</div>
-              <div className={styles.averagePrice}>
-                {dummyOrder.averagePrice} Average Price
-              </div>
-            </div>
-
-            <div className={styles.buttonContainer}>
-              <button
-                className={classNames(
-                  styles.button,
-                  remainingTime !== 0
-                    ? styles.cancelButton
-                    : styles.successButton
-                )}
-                onClick={cancelPool}
-              >
-                {remainingTime !== 0 ? "Cancel" : "Completed"}
-              </button>
-
-              {remainingTime !== 0 && (
-                <button
-                  className={classNames(styles.button, styles.withdrawButton)}
-                  onClick={withdrawPool}
-                >
-                  Withdraw
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      );
-    })
-    .reverse();
+          );
+        })
+        .reverse()}
+    </>
+  ) : (
+    <></>
+  );
 };
 
 export default LongTermOrderCard;

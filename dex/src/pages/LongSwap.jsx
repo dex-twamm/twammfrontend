@@ -15,15 +15,15 @@ const LongSwap = (props) => {
     tokenImage,
     connectWallet,
     buttonText,
-    isPlacedLongTermOrder,
     cancelPool,
     withdrawPool,
   } = props;
 
   const [showSettings, setShowSettings] = useState(false);
-  const { orderLogs } = useContext(LongSwapContext);
-  const ethLogsCount = orderLogs.length;
+  const { orderLogsDecoded } = useContext(LongSwapContext);
+  const ethLogsCount = orderLogsDecoded.length;
   const cardListCount = ethLogsCount;
+  console.log("Logs Count", ethLogsCount, cardListCount);
 
   return (
     <div className={styles.container}>
