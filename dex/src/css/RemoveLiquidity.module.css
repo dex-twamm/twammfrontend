@@ -101,7 +101,6 @@
 	border-radius: 12px;
 	margin-top: 24px;
 	color: #333333;
-	padding-bottom: 26px;
 }
 
 .amount {
@@ -153,62 +152,6 @@ button.percentage {
 
 .percentage:hover {
 	background-color: #df1878;
-}
-
-.inputRange {
-	width: 100%;
-	margin-top: 24px;
-	cursor: grab;
-}
-
-.inputRange:active {
-	cursor: grabbing;
-}
-
-.inputRange {
-	-webkit-appearance: none;
-	-moz-appearance: none;
-}
-
-.inputRange::-webkit-slider-runnable-track {
-	height: 4px;
-	background: #ddd;
-	border: none;
-	border-radius: 3px;
-}
-
-.inputRange::-webkit-slider-thumb {
-	-webkit-appearance: none;
-	border: none;
-	height: 24px;
-	width: 24px;
-	border-radius: 50%;
-	background: #d50066;
-	margin-top: -10px;
-}
-
-.inputRange:focus::-webkit-slider-runnable-track {
-	background: #ccc;
-}
-
-.inputRange::-moz-range-track {
-	height: 4px;
-	background: #ddd;
-	border: none;
-	border-radius: 3px;
-}
-
-.inputRange::-moz-range-thumb {
-	border: none;
-	height: 26px;
-	width: 26px;
-	border-radius: 50%;
-	background: #d50066;
-	margin-top: -12px;
-}
-
-.inputRange:focus::-moz-range-track {
-	background: #ccc;
 }
 
 .pooled {
@@ -290,6 +233,11 @@ button.percentage {
 	transition: 0.3s;
 }
 
-.removeBtn:hover {
+.removeBtn:enabled:hover {
 	background-color: #ffdeea;
+}
+
+.removeBtn:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
 }

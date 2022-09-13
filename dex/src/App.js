@@ -33,6 +33,7 @@ function App() {
 	const [showRemoveLiquidity, setShowRemoveLiquidity] = useState(false);
 	const [showAddLiquidity, setShowAddLiquidity] = useState(false);
 	const { setShowDropdown } = useContext(UIContext);
+	const [showSettings, setShowSettings] = useState(false);
 
 	const {
 		srcAddress,
@@ -279,7 +280,10 @@ function App() {
 	}, []);
 
 	useEffect(() => {
-		document.body.onclick = () => setShowDropdown(false);
+		document.body.onclick = () => {
+			setShowDropdown(false);
+			setShowSettings(false);
+		};
 	});
 
 	let liquidityMarkup = (
@@ -327,6 +331,8 @@ function App() {
 							buttonText={
 								!isWallletConnceted ? 'Connect Wallet' : 'Swap'
 							}
+							showSettings={showSettings}
+							setShowSettings={setShowSettings}
 						/>
 					}
 				/>
@@ -342,6 +348,8 @@ function App() {
 							}
 							connectWallet={LongSwapButtonClick}
 							isPlacedLongTermOrder={isPlacedLongTermOrder}
+							showSettings={showSettings}
+							setShowSettings={setShowSettings}
 						/>
 					}
 				/>
