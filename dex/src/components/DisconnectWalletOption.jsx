@@ -58,7 +58,7 @@ const DisconnectWalletOption = ({setOpen,open}) => {
       >
         <Box sx={style}>
 		<Box sx={{display:'flex',justifyContent:'space-between',alignItems:'center', width:'100%'}}>
-		<Typography sx={{color:'#333333',fontWeight:400,fontSize:'22px',ml:2}}>Account</Typography>
+		<Typography sx={{color:'#333333',fontWeight:500,fontSize:'22px',ml:2}}>Account</Typography>
 		<Button  onClick={handleClose}><CloseIcon sx={{color:'#f50057'}} /></Button>
 		</Box>
 

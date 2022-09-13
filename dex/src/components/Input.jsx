@@ -17,6 +17,7 @@ const Input = (props) => {
     setDisplay,
     setTokenA,
     setTokenB,
+	swapType
   } = props;
   const { tokenBalances, selectToken, ethBalance } =
     useContext(ShortSwapContext);
@@ -60,7 +61,8 @@ const Input = (props) => {
 						value={input}
 						onChange={onChange}
 					/>
-					{/* {!selectToken ? (
+					
+					{ swapType !== 'long' && !selectToken ? (
 						<button
 							className={classnames(
 								styles.btn,
@@ -68,6 +70,7 @@ const Input = (props) => {
 							)}
 							onClick={handleDisplay}
 							id={id}
+							disabled={swapType === 'long'}
 						>
 							<span className={styles.spnSelectToken}>
 								<div>
@@ -96,7 +99,8 @@ const Input = (props) => {
 								styles.btn,
 								styles.currencySelect
 							)}
-							onClick={handleDisplay}
+													onClick={ swapType !=='long' && handleDisplay}
+
 							id={id}
 						>
 							<span className={styles.spnCurrency}>
@@ -113,7 +117,9 @@ const Input = (props) => {
 									<p className={styles.tokenContainer}>
 										{symbol}
 									</p>
-									<svg
+								{
+									swapType !== 'long' && (
+										<svg
 										xmlns='http://www.w3.org/2000/svg'
 										width='24'
 										height='24'
@@ -127,16 +133,19 @@ const Input = (props) => {
 									>
 										<polyline points='6 9 12 15 18 9'></polyline>
 									</svg>
+									)
+								}
 								</div>
 							</span>
 						</button>
-                    )} */}
-					<button
+                    )}
+
+					{/* <button
 						className={classnames(
 							styles.btn,
 							styles.currencySelect
 						)}
-						onClick={handleDisplay}
+						onClick={ swapType !=='long' && handleDisplay}
 						id={id}
 					>
 						<span className={styles.spnCurrency}>
@@ -153,7 +162,9 @@ const Input = (props) => {
 								<p className={styles.tokenContainer}>
 									{symbol}
 								</p>
-								<svg
+								{
+									swapType !== 'long' && (
+										<svg
 									xmlns='http://www.w3.org/2000/svg'
 									width='24'
 									height='24'
@@ -168,9 +179,11 @@ const Input = (props) => {
 								>
 									<polyline points='6 9 12 15 18 9'></polyline>
 								</svg>
+									)
+								}
 							</div>
 						</span>
-					</button>
+					</button> */}
 				</div>
 				<div className={styles.balance}>
 					Balance:{id === 1 ? tokenA.balance : tokenB.balance}

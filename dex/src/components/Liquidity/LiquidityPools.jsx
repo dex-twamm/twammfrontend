@@ -99,7 +99,7 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 							height:'35px',
 							fontFamily:'Open Sans',
 							fontSize:'18px',
-							fontWeight:'100',
+							fontWeight:'500',
 							border:'none',
 							outline:'none',
 							padding:{xs:'6px 8%',sm:'6px 8px',md:'6px 8px',lg:'6px 8px'},
@@ -120,13 +120,13 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 					<Button
 						onClick={() => showAddLiquidity(true)}
 						sx={{
-							backgroundColor:'#e94393',
+							backgroundColor:'#d50066',
 							borderRadius:'12px',
 							fontFamily:'Open Sans',
 							fontSize:'18px',
 							height:'35px',
 							width:{xs:'90%',sm:'auto',md:'auto'},
-							fontWeight:'100',
+							fontWeight:'500',
 							border:'none',
 							outline:'none',
 							padding:{xs:'6px 10%',sm:'6px 8px',md:'6px 8px',},
@@ -353,11 +353,12 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 									style={{
 										padding: 3,
 										// width: '45px',
-										border: '1px solid #e94393',
+										border: '1px solid #fdeaf1',
 										borderRadius: '7px',
-										background: '#e94393',
-										color: 'white',
-										// fontFamily:'Open Sans',
+										background: '#fdeaf1',
+										color: '#d50066',
+										fontFamily:'Open Sans',
+										fontWeight:500,
 										
 										
 									}}
@@ -404,7 +405,7 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 							</Box>
 						</Box>
 					</Box>
-					<Box sx={{ display: 'flex', alignItems: 'center', m:1,border:'1px solid blue' ,width:'fit-content',}}>
+					<Box sx={{ display: 'flex', alignItems: 'center', m:1,width:'fit-content',}}>
 						<Typography style={{ fontWeight: 500, color: 'grey',fontFamily:'Open Sans', }}>
 							Min:{' '}
 							<span style={{ fontWeight: 400, color: '#333333',fontFamily:'Open Sans', }}>
@@ -450,17 +451,17 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 						<button
 							onClick={() => showRemoveLiquidity(true)}
 							style={{
-								border: '1px solid #e94393',
+								border: '1px solid #d50066',
 								backgroundColor: '#fff',
-								color: '#e94393',
+								color: '#d50066',
 								borderRadius:'12px',
 								padding:'4px 6px',
 								boxSizing:'border-box',
 								cursor:'pointer',
 								height:'35px',
-								fontWeight:500,
+								fontWeight:"500",
 								fontFamily:'Open Sans',
-								fontSize:'16px'
+								fontSize:'18px'
 								
 							}}
 						>
@@ -469,20 +470,21 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 						<button
 							
 							style={{
-								backgroundColor: '#e94393',
+								backgroundColor: '#fdeaf1',
 								borderRadius:'12px',
 								fontFamily:'Open Sans',
 								 padding:'6px 8px',
 								height:'35px',
 								 outline:'none',
 								 margin:'5px',
-								color:'white',
+								color:'#d50066',
 								fontWeight:'100',
 								padding:'6px 8px',
 								border:'none',
 								fontWeight:500,
 								marginLeft:'10px',
-								fontSize:'16px'
+								fontSize:'18px',
+								cursor:'pointer'
 
 
 

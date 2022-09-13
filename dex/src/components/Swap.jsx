@@ -5,12 +5,16 @@ import { Alert, Box, Slider, Typography } from "@mui/material";
 import classNames from "classnames";
 import React, { useContext, useState } from "react";
 import lsStyles from "../css/LongSwap.module.css";
-import styles from "../css/Swap.module.css";
+import style from "../css/Swap.module.css";
+import styles from '../css/AddLiquidity.module.css';
+
 import { calculateValue, valueLabel } from "../methods/longSwapMethod";
 import { LongSwapContext } from "../providers";
 import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
 import PopupModal from "./alerts/PopupModal";
 import Input from "./Input";
+import { FiChevronDown } from 'react-icons/fi';
+
 
 const Swap = (props) => {
   const { connectWallet, buttonText, swapType } = props;
@@ -19,6 +23,8 @@ const Swap = (props) => {
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [value, setValue] = useState(0.0);
+	const [showModal, setShowModal] = useState(false);
+
 
   const {
     equivalentAmount,
@@ -101,10 +107,86 @@ const Swap = (props) => {
       setSliderDate(valueLabel(calculateValue(newValue)).date);
     }
   };
-
+  
   return (
     <>
       <form onSubmit={handleSubmit} className={styles.form}>
+      <div style={{width:'96%',height:'2px',background:'#f0f0f0',display:'flex',justifyContent:'center',margin:'auto',marginBottom:'0px'}}/>
+
+        <Box padding={'6px 8px'} sx={{display:'flex',flexDirection:'column' ,gap:'5px',boxSizing:'border-box'}}>
+
+        {swapType === "long" && <>
+          <Box className={styles.mainContent} style={{marginTop:'0px',paddingTop:'0px'}} >
+
+            <div
+              className={`unselectable ${styles.selectPairContainer}`}
+              style={{marginTop:'6px'}}
+              >
+              <p className={styles.mainHeader} style={{color:'#333333'}}>Select Pair</p>
+              <div className={styles.pairContainer}>
+              <div
+              onClick={() => {
+              // setShowModal(true);
+              setDisplay(true)
+              setSelectToken('1');
+              }}
+              className={styles.select}
+              >
+              <div className={styles.currencyWrap}>
+              <img
+                className={styles.cryptoImage}
+                src={tokenA.image}
+                alt='Ethereum'
+              />
+              <p className={styles.tokenSymbol}>
+                {tokenA.symbol}
+              </p>
+              </div>
+              <FiChevronDown
+              className={styles.dropDownIcon}
+              />
+              </div>
+
+              <div
+              onClick={() => {
+              setDisplay(true);
+              setSelectToken('2');
+              }}
+              className={styles.select}
+              >
+              <div className={styles.currencyWrap}>
+              {tokenB.image !== '' && (
+                <img
+                  className={styles.cryptoImage}
+                  src={tokenB.image}
+                  alt='Ethereum'
+                />
+              )}
+              <p className={styles.tokenSymbol}>
+                <span
+                  style={{
+                    paddingLeft: `${
+                      tokenB.tokenIsSet
+                        ? '0px'
+                        : '10px'
+                    }`,
+                  }}
+                >
+                  {tokenB.symbol}
+                </span>
+              </p>
+              </div>
+              <FiChevronDown
+              className={styles.dropDownIcon}
+              />
+              </div>
+              </div>
+              </div>
+
+          </Box>
+        </>
+
+        }
         <Input
           id={1}
           input={swapAmount ? swapAmount : ""}
@@ -119,6 +201,7 @@ const Swap = (props) => {
           setDisplay={setDisplay}
           setTokenA={setTokenA}
           setTokenB={setTokenB}
+          swapType= {swapType}
         />
 
         {formErrors.swapAmount && (
@@ -132,7 +215,9 @@ const Swap = (props) => {
             </Alert>
           </div>
         )}
-        <FontAwesomeIcon className={styles.iconDown} icon={faArrowDown} />
+       { swapType !== "long" && (
+        <>
+       <FontAwesomeIcon className={style.iconDown} icon={faArrowDown} />
         <Input
           id={2}
           imgSrc={tokenB.image}
@@ -145,16 +230,22 @@ const Swap = (props) => {
           setTokenA={setTokenA}
           setTokenB={setTokenB}
         />
+        </>)}
 
         {swapType === "long" && (
           <div className={lsStyles.rangeSelect}>
+
+           
+
+
+
             <Box sx={{ width: "90%", margin: "0 auto" }}>
               <Typography fontWeight={600} id="non-linear-slider" gutterBottom>
-                <Box sx={{ width: "90%", flexDirection: "row" }}>
+                <Box sx={{ width: "90%", flexDirection: "row",color:'#333333' }}>
                   {" "}
                   Time: {`${sliderValue} ${sliderValueUnit}`}
                 </Box>
-                <Box sx={{}}>Date: {`${sliderDate} `}</Box>
+                <Box sx={{ color:'#333333'}}>Date: {`${sliderDate} `}</Box>
               </Typography>
               <Slider
                 value={value}
@@ -192,6 +283,9 @@ const Swap = (props) => {
             ? "Enter an Amount"
             : buttonText}
         </button>
+
+      </Box>
+
       </form>
       <PopupModal></PopupModal>
     </>
