@@ -460,6 +460,7 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 								height:'35px',
 								fontWeight:500,
 								fontFamily:'Open Sans',
+								fontSize:'16px'
 								
 							}}
 						>
@@ -480,7 +481,9 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 								padding:'6px 8px',
 								border:'none',
 								fontWeight:500,
-								marginLeft:'10px'
+								marginLeft:'10px',
+								fontSize:'16px'
+
 
 
 							}}

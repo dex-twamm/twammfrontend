@@ -26,7 +26,7 @@ const style = {
 	top: '50%',
 	left: '50%',
 	transform: 'translate(-50%, -50%)',
-	Width:{xs:'80%',sm:450,md:425},
+	minWidth:{xs:'95%',sm:500,md:425},
 	// minHeight:350,
 	bgcolor:'#F7F8FA',
 	boxShadow: 24,
@@ -48,7 +48,7 @@ const DisconnectWalletOption = ({setOpen,open}) => {
 
 	return(
 		
-		<Box sx={{display:'flex', justifyContent:'space-evenly',alignItems:'center',background:'white',borderRadius:4 ,border:'1px solid red'}}>
+		<Box sx={{display:'flex', justifyContent:'space-evenly',alignItems:'center',background:'white',borderRadius:4 }}>
 			{/* <Button onClick={handleOpen}>Open modal</Button> */}
       <Modal
 	  	open={open}
@@ -68,15 +68,15 @@ const DisconnectWalletOption = ({setOpen,open}) => {
 			 
 			<Box sx={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
 			
-			<Typography sx={{width:'50%',fontWeight:300,fontSize:'16px',fontFamily:'Open Sans',color:'#333333'}} id="modal-modal-title" variant="h6" component="h2">
+			<Typography  sx={{width:'50%',fontWeight:300,fontSize:'16px',fontFamily:'Open Sans',color:'#333333',mr:'5px',}} id="modal-modal-title" >
             Connect with Coinbase wallet
           </Typography>
 
 			<Button size='small' disableFocusRipple 
-				sx={{p:{md:'0px 9px',sm:'0px 9px',xs:'0px 15px'},mr:2,color:'#f50057',textTransform:'capitalize',borderRadius:'12px',border:'1px solid #f50057',fontSize:{xs:'12px',sm:'14px'}, ":hover":{border:'1px solid #f50057'}}} variant='outlined'>
+				sx={{p:{md:'0px 9px',sm:'0px 9px',xs:'0px 15px'},mr:2,color:'#f50057',textTransform:'capitalize',borderRadius:'12px',border:'1px solid #f50057',fontSize:{sm:'16px',xs:'14px'}, ":hover":{border:'1px solid #f50057'}}} variant='outlined'>
 				Disconnect</Button>
 			
-			<Button size='small' sx={{p:{md:'0px 9px',sm:'0px 9px',xs:'0px 10px'}, color:'#f50057',textTransform:'capitalize',border:'1px solid #f50057',borderRadius:'10px', fontSize:{xs:'12px',sm:'14px'},":hover":{border:'1px solid #f50057'}}} variant='outlined'>Change</Button>
+			<Button size='small' sx={{p:{md:'0px 9px',sm:'0px 9px',xs:'0px 10px'}, color:'#f50057',textTransform:'capitalize',border:'1px solid #f50057',borderRadius:'10px', fontSize:{xs:'14px',sm:'16px'},":hover":{border:'1px solid #f50057'}}} variant='outlined'>Change</Button>
 			</Box>
 
 			<Box sx={{display:'flex',alignItems:'center',mt:2}} >
@@ -87,16 +87,16 @@ const DisconnectWalletOption = ({setOpen,open}) => {
 
 			</Box>
 
-			<Box sx={{display:'flex',alignItems:'center',mt:2,}}>
+			<Box sx={{display:'flex',alignItems:'center',mt:2,justifyContent:'space-between'}}>
 
-				<Link to='/'>  <Typography style={{display:'flex',alignItems:'center',color:'#f50057',fontWeight:400,marginRight:'10px',fontSize:"16px"}}>
-				<ContentCopyIcon fontSize='samll' sx={{mr:'4px',color:'#f50057',fontWeight:400,fontSize:'16px'}} />
+				<Link to='/'>  <Typography style={{display:'flex',alignItems:'center',color:'#f50057',fontWeight:400,marginRight:'16px',fontSize:"16px"}}>
+				<ContentCopyIcon fontSize='samll' sx={{mr:'4px',color:'#f50057',fontWeight:400,fontSize:'14px'}} />
 					
 					Copy Address</Typography> </Link>
 				
 				<Link to='/'>
-				<Typography style={{display:'flex',alignItems:'center',color:'grey',fontWeight:'bold',marginLeft:'5px',fontSize:'16px',fontFamily:'Open Sans'}}> 
-				<LaunchIcon fontSize='medium' sx={{color:'#808080', mr:1,fontSize:{xs:'22px',sm:20}}} />
+				<Typography sx={{display:'flex',alignItems:'center',color:'grey',fontWeight:'bold',marginLeft:{sm:'24px',xs:'40px'},fontSize:'16px',fontFamily:'Open Sans'}}> 
+				<LaunchIcon fontSize='medium' sx={{color:'#808080', mr:1,fontSize:"14px"}} />
 				View on Explorer</Typography>
 				</Link>
 
