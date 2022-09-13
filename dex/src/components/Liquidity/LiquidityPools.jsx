@@ -14,29 +14,36 @@ import Switch from '@mui/material/Switch';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../css/LiquidityPools.css';
+import styles from '../../css/RemoveLiquidity.module.css';
+import classNames from 'classnames';
+
+
+
 
 const style = {
 	position: 'absolute',
 	display: 'flex',
 	flexDirection: 'column',
 	justifyContent: 'space-between',
-	fontSize: '1.2vmax',
+	fontSize: '16px',
 	fontWeight: 200,
-	top: '79%',
-	left: { md: '63%', xs: '60%' },
+	top:{md:'31%',xs:'35%',sm:'29.5%',lg:'31%'},
+	left: { md: '66%', xs: '65%',sm:'57%',lg:'66%' },
 	transform: 'translate(-50%, -50%)',
-	width: 300,
+	width: 200,
 	height: '180px',
-	bgcolor: '#F7F8FA',
+	bgcolor: '#F7F8FA ',
 	boxShadow: 24,
-	borderRadius: 4,
+	borderRadius:'12px',
 	p: 2,
+	bgcolor:'white'
 };
 
 //   const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
 const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 	const [open, setOpen] = useState(false);
+	const [buttonEnabled, setButtonEnabled] = useState(false);
 
 	const navigate = useNavigate();
 
@@ -49,63 +56,94 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 	return (
 		<Box
 			sx={{
-				p: { xs: '14px', sm: '40px' },
-				bgcolor: 'white',
-				minWidth: { sm: '50%', xs: '100%', md: '50%' },
-				mt: 3,
-				mb: 4,
-				minHeight: 300,
-				borderRadius: 4,
+				width: { sm:'90%', xs: '100%', md: '800px' },
+				p:'8px',
+				borderRadius:'20px',
+				dispay:'flex',
+				justifyContent:'center',
+				margin:'auto',
+				mt:'24px',
+				fontFamily:'Open Sans',
+				// border:'1px solid red',
+				
 			}}
 		>
 			<Box
 				sx={{
+		
 					display: 'flex',
-					justifyContent: 'space-between',
-					alignItems: 'center',
+					alignItems:{ xs:'flex-start',sm:'center',md:'center',lg:'center'} ,
+					justifyContent:{xs:'center',sm:'space-between',md:'space-between'},
+					flexDirection:{xs:'column',sm:'row',md:'row'},
+
+					
 				}}
 			>
-				<Typography sx={{ fontSize: '2.5vmax' }}>Pools</Typography>
+				<Typography sx={{ fontSize:"30px",fontFamily:'Open Sans',color:'#333333', }}>Pools</Typography>
 				<Box
 					sx={{
-						position: 'relative',
-						width: { sm: '80%', xs: '80%', md: '70%' },
+						width: { sm: '60%', xs:'100%', md: '60%' },
 						display: 'flex',
-						justifyContent: { sm: 'flex-end' },
 						flexDirection: { xs: 'row-reverse', sm: 'row' },
+						justifyContent: { xs:'flex-end',sm: 'flex-end' },
 						alignItems: 'center',
 					}}
 				>
 					<Button
 						onClick={handleOpen}
-						disableRipple
-						endIcon={<KeyboardArrowDownIcon size='large' />}
-						variant='contained'
 						sx={{
-							bgcolor: '#f50057',
-							color: '#fff',
-							borderRadius: 4,
-							':hover': { bgcolor: '#f50057' },
+							// backgroundColor:'#e94393',
+							background:'white',
+							margin:'5px',
+							borderRadius:'12px',
+							height:'35px',
+							fontFamily:'Open Sans',
+							fontSize:'18px',
+							fontWeight:'100',
+							border:'none',
+							outline:'none',
+							padding:{xs:'6px 8%',sm:'6px 8px',md:'6px 8px',lg:'6px 8px'},
+							color:'black',
+							display:'flex',
+							alignItems:'center',
+							justifyContent:'center',
+							cursor:'pointer',
+							textTransform:'capitalize'
+							// width:'content-fit',
+
+
 						}}
 					>
-						More
+						More  <KeyboardArrowDownIcon size='large' sx={{ml:"1px",}}/>
 					</Button>
+				
 					<Button
 						onClick={() => showAddLiquidity(true)}
-						size='medium'
-						disableRipple
-						startIcon={<AddIcon />}
-						variant='contained'
 						sx={{
-							bgcolor: '#f50057',
-							ml: { sm: 0.5 },
-							mr: { xs: 0.5 },
-							borderRadius: 4,
-							':hover': { bgcolor: '#f50057' },
+							backgroundColor:'#e94393',
+							borderRadius:'12px',
+							fontFamily:'Open Sans',
+							fontSize:'18px',
+							height:'35px',
+							width:{xs:'90%',sm:'auto',md:'auto'},
+							fontWeight:'100',
+							border:'none',
+							outline:'none',
+							padding:{xs:'6px 10%',sm:'6px 8px',md:'6px 8px',},
+							color:'white',
+							display:'flex',
+							textTransform:'capitalize',
+							alignItems:'center',
+							cursor:'pointer',
+							margin:{md:'5px',sm:'5px',xs:'5px 5px 5px 0px'},
+							':hover':{background:'#e94393',color:'white'}
+
 						}}
 					>
-						New Position
+					<AddIcon sx={{mr:'2px'}} />	New Position
 					</Button>
+
+				
 					<Modal
 						open={open}
 						onClose={handleClose}
@@ -120,9 +158,13 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 									justifyContent: 'space-between',
 									cursor: 'pointer',
 									fontWeight: 200,
+									fontFamily:'Open Sans',
+									bgcolor:'white',
+									color: '#565A69'
+									
 								}}
 							>
-								<p>Create a pool</p>
+								<p  style={{fontFamily:'Open Sans',color: '#565A69',fontSize:'18px'}}>Create a pool</p>
 								<AddCircleOutlineIcon
 									sx={{ cursor: 'pointer' }}
 									fontSize='large'
@@ -135,9 +177,11 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 									justifyContent: 'space-between',
 									cursor: 'pointer',
 									fontWeight: 200,
+									fontFamily:'Open Sans',
+									color: '#565A69',
 								}}
 							>
-								<p>Migrate</p>
+								<p  style={{fontFamily:'Open Sans',color:'#565A69',fontSize:'18px'}}>Migrate</p>
 								<KeyboardDoubleArrowRightIcon
 									sx={{ cursor: 'pointer' }}
 									fontSize='large'
@@ -150,9 +194,11 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 									justifyContent: 'space-between',
 									cursor: 'pointer',
 									fontWeight: 200,
+									fontFamily:'Open Sans',
+									color: '#565A69'
 								}}
 							>
-								<p>V2 liquidity</p>
+								<p style={{fontFamily:'Open Sans',color: '#565A69',fontSize:'18px'}}>V2 liquidity</p>
 								<LayersIcon
 									sx={{ cursor: 'pointer' }}
 									fontSize='large'
@@ -164,50 +210,77 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 									display: 'flex',
 									justifyContent: 'space-between',
 									cursor: 'pointer',
+									fontFamily:'Open Sans',
+									color: '#565A69'
+
 								}}
 							>
-								<p>Learn</p>
+								<p  style={{fontFamily:'Open Sans',color: '#565A69',fontSize:'18px'}}>Learn</p>
 								<ImportContactsOutlinedIcon
-									sx={{ cursor: 'pointer', bgcolor: 'white' }}
+									sx={{ cursor: 'pointer', bgcolor: 'white', color:'grey'}}
 									fontSize='large'
+									
+
 								/>
 							</Box>
 						</Box>
 					</Modal>
 				</Box>
 			</Box>
-			<Box sx={{ mt: 3 }}>
+			<Box sx={{ mt:'20px', bgcolor:'white',width:'auto',p:'8px',borderRadius:'20px'}}>
 				<Box
 					sx={{
 						display: 'flex',
 						justifyContent: 'space-between',
 						alignItems: 'center',
+						pr:'10px',
+						pl:'10px'
 					}}
 				>
 					<Typography
 						style={{
 							fontWeight: 400,
-							color: 'black',
+							color: '#333333',
 							fontSize: { xs: '10px', sm: '14px' },
+							fontFamily:'Open Sans',
 						}}
 					>
 						Your positions (1)
 					</Typography>
-					<Box sx={{ display: 'flex', alignItems: 'center' }}>
+					<Box sx={{ display: 'flex', alignItems: 'center',pl:'10px', }}>
 						<Typography
 							style={{
 								fontWeight: 400,
-								color: 'black',
+								color: '#333333',
 								fontSize: { xs: '10px', sm: '14px' },
+								fontFamily:'Open Sans',
+								marginRight:'10px'
+
 							}}
 						>
 							Show closed positions
 						</Typography>
-						<Switch size='medium' defaultChecked />
+						{/* <Switch size='large' defaultChecked />
+						 */}
+							<button
+						onClick={() => setButtonEnabled(state => !state)}
+						className={styles.collectBtn}
+						style={{height:'5%'}}
+
+					>
+						<div
+							className={classNames(
+								styles.circle,
+								buttonEnabled && styles.true
+							)}
+						></div>
+					</button>
+
 					</Box>
 				</Box>
 				<Box
 					style={{
+						marginTop:'5px',
 						border: '2px solid #f0f0f0',
 						borderRadius: '15px',
 						width: { sm: '60%', xs: '100%', md: '70%' },
@@ -239,16 +312,15 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 									display: 'flex',
 									justifyContent: 'space-between',
 									alignItems: 'center',
-									width: { sx: '55%', sm: '50%', md: '25%' },
 									m: 1,
 								}}
 							>
-								<Box sx={{ display: 'flex' }}>
+								<Box sx={{ display: 'flex',alignItems:'center' }}>
 									<Avatar
 										sx={{
 											background: 'blue',
-											height: 25,
-											width: 25,
+											height: '20px',
+											width:'20px',
 										}}
 										alt='Remy Sharp'
 										src='/static/images/avatar/1.jpg'
@@ -256,11 +328,11 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 									<Avatar
 										sizes='small'
 										sx={{
-											left: -12,
-											top: 4,
+											left:'-10px',
+											// top: 4,
 											background: 'green',
-											height: 25,
-											width: 25,
+											height: '20px',
+											width: '20px',
 										}}
 										alt='Travis Howard'
 										src='/static/images/avatar/2.jpg'
@@ -270,8 +342,9 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 									sx={{
 										mr: 1,
 										fontWeight: 500,
-										color: 'black',
+										color: '#333333',
 										fontSize: { xs: 16 },
+										fontFamily:'Open Sans',
 									}}
 								>
 									UNI/ETH
@@ -280,10 +353,11 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 									style={{
 										padding: 3,
 										width: '45px',
-										border: '1px solid #f50057',
+										border: '1px solid #e94393',
 										borderRadius: '7px',
-										background: '#f50057',
+										background: '#e94393',
 										color: 'white',
+										fontFamily:'Open Sans',
 									}}
 								>
 									0.3%
@@ -299,9 +373,8 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 									p: 1,
 									border: 'none',
 									bgcolor: ' #f0f0f0',
-									border: '2px solid blue',
-									height: '100%',
-									width: '100px',
+									border: '2px solid grey',
+									width: '110px',
 								}}
 							>
 								<div
@@ -316,9 +389,11 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 								<p
 									style={{
 										display: 'flex',
-										color: 'black',
+										color: '#333333',
 										height: 1,
 										alignItems: 'center',
+										fontFamily:'Open Sans'
+										
 									}}
 								>
 									{' '}
@@ -327,21 +402,21 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 							</Box>
 						</Box>
 					</Box>
-					<Box sx={{ display: 'flex', alignItems: 'center', m: 1 }}>
-						<Typography style={{ fontWeight: 500, color: 'grey' }}>
+					<Box sx={{ display: 'flex', alignItems: 'center', m:1 ,width:'fit-content',}}>
+						<Typography style={{ fontWeight: 500, color: 'grey',fontFamily:'Open Sans', }}>
 							Min:{' '}
-							<span style={{ fontWeight: 400, color: 'black' }}>
+							<span style={{ fontWeight: 400, color: '#333333',fontFamily:'Open Sans', }}>
 								0 UNI per ETH
 							</span>
 						</Typography>
-						<ArrowBackIcon fontSize='small' sx={{ mr: 0, ml: 1 }} />{' '}
+						<ArrowBackIcon fontSize='small' sx={{ mr: 0, ml: 1,color:'#333333' }} />{' '}
 						<ArrowForwardIcon
 							fontSize='small'
-							sx={{ ml: -1, mr: 1 }}
+							sx={{ ml: -1, mr: 1,color:'#333333' }}
 						/>
-						<Typography style={{ fontWeight: 500, color: 'grey' }}>
+						<Typography style={{ fontWeight: 500, color: 'grey',fontFamily:'Open Sans', }}>
 							Max:{' '}
-							<span style={{ fontWeight: 400, color: 'black' }}>
+							<span style={{ fontWeight: 400, color: '#333333',fontFamily:'Open Sans', }}>
 								∞ UNI per ETH
 							</span>
 						</Typography>
@@ -358,39 +433,52 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 								md: 'flex-end',
 							},
 							width: { xs: '100%', sm: '100%' },
+							height:'40px',
+							alignItems:'center'
 						}}
 					>
-						<Button
+					
+
+						<button
 							onClick={() => showRemoveLiquidity(true)}
-							disableRipple
-							variant='outlined'
-							sx={{
-								border: '1px solid #f50057',
-								bgcolor: '#fff',
-								color: '#f50057',
-								borderRadius: 4,
-								':hover': {
-									bgcolor: '#fff',
-									border: '1px solid #fff',
-								},
+							style={{
+								border: '1px solid #e94393',
+								backgroundColor: '#fff',
+								color: '#e94393',
+								borderRadius:'12px',
+								padding:'4px 6px',
+								boxSizing:'border-box',
+								cursor:'pointer',
+								height:'35px',
+								fontWeight:500,
+								fontFamily:'Open Sans',
+								
 							}}
 						>
 							Remove Liquidity
-						</Button>
-						<Button
-							size='medium'
-							disableRipple
-							variant='contained'
-							sx={{
-								bgcolor: '#f50057',
-								ml: { sm: 1, xs: 2 },
-								mr: { xs: 1 },
-								borderRadius: 4,
-								':hover': { bgcolor: '#f50057' },
+						</button>
+						<button
+							
+							style={{
+								backgroundColor: '#e94393',
+								borderRadius:'12px',
+								fontFamily:'Open Sans',
+								 padding:'6px 8px',
+								height:'35px',
+								 outline:'none',
+								 margin:'5px',
+								color:'white',
+								fontWeight:'100',
+								padding:'6px 8px',
+								border:'none',
+								fontWeight:500,
+								marginLeft:'10px'
+
+
 							}}
 						>
 							Add Liquidity
-						</Button>
+						</button>
 					</Box>
 				</Box>
 			</Box>
