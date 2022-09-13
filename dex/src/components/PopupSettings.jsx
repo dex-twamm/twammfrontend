@@ -9,6 +9,7 @@ const PopupSettings = () => {
 		<span
 			onClick={e => e.stopPropagation()}
 			className={styles.settingsContainer}
+			style={{background:'white'}}
 		>
 			<h4 className={styles.settingsTitle}>Transaction Settings</h4>
 			<div className={styles.settings}>

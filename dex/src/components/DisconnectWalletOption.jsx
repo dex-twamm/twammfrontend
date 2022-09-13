@@ -59,7 +59,7 @@ const DisconnectWalletOption = ({setOpen,open}) => {
         <Box sx={style}>
 		<Box sx={{display:'flex',justifyContent:'space-between',alignItems:'center', width:'100%'}}>
 		<Typography sx={{color:'#333333',fontWeight:500,fontSize:'22px',ml:2}}>Account</Typography>
-		<Button  onClick={handleClose}><CloseIcon sx={{color:'#f50057'}} /></Button>
+		<Button  onClick={handleClose}><CloseIcon fontSize='large' sx={{color:'#f50057'}} /></Button>
 		</Box>
 
           
@@ -73,7 +73,7 @@ const DisconnectWalletOption = ({setOpen,open}) => {
           </Typography>
 
 			<Button size='small' disableFocusRipple 
-				sx={{p:{md:'0px 9px',sm:'0px 9px',xs:'0px 15px'},mr:2,color:'#f50057',textTransform:'capitalize',borderRadius:'12px',border:'1px solid #f50057',fontSize:{sm:'16px',xs:'14px'}, ":hover":{border:'1px solid #f50057'}}} variant='outlined'>
+				sx={{p:{md:'0px 9px',sm:'0px 9px',xs:'0px 15px'},mr:'10px',color:'#f50057',textTransform:'capitalize',borderRadius:'12px',border:'1px solid #f50057',fontSize:{sm:'16px',xs:'14px'}, ":hover":{border:'1px solid #f50057'}}} variant='outlined'>
 				Disconnect</Button>
 			
 			<Button size='small' sx={{p:{md:'0px 9px',sm:'0px 9px',xs:'0px 10px'}, color:'#f50057',textTransform:'capitalize',border:'1px solid #f50057',borderRadius:'10px', fontSize:{xs:'14px',sm:'16px'},":hover":{border:'1px solid #f50057'}}} variant='outlined'>Change</Button>
@@ -95,7 +95,7 @@ const DisconnectWalletOption = ({setOpen,open}) => {
 					Copy Address</Typography> </Link>
 				
 				<Link to='/'>
-				<Typography sx={{display:'flex',alignItems:'center',color:'grey',fontWeight:'bold',marginLeft:{sm:'24px',xs:'40px'},fontSize:'16px',fontFamily:'Open Sans'}}> 
+				<Typography sx={{display:'flex',alignItems:'center',color:'grey',fontWeight:'bold',fontSize:'16px',fontFamily:'Open Sans'}}> 
 				<LaunchIcon fontSize='medium' sx={{color:'#808080', mr:1,fontSize:"14px"}} />
 				View on Explorer</Typography>
 				</Link>

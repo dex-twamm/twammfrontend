@@ -42,9 +42,9 @@
 }
 
 .btn {
-	background-color: #e8006f;
-	color: #ffffff;
-	border: 1px solid #888d9b;
+	background-color: #EDEEF2;
+	color: 'black';
+	border: 1px solid #fdeaf1;
 	height: 2rem;
 	width: 3.5rem;
 	padding: 1px 8px;
@@ -56,6 +56,8 @@
 }
 
 .btn.active {
+	background-color: #e8006f;
+	color:#fff;
 	opacity: 1;
 }
 
@@ -73,7 +75,7 @@
 	/* flex-grow: 1; */
 	border-radius: 16px;
 
-	border: 1px solid #ced0d9;
+	border: 1px solid #fdeaf1;
 	outline: none;
 
 	display: flex;
