@@ -352,12 +352,14 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 								<span
 									style={{
 										padding: 3,
-										width: '45px',
+										// width: '45px',
 										border: '1px solid #e94393',
 										borderRadius: '7px',
 										background: '#e94393',
 										color: 'white',
-										fontFamily:'Open Sans',
+										// fontFamily:'Open Sans',
+										
+										
 									}}
 								>
 									0.3%
@@ -402,18 +404,24 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 							</Box>
 						</Box>
 					</Box>
-					<Box sx={{ display: 'flex', alignItems: 'center', m:1 ,width:'fit-content',}}>
+					<Box sx={{ display: 'flex', alignItems: 'center', m:1,border:'1px solid blue' ,width:'fit-content',}}>
 						<Typography style={{ fontWeight: 500, color: 'grey',fontFamily:'Open Sans', }}>
 							Min:{' '}
 							<span style={{ fontWeight: 400, color: '#333333',fontFamily:'Open Sans', }}>
 								0 UNI per ETH
 							</span>
 						</Typography>
-						<ArrowBackIcon fontSize='small' sx={{ mr: 0, ml: 1,color:'#333333' }} />{' '}
+
+						<Box sx={{display:'flex',alignItems:'center',justifyContent:'center',color:'#333333',mr:{xs:'19px'}}}>
+
+						<ArrowBackIcon fontSize='small' sx={{ mr: 0, ml:{xs:3,sm:4},color:'#333333' }} />{' '}
 						<ArrowForwardIcon
 							fontSize='small'
 							sx={{ ml: -1, mr: 1,color:'#333333' }}
 						/>
+							
+						</Box>
+						
 						<Typography style={{ fontWeight: 500, color: 'grey',fontFamily:'Open Sans', }}>
 							Max:{' '}
 							<span style={{ fontWeight: 400, color: '#333333',fontFamily:'Open Sans', }}>

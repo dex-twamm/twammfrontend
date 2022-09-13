@@ -26,12 +26,14 @@ const style = {
 	top: '50%',
 	left: '50%',
 	transform: 'translate(-50%, -50%)',
-	minWidth:{xs:450,sm:450,md:425},
+	Width:{xs:'80%',sm:450,md:425},
 	// minHeight:350,
 	bgcolor:'#F7F8FA',
 	boxShadow: 24,
 	borderRadius:4,
 	pt: 2,
+	// bgcolor:'red',
+	// boxSizing:'border-box'
 
   };
 
@@ -46,7 +48,7 @@ const DisconnectWalletOption = ({setOpen,open}) => {
 
 	return(
 		
-		<Box sx={{display:'flex', justifyContent:'space-evenly',alignItems:'center',background:'white',borderRadius:4 ,minWidth:50,}}>
+		<Box sx={{display:'flex', justifyContent:'space-evenly',alignItems:'center',background:'white',borderRadius:4 ,border:'1px solid red'}}>
 			{/* <Button onClick={handleOpen}>Open modal</Button> */}
       <Modal
 	  	open={open}
@@ -71,10 +73,10 @@ const DisconnectWalletOption = ({setOpen,open}) => {
           </Typography>
 
 			<Button size='small' disableFocusRipple 
-				sx={{p:'1px 10px',mr:2,color:'#f50057',borderRadius:'12px',border:'1px solid #f50057',fontSize:{xs:'12px',sm:'14px'}, ":hover":{border:'1px solid #f50057'}}} variant='outlined'>
+				sx={{p:{md:'0px 9px',sm:'0px 9px',xs:'0px 15px'},mr:2,color:'#f50057',textTransform:'capitalize',borderRadius:'12px',border:'1px solid #f50057',fontSize:{xs:'12px',sm:'14px'}, ":hover":{border:'1px solid #f50057'}}} variant='outlined'>
 				Disconnect</Button>
 			
-			<Button size='small' sx={{p:'1px 10px', color:'#f50057',border:'1px solid #f50057',borderRadius:'10px', fontSize:{xs:'12px',sm:'14px'},":hover":{border:'1px solid #f50057'}}} variant='outlined'>Change</Button>
+			<Button size='small' sx={{p:{md:'0px 9px',sm:'0px 9px',xs:'0px 10px'}, color:'#f50057',textTransform:'capitalize',border:'1px solid #f50057',borderRadius:'10px', fontSize:{xs:'12px',sm:'14px'},":hover":{border:'1px solid #f50057'}}} variant='outlined'>Change</Button>
 			</Box>
 
 			<Box sx={{display:'flex',alignItems:'center',mt:2}} >
