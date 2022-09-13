@@ -48,6 +48,20 @@ const LongSwap = (props) => {
           buttonText={buttonText}
         />
       </div>
+      {/* {isPlacedLongTermOrder && ( */}
+      <div className={lsStyles.ordersWrapper}>
+        <h4 className={lsStyles.longTermText}>Your Long Term Orders</h4>
+        <div className={styles.scroller}>
+          <div
+            className={classNames(
+              lsStyles.longTermOrderCard,
+              cardListCount > 2 && lsStyles.scrollable
+            )}
+          >
+            <LongTermOrderCard></LongTermOrderCard>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
