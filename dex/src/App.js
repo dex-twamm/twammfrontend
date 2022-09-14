@@ -15,7 +15,7 @@ import { LongSwapContext, ShortSwapContext, UIContext } from './providers';
 import {
 	FAUCET_TOKEN_ADDRESS, truncateAddress,
 } from './utils';
-import { exitPool, getPoolBalance, joinPool, withdrawLTO } from './utils/addLiquidity';
+import { cancelLTO, exitPool, getPoolBalance, joinPool, withdrawLTO } from './utils/addLiquidity';
 import { runQueryBatchSwap } from './utils/batchSwap';
 import { getLPTokensBalance } from './utils/getAmount';
 import { getEthLogs } from './utils/get_ethLogs';
@@ -146,13 +146,14 @@ function App() {
 		}
 	};
 
+	// TODO Dynamically Set tokenInIndex and tokenOutIndex  
 	//  Long Term Swap
 	const _placeLongTermOrders = async () => {
 		const swapAmountWei = ethers.utils.parseUnits(swapAmount, 'ether');
 		// console.log('swapAmountWei', swapAmountWei);
 		try {
-			const tokenInIndex = '0';
-			const tokenOutIndex = '1';
+			const tokenInIndex = '1';
+			const tokenOutIndex = '0';
 			const amountIn = swapAmountWei;
 			// console.log('amountIn', amountIn);
 			const numberOfBlockIntervals = '3';
@@ -233,11 +234,30 @@ function App() {
 
 		}
 	};
+
+	// cancelLTO
+	const _cancelLTO = async () => {
+		setLoading(true)
+		try {
+			const orderId = 10;
+			const walletAddress = account;
+			const signer = await getProvider(true);
+			if (!isWallletConnceted) {
+				await connectWallet();
+			}
+			await cancelLTO(walletAddress, signer, orderId);
+			setLoading(false)
+		} catch (e) {
+			console.log(e);
+			setLoading(false)
+
+		}
+	};
 	//  WithdrawLTO
 	const _withdrawLTO = async () => {
 		setLoading(true)
 		try {
-			const orderId = 9;
+			const orderId = 11;
 			const walletAddress = account;
 			const signer = await getProvider(true);
 			if (!isWallletConnceted) {
@@ -393,7 +413,7 @@ function App() {
 							isPlacedLongTermOrder={isPlacedLongTermOrder}
 							showSettings={showSettings}
 							setShowSettings={setShowSettings}
-							cancelPool={() => _exitPool(4)}
+							cancelPool={() => _cancelLTO()}
 							withdrawPool={() => _withdrawLTO()}
 						/>
 					}
