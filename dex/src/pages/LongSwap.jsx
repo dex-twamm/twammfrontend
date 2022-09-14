@@ -21,7 +21,9 @@ const LongSwap = (props) => {
 
   const [showSettings, setShowSettings] = useState(false);
   const { orderLogsDecoded } = useContext(LongSwapContext);
-  const ethLogsCount = orderLogsDecoded.length;
+  const ethLogsCount = orderLogsDecoded
+    ? Object.keys(orderLogsDecoded).length
+    : 0;
   const cardListCount = ethLogsCount;
   console.log("Logs Count", ethLogsCount, cardListCount);
 

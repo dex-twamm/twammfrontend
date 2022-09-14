@@ -1,5 +1,6 @@
 import { Contract, ethers } from "ethers";
 import { TWAMM_POOL_ABI } from "../constants";
+import { getLongTermOrder } from "./longSwap";
 
 export async function getEthLogs(signer, walletAddress) {
 
@@ -30,25 +31,56 @@ export async function getEthLogs(signer, walletAddress) {
   // console.log("==== Amount Out ====", ethers.utils.formatUnits(eventsPlaced[0].topics[2], "ether"))
 
   const abiCoder = ethers.utils.defaultAbiCoder;
-  const eventDecoded = [];
+  const placedEventsDecoded = new Map();
   // console.log("==== Event Decoded  ==== ", typeof eventDecoded);
   for (let i = 0; i < eventsPlaced.length; i++) {
-    const logs = abiCoder.decode(["uint256", "uint256", "uint256"], eventsPlaced[i].data);
-    eventDecoded.push({
-      'orderId': logs[0],
-      'salesRate': logs[1],
-      'expirationBlock': logs[2],
+    const log = abiCoder.decode(["uint256", "uint256", "uint256"], eventsPlaced[i].data);
+    console.log("Log 0", log[0]);
+    const orderDetails = await getLongTermOrder(signer, log[0])
+    placedEventsDecoded.set(log[0].toNumber(), {
+      'orderId': log[0],
+      'salesRate': log[1],
+      'expirationBlock': log[2],
       'transactionHash': eventsPlaced[i].transactionHash,
       'startBlock': eventsPlaced[i].blockNumber,
-
+      'convertedValue': orderDetails[6],
+      'sellTokenIndex': orderDetails[4],
+      'buyTokenIndex': orderDetails[5],
+      'withdrawals': []
     });
     // console.log("=== ETH Logs Decoded ===", eventsPlaced)
   }
+  console.log("=== ETH Logs Decoded ===", placedEventsDecoded);
 
-  console.log("=== ETH Logs Decoded ===", eventDecoded)
+
+  for (let i = 0; i < eventsWithdrawn.length; i++) {
+    const log = abiCoder.decode(["uint256", "uint256", "uint256", "uint256", "bool"], eventsWithdrawn[i].data);
+    console.log("Log Withdrawn", log);
+    let orderObject = placedEventsDecoded.get(log[0].toNumber());
+    console.log("Order Object", orderObject);
+    orderObject.withdrawals.push({
+      'blockNumber': eventsWithdrawn[i].blockNumber,
+      'isPartialWithdrawal': log[4],
+      'proceeds': log[3]
+    })
+    console.log("=== ETH Logs Withdrawn ===", eventsWithdrawn)
+  }
+
+  for (let i = 0; i < eventsCancelled.length; i++) {
+    const log = abiCoder.decode(["uint256", "uint256", "uint256", "uint256", "uint256"], eventsCancelled[i].data);
+    console.log("Log Withdrawn", log);
+    let orderObject = placedEventsDecoded.get(log[0].toNumber());
+    console.log("Order Object", orderObject);
+    orderObject.unsoldAmount = log[4]
+    orderObject.cancelledProceeds = log[3]
+    console.log("=== ETH Logs Withdrawn ===", eventsCancelled)
+  }
+
+  // console.log("=== WithDr Logs Decoded ===", placedEventsDecoded)
 
 
-  return (eventDecoded);
+
+  return (placedEventsDecoded);
 
 
 

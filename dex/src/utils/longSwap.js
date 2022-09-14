@@ -43,19 +43,26 @@ export async function placeLongTermOrder(
 
 }
 
-export async function getLongTermOrder(signer) {
+export async function getLongTermOrder(signer, orderId) {
     const contract = new Contract(
         LONGTERM_CONTRACT,
         LONGTERM_ABI,
         signer
     );
-    let orderId = '0x01';
     const getOrderDetails = await contract.getLongTermOrder(
         orderId
     )
+    const orderDetails = await getOrderDetails;
+    console.log("==== ORDER DETAILS=====", orderDetails);
+    return orderDetails;
+}
 
-    const getResult = await getOrderDetails;
-    console.log("====GET ORDER DETAILS=====", getResult);
+export async function getLastVirtualOrderBlock(signer) {
+    const contract = new Contract(
+        LONGTERM_CONTRACT,
+        LONGTERM_ABI,
+        signer
+    );
 
     const longterm = await contract.longTermOrders();
     const latestBlock = (longterm.lastVirtualOrderBlock.toNumber())

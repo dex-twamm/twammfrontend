@@ -1,6 +1,7 @@
+import { Pool } from "@mui/icons-material";
 import { ListItem } from "@mui/material";
 import classNames from "classnames";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import React, { useContext } from "react";
 import { useState } from "react";
 import { useRef } from "react";
@@ -9,8 +10,10 @@ import { HiExternalLink } from "react-icons/hi";
 import { getProviderDescription } from "web3modal";
 import styles from "../css/LongTermOrderCard.module.css";
 import { LongSwapContext, ShortSwapContext } from "../providers";
+import { POOL_ID } from "../utils";
 import { exitPool } from "../utils/addLiquidity";
 import { getLongTermOrder } from "../utils/longSwap";
+import { POOLS } from "../utils/pool";
 
 const LongTermOrderCard = (props) => {
   const { cancelPool, withdrawPool } = props;
@@ -96,9 +99,18 @@ const LongTermOrderCard = (props) => {
   return orderLogsDecoded ? (
     <>
       {orderLogsDecoded
-        .map((it, idx) => {
+        .map((it) => {
           const stBlock = it.startBlock;
-          const convertedAmount = 500;
+          let convertedAmount = ethers.constants.Zero;
+          if (it.sellTokenIndex.toNumber() == it.buyTokenIndex.toNumber()) {
+            // Order Completed and Deleted
+            convertedAmount = it.withdrawals.reduce((total, withdrawal) => {
+              return total + withdrawal.proceeds;
+            }, 0);
+          } else {
+            // Order Still In Progress
+            convertedAmount = it.convertedValue;
+          }
           const sRate = ethers.utils.formatEther(it.salesRate.toNumber());
           // console.log("Sales rate", sRate);
           const expBlock = it.expirationBlock.toNumber();
@@ -139,7 +151,11 @@ const LongTermOrderCard = (props) => {
                     />
                     <p className={styles.tokenText}>
                       <span>
-                        {reToken} {tokenA.symbol}
+                        {reToken}{" "}
+                        {
+                          POOLS[POOL_ID].tokens[it.sellTokenIndex.toNumber()]
+                            .symbol
+                        }
                       </span>
                       <span> of {amountOf}</span>
                     </p>
@@ -167,7 +183,8 @@ const LongTermOrderCard = (props) => {
                     <p
                       className={classNames(styles.tokenText, styles.greenText)}
                     >
-                      {convertedAmount} {tokenB.symbol}
+                      {ethers.utils.formatEther(convertedAmount)}{" "}
+                      {tokenB.symbol}
                     </p>
                   </div>
                 </div>
