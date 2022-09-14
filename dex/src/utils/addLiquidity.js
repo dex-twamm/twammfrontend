@@ -30,14 +30,14 @@ export async function joinPool(walletAddress, signer) {
     console.log(joinPoolResult);
 }
 
-export async function exitPool(walletAdress, signer, bptAmountIn) {
+export async function exitPool(walletAdress, signer, bptAmountIn, poolKind) {
     const poolContract = new Contract(
         VAULT_CONTRACT_ADDRESS,
         VAULT_CONTRACT_ABI,
         signer
     )
     // bptAmountIn As User Input
-    const encodedRequest = defaultAbiCoder.encode(['uint256', 'uint256'], [1, bptAmountIn]);
+    const encodedRequest = defaultAbiCoder.encode(['uint256', 'uint256'], [poolKind, bptAmountIn]);
     const exitPoolTx = await poolContract.exitPool(
         POOL_ID,
         walletAdress,
@@ -67,7 +67,7 @@ export async function getPoolBalance(signer, tokenAddress) {
     const cash = (poolBalance.cash._hex);
     const readableCash = ethers.utils.formatEther(cash);
     console.log("====Pool Cash====", ethers.utils.formatEther(cash));
-    return readableCash * 0.3;
+    return (readableCash * 0.3).toString();
 
 }
 

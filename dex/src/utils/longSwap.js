@@ -58,8 +58,8 @@ export async function getLongTermOrder(signer) {
     console.log("====GET ORDER DETAILS=====", getResult);
 
     const longterm = await contract.longTermOrders();
-    const latestBlock = ethers.utils.formatEther(longterm.lastVirtualOrderBlock._hex)
+    const latestBlock = (longterm.lastVirtualOrderBlock.toNumber())
 
-    console.log("====GET Long Term DETAILS=====", ethers.utils.formatEther(longterm.lastVirtualOrderBlock._hex));
+    console.log("====GET Long Term DETAILS=====", (longterm.lastVirtualOrderBlock.toNumber()));
     return (latestBlock);
 }

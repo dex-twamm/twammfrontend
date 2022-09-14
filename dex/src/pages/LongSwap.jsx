@@ -15,13 +15,15 @@ const LongSwap = (props) => {
     tokenImage,
     connectWallet,
     buttonText,
-    isPlacedLongTermOrder,
+    cancelPool,
+    withdrawPool,
   } = props;
 
   const [showSettings, setShowSettings] = useState(false);
-  const { orderLogs } = useContext(LongSwapContext);
-  const ethLogsCount = orderLogs.length;
+  const { orderLogsDecoded } = useContext(LongSwapContext);
+  const ethLogsCount = orderLogsDecoded.length;
   const cardListCount = ethLogsCount;
+  console.log("Logs Count", ethLogsCount, cardListCount);
 
   return (
     <div className={styles.container}>
@@ -38,7 +40,7 @@ const LongSwap = (props) => {
             />
           </div>
 
-          {showSettings && <PopupSettings />}
+          {/* {showSettings && <PopupSettings />} */}
         </div>
         <Swap
           swapType="long"
@@ -47,6 +49,23 @@ const LongSwap = (props) => {
           connectWallet={connectWallet}
           buttonText={buttonText}
         />
+      </div>
+      {/* {isPlacedLongTermOrder && ( */}
+      <div className={lsStyles.ordersWrapper}>
+        <h4 className={lsStyles.longTermText}>Your Long Term Orders</h4>
+        <div className={styles.scroller}>
+          <div
+            className={classNames(
+              lsStyles.longTermOrderCard,
+              cardListCount > 2 && lsStyles.scrollable
+            )}
+          >
+            <LongTermOrderCard
+              cancelPool={cancelPool}
+              withdrawPool={withdrawPool}
+            ></LongTermOrderCard>
+          </div>
+        </div>
       </div>
     </div>
   );
