@@ -246,7 +246,7 @@ function App() {
 			balance: account === null ? 'Wallet Balance' : balance,
 		},
 	};
-	
+
 	//Spot Prices 
 	const spotPrices = async () => {
 		const swapAmountWei = ethers.utils.parseUnits(swapAmount, 'ether');
@@ -264,10 +264,11 @@ function App() {
 		try {
 			const provider = await getProvider(true);
 			const tokenAddress = FAUCET_TOKEN_ADDRESS;
+			const walletAddress = account;
 			await getLongTermOrder(provider).then(res => { console.log("Latest Block", res); setLatestBlock(res) });
 			const signer = await getProvider(true);
 
-			await getEthLogs(signer).then(res => {
+			await getEthLogs(signer, walletAddress).then(res => {
 				console.log("=== Order Logs === ", res)
 				setOrderLogsDecoded(res);
 
