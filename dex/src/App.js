@@ -246,6 +246,7 @@ function App() {
 			balance: account === null ? 'Wallet Balance' : balance,
 		},
 	};
+	
 	//Spot Prices 
 	const spotPrices = async () => {
 		const swapAmountWei = ethers.utils.parseUnits(swapAmount, 'ether');
