@@ -230,7 +230,9 @@ const Swap = (props) => {
           setTokenA={setTokenA}
           setTokenB={setTokenB}
         />
-        </>)}
+
+        </>
+        )}
 
         {swapType === "long" && (
           <div className={lsStyles.rangeSelect}>
