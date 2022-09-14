@@ -15,11 +15,11 @@ import { LongSwapContext, ShortSwapContext, UIContext } from './providers';
 import {
 	FAUCET_TOKEN_ADDRESS, truncateAddress,
 } from './utils';
-import { exitPool, getPoolBalance, joinPool } from './utils/addLiquidity';
+import { exitPool, getPoolBalance, joinPool, withdrawLTO } from './utils/addLiquidity';
 import { runQueryBatchSwap } from './utils/batchSwap';
 import { getLPTokensBalance } from './utils/getAmount';
 import { getEthLogs } from './utils/get_ethLogs';
-import { getLongTermOrder, placeLongTermOrder } from './utils/longSwap';
+import { getLastVirtualOrderBlock, getLongTermOrder, placeLongTermOrder } from './utils/longSwap';
 import { web3Modal } from './utils/providerOptions';
 import { swapTokens } from './utils/swap';
 
@@ -216,7 +216,7 @@ function App() {
 	};
 
 	//  ExitPool
-	const _exitPool = async (joinKind) => {
+	const _exitPool = async () => {
 		setLoading(true)
 		try {
 			const bptAmountIn = ethers.utils.parseUnits('0.001', 'ether');
@@ -225,7 +225,25 @@ function App() {
 			if (!isWallletConnceted) {
 				await connectWallet();
 			}
-			await exitPool(walletAddress, signer, bptAmountIn, joinKind);
+			await exitPool(walletAddress, signer, bptAmountIn);
+			setLoading(false)
+		} catch (e) {
+			console.log(e);
+			setLoading(false)
+
+		}
+	};
+	//  WithdrawLTO
+	const _withdrawLTO = async () => {
+		setLoading(true)
+		try {
+			const orderId = 9;
+			const walletAddress = account;
+			const signer = await getProvider(true);
+			if (!isWallletConnceted) {
+				await connectWallet();
+			}
+			await withdrawLTO(walletAddress, signer, orderId);
 			setLoading(false)
 		} catch (e) {
 			console.log(e);
@@ -265,12 +283,17 @@ function App() {
 			const provider = await getProvider(true);
 			const tokenAddress = FAUCET_TOKEN_ADDRESS;
 			const walletAddress = account;
-			await getLongTermOrder(provider).then(res => { console.log("Latest Block", res); setLatestBlock(res) });
+			await getLastVirtualOrderBlock(provider).then(res => { console.log("Latest Block", res); setLatestBlock(res) });
 			const signer = await getProvider(true);
 
 			await getEthLogs(signer, walletAddress).then(res => {
-				console.log("=== Order Logs === ", res)
-				setOrderLogsDecoded(res);
+				console.log("=== Order Keys === ", res.keys())
+				console.log("=== Order Values === ", res.values())
+
+
+				const resArray = Array.from(res.values());
+				console.log("=== Order Logs === ", resArray)
+				setOrderLogsDecoded(resArray);
 
 			});
 			await getLPTokensBalance(provider, account).then(res => {
@@ -371,7 +394,7 @@ function App() {
 							showSettings={showSettings}
 							setShowSettings={setShowSettings}
 							cancelPool={() => _exitPool(4)}
-							withdrawPool={() => { _exitPool(5) }}
+							withdrawPool={() => _withdrawLTO()}
 						/>
 					}
 				/>

@@ -8,7 +8,7 @@ export const LongSwapProvider = ({ children }) => {
   const [sliderValueInSec, setSliderValueInSec] = useState(60);
 
   const [sliderValueUnit, setSliderValueUnit] = useState("Min");
-  const [orderLogsDecoded, setOrderLogsDecoded] = useState([]);
+  const [orderLogsDecoded, setOrderLogsDecoded] = useState();
   const [latestBlock, setLatestBlock] = useState("");
 
   const [sliderDate, setSliderDate] = useState("");

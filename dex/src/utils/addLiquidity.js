@@ -30,14 +30,14 @@ export async function joinPool(walletAddress, signer) {
     console.log(joinPoolResult);
 }
 
-export async function exitPool(walletAdress, signer, bptAmountIn, poolKind) {
+export async function exitPool(walletAdress, signer, bptAmountIn) {
     const poolContract = new Contract(
         VAULT_CONTRACT_ADDRESS,
         VAULT_CONTRACT_ABI,
         signer
     )
     // bptAmountIn As User Input
-    const encodedRequest = defaultAbiCoder.encode(['uint256', 'uint256'], [poolKind, bptAmountIn]);
+    const encodedRequest = defaultAbiCoder.encode(['uint256', 'uint256'], [4, bptAmountIn]);
     const exitPoolTx = await poolContract.exitPool(
         POOL_ID,
         walletAdress,
@@ -56,6 +56,61 @@ export async function exitPool(walletAdress, signer, bptAmountIn, poolKind) {
     const exitPoolResult = await exitPoolTx.wait();
     console.log(exitPoolResult);
 }
+
+export async function cancelLTO(walletAdress, signer, orderId) {
+    const poolContract = new Contract(
+        VAULT_CONTRACT_ADDRESS,
+        VAULT_CONTRACT_ABI,
+        signer
+    )
+    // bptAmountIn As User Input
+    const encodedRequest = defaultAbiCoder.encode(['uint256', 'uint256'], [4, orderId]);
+    const exitPoolTx = await poolContract.exitPool(
+        POOL_ID,
+        walletAdress,
+        walletAdress,
+        {
+            assets: [MATIC_TOKEN_ADDRESS, FAUCET_TOKEN_ADDRESS],
+            minAmountsOut: [0, 0],
+            userData: encodedRequest,
+            toInternalBalance: false,
+
+        },
+        {
+            gasLimit: 2000000
+        }
+    );
+    const exitPoolResult = await exitPoolTx.wait();
+    console.log(exitPoolResult);
+}
+
+export async function withdrawLTO(walletAdress, signer, orderId) {
+    const poolContract = new Contract(
+        VAULT_CONTRACT_ADDRESS,
+        VAULT_CONTRACT_ABI,
+        signer
+    )
+    // bptAmountIn As User Input
+    const encodedRequest = defaultAbiCoder.encode(['uint256', 'uint256'], [5, orderId]);
+    const withdrawLTOTx = await poolContract.exitPool(
+        POOL_ID,
+        walletAdress,
+        walletAdress,
+        {
+            assets: [MATIC_TOKEN_ADDRESS, FAUCET_TOKEN_ADDRESS],
+            minAmountsOut: [0, 0],
+            userData: encodedRequest,
+            toInternalBalance: false,
+
+        },
+        {
+            gasLimit: 2000000
+        }
+    );
+    const withdrawLTOResult = await withdrawLTOTx.wait();
+    console.log(withdrawLTOResult);
+}
+
 
 export async function getPoolBalance(signer, tokenAddress) {
     const poolContract = new Contract(
