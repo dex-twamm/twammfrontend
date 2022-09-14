@@ -46,7 +46,10 @@ export async function getEthLogs(signer, walletAddress) {
       'convertedValue': orderDetails[6],
       'sellTokenIndex': orderDetails[4],
       'buyTokenIndex': orderDetails[5],
-      'withdrawals': []
+      'withdrawals': [],
+      'hasPartialWithdrawals': false,
+      'cancelledProceeds': 0,
+      'state': 'inProgress'
     });
     // console.log("=== ETH Logs Decoded ===", eventsPlaced)
   }
@@ -63,17 +66,22 @@ export async function getEthLogs(signer, walletAddress) {
       'isPartialWithdrawal': log[4],
       'proceeds': log[3]
     })
+    orderObject.hasPartialWithdrawals = orderObject.hasPartialWithdrawals || log[4];
+    if (!log[4]) {
+      orderObject.state = 'completed';
+    }
     console.log("=== ETH Logs Withdrawn ===", eventsWithdrawn)
   }
 
   for (let i = 0; i < eventsCancelled.length; i++) {
     const log = abiCoder.decode(["uint256", "uint256", "uint256", "uint256", "uint256"], eventsCancelled[i].data);
-    console.log("Log Withdrawn", log);
+    console.log("Log Cancelled", log);
     let orderObject = placedEventsDecoded.get(log[0].toNumber());
     console.log("Order Object", orderObject);
-    orderObject.unsoldAmount = log[4]
-    orderObject.cancelledProceeds = log[3]
-    console.log("=== ETH Logs Withdrawn ===", eventsCancelled)
+    orderObject.unsoldAmount = log[4];
+    orderObject.cancelledProceeds = log[3];
+    orderObject.state = 'cancelled';
+    console.log("=== ETH Logs Cancelled ===", eventsCancelled)
   }
 
   // console.log("=== WithDr Logs Decoded ===", placedEventsDecoded)

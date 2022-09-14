@@ -4,12 +4,16 @@ export const POOLS = {
             {
                 'symbol': 'Testv4',
                 'name': 'Testv4',
-                'decimals': 18
+                'decimals': 18,
+                'address': "",
+                'image': ""
             },
             {
                 'symbol': 'FAU',
                 'name': 'FaucetToken',
-                'decimals': 18
+                'decimals': 18,
+                'address': "",
+                'image': ''
             }
         ]
     }

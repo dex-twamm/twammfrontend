@@ -10,7 +10,7 @@ import { HiExternalLink } from "react-icons/hi";
 import { getProviderDescription } from "web3modal";
 import styles from "../css/LongTermOrderCard.module.css";
 import { LongSwapContext, ShortSwapContext } from "../providers";
-import { POOL_ID } from "../utils";
+import { bigToFloat, bigToStr, POOL_ID, SCALING_FACTOR } from "../utils";
 import { exitPool } from "../utils/addLiquidity";
 import { getLongTermOrder } from "../utils/longSwap";
 import { POOLS } from "../utils/pool";
@@ -19,7 +19,7 @@ const LongTermOrderCard = (props) => {
   const { cancelPool, withdrawPool } = props;
   const remainingTimeRef = useRef();
 
-  const { swapAmount } = useContext(ShortSwapContext);
+  const { swapAmount, provider } = useContext(ShortSwapContext);
 
   const { sliderValueInSec, tokenA, tokenB, orderLogsDecoded, latestBlock } =
     useContext(LongSwapContext);
@@ -68,31 +68,35 @@ const LongTermOrderCard = (props) => {
     averagePrice: "0.3 ETH",
   };
 
-  // async function getData() {
-  //   await orderLogs.map((item) => {
-  //     const stBlock = ethers.utils.formatEther(item.blockNumber);
-  //     setStartBlock(stBlock);
-  //   });
-  //   await orderLogsDecoded.map((item) => {
-  //     const sRate = ethers.utils.formatEther(item.salesRate._hex);
-  //     setSalesRate(sRate);
-  //     // console.log("=== Sales Rate ===", sRate);
-  //     const expBlock = ethers.utils.formatEther(item.expirationBlock._hex);
-  //     setExpirationBlock(expBlock);
-  //     // console.log("=== Expired At Block ===", expBlock);
+  // Status of Long Term Orders
+  const checkStatus = (state, startBlock, expiryBlock) => {
+    console.log("Blocks", startBlock, expiryBlock, latestBlock);
+    if (state == "completed") {
+      // setProgress(100);
+      return { status: "Completed", progress: 100 };
+    } else if (state == "cancelled") {
+      // setProgress(100);
+      // Progress Bar Color Set To Red === TODO
+      return { status: "Cancelled", progress: 100 };
+    } else if (latestBlock >= expiryBlock) {
+      // setProgress(100);
+      return { status: "Execution Completed", progress: 100 };
+    } else {
+      const timeRemaining = (expiryBlock - latestBlock) * 12;
+      // const timeRemaining =
+      // (expiryBlock - provider.getBlock("latest").number) * 12;
+      // setProgress((latestBlock - startBlock) / (expiryBlock - startBlock));
+      let date = new Date(0);
+      date.setSeconds(timeRemaining); // specify value for SECONDS here
+      const timeString = date.toISOString().substring(11, 19);
+      console.log(timeString);
 
-  //     let amountOf = (expBlock - startBlock) * salesRate;
-  //     console.log("=== Amount Of  Token ===", amountOf);
-  //     setConvertedTokenAmount(amountOf);
-  //     let reToken = (latestBlock - startBlock) * salesRate;
-  //     setRemainingToken(reToken);
-  //   });
-  // }
-
-  // Decoded Order Logs
-  // useEffect(() => {
-  //   console.log("Logs", orderLogsDecoded);
-  // }, []);
+      return {
+        status: `Time Remaining: ${timeString}`,
+        progress: (latestBlock - startBlock) / (expiryBlock - startBlock),
+      };
+    }
+  };
 
   // Mapping Data from EthLogs
 
@@ -100,30 +104,55 @@ const LongTermOrderCard = (props) => {
     <>
       {orderLogsDecoded
         .map((it) => {
+          const orderStatus = checkStatus(
+            it.state,
+            it.startBlock,
+            it.expirationBlock
+          );
           const stBlock = it.startBlock;
           let convertedAmount = ethers.constants.Zero;
           if (it.sellTokenIndex.toNumber() == it.buyTokenIndex.toNumber()) {
             // Order Completed and Deleted
             convertedAmount = it.withdrawals.reduce((total, withdrawal) => {
-              return total + withdrawal.proceeds;
-            }, 0);
+              return total.add(withdrawal.proceeds);
+            }, ethers.constants.Zero);
+
+            if (it.state === "cancelled") {
+              console.log("Cancel Proceeds", it.cancelledProceeds);
+              convertedAmount = convertedAmount.add(it.cancelledProceeds);
+            }
+            console.log("ConvertedAMT", convertedAmount);
           } else {
             // Order Still In Progress
             convertedAmount = it.convertedValue;
           }
-          const sRate = ethers.utils.formatEther(it.salesRate.toNumber());
+          console.log("Converted Amount", convertedAmount.toString());
+          // console.log("Withdrawals 0", it.withdrawals[0].proceeds.toNumber());
+          // console.log("Withdrawals 1", it.withdrawals[1].proceeds.toNumber());
+          // const sRate = ethers.utils.formatEther(it.salesRate);
+
           // console.log("Sales rate", sRate);
-          const expBlock = it.expirationBlock.toNumber();
-          const amountOf = ((expBlock - stBlock) * sRate).toFixed(4);
+          const expBlock = it.expirationBlock;
+          const amountOf = expBlock.sub(stBlock).mul(it.salesRate);
           // console.log("StartBlock", stBlock);
           // console.log("Exp BLock", expBlock);
           // console.log("latestBlock", latestBlock);
-          // console.log("Amount of", amountOf);
-          const reToken =
-            latestBlock > expBlock
-              ? amountOf
-              : ((latestBlock - stBlock) * sRate).toFixed(4);
-          // console.log("Items Or card", it);
+          // console.log("Amount of", amountOf)
+          let soldToken;
+          if (it.state === "cancelled") {
+            soldToken = amountOf.sub(it.unsoldAmount);
+          } else {
+            soldToken =
+              latestBlock > expBlock
+                ? amountOf
+                : (latestBlock - stBlock) * it.salesRate;
+          }
+          console.log("Sold Token", soldToken);
+
+          const averagePrice =
+            bigToFloat(convertedAmount, 18) / bigToFloat(soldToken, 18);
+
+          console.log("Average Price", averagePrice);
           return (
             <div className={styles.container} key={it.transactionHash}>
               <div className={styles.topSection}>
@@ -151,13 +180,13 @@ const LongTermOrderCard = (props) => {
                     />
                     <p className={styles.tokenText}>
                       <span>
-                        {reToken}{" "}
+                        {bigToStr(soldToken, 18)}{" "}
                         {
                           POOLS[POOL_ID].tokens[it.sellTokenIndex.toNumber()]
                             .symbol
                         }
                       </span>
-                      <span> of {amountOf}</span>
+                      <span> of {bigToStr(amountOf, 18)}</span>
                     </p>
                   </div>
                   <div className={styles.arrow}>
@@ -191,13 +220,11 @@ const LongTermOrderCard = (props) => {
 
                 <div>
                   <p className={styles.timeRemaining} ref={remainingTimeRef}>
-                    {remainingTime != 0
-                      ? `${remainingTime} seconds remaining...`
-                      : "Completed.."}
+                    {orderStatus.status}
                   </p>
                   <div className={styles.progress}>
                     <div
-                      style={{ width: `${progress}%` }}
+                      style={{ width: `${orderStatus.progress}%` }}
                       className={classNames(
                         styles.activeProgress,
                         remainingTime == 0 && styles.greenProgress
@@ -209,7 +236,7 @@ const LongTermOrderCard = (props) => {
                 <div className={styles.extrasContainer}>
                   <div className={styles.fees}>{dummyOrder.fees} fees</div>
                   <div className={styles.averagePrice}>
-                    {dummyOrder.averagePrice} Average Price
+                    {averagePrice.toFixed(4)} Average Price
                   </div>
                 </div>
 

@@ -65,7 +65,7 @@ export async function getLastVirtualOrderBlock(signer) {
     );
 
     const longterm = await contract.longTermOrders();
-    const latestBlock = (longterm.lastVirtualOrderBlock.toNumber())
+    const latestBlock = (longterm.lastVirtualOrderBlock)
 
     console.log("====GET Long Term DETAILS=====", (longterm.lastVirtualOrderBlock.toNumber()));
     return (latestBlock);

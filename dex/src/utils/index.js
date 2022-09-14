@@ -18,9 +18,16 @@ export const toHex = (num) => {
 
 };
 
+export const bigToStr = (bigNum, decimalPlaces) => {
+  return parseFloat(ethers.utils.formatUnits(bigNum, decimalPlaces)).toFixed(4);
+}
+
+export const bigToFloat = (bigNum, decimalPlaces) => {
+  return parseFloat(ethers.utils.formatUnits(bigNum, decimalPlaces));
+}
 
 // Exporting fp 
-const SCALING_FACTOR = 1e18;
+export const SCALING_FACTOR = 1e18;
 export const decimal = (x) => new Decimal(x.toString());
 export const bn = (x) => {
   if (BigNumber.isBigNumber(x)) return x;
