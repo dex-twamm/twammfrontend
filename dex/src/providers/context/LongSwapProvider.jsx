@@ -5,7 +5,7 @@ import { ShortSwapContext } from "./ShortSwapProvider";
 export const LongSwapProvider = ({ children }) => {
   const [sliderValue, setSliderValue] = useState(1);
 
-  const [sliderValueInSec, setSliderValueInSec] = useState(60);
+  const [sliderValueInSec, setSliderValueInSec] = useState(0);
 
   const [sliderValueUnit, setSliderValueUnit] = useState("Min");
   const [orderLogsDecoded, setOrderLogsDecoded] = useState();

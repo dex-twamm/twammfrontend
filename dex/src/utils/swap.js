@@ -1,4 +1,4 @@
-import { Contract, ethers } from "ethers";
+import { BigNumber, Contract, ethers } from "ethers";
 import { VAULT_CONTRACT_ABI, VAULT_CONTRACT_ADDRESS } from "../constants";
 import { POOL_ID, MAX_UINT256, toHex } from ".";
 
@@ -7,7 +7,7 @@ import { POOL_ID, MAX_UINT256, toHex } from ".";
 /*
   swapTokens: Swaps `swapAmountWei` of Eth/Crypto Dev tokens with `tokenToBeReceivedAfterSwap` amount of Eth/Crypto Dev tokens.
 */
-export const swapTokens = async (signer, swapAmountWei, assetIn, assetOut, walletAddress) => {
+export const swapTokens = async (signer, swapAmountWei, assetIn, assetOut, walletAddress, expectedSwapOut, tolerance, deadline) => {
   let txHash;
   // Create a new instance of the exchange contract
   const exchangeContract = new Contract(
@@ -32,10 +32,11 @@ export const swapTokens = async (signer, swapAmountWei, assetIn, assetOut, walle
       recipient: walletAddress,
       toInternalBalance: false,
     },
-    kind === 0 ? 0 : MAX_UINT256, // 0 if given in, infinite if given out.  // Slippage  // TODO // Need To QueryBatchSwap Price - 1%
+    expectedSwapOut * (1 - tolerance),
+    // kind === 0 ? 0 : MAX_UINT256, // 0 if given in, infinite if given out.  // Slippage  // TODO // Need To QueryBatchSwap Price - 1%
     // swapAmountWei * SpotPrice *( 1- Slippage can be 0.005, 0.01, 0.02) Type Big Number
 
-    MAX_UINT256, // Deadline // Minutes Into Seconds Then Type BigNumber  
+    BigNumber.from(deadline).mul(60), // Deadline // Minutes Into Seconds Then Type BigNumber  
     {
       gasLimit: 2000000
     }

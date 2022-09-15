@@ -1,48 +1,25 @@
-const valueLabel = (value) => {
-  const sliderUnits = ["Min", "Hours", "Days", "Week", "Month"];
-  let unitIndex = 0;
-  let scaledValue = value;
+const valueLabel = (value, currentBlock) => {
+  // TODO 
+  console.log("cBlock", currentBlock);
+  const blockTimesSkew = ((new Date() - new Date(currentBlock.timestamp * 1000)) / 1000).toFixed(0);
+  console.log("Skew Time", blockTimesSkew)
+  const targetDate = new Date();
+  targetDate.setSeconds(targetDate.getSeconds() + Math.ceil(value) * 12 * 50 - (blockTimesSkew % 12))
 
-  if (scaledValue >= 1440 && unitIndex < sliderUnits.length - 1) {
-    unitIndex = 2;
-    scaledValue /= 1440;
-  } else if (scaledValue >= 300 && unitIndex < sliderUnits.length - 1) {
-    unitIndex = 1;
-    scaledValue /= 300;
-  } else if (scaledValue >= 60 && unitIndex < sliderUnits.length - 1) {
-    scaledValue /= 60;
-  }
-  const currentDate = new Date();
-  currentDate.setSeconds(scaledValue);
-
+  let executionTime = new Date(0);
+  executionTime.setSeconds(targetDate - new Date()); // specify value for SECONDS here
+  const timeString = executionTime.toISOString().substring(11, 19);
   const values = {
-    scaledValue: scaledValue.toFixed(0),
-    sliderUnits: sliderUnits[unitIndex],
-    date: currentDate.toDateString(),
+    executionTime: timeString,
+    targetDate: `${targetDate.toLocaleDateString()} ${targetDate.toLocaleTimeString()}`
   };
+  console.log("Time Diff", timeString)
   return values;
-  // sliderUnits: sliderUnits[unitIndex],}
-  // return sliderUnits[unitIndex];
-  // scaledValue.toFixed(0);
-  //   `${scaledValue.toFixed(0)} ${
-  //   sliderUnits[unitIndex]
-  // }`;
-  // scaledValue: scaledValue.toFixed(0),
-  // sliderUnits: sliderUnits[unitIndex],
 
-  // Block Interval Calculation 
-  //  Incoming Input as Seconds/ 12(Block Time) / Block
-  // const calculateValue = (value) => {
-  //   return log(value * blockInterval * blockTime);
-  // };
 };
 
-const calculateValue = (value) => {
-  // position will be between 0 and 100
-  const blockTime = 12;
-  const blockInterval = 2;
-  const calculateValue = (Math.log(Math.pow(10, value)) / blockTime / blockInterval);
-  return calculateValue;
+const calculateNumBlockIntervals = (sliderValue) => {
+  return Math.pow(2, sliderValue);
 };
 
-export { valueLabel, calculateValue };
+export { valueLabel, calculateNumBlockIntervals };

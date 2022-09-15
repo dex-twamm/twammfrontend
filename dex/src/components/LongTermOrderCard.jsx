@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import { ethers } from "ethers";
 import React, { useContext } from "react";
+import { useEffect } from "react";
 import { useRef } from "react";
 import { HiExternalLink } from "react-icons/hi";
 import styles from "../css/LongTermOrderCard.module.css";
@@ -12,7 +13,7 @@ const LongTermOrderCard = (props) => {
   const { cancelPool, withdrawPool } = props;
   const remainingTimeRef = useRef();
 
-  const { swapAmount, provider } = useContext(ShortSwapContext);
+  const { swapAmount, currentBlock } = useContext(ShortSwapContext);
 
   const { sliderValueInSec, tokenA, tokenB, orderLogsDecoded, latestBlock } =
     useContext(LongSwapContext);
@@ -75,21 +76,29 @@ const LongTermOrderCard = (props) => {
       // setProgress(100);
       return { status: "Execution Completed", progress: 100 };
     } else {
-      const timeRemaining = (expiryBlock - latestBlock) * 12;
-      // const timeRemaining =
-      // (expiryBlock - provider.getBlock("latest").number) * 12;
-      // setProgress((latestBlock - startBlock) / (expiryBlock - startBlock));
-      let date = new Date(0);
-      date.setSeconds(timeRemaining); // specify value for SECONDS here
-      const timeString = date.toISOString().substring(11, 19);
-      console.log(timeString);
+      if (expiryBlock > currentBlock.number) {
+        const timeRemaining = (expiryBlock - currentBlock.number) * 12;
+        // const timeRemaining = (expiryBlock - latestBlock) * 12;
 
-      return {
-        status: `Time Remaining: ${timeString}`,
-        progress: (latestBlock - startBlock) / (expiryBlock - startBlock),
-      };
+        // const timeRemaining =
+        // (expiryBlock - provider.getBlock("latest").number) * 12;
+        // setProgress((latestBlock - startBlock) / (expiryBlock - startBlock));
+        let date = new Date(0);
+        date.setSeconds(timeRemaining); // specify value for SECONDS here
+        const timeString = date.toISOString().substring(11, 19);
+        console.log(timeString);
+
+        return {
+          status: `Time Remaining: ${timeString}`,
+          progress: (latestBlock - startBlock) / (expiryBlock - startBlock),
+        };
+      } else {
+        return { status: "Execution Completed", progress: 100 };
+      }
     }
   };
+
+  useEffect(() => {}, [currentBlock]);
 
   // Mapping Data from EthLogs
 
@@ -104,7 +113,7 @@ const LongTermOrderCard = (props) => {
           );
           const stBlock = it.startBlock;
           let convertedAmount = ethers.constants.Zero;
-          if (it.sellTokenIndex.toNumber() === it.buyTokenIndex.toNumber()) {
+          if (it.state === "completed") {
             // Order Completed and Deleted
             convertedAmount = it.withdrawals.reduce((total, withdrawal) => {
               return total.add(withdrawal.proceeds);
@@ -138,7 +147,7 @@ const LongTermOrderCard = (props) => {
             soldToken =
               latestBlock > expBlock
                 ? amountOf
-                : (latestBlock - stBlock) * it.salesRate;
+                : latestBlock.sub(stBlock).mul(it.salesRate);
           }
           console.log("Sold Token", soldToken);
 
@@ -167,22 +176,13 @@ const LongTermOrderCard = (props) => {
                   <div className={styles.tokenWrapper}>
                     <img
                       className={styles.tokenIcon}
-                      src={
-                        POOLS[POOL_ID].tokens[it.sellTokenIndex.toNumber()]
-                          .image
-                      }
-                      alt={
-                        POOLS[POOL_ID].tokens[it.sellTokenIndex.toNumber()]
-                          .symbol
-                      }
+                      src={POOLS[POOL_ID].tokens[it.sellTokenIndex].image}
+                      alt={POOLS[POOL_ID].tokens[it.sellTokenIndex].symbol}
                     />
                     <p className={styles.tokenText}>
                       <span>
                         {bigToStr(soldToken, 18)}{" "}
-                        {
-                          POOLS[POOL_ID].tokens[it.sellTokenIndex.toNumber()]
-                            .symbol
-                        }
+                        {POOLS[POOL_ID].tokens[it.sellTokenIndex].symbol}
                       </span>
                       <span> of {bigToStr(amountOf, 18)}</span>
                     </p>
@@ -204,22 +204,14 @@ const LongTermOrderCard = (props) => {
                   <div>
                     <img
                       className={styles.tokenIcon}
-                      src={
-                        POOLS[POOL_ID].tokens[it.buyTokenIndex.toNumber()].image
-                      }
-                      alt={
-                        POOLS[POOL_ID].tokens[it.buyTokenIndex.toNumber()]
-                          .symbol
-                      }
+                      src={POOLS[POOL_ID].tokens[it.buyTokenIndex].image}
+                      alt={POOLS[POOL_ID].tokens[it.buyTokenIndex].symbol}
                     />
                     <p
                       className={classNames(styles.tokenText, styles.greenText)}
                     >
-                      {ethers.utils.formatEther(convertedAmount)}{" "}
-                      {
-                        POOLS[POOL_ID].tokens[it.buyTokenIndex.toNumber()]
-                          .symbol
-                      }
+                      {bigToStr(convertedAmount, 18)}{" "}
+                      {POOLS[POOL_ID].tokens[it.buyTokenIndex].symbol}
                     </p>
                   </div>
                 </div>
@@ -261,29 +253,34 @@ const LongTermOrderCard = (props) => {
                         ? styles.cancelButton
                         : styles.successButton
                     )}
-                    disabled
+                    disabled={
+                      orderStatus.status === "Cancelled" ||
+                      orderStatus.status === "Completed" ||
+                      orderStatus.status === "Execution Completed"
+                    }
                     onClick={() => {
                       cancelPool(it.orderId.toNumber());
                     }}
                   >
-                    {orderStatus.status === "Cancelled"
+                    {orderStatus.status !== "Completed"
                       ? "Cancel"
-                      : "Amount Withdrawn"}
+                      : "Completed"}
                   </button>
 
-                  {orderStatus.status === "Execution Completed" && (
-                    <button
-                      className={classNames(
-                        styles.button,
-                        styles.withdrawButton
-                      )}
-                      onClick={() => {
-                        withdrawPool(it.orderId.toNumber());
-                      }}
-                    >
-                      Withdraw
-                    </button>
-                  )}
+                  {orderStatus.status !== "Cancelled" &&
+                    orderStatus.status !== "Completed" && (
+                      <button
+                        className={classNames(
+                          styles.button,
+                          styles.withdrawButton
+                        )}
+                        onClick={() => {
+                          withdrawPool(it.orderId.toNumber());
+                        }}
+                      >
+                        Withdraw
+                      </button>
+                    )}
                 </div>
               </div>
             </div>

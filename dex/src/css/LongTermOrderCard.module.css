@@ -140,27 +140,41 @@
 	transition: all 0.2s ease-in-out;
 }
 
-.withdrawButton {
+.successButton {
 	background-color: #fedfe9;
 	color: #d50066;
 }
 
-.withdrawButton:hover {
+.successButton:hover {
 	background-color: #ffd7e3;
+}
+.successButton:disabled {
+	cursor: not-allowed;
+    opacity: 0.5;;
 }
 
 .cancelButton {
-	color: #fdeaf1;
-	background-color: #d50066;
+	color: rgb(213, 0, 102);
+	background-color: #fdeaf1;
+}
+
+.cancelButton:disabled{
+	cursor: not-allowed;
+    opacity: 0.5;
 }
 
 /* .cancelButton:hover {
 	background-color: #e3036f;
 } */
 
-.successButton {
+.withdrawButton {
 	background-color: #eaffea;
 	color: green;
+}
+
+.withdrawButton:disabled {
+	cursor: not-allowed;
+    opacity: 0.5;
 }
 
 .greenProgress {
@@ -169,6 +183,7 @@
 }
 
 .redProgress {
-	background-color: red;
-	opacity: 0.5;
+
+	background-color: rgb(210,66,66);
+	/* opacity: 0.5; */
 }

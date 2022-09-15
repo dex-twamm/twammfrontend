@@ -17,6 +17,12 @@ export const ShortSwapProvider = ({ children }) => {
   const [account, setAccount] = useState("");
   const [isWallletConnceted, setWalletConnected] = useState(false);
   const [orderId, setOrderId] = useState();
+  const [expectedSwapOut, setExpectedSwapOut] = useState(0);
+  const [tolerance, setTolerance] = useState(0.5);
+  const [deadline, setDeadline] = useState(0);
+  const [formErrors, setFormErrors] = useState();
+  const [web3provider, setweb3provider] = useState();
+  const [currentBlock, setCurrentBlock] = useState();
 
   return (
     <ShortSwapContext.Provider
@@ -53,6 +59,18 @@ export const ShortSwapProvider = ({ children }) => {
         setWalletConnected,
         orderId,
         setOrderId,
+        expectedSwapOut,
+        setExpectedSwapOut,
+        tolerance,
+        setTolerance,
+        deadline,
+        setDeadline,
+        formErrors,
+        setFormErrors,
+        web3provider,
+        setweb3provider,
+        currentBlock,
+        setCurrentBlock,
       }}
     >
       {children}

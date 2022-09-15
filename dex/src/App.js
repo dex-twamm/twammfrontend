@@ -9,6 +9,7 @@ import {
 	RemoveLiquidity,
 } from './components/Liquidity';
 import Navbar from './components/Navbar';
+import { calculateNumBlockIntervals } from './methods/longSwapMethod';
 import LongSwap from './pages/LongSwap';
 import ShortSwap from './pages/ShortSwap';
 import { LongSwapContext, ShortSwapContext, UIContext } from './providers';
@@ -26,7 +27,6 @@ import { swapTokens } from './utils/swap';
 
 function App() {
 	const [provider, setProvider] = useState();
-	const [web3provider, setweb3provider] = useState();
 	const [balance, setBalance] = useState();
 	const [nonce, setNonce] = useState();
 	const [isPlacedLongTermOrder, setIsPlacedLongTermOrder] = useState(false);
@@ -49,10 +49,15 @@ function App() {
 		poolCash,
 		account,
 		setAccount,
-		isWallletConnceted, setWalletConnected, setEquivalentAmount,
+		isWallletConnceted, setFormErrors,
+		setWalletConnected, setExpectedSwapOut,
+		web3provider, setweb3provider, setCurrentBlock, currentBlock,
+		tolerance, deadline
 	} = useContext(ShortSwapContext);
-	const { setOrderLogsDecoded, setLatestBlock } = useContext(LongSwapContext);
+	const { setOrderLogsDecoded, setLatestBlock, sliderValueInSec } = useContext(LongSwapContext);
 
+	// console.log("Settings Input", deadline, tolerance);
+	console.log("Current Block", currentBlock)
 	//  Connect Wallet 
 	const connectWallet = async () => {
 		try {
@@ -76,7 +81,9 @@ function App() {
 
 			setweb3provider(web3Provider);
 			setProvider(provider);
-
+			console.log("WEb 3 Provider", await web3Provider.getBlock("latest"));
+			// TODO - Update Every Transaction After 12 Seconds
+			setCurrentBlock(await web3Provider.getBlock("latest"));
 			const walletBalance = await web3Provider.getBalance(accounts[0]);
 			const ethBalance = ethers.utils.formatEther(walletBalance);
 			const humanFriendlyBalance = parseFloat(ethBalance).toFixed(4);
@@ -114,6 +121,7 @@ function App() {
 		const walletBalanceWei = ethers.utils.parseUnits(ethBalance, 'ether');
 		const pCash = ethers.utils.parseUnits(poolCash, 'ether')
 		const swapAmountWei = ethers.utils.parseUnits(swapAmount, 'ether');
+
 		// swapAmountWei.lte(walletBalanceWei && poolCash)
 		// 	? console.log('True')
 		// 	: console.log('False');
@@ -130,7 +138,11 @@ function App() {
 					swapAmountWei,
 					assetIn,
 					assetOut,
-					walletAddress
+					walletAddress,
+					tolerance,
+					deadline,
+
+
 				)
 					.then(res => setTransactionHash(res))
 					.catch(err => {
@@ -163,7 +175,8 @@ function App() {
 			);
 			const amountIn = swapAmountWei;
 			// console.log('amountIn', amountIn);
-			const numberOfBlockIntervals = '3';
+			const numberOfBlockIntervals = Math.ceil(sliderValueInSec);
+			console.log("Intervals", numberOfBlockIntervals);
 			const signer = await getProvider(true);
 			const walletAddress = account;
 			// Call the PlaceLongTermOrders function from the `utils` folder*
@@ -296,20 +309,29 @@ function App() {
 		const swapAmountWei = ethers.utils.parseUnits(swapAmount, 'ether');
 		const assetIn = srcAddress;
 		const assetOut = destAddress;
-		const batchPrice = await runQueryBatchSwap(assetIn, assetOut, swapAmountWei).then((res) => { console.log("Response From Query Batch Swap", res); setEquivalentAmount(res) });
+		const error = {};
+		const batchPrice = await runQueryBatchSwap(assetIn, assetOut, swapAmountWei).then((res) => {
+			console.log("Response From Query Batch Swap", res.errorMessage);
+			// setEquivalentAmount(res.expectedSwapOut);
+			setFormErrors(error.balError = res.errorMessage);
+			setExpectedSwapOut(res.expectedSwapOut);
+		});
 		return batchPrice;
 	}
-	useEffect(() => {
-		spotPrices();
-	}, [swapAmount, srcAddress, destAddress])
+	// useEffect(() => {
+	// 	spotPrices();
+	// }, [swapAmount, srcAddress, destAddress])
 	// Getting Each Token Balances
 	const tokenBalance = async account => {
-		setLoading(true);
+		// setLoading(true);
 		try {
 			const provider = await getProvider(true);
 			const tokenAddress = FAUCET_TOKEN_ADDRESS;
 			const walletAddress = account;
-			await getLastVirtualOrderBlock(provider).then(res => { console.log("Latest Block", res); setLatestBlock(res) });
+			await getLastVirtualOrderBlock(provider).then(res => {
+				console.log("Latest Block", res);
+				setLatestBlock(res)
+			});
 			const signer = await getProvider(true);
 
 			await getEthLogs(signer, walletAddress).then(res => {

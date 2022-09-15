@@ -8,7 +8,10 @@ import lsStyles from "../css/LongSwap.module.css";
 import style from "../css/Swap.module.css";
 import styles from "../css/AddLiquidity.module.css";
 
-import { calculateValue, valueLabel } from "../methods/longSwapMethod";
+import {
+  calculateNumBlockIntervals,
+  valueLabel,
+} from "../methods/longSwapMethod";
 import { LongSwapContext } from "../providers";
 import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
 import PopupModal from "./alerts/PopupModal";
@@ -19,19 +22,19 @@ const Swap = (props) => {
   const { connectWallet, buttonText, swapType } = props;
 
   const [display, setDisplay] = useState(false);
-  const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [value, setValue] = useState(0.0);
   const [showModal, setShowModal] = useState(false);
 
   const {
-    equivalentAmount,
-    setEquivalentAmount,
     swapAmount,
     setSwapAmount,
     selectToken,
     setSelectToken,
-    setLoading,
+    expectedSwapOut,
+    formErrors,
+    setFormErrors,
+    currentBlock,
   } = useContext(ShortSwapContext);
 
   const {
@@ -47,6 +50,8 @@ const Swap = (props) => {
     setSliderDate,
     sliderDate,
   } = useContext(LongSwapContext);
+
+  console.log("Form Errors", formErrors);
 
   const handleDisplay = (event) => {
     console.log("Current Target Id", event.currentTarget.id);
@@ -76,7 +81,6 @@ const Swap = (props) => {
   //     "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png",
   //   address: MATIC_TOKEN_ADDRESS,
   // });
-
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsSubmit(true);
@@ -93,16 +97,18 @@ const Swap = (props) => {
     if (!valueInt > 0) {
       errors.swapAmount = "Swap Amount Is Required";
     }
+
     return errors;
   };
 
   const handleChange = (e, newValue) => {
     if (typeof newValue === "number") {
       setValue(newValue);
-      setSliderValueInSec(calculateValue(newValue));
-      setSliderValue(valueLabel(calculateValue(newValue)).scaledValue);
-      setSliderValueUnit(valueLabel(calculateValue(newValue)).sliderUnits);
-      setSliderDate(valueLabel(calculateValue(newValue)).date);
+      setSliderValueInSec(calculateNumBlockIntervals(newValue));
+      setSliderDate(
+        valueLabel(calculateNumBlockIntervals(newValue), currentBlock)
+          .targetDate
+      );
     }
   };
 
@@ -213,7 +219,7 @@ const Swap = (props) => {
             setTokenB={setTokenB}
             swapType={swapType}
           />
-
+          {/* 
           {formErrors.swapAmount && (
             <div className={styles.errorAlert}>
               <Alert
@@ -224,13 +230,13 @@ const Swap = (props) => {
                 {formErrors.swapAmount}
               </Alert>
             </div>
-          )}
+          )} */}
           {swapType !== "long" && (
             <>
               <FontAwesomeIcon className={style.iconDown} icon={faArrowDown} />
               <Input
                 id={2}
-                input={equivalentAmount}
+                input={expectedSwapOut}
                 imgSrc={tokenB.image}
                 symbol={tokenB.symbol}
                 onChange={(e) => e.target.value}
@@ -243,7 +249,17 @@ const Swap = (props) => {
               />
             </>
           )}
-
+          {/* {formErrors && (
+            <div className={styles.errorAlert}>
+              <Alert
+                severity="error"
+                sx={{ borderRadius: "16px" }}
+                onClose={() => setFormErrors({})}
+              >
+                {formErrors}
+              </Alert>
+            </div>
+          )} */}
           {swapType === "long" && (
             <div className={lsStyles.rangeSelect}>
               <Box
@@ -266,9 +282,9 @@ const Swap = (props) => {
                 </Typography>
                 <Slider
                   value={value}
-                  min={1}
-                  step={2}
-                  max={100}
+                  min={0}
+                  step={0.1}
+                  max={13}
                   sx={{
                     height: 15,
                     width: 1,

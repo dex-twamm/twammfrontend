@@ -1,4 +1,4 @@
-import { Contract, ethers, utils } from "ethers";
+import { BigNumber, Contract, ethers, utils } from "ethers";
 import { LONGTERM_ABI, VAULT_CONTRACT_ABI, VAULT_CONTRACT_ADDRESS } from "../constants";
 import { POOL_ID, FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS, OWNER_ADDRESS, MAX_UINT256, LONGTERM_CONTRACT } from ".";
 
@@ -16,7 +16,7 @@ export async function placeLongTermOrder(
     const abiCoder = ethers.utils.defaultAbiCoder;
     const encodedRequest = abiCoder.encode(
         ['uint256', 'uint256', 'uint256', 'uint256', 'uint256'],
-        [4, tokenInIndex, tokenOutIndex, amountIn, numberOfBlockIntervals]
+        [4, tokenInIndex, tokenOutIndex, amountIn, BigNumber.from(numberOfBlockIntervals)]
     );
     const placeLtoTx = await exchangeContract.joinPool(
         POOL_ID,
