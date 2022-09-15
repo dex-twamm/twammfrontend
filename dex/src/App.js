@@ -13,13 +13,14 @@ import LongSwap from './pages/LongSwap';
 import ShortSwap from './pages/ShortSwap';
 import { LongSwapContext, ShortSwapContext, UIContext } from './providers';
 import {
-	FAUCET_TOKEN_ADDRESS, truncateAddress,
+	FAUCET_TOKEN_ADDRESS, POOL_ID, truncateAddress,
 } from './utils';
 import { cancelLTO, exitPool, getPoolBalance, joinPool, withdrawLTO } from './utils/addLiquidity';
 import { runQueryBatchSwap } from './utils/batchSwap';
 import { getLPTokensBalance } from './utils/getAmount';
 import { getEthLogs } from './utils/get_ethLogs';
 import { getLastVirtualOrderBlock, getLongTermOrder, placeLongTermOrder } from './utils/longSwap';
+import { POOLS } from './utils/pool';
 import { web3Modal } from './utils/providerOptions';
 import { swapTokens } from './utils/swap';
 
@@ -48,9 +49,11 @@ function App() {
 		poolCash,
 		account,
 		setAccount,
-		isWallletConnceted, setWalletConnected, setEquivalentAmount
+		isWallletConnceted, setWalletConnected, setEquivalentAmount,
 	} = useContext(ShortSwapContext);
 	const { setOrderLogsDecoded, setLatestBlock } = useContext(LongSwapContext);
+
+	//  Connect Wallet 
 	const connectWallet = async () => {
 		try {
 			await getProvider();
@@ -152,8 +155,12 @@ function App() {
 		const swapAmountWei = ethers.utils.parseUnits(swapAmount, 'ether');
 		// console.log('swapAmountWei', swapAmountWei);
 		try {
-			const tokenInIndex = '1';
-			const tokenOutIndex = '0';
+			const tokenInIndex = POOLS[POOL_ID].tokens.findIndex(object =>
+				srcAddress === object.address
+			);
+			const tokenOutIndex = POOLS[POOL_ID].tokens.findIndex(object =>
+				destAddress === object.address
+			);
 			const amountIn = swapAmountWei;
 			// console.log('amountIn', amountIn);
 			const numberOfBlockIntervals = '3';
@@ -236,10 +243,9 @@ function App() {
 	};
 
 	// cancelLTO
-	const _cancelLTO = async () => {
+	const _cancelLTO = async (orderId) => {
 		setLoading(true)
 		try {
-			const orderId = 10;
 			const walletAddress = account;
 			const signer = await getProvider(true);
 			if (!isWallletConnceted) {
@@ -254,10 +260,10 @@ function App() {
 		}
 	};
 	//  WithdrawLTO
-	const _withdrawLTO = async () => {
+	const _withdrawLTO = async (orderId) => {
+		console.log("Order Id", orderId);
 		setLoading(true)
 		try {
-			const orderId = 11;
 			const walletAddress = account;
 			const signer = await getProvider(true);
 			if (!isWallletConnceted) {
@@ -309,8 +315,6 @@ function App() {
 			await getEthLogs(signer, walletAddress).then(res => {
 				console.log("=== Order Keys === ", res.keys())
 				console.log("=== Order Values === ", res.values())
-
-
 				const resArray = Array.from(res.values());
 				console.log("=== Order Logs === ", resArray)
 				setOrderLogsDecoded(resArray);
@@ -413,8 +417,8 @@ function App() {
 							isPlacedLongTermOrder={isPlacedLongTermOrder}
 							showSettings={showSettings}
 							setShowSettings={setShowSettings}
-							cancelPool={() => _cancelLTO()}
-							withdrawPool={() => _withdrawLTO()}
+							cancelPool={_cancelLTO}
+							withdrawPool={_withdrawLTO}
 						/>
 					}
 				/>

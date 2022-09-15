@@ -1,18 +1,11 @@
-import { Pool } from "@mui/icons-material";
-import { ListItem } from "@mui/material";
 import classNames from "classnames";
-import { BigNumber, ethers } from "ethers";
+import { ethers } from "ethers";
 import React, { useContext } from "react";
-import { useState } from "react";
 import { useRef } from "react";
-import { useEffect } from "react";
 import { HiExternalLink } from "react-icons/hi";
-import { getProviderDescription } from "web3modal";
 import styles from "../css/LongTermOrderCard.module.css";
 import { LongSwapContext, ShortSwapContext } from "../providers";
-import { bigToFloat, bigToStr, POOL_ID, SCALING_FACTOR } from "../utils";
-import { exitPool } from "../utils/addLiquidity";
-import { getLongTermOrder } from "../utils/longSwap";
+import { bigToFloat, bigToStr, POOL_ID } from "../utils";
 import { POOLS } from "../utils/pool";
 
 const LongTermOrderCard = (props) => {
@@ -71,10 +64,10 @@ const LongTermOrderCard = (props) => {
   // Status of Long Term Orders
   const checkStatus = (state, startBlock, expiryBlock) => {
     console.log("Blocks", startBlock, expiryBlock, latestBlock);
-    if (state == "completed") {
+    if (state === "completed") {
       // setProgress(100);
       return { status: "Completed", progress: 100 };
-    } else if (state == "cancelled") {
+    } else if (state === "cancelled") {
       // setProgress(100);
       // Progress Bar Color Set To Red === TODO
       return { status: "Cancelled", progress: 100 };
@@ -111,7 +104,7 @@ const LongTermOrderCard = (props) => {
           );
           const stBlock = it.startBlock;
           let convertedAmount = ethers.constants.Zero;
-          if (it.sellTokenIndex.toNumber() == it.buyTokenIndex.toNumber()) {
+          if (it.sellTokenIndex.toNumber() === it.buyTokenIndex.toNumber()) {
             // Order Completed and Deleted
             convertedAmount = it.withdrawals.reduce((total, withdrawal) => {
               return total.add(withdrawal.proceeds);
@@ -151,7 +144,6 @@ const LongTermOrderCard = (props) => {
 
           const averagePrice =
             bigToFloat(convertedAmount, 18) / bigToFloat(soldToken, 18);
-
           console.log("Average Price", averagePrice);
           return (
             <div className={styles.container} key={it.transactionHash}>
@@ -175,8 +167,14 @@ const LongTermOrderCard = (props) => {
                   <div className={styles.tokenWrapper}>
                     <img
                       className={styles.tokenIcon}
-                      src={tokenA.image}
-                      alt={tokenA.symbol}
+                      src={
+                        POOLS[POOL_ID].tokens[it.sellTokenIndex.toNumber()]
+                          .image
+                      }
+                      alt={
+                        POOLS[POOL_ID].tokens[it.sellTokenIndex.toNumber()]
+                          .symbol
+                      }
                     />
                     <p className={styles.tokenText}>
                       <span>
@@ -206,14 +204,22 @@ const LongTermOrderCard = (props) => {
                   <div>
                     <img
                       className={styles.tokenIcon}
-                      src={tokenB.image}
-                      alt={tokenB.symbol}
+                      src={
+                        POOLS[POOL_ID].tokens[it.buyTokenIndex.toNumber()].image
+                      }
+                      alt={
+                        POOLS[POOL_ID].tokens[it.buyTokenIndex.toNumber()]
+                          .symbol
+                      }
                     />
                     <p
                       className={classNames(styles.tokenText, styles.greenText)}
                     >
                       {ethers.utils.formatEther(convertedAmount)}{" "}
-                      {tokenB.symbol}
+                      {
+                        POOLS[POOL_ID].tokens[it.buyTokenIndex.toNumber()]
+                          .symbol
+                      }
                     </p>
                   </div>
                 </div>
@@ -227,7 +233,14 @@ const LongTermOrderCard = (props) => {
                       style={{ width: `${orderStatus.progress}%` }}
                       className={classNames(
                         styles.activeProgress,
-                        remainingTime == 0 && styles.greenProgress
+
+                        orderStatus.status === "Completed"
+                          ? styles.greenProgress
+                          : orderStatus.status === "Execution Completed"
+                          ? styles.greenProgress
+                          : orderStatus.status === "Cancelled"
+                          ? styles.redProgress
+                          : styles.activeProgress
                       )}
                     ></div>
                   </div>
@@ -236,7 +249,7 @@ const LongTermOrderCard = (props) => {
                 <div className={styles.extrasContainer}>
                   <div className={styles.fees}>{dummyOrder.fees} fees</div>
                   <div className={styles.averagePrice}>
-                    {averagePrice.toFixed(4)} Average Price
+                    {soldToken != 0 && averagePrice.toFixed(4)} Average Price
                   </div>
                 </div>
 
@@ -244,22 +257,29 @@ const LongTermOrderCard = (props) => {
                   <button
                     className={classNames(
                       styles.button,
-                      remainingTime !== 0
+                      orderStatus.status === "Cancelled"
                         ? styles.cancelButton
                         : styles.successButton
                     )}
-                    onClick={cancelPool}
+                    disabled
+                    onClick={() => {
+                      cancelPool(it.orderId.toNumber());
+                    }}
                   >
-                    {remainingTime !== 0 ? "Cancel" : "Completed"}
+                    {orderStatus.status === "Cancelled"
+                      ? "Cancel"
+                      : "Amount Withdrawn"}
                   </button>
 
-                  {remainingTime !== 0 && (
+                  {orderStatus.status === "Execution Completed" && (
                     <button
                       className={classNames(
                         styles.button,
                         styles.withdrawButton
                       )}
-                      onClick={withdrawPool}
+                      onClick={() => {
+                        withdrawPool(it.orderId.toNumber());
+                      }}
                     >
                       Withdraw
                     </button>

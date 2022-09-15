@@ -16,6 +16,7 @@ export const ShortSwapProvider = ({ children }) => {
   const [poolCash, setPoolCash] = useState("");
   const [account, setAccount] = useState("");
   const [isWallletConnceted, setWalletConnected] = useState(false);
+  const [orderId, setOrderId] = useState();
 
   return (
     <ShortSwapContext.Provider
@@ -50,6 +51,8 @@ export const ShortSwapProvider = ({ children }) => {
         setAccount,
         isWallletConnceted,
         setWalletConnected,
+        orderId,
+        setOrderId,
       }}
     >
       {children}

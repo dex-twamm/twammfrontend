@@ -154,9 +154,9 @@
 	background-color: #d50066;
 }
 
-.cancelButton:hover {
+/* .cancelButton:hover {
 	background-color: #e3036f;
-}
+} */
 
 .successButton {
 	background-color: #eaffea;
@@ -165,5 +165,10 @@
 
 .greenProgress {
 	background-color: green;
+	opacity: 0.5;
+}
+
+.redProgress {
+	background-color: red;
 	opacity: 0.5;
 }
