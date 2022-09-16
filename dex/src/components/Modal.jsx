@@ -55,36 +55,6 @@ const Modal = ({ display, setDisplay, setTokenA, setTokenB, tokenDetails }) => {
 		handleModalClose();
 	};
 
-	// Mapping The Token Details Objects - Subham
-	// const tokenList = tokenDetails.map(token => {
-	// 	return (
-	// 		<div
-	// 			className={styles.modalToken}
-	// 			key={token.symbol}
-	// 			onClick={handleTokenSelection}
-	// 		>
-	// 			<img
-	// 				className={styles.modalTokenImg}
-	// 				alt='ETH logo'
-	// 				src={token.image}
-	// 				style={{ width: '25px' }}
-	// 			/>
-	// 			<p>{token.name}</p>
-	// 			<p className={styles.tokenAddress} style={{ display: 'none' }}>
-	// 				{token.address}
-	// 			</p>
-	// 			<p className={styles.comingSoon}>
-	// 				{parseFloat(token.balance).toFixed(2)}
-	// 			</p>
-	// 			{token.type === 'coming_soon' && (
-	// 				<div className={styles.comingSoon}>
-	// 					<span>coming soon...</span>
-	// 				</div>
-	// 			)}
-	// 		</div>
-	// 	);
-	// });
-
 	let tokensList;
 	let tokensDetail = tokenDetails;
 	const getMarkup = token => {

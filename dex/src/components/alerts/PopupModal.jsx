@@ -26,10 +26,10 @@ const PopupModal = () => {
     return () => {
       clearTimeout(timer);
     };
-  }, []);
+  }, );
 
   const handleClose = () => {
-    setLoading("");
+    setLoading(false);
     setError("");
     setSuccess("");
     setTransactionHash("");

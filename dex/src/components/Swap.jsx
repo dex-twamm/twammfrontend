@@ -25,6 +25,7 @@ const Swap = (props) => {
   const [isSubmit, setIsSubmit] = useState(false);
   const [value, setValue] = useState(0.0);
   const [showModal, setShowModal] = useState(false);
+  const [executionTime, setExecutionTIme] = useState("");
 
   const {
     swapAmount,
@@ -35,21 +36,11 @@ const Swap = (props) => {
     formErrors,
     setFormErrors,
     currentBlock,
+    isWalletConnected,
   } = useContext(ShortSwapContext);
 
-  const {
-    sliderValue,
-    setSliderValue,
-    sliderValueUnit,
-    setSliderValueUnit,
-    setSliderValueInSec,
-    tokenA,
-    tokenB,
-    setTokenA,
-    setTokenB,
-    setSliderDate,
-    sliderDate,
-  } = useContext(LongSwapContext);
+  const { tokenA, tokenB, setTokenA, setTokenB, setTargetDate, targetDate } =
+    useContext(LongSwapContext);
 
   console.log("Form Errors", formErrors);
 
@@ -104,10 +95,14 @@ const Swap = (props) => {
   const handleChange = (e, newValue) => {
     if (typeof newValue === "number") {
       setValue(newValue);
-      setSliderValueInSec(calculateNumBlockIntervals(newValue));
-      setSliderDate(
+
+      setTargetDate(
         valueLabel(calculateNumBlockIntervals(newValue), currentBlock)
           .targetDate
+      );
+      setExecutionTIme(
+        valueLabel(calculateNumBlockIntervals(newValue), currentBlock)
+          .executionTime
       );
     }
   };
@@ -264,9 +259,7 @@ const Swap = (props) => {
             <div className={lsStyles.rangeSelect}>
               <Box
                 sx={{
-                  width: "90%",
                   margin: "0 auto",
-                  fontFamily: "Open Sans",
                 }}
               >
                 <Typography
@@ -275,10 +268,49 @@ const Swap = (props) => {
                   id="non-linear-slider"
                   gutterBottom
                 >
-                  <Box sx={{ float: "right", display: "flex" }}>
-                    Date: {`${sliderDate} `}
+                  <Box
+                    sx={{
+                      float: "right",
+                      display: "flex",
+                      fontSize: "12px",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      fontFamily: "Open Sans",
+                    }}
+                  >
+                    {`${targetDate} `}
                   </Box>
-                  <Box> Time: {`${sliderValue} ${sliderValueUnit}`}</Box>
+
+                  <Box
+                    sx={{
+                      fontSize: "12px",
+                      paddingLeft: "10px",
+                      fontFamily: "Open Sans",
+                    }}
+                  >
+                    {executionTime}
+                  </Box>
+                  <Box
+                    sx={{
+                      float: "left",
+                      fontSize: "10px",
+                      display: "flex",
+                      fontFamily: "Open Sans",
+                    }}
+                  >
+                    Execution Time
+                  </Box>
+                  <Box
+                    sx={{
+                      float: "right",
+                      fontSize: "10px",
+                      display: "flex",
+                      paddingRight: "2px",
+                      fontFamily: "Open Sans",
+                    }}
+                  >
+                    Order Completetion Date
+                  </Box>
                 </Typography>
                 <Slider
                   value={value}
@@ -290,9 +322,6 @@ const Swap = (props) => {
                     width: 1,
                     color: "#ffaac9",
                   }}
-                  // scale={calculateValue}
-                  // getAriaValueText={valueLabel}
-                  // valueLabelFormat={valueLabel}
                   onChange={handleChange}
                   valueLabelDisplay="auto"
                   aria-labelledby="non-linear-slider"
@@ -305,12 +334,16 @@ const Swap = (props) => {
             className={classNames(styles.btn, styles.btnConnect)}
             onClick={handleClick}
             disabled={
-              !tokenA.tokenIsSet || !tokenB.tokenIsSet || !swapAmount
+              !isWalletConnected
+                ? false
+                : !tokenA.tokenIsSet || !tokenB.tokenIsSet || !swapAmount
                 ? true
                 : false
             }
           >
-            {!tokenA.tokenIsSet || !tokenB.tokenIsSet
+            {!isWalletConnected
+              ? buttonText
+              : !tokenA.tokenIsSet || !tokenB.tokenIsSet
               ? "Select a Token"
               : !swapAmount
               ? "Enter an Amount"

@@ -6,7 +6,7 @@
 
 body,
 html {
-	font-family: 'Open Sans', sans-serif;
+	font-family: 'Open Sans', sans-serif !important;
 	background: rgb(247, 237, 244);
 	min-height: 100vh;
 	width: 100%;

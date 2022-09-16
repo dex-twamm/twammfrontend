@@ -51,7 +51,7 @@ function App() {
 		setAccount,
 		isWallletConnceted, setFormErrors,
 		setWalletConnected, setExpectedSwapOut,
-		web3provider, setweb3provider, setCurrentBlock, currentBlock,
+		setweb3provider, setCurrentBlock, currentBlock, web3Provider,
 		tolerance, deadline
 	} = useContext(ShortSwapContext);
 	const { setOrderLogsDecoded, setLatestBlock, sliderValueInSec } = useContext(LongSwapContext);
@@ -71,7 +71,7 @@ function App() {
 
 	//  Get Provider
 	const getProvider = async (needSigner = false) => {
-		setLoading(true);
+		// setLoading(true);
 		try {
 			const provider = await web3Modal.connect();
 			const web3Provider = new providers.Web3Provider(provider);
@@ -91,16 +91,13 @@ function App() {
 			localStorage.setItem('balance', humanFriendlyBalance);
 
 			setBalance(humanFriendlyBalance);
-
 			if (accounts) setAccount(accounts[0]);
 			if (needSigner) return web3Provider.getSigner();
-			if (provider) setWalletConnected(true);
+			if (web3Provider) setWalletConnected(true);
 
 			setSuccess('Wallet Connected');
-			setLoading(false);
 			return web3Provider;
 		} catch (err) {
-			setLoading(false);
 			setError('Wallet Connection Rejected');
 		}
 	};
@@ -213,6 +210,7 @@ function App() {
 
 	//  Calling LongTermSwap
 	async function LongSwapButtonClick() {
+		console.log("Wallet", isWallletConnceted);
 		if (!isWallletConnceted) {
 			await connectWallet();
 			const signer = await getProvider(true);
@@ -318,11 +316,12 @@ function App() {
 		});
 		return batchPrice;
 	}
-	// useEffect(() => {
-	// 	spotPrices();
-	// }, [swapAmount, srcAddress, destAddress])
+	useEffect(() => {
+		const interval = setInterval(() => { spotPrices() }, 2000);
+		return () => clearInterval(interval);
+	}, [swapAmount, srcAddress, destAddress])
 	// Getting Each Token Balances
-	const tokenBalance = async account => {
+	const tokenBalance = async (account) => {
 		// setLoading(true);
 		try {
 			const provider = await getProvider(true);
@@ -366,7 +365,7 @@ function App() {
 			setBalance(balance);
 		}
 		tokenBalance(account);
-	}, [swapAmount]);
+	}, [isWallletConnceted]);
 
 	useEffect(() => {
 		document.body.onclick = () => {
