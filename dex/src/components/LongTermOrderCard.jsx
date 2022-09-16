@@ -14,6 +14,8 @@ import { bigToFloat, bigToStr, POOL_ID, SCALING_FACTOR } from "../utils";
 import { exitPool } from "../utils/addLiquidity";
 import { getLongTermOrder } from "../utils/longSwap";
 import { POOLS } from "../utils/pool";
+import LongTermSwapCardDropdown from "../components/LongTermSwapCardDropdown";
+
 
 const LongTermOrderCard = (props) => {
   const { cancelPool, withdrawPool } = props;
@@ -239,6 +241,8 @@ const LongTermOrderCard = (props) => {
                     {averagePrice.toFixed(4)} Average Price
                   </div>
                 </div>
+
+                <LongTermSwapCardDropdown  tokenB={tokenB}/>
 
                 <div className={styles.buttonContainer}>
                   <button

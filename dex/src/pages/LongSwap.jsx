@@ -3,12 +3,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import React, { useContext, useState } from "react";
 import LongTermOrderCard from "../components/LongTermOrderCard";
-import LongTermSwapCardDropdown from "../components/LongTermSwapCardDropdown";
 import PopupSettings from "../components/PopupSettings";
 import Swap from "../components/Swap";
 import lsStyles from "../css/LongSwap.module.css";
 import styles from "../css/ShortSwap.module.css";
 import { LongSwapContext } from "../providers";
+import LongTermSwapCardDropdown from "../components/LongTermSwapCardDropdown";
+
 
 const LongSwap = (props) => {
   const {
@@ -68,8 +69,8 @@ const LongSwap = (props) => {
               withdrawPool={withdrawPool}
             ></LongTermOrderCard>
 
-              <div style={{with:'100%',height:'80px',paddingTop:'30px'}}>
-                <LongTermSwapCardDropdown open={true} tokenB={tokenB}/>
+              <div style={{with:'100%',height:'auto',}}>
+                <LongTermSwapCardDropdown  tokenB={tokenB}/>
               
 
               </div>

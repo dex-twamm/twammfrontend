@@ -419,7 +419,7 @@ const Swap = props => {
 
 
 					</Box>
-					<LongTermSwapCardDropdown open={open} handleClose={handleClose} tokenB={tokenB}/>
+					{/* <LongTermSwapCardDropdown open={open} handleClose={handleClose} tokenB={tokenB}/> */}
 
 					</> }
 
