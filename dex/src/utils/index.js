@@ -82,3 +82,14 @@ export const FAUCET_TOKEN_ADDRESS = "0xBA62BCfcAaFc6622853cca2BE6Ac7d845BC0f2Dc"
 export const OWNER_ADDRESS = "0x51Ac1DB1A27Ec7CD51a21523a935b26ad53DBEb7";
 
 export const LONGTERM_CONTRACT = "0x9AD68324a94d1052445aBb6C094dd7abC888E5AA";
+
+export const timeDeltaString = (seconds) => {
+  const hhmm = new Date(1000 * seconds).toISOString().substring(11, 16);
+  const days = parseInt(seconds / 86400);
+  if (seconds > 86400) {
+    return `${days}d ${hhmm}`
+  } else {
+    return hhmm;
+  }
+
+}

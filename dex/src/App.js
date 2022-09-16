@@ -1,5 +1,5 @@
 
-import { ethers, providers } from 'ethers';
+import { BigNumber, ethers, providers } from 'ethers';
 import { useContext, useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
@@ -49,12 +49,12 @@ function App() {
 		poolCash,
 		account,
 		setAccount,
-		isWallletConnceted, setFormErrors,
+		isWallletConnceted, setFormErrors, expectedSwapOut,
 		setWalletConnected, setExpectedSwapOut,
 		setweb3provider, setCurrentBlock, currentBlock, web3Provider,
 		tolerance, deadline
 	} = useContext(ShortSwapContext);
-	const { setOrderLogsDecoded, setLatestBlock, sliderValueInSec } = useContext(LongSwapContext);
+	const { setOrderLogsDecoded, setLatestBlock, numberOfBlockIntervals } = useContext(LongSwapContext);
 
 	// console.log("Settings Input", deadline, tolerance);
 	console.log("Current Block", currentBlock)
@@ -118,6 +118,7 @@ function App() {
 		const walletBalanceWei = ethers.utils.parseUnits(ethBalance, 'ether');
 		const pCash = ethers.utils.parseUnits(poolCash, 'ether')
 		const swapAmountWei = ethers.utils.parseUnits(swapAmount, 'ether');
+		// console.log("Deadline", deadline);
 
 		// swapAmountWei.lte(walletBalanceWei && poolCash)
 		// 	? console.log('True')
@@ -136,10 +137,9 @@ function App() {
 					assetIn,
 					assetOut,
 					walletAddress,
+					expectedSwapOut,
 					tolerance,
 					deadline,
-
-
 				)
 					.then(res => setTransactionHash(res))
 					.catch(err => {
@@ -172,7 +172,7 @@ function App() {
 			);
 			const amountIn = swapAmountWei;
 			// console.log('amountIn', amountIn);
-			const numberOfBlockIntervals = Math.ceil(sliderValueInSec);
+			const blockIntervals = Math.ceil(numberOfBlockIntervals);
 			console.log("Intervals", numberOfBlockIntervals);
 			const signer = await getProvider(true);
 			const walletAddress = account;
@@ -181,7 +181,7 @@ function App() {
 				tokenInIndex,
 				tokenOutIndex,
 				amountIn,
-				numberOfBlockIntervals,
+				blockIntervals,
 				signer,
 				walletAddress
 			).then((res) => { setTransactionHash(res) }).finally(setLoading(false));

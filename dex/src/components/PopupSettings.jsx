@@ -23,7 +23,7 @@ const PopupSettings = () => {
                 styles.btn,
                 tolerance === 0.5 && styles.active
               )}
-              onClick={() => setTolerance(0.005)}
+              onClick={() => setTolerance(0.5)}
             >
               0.5
             </button>
@@ -32,7 +32,7 @@ const PopupSettings = () => {
                 styles.btn,
                 tolerance === 1 && styles.active
               )}
-              onClick={() => setTolerance(0.01)}
+              onClick={() => setTolerance(1)}
             >
               1
             </button>
@@ -41,7 +41,7 @@ const PopupSettings = () => {
                 styles.btn,
                 tolerance === 2 && styles.active
               )}
-              onClick={() => setTolerance(0.02)}
+              onClick={() => setTolerance(2)}
             >
               2
             </button>

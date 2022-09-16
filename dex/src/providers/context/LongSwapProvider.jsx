@@ -7,7 +7,7 @@ export const LongSwapProvider = ({ children }) => {
 
   const [orderLogsDecoded, setOrderLogsDecoded] = useState();
   const [latestBlock, setLatestBlock] = useState("");
-
+  const [numberOfBlockIntervals, setNumberOfBlockIntervals] = useState(1);
   const [targetDate, setTargetDate] = useState("");
   const { tokenBalances } = useContext(ShortSwapContext);
 
@@ -43,6 +43,8 @@ export const LongSwapProvider = ({ children }) => {
         setOrderLogsDecoded,
         latestBlock,
         setLatestBlock,
+        numberOfBlockIntervals,
+        setNumberOfBlockIntervals,
       }}
     >
       {children}

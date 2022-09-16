@@ -17,6 +17,8 @@ import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
 import PopupModal from "./alerts/PopupModal";
 import Input from "./Input";
 import { FiChevronDown } from "react-icons/fi";
+import { bigToStr } from "../utils";
+import { BigNumber } from "ethers";
 
 const Swap = (props) => {
   const { connectWallet, buttonText, swapType } = props;
@@ -39,8 +41,15 @@ const Swap = (props) => {
     isWalletConnected,
   } = useContext(ShortSwapContext);
 
-  const { tokenA, tokenB, setTokenA, setTokenB, setTargetDate, targetDate } =
-    useContext(LongSwapContext);
+  const {
+    tokenA,
+    tokenB,
+    setTokenA,
+    setTokenB,
+    setTargetDate,
+    targetDate,
+    setNumberOfBlockIntervals,
+  } = useContext(LongSwapContext);
 
   console.log("Form Errors", formErrors);
 
@@ -95,7 +104,7 @@ const Swap = (props) => {
   const handleChange = (e, newValue) => {
     if (typeof newValue === "number") {
       setValue(newValue);
-
+      setNumberOfBlockIntervals(calculateNumBlockIntervals(newValue));
       setTargetDate(
         valueLabel(calculateNumBlockIntervals(newValue), currentBlock)
           .targetDate
@@ -231,7 +240,7 @@ const Swap = (props) => {
               <FontAwesomeIcon className={style.iconDown} icon={faArrowDown} />
               <Input
                 id={2}
-                input={expectedSwapOut}
+                input={bigToStr(BigNumber.from(expectedSwapOut), 18)}
                 imgSrc={tokenB.image}
                 symbol={tokenB.symbol}
                 onChange={(e) => e.target.value}
@@ -272,7 +281,7 @@ const Swap = (props) => {
                     sx={{
                       float: "right",
                       display: "flex",
-                      fontSize: "12px",
+                      fontSize: "15px",
                       overflow: "hidden",
                       textOverflow: "ellipsis",
                       fontFamily: "Open Sans",
@@ -283,7 +292,7 @@ const Swap = (props) => {
 
                   <Box
                     sx={{
-                      fontSize: "12px",
+                      fontSize: "15px",
                       paddingLeft: "10px",
                       fontFamily: "Open Sans",
                     }}
@@ -293,7 +302,7 @@ const Swap = (props) => {
                   <Box
                     sx={{
                       float: "left",
-                      fontSize: "10px",
+                      fontSize: "12px",
                       display: "flex",
                       fontFamily: "Open Sans",
                     }}
@@ -303,7 +312,7 @@ const Swap = (props) => {
                   <Box
                     sx={{
                       float: "right",
-                      fontSize: "10px",
+                      fontSize: "12px",
                       display: "flex",
                       paddingRight: "2px",
                       fontFamily: "Open Sans",
@@ -323,7 +332,6 @@ const Swap = (props) => {
                     color: "#ffaac9",
                   }}
                   onChange={handleChange}
-                  valueLabelDisplay="auto"
                   aria-labelledby="non-linear-slider"
                 />
               </Box>

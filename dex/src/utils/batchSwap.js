@@ -38,7 +38,7 @@ export async function runQueryBatchSwap(assetIn, assetOut, swapAmount) {
         console.log("Logs From Query Batch", deltas.toString());
         spotPrice = deltas[1] / deltas[0];
         // Take Decimals Into Account In ExpectedSwapAmount -- TODO
-        expectedSwapOut = bigToStr(deltas[1], 18);
+        expectedSwapOut = (deltas[1]).toString();
         // return Math.abs(spotPrices);
     } catch (e) {
         errorMessage = e.match("BAL#509") ? "Try Giving Lesser Amount" : "Unknown Error"

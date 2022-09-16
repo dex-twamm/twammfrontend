@@ -17,6 +17,11 @@ export const swapTokens = async (signer, swapAmountWei, assetIn, assetOut, walle
   );
   const kind = 0; // GivenIn
 
+
+  const targetDate = new Date();
+  targetDate.setSeconds(deadline * 60);
+  const deadlineTimestamp = targetDate.getTime();
+  console.log("Input", expectedSwapOut, tolerance, deadline, swapAmountWei, Math.floor(deadlineTimestamp / 1000), deadlineTimestamp);
   const swapTx = await exchangeContract.swap(
     {
       poolId: POOL_ID,
@@ -32,11 +37,11 @@ export const swapTokens = async (signer, swapAmountWei, assetIn, assetOut, walle
       recipient: walletAddress,
       toInternalBalance: false,
     },
-    expectedSwapOut * (1 - tolerance),
+    BigNumber.from(expectedSwapOut).mul(1000 - (10 * tolerance)).div(1000),
     // kind === 0 ? 0 : MAX_UINT256, // 0 if given in, infinite if given out.  // Slippage  // TODO // Need To QueryBatchSwap Price - 1%
     // swapAmountWei * SpotPrice *( 1- Slippage can be 0.005, 0.01, 0.02) Type Big Number
 
-    BigNumber.from(deadline).mul(60), // Deadline // Minutes Into Seconds Then Type BigNumber  
+    (BigNumber.from(Math.floor(deadlineTimestamp / 1000))), // Deadline // Minutes Into Seconds Then Type BigNumber  
     {
       gasLimit: 2000000
     }

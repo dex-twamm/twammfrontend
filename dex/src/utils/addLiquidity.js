@@ -7,6 +7,7 @@ export async function joinPool(walletAddress, signer) {
     const encodedRequest = defaultAbiCoder.encode(
         ["uint256", "uint256[]", "uint256"],
         // JoinKind, User Input AmountIn, MinimumBpt Out 
+        // TODO Calculate MinBptOut Using Query Join Pool and Tolerance
         [1, [fp(1e-12), fp(1.0)], 0]
     );
     const poolContract = new Contract(

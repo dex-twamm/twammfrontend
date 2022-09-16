@@ -141,12 +141,14 @@
 }
 
 .successButton {
-	background-color: #fedfe9;
-	color: #d50066;
+	background-color: #eaffea;
+	color: green;
+
 }
 
 .successButton:hover {
-	background-color: #ffd7e3;
+	cursor: not-allowed;
+    opacity: 0.5;
 }
 .successButton:disabled {
 	cursor: not-allowed;

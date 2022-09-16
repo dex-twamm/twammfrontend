@@ -249,7 +249,7 @@ const LongTermOrderCard = (props) => {
                   <button
                     className={classNames(
                       styles.button,
-                      orderStatus.status === "Cancelled"
+                      orderStatus.status !== "Completed"
                         ? styles.cancelButton
                         : styles.successButton
                     )}

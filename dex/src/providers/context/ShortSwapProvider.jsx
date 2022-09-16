@@ -1,3 +1,4 @@
+import { BigNumber } from "ethers";
 import { createContext, useState } from "react";
 
 export const ShortSwapProvider = ({ children }) => {
@@ -17,9 +18,9 @@ export const ShortSwapProvider = ({ children }) => {
   const [account, setAccount] = useState("");
   const [isWallletConnceted, setWalletConnected] = useState(false);
   const [orderId, setOrderId] = useState();
-  const [expectedSwapOut, setExpectedSwapOut] = useState(0);
+  const [expectedSwapOut, setExpectedSwapOut] = useState("0");
   const [tolerance, setTolerance] = useState(0.5);
-  const [deadline, setDeadline] = useState(0);
+  const [deadline, setDeadline] = useState(30);
   const [formErrors, setFormErrors] = useState();
   const [web3provider, setweb3provider] = useState();
   const [currentBlock, setCurrentBlock] = useState();
