@@ -21,6 +21,20 @@
   top:48%;
 }
 
+.openIconDown{
+  padding: 14px;
+  border: 4px solid white;
+  border-radius: 15px;
+  place-self: center;
+  width: fit-content;
+  background: #f7f8fa;
+  position:absolute;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  top:40%;
+}
+
 .btnConnect {
   margin-top: 10px;
   height: 60px;
@@ -46,4 +60,8 @@
   background-color: #ffdeea;
 }
 
+
+.swapunit{
+  background-color:#808080 ;
+}
 

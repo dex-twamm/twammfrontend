@@ -633,6 +633,7 @@
   will-change: height;
 }
 
+
 .add-token-field {
   border-radius: 20px;
   border: 1px solid rgb(255, 255, 255);
@@ -719,3 +720,24 @@
   line-height: 1rem;
   padding: 0px 1rem 1rem;
 } */
+
+.swapunit{
+  background-color:#f7f8fa ;
+  box-sizing:'border-box';
+						display:flex;
+						align-items:center;
+						justify-content:space-between;
+						width:100%;
+						padding:4px 8px;
+            border-radius: 10px;
+}
+
+
+
+
+@media screen and (min-width: 400px) {
+  .swapunit{
+    box-sizing: border-box;
+    padding:0px 4px;
+  }
+}

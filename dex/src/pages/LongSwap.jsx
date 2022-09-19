@@ -8,6 +8,8 @@ import Swap from "../components/Swap";
 import lsStyles from "../css/LongSwap.module.css";
 import styles from "../css/ShortSwap.module.css";
 import { LongSwapContext } from "../providers";
+import LongTermSwapCardDropdown from "../components/LongTermSwapCardDropdown";
+
 
 const LongSwap = (props) => {
   const {
@@ -20,7 +22,7 @@ const LongSwap = (props) => {
   } = props;
 
   const [showSettings, setShowSettings] = useState(false);
-  const { orderLogsDecoded } = useContext(LongSwapContext);
+  const { orderLogsDecoded,tokenB } = useContext(LongSwapContext);
   const ethLogsCount = orderLogsDecoded
     ? Object.keys(orderLogsDecoded).length
     : 0;
@@ -66,6 +68,14 @@ const LongSwap = (props) => {
               cancelPool={cancelPool}
               withdrawPool={withdrawPool}
             ></LongTermOrderCard>
+
+              {/* <div style={{with:'100%',height:'auto',}}>
+                <LongTermSwapCardDropdown  tokenB={tokenB}/>
+              
+
+              </div> */}
+
+           
           </div>
         </div>
       </div>

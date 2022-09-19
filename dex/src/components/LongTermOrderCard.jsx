@@ -8,6 +8,8 @@ import styles from "../css/LongTermOrderCard.module.css";
 import { LongSwapContext, ShortSwapContext } from "../providers";
 import { bigToFloat, bigToStr, POOL_ID } from "../utils";
 import { POOLS } from "../utils/pool";
+import LongTermSwapCardDropdown from "../components/LongTermSwapCardDropdown";
+
 
 const LongTermOrderCard = (props) => {
   const { cancelPool, withdrawPool } = props;
@@ -244,6 +246,8 @@ const LongTermOrderCard = (props) => {
                     {soldToken != 0 && averagePrice.toFixed(4)} Average Price
                   </div>
                 </div>
+
+                <LongTermSwapCardDropdown  tokenB={tokenB}/>
 
                 <div className={styles.buttonContainer}>
                   <button

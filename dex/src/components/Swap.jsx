@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Alert, Box, Slider, Typography } from "@mui/material";
+import { Alert, Box, Slider, Typography, Button } from "@mui/material";
 import classNames from "classnames";
 import React, { useContext, useState } from "react";
 import lsStyles from "../css/LongSwap.module.css";
@@ -10,6 +10,7 @@ import styles from "../css/AddLiquidity.module.css";
 
 import {
   calculateNumBlockIntervals,
+  calculateValue,
   valueLabel,
 } from "../methods/longSwapMethod";
 import { LongSwapContext } from "../providers";
@@ -17,17 +18,24 @@ import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
 import PopupModal from "./alerts/PopupModal";
 import Input from "./Input";
 import { FiChevronDown } from "react-icons/fi";
-import { bigToStr } from "../utils";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutlined";
+import LongTermSwapCardDropdown from "./LongTermSwapCardDropdown";
 import { BigNumber } from "ethers";
+import { bigToStr } from "../utils";
 
 const Swap = (props) => {
   const { connectWallet, buttonText, swapType } = props;
 
   const [display, setDisplay] = useState(false);
+
   const [isSubmit, setIsSubmit] = useState(false);
   const [value, setValue] = useState(0.0);
   const [showModal, setShowModal] = useState(false);
+  const [open, setOpen] = useState(false);
   const [executionTime, setExecutionTIme] = useState("");
+
+  const handleClose = () => setOpen((state) => !state);
 
   const {
     swapAmount,
@@ -338,20 +346,124 @@ const Swap = (props) => {
             </div>
           )}
 
+          {/* swapAmount !== 0 && tokenB.tokenIsSet &&  */}
+          {swapAmount !== 0 && tokenB.tokenIsSet && swapType !== "long" && (
+            <>
+              <Box
+                sx={{
+                  boxSizing: "border-box",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  width: "100%",
+                  padding: { xs: "0px 4px", sm: "4px 8px" },
+                }}
+                className={open && styles.swapunit}
+
+                // onClick={handleClose}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    // flexDirection:{xs:'column',sm:'row'},
+                    alignItems: {
+                      xs: "flex-start ",
+                      sm: "center",
+                      md: "center",
+                    },
+                    // justifyContent:{xs:'center',sm:'space-between'},
+                    // width:'fit-content',
+                    width: { xs: "70%", sm: "fit-content", md: "fit-content" },
+
+                    boxSizing: "border-box",
+                    fontFamily: "Open Sans",
+                    gap: { xs: "2px", sm: "4px" },
+                  }}
+                >
+                  <InfoOutlinedIcon
+                    sx={{
+                      color: "#808080",
+                      cursor: "pointer",
+                      fontSize: "20px",
+                      display: { xs: "none", sm: "block" },
+                    }}
+                  />
+                  <span
+                    style={{
+                      cursor: "pointer",
+                      boxSizing: "border-box",
+                      padding: { xs: "0px", sm: "8px 0px" },
+                      color: "black",
+                      fontFamily: "Open Sans",
+                      fontSize: "16px",
+                      fontWeight: 500,
+                    }}
+                    onClick={handleClose}
+                  >
+                    {" "}
+                    {` 1 ${tokenA.symbol} = 1588 ${tokenB.symbol}`}
+                    <span style={{ color: "#333333", opacity: 0.7 }}>
+                      {" "}
+                      ($123)
+                    </span>
+                  </span>
+                </Box>
+
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    boxSizing: "border-box",
+                    color: "#333333",
+                    fontFamily: "Open Sans",
+                    gap: { xs: "0px", sm: "5px" },
+                    padding: "4px",
+                  }}
+                >
+                  <span
+                    style={{
+                      color: "#333333",
+                      opacity: 0.7,
+                      background: "#f7f8fa",
+                      borderRadius: "10px",
+                      padding: "4px 6px",
+                    }}
+                  >
+                    $1.23
+                  </span>
+
+                  {open ? (
+                    <KeyboardArrowUpOutlinedIcon
+                      sx={{
+                        fontSize: "24px",
+                        color: "#333333",
+                        cursor: "pointer",
+                      }}
+                      onClick={handleClose}
+                    />
+                  ) : (
+                    <FiChevronDown
+                      fontSize={"24px"}
+                      style={{ color: "#333333", cursor: "pointer" }}
+                      onClick={handleClose}
+                    />
+                  )}
+                </Box>
+              </Box>
+              {/* <LongTermSwapCardDropdown open={open} handleClose={handleClose} tokenB={tokenB}/> */}
+            </>
+          )}
+
           <button
             className={classNames(styles.btn, styles.btnConnect)}
             onClick={handleClick}
             disabled={
-              !isWalletConnected
-                ? false
-                : !tokenA.tokenIsSet || !tokenB.tokenIsSet || !swapAmount
+              !tokenA.tokenIsSet || !tokenB.tokenIsSet || !swapAmount
                 ? true
                 : false
             }
           >
-            {!isWalletConnected
-              ? buttonText
-              : !tokenA.tokenIsSet || !tokenB.tokenIsSet
+            {!tokenA.tokenIsSet || !tokenB.tokenIsSet
               ? "Select a Token"
               : !swapAmount
               ? "Enter an Amount"
