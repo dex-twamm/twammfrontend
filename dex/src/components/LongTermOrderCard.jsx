@@ -10,7 +10,6 @@ import { bigToFloat, bigToStr, POOL_ID } from "../utils";
 import { POOLS } from "../utils/pool";
 import LongTermSwapCardDropdown from "../components/LongTermSwapCardDropdown";
 
-
 const LongTermOrderCard = (props) => {
   const { cancelPool, withdrawPool } = props;
   const remainingTimeRef = useRef();
@@ -115,17 +114,17 @@ const LongTermOrderCard = (props) => {
           );
           const stBlock = it.startBlock;
           let convertedAmount = ethers.constants.Zero;
-          if (it.state === "completed") {
+          if (it.state === "completed" || it.state === "cancelled") {
             // Order Completed and Deleted
             convertedAmount = it.withdrawals.reduce((total, withdrawal) => {
               return total.add(withdrawal.proceeds);
             }, ethers.constants.Zero);
 
-            if (it.state === "cancelled") {
-              console.log("Cancel Proceeds", it.cancelledProceeds);
-              convertedAmount = convertedAmount.add(it.cancelledProceeds);
-            }
-            console.log("ConvertedAMT", convertedAmount);
+            // if (it.state === "cancelled") {
+            //   console.log("Cancel Proceeds", it.cancelledProceeds);
+            //   convertedAmount = convertedAmount.add(it.cancelledProceeds);
+            // }
+            // console.log("ConvertedAMT", convertedAmount);
           } else {
             // Order Still In Progress
             convertedAmount = it.convertedValue;
@@ -242,12 +241,16 @@ const LongTermOrderCard = (props) => {
 
                 <div className={styles.extrasContainer}>
                   <div className={styles.fees}>{dummyOrder.fees} fees</div>
-                  <div className={styles.averagePrice}>
-                    {soldToken != 0 && averagePrice.toFixed(4)} Average Price
-                  </div>
+                  {soldToken != 0 && (
+                    <div className={styles.averagePrice}>
+                      {averagePrice.toFixed(4)} Average Price
+                    </div>
+                  )}
                 </div>
 
-                <LongTermSwapCardDropdown  tokenB={tokenB}/>
+                {it.hasPartialWithdrawals && (
+                  <LongTermSwapCardDropdown withdrawals={it.withdrawals} />
+                )}
 
                 <div className={styles.buttonContainer}>
                   <button

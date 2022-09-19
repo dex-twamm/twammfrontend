@@ -26,7 +26,7 @@ const PopupModal = () => {
     return () => {
       clearTimeout(timer);
     };
-  }, );
+  });
 
   const handleClose = () => {
     setLoading(false);

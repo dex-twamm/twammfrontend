@@ -64,7 +64,8 @@ export async function getEthLogs(signer, walletAddress) {
     orderObject.withdrawals.push({
       'blockNumber': eventsWithdrawn[i].blockNumber,
       'isPartialWithdrawal': log[4],
-      'proceeds': log[3]
+      'proceeds': log[3],
+      'transactionHash': eventsWithdrawn[i].transactionHash,
     })
     orderObject.hasPartialWithdrawals = orderObject.hasPartialWithdrawals || log[4];
     if (!log[4]) {
@@ -79,8 +80,14 @@ export async function getEthLogs(signer, walletAddress) {
     let orderObject = placedEventsDecoded.get(log[0].toNumber());
     console.log("Order Object", orderObject);
     orderObject.unsoldAmount = log[4];
-    orderObject.cancelledProceeds = log[3];
+    orderObject.convertedValue = log[3];
     orderObject.state = 'cancelled';
+    orderObject.withdrawals.push({
+      'blockNumber': eventsCancelled[i].blockNumber,
+      'isPartialWithdrawal': false,
+      'proceeds': log[3],
+      'transactionHash': eventsCancelled[i].transactionHash,
+    })
     console.log("=== ETH Logs Cancelled ===", eventsCancelled)
   }
 

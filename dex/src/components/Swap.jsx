@@ -43,10 +43,12 @@ const Swap = (props) => {
     selectToken,
     setSelectToken,
     expectedSwapOut,
+    setExpectedSwapOut,
     formErrors,
     setFormErrors,
     currentBlock,
-    isWalletConnected,
+    setSpotPrice,
+    spotPrice,
   } = useContext(ShortSwapContext);
 
   const {
@@ -65,6 +67,8 @@ const Swap = (props) => {
     console.log("Current Target Id", event.currentTarget.id);
     setSelectToken(event.currentTarget.id);
     setDisplay(!display);
+    setSpotPrice(0);
+    setExpectedSwapOut(0.0);
   };
 
   useEffect(() => {
@@ -218,6 +222,7 @@ const Swap = (props) => {
           <Input
             id={1}
             input={swapAmount ? swapAmount : ""}
+            placeholder="0.0"
             onChange={(e) => {
               setSwapAmount(e.target.value);
             }}
@@ -248,7 +253,12 @@ const Swap = (props) => {
               <FontAwesomeIcon className={style.iconDown} icon={faArrowDown} />
               <Input
                 id={2}
-                input={bigToStr(BigNumber.from(expectedSwapOut), 18)}
+                input={
+                  expectedSwapOut
+                    ? bigToStr(BigNumber.from(expectedSwapOut), 18)
+                    : ""
+                }
+                placeholder=""
                 imgSrc={tokenB.image}
                 symbol={tokenB.symbol}
                 onChange={(e) => e.target.value}
@@ -261,7 +271,7 @@ const Swap = (props) => {
               />
             </>
           )}
-          {/* {formErrors && (
+          {formErrors && (
             <div className={styles.errorAlert}>
               <Alert
                 severity="error"
@@ -271,7 +281,7 @@ const Swap = (props) => {
                 {formErrors}
               </Alert>
             </div>
-          )} */}
+          )}
           {swapType === "long" && (
             <div className={lsStyles.rangeSelect}>
               <Box
@@ -401,11 +411,13 @@ const Swap = (props) => {
                     onClick={handleClose}
                   >
                     {" "}
-                    {` 1 ${tokenA.symbol} = 1588 ${tokenB.symbol}`}
-                    <span style={{ color: "#333333", opacity: 0.7 }}>
+                    {` 1 ${tokenA.symbol} = ${spotPrice.toFixed(4)} ${
+                      tokenB.symbol
+                    }`}
+                    {/* <span style={{ color: "#333333", opacity: 0.7 }}>
                       {" "}
                       ($123)
-                    </span>
+                    </span> */}
                   </span>
                 </Box>
 
@@ -420,7 +432,7 @@ const Swap = (props) => {
                     padding: "4px",
                   }}
                 >
-                  <span
+                  {/* <span
                     style={{
                       color: "#333333",
                       opacity: 0.7,
@@ -430,7 +442,7 @@ const Swap = (props) => {
                     }}
                   >
                     $1.23
-                  </span>
+                  </span> */}
 
                   {open ? (
                     <KeyboardArrowUpOutlinedIcon

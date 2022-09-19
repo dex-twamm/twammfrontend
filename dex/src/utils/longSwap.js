@@ -1,6 +1,7 @@
 import { BigNumber, Contract, ethers, utils } from "ethers";
 import { LONGTERM_ABI, VAULT_CONTRACT_ABI, VAULT_CONTRACT_ADDRESS } from "../constants";
-import { POOL_ID, FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS, OWNER_ADDRESS, MAX_UINT256, LONGTERM_CONTRACT } from ".";
+import { POOL_ID, FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS, MAX_UINT256, } from ".";
+import { POOLS } from "./pool";
 
 export async function placeLongTermOrder(
     tokenInIndex, tokenOutIndex,
@@ -45,7 +46,7 @@ export async function placeLongTermOrder(
 
 export async function getLongTermOrder(signer, orderId) {
     const contract = new Contract(
-        LONGTERM_CONTRACT,
+        POOLS[POOL_ID].LTOContract,
         LONGTERM_ABI,
         signer
     );
@@ -59,7 +60,7 @@ export async function getLongTermOrder(signer, orderId) {
 
 export async function getLastVirtualOrderBlock(signer) {
     const contract = new Contract(
-        LONGTERM_CONTRACT,
+        POOLS[POOL_ID].LTOContract,
         LONGTERM_ABI,
         signer
     );

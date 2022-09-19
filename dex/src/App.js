@@ -1,6 +1,6 @@
 
-import { BigNumber, ethers, providers } from 'ethers';
-import { useContext, useEffect, useState } from 'react';
+import { ethers, providers } from 'ethers';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import {
@@ -9,7 +9,6 @@ import {
 	RemoveLiquidity,
 } from './components/Liquidity';
 import Navbar from './components/Navbar';
-import { calculateNumBlockIntervals } from './methods/longSwapMethod';
 import LongSwap from './pages/LongSwap';
 import ShortSwap from './pages/ShortSwap';
 import { LongSwapContext, ShortSwapContext, UIContext } from './providers';
@@ -18,9 +17,9 @@ import {
 } from './utils';
 import { cancelLTO, exitPool, getPoolBalance, joinPool, withdrawLTO } from './utils/addLiquidity';
 import { runQueryBatchSwap } from './utils/batchSwap';
-import { getLPTokensBalance } from './utils/getAmount';
+import { getTokensBalance } from './utils/getAmount';
 import { getEthLogs } from './utils/get_ethLogs';
-import { getLastVirtualOrderBlock, getLongTermOrder, placeLongTermOrder } from './utils/longSwap';
+import { getLastVirtualOrderBlock, placeLongTermOrder } from './utils/longSwap';
 import { POOLS } from './utils/pool';
 import { web3Modal } from './utils/providerOptions';
 import { swapTokens } from './utils/swap';
@@ -51,7 +50,7 @@ function App() {
 		setAccount,
 		isWallletConnceted, setFormErrors, expectedSwapOut,
 		setWalletConnected, setExpectedSwapOut,
-		setweb3provider, setCurrentBlock, currentBlock, web3Provider,
+		setweb3provider, setCurrentBlock, currentBlock, setSpotPrice,
 		tolerance, deadline
 	} = useContext(ShortSwapContext);
 	const { setOrderLogsDecoded, setLatestBlock, numberOfBlockIntervals } = useContext(LongSwapContext);
@@ -101,17 +100,6 @@ function App() {
 			setError('Wallet Connection Rejected');
 		}
 	};
-
-	// const disconnect = async () => {
-	//   try {
-	//     await web3Modal.clearCachedProvider();
-	//     setAccount("");
-	//     setNetworkId("");
-	//     setLoading(false);
-	//   } catch (e) {
-	//     console.log(e);
-	//   }
-	// };
 
 	//  Swap Token
 	const _swapTokens = async () => {
@@ -303,23 +291,29 @@ function App() {
 	};
 
 	//Spot Prices 
-	const spotPrices = async () => {
-		const swapAmountWei = ethers.utils.parseUnits(swapAmount, 'ether');
-		const assetIn = srcAddress;
-		const assetOut = destAddress;
-		const error = {};
-		const batchPrice = await runQueryBatchSwap(assetIn, assetOut, swapAmountWei).then((res) => {
-			console.log("Response From Query Batch Swap", res.errorMessage);
-			// setEquivalentAmount(res.expectedSwapOut);
-			setFormErrors(error.balError = res.errorMessage);
-			setExpectedSwapOut(res.expectedSwapOut);
-		});
-		return batchPrice;
-	}
-	useEffect(() => {
-		const interval = setInterval(() => { spotPrices() }, 2000);
-		return () => clearInterval(interval);
-	}, [swapAmount, srcAddress, destAddress])
+	useCallback(async () => {
+		if (swapAmount) {
+			const swapAmountWei = ethers.utils.parseUnits(swapAmount, 'ether');
+			const assetIn = srcAddress;
+			const assetOut = destAddress;
+			const error = {};
+			const batchPrice = await runQueryBatchSwap(assetIn, assetOut, swapAmountWei).then((res) => {
+				console.log("Response From Query Batch Swap", res.errorMessage);
+				// setEquivalentAmount(res.expectedSwapOut);
+				setFormErrors(error.balError = res.errorMessage);
+				setSpotPrice(res.spotPrice);
+				setExpectedSwapOut(res.expectedSwapOut);
+			});
+			return batchPrice;
+		}
+	}, [swapAmount, destAddress, srcAddress]
+	)
+
+	// useEffect(() => {
+	// 	const interval = setInterval(() => { spotPrice() }, 2000);
+	// 	return () => clearInterval(interval);
+	// }, [swapAmount, srcAddress,])
+
 	// Getting Each Token Balances
 	const tokenBalance = async (account) => {
 		// setLoading(true);
@@ -341,7 +335,7 @@ function App() {
 				setOrderLogsDecoded(resArray);
 
 			});
-			await getLPTokensBalance(provider, account).then(res => {
+			await getTokensBalance(provider, account).then(res => {
 				setTokenBalances(res);
 				// console.log("Response From Token Balance Then Block", res)
 			});

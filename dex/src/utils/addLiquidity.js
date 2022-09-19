@@ -109,7 +109,7 @@ export async function withdrawLTO(walletAdress, signer, orderId) {
         }
     );
     const withdrawLTOResult = await withdrawLTOTx.wait();
-    console.log(withdrawLTOResult);
+    console.log("Withdraw Hash", withdrawLTOTx.hash);
 }
 
 
