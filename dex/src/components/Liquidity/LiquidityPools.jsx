@@ -1,18 +1,16 @@
 // Sagar
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
-import Modal from "@mui/material/Modal";
-import Switch from "@mui/material/Switch";
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../../css/LiquidityPools.css";
-import styles from "../../css/RemoveLiquidity.module.css";
-import classNames from "classnames";
+
 import { POOL_ID } from "../../utils";
 import { POOLS } from "../../utils/pool";
 import { useContext } from "react";
 import { ShortSwapContext } from "../../providers";
-import { red } from "@mui/material/colors";
+
+import CircularProgressBar from "../alerts/CircularProgressBar";
 
 const style = {
   position: "absolute",
@@ -36,7 +34,7 @@ const style = {
 //   const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
 const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
-  const { LPTokenBalance } = useContext(ShortSwapContext);
+  const { LPTokenBalance, loading } = useContext(ShortSwapContext);
   //   const [open, setOpen] = useState(false);
 
   const navigate = useNavigate();
@@ -44,10 +42,12 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
   //   const handleOpen = () => setOpen(true);
   //   const handleClose = () => setOpen(false);
 
+  console.log("Loading", loading);
+
   const handleMoreOption = () => {
     navigate("/");
   };
-  return (
+  return !loading ? (
     <Box
       sx={{
         width: { sm: "100%", xs: "100%", md: "800px" },
@@ -549,6 +549,11 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
         );
       })}
     </Box>
+  ) : (
+    <CircularProgressBar
+      margin={"20%"}
+      label={"Please Wait"}
+    ></CircularProgressBar>
   );
 };
 export { LiquidityPools };

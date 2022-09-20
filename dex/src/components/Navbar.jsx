@@ -24,10 +24,11 @@ const Navbar = (props) => {
     connectWallet,
     disconnectWallet,
   } = props;
-  const { setError, setLoading, setSwapAmount } = useContext(ShortSwapContext);
+  const { setError, setLoading, setSwapAmount, isWallletConnceted } =
+    useContext(ShortSwapContext);
   // const [netId, setNetId] = useState("");
   // const [isOpen, setOpen] = useState(false);
-
+  console.log("Wallet Status", isWallletConnceted);
   const [showDisconnect, setShowDisconnect] = useState(false);
   const networks = [
     { name: "Ethereum", chainId: "1", logo: "/ethereum.png" },
@@ -58,7 +59,6 @@ const Navbar = (props) => {
   const handleSelect = async (networkName, logo, chainId) => {
     localStorage.setItem("coin_name", networkName);
     localStorage.setItem("coin_logo", logo);
-
     // console.log(chainId);
     setSelectedNetwork({
       network: networkName,
@@ -67,18 +67,16 @@ const Navbar = (props) => {
     });
     console.log(chainId);
     const id = chainId;
-    if (window.ethereum.networkVersion !== id) {
-      setLoading(true);
+    if (window.ethereum.networkVersion !== id && isWallletConnceted) {
       try {
         await window.ethereum.request({
           method: "wallet_switchEthereumChain",
           params: [{ chainId: toHex(id) }],
         });
-        setLoading(false);
+
         window.location.reload();
       } catch (err) {
         console.error(err);
-        setLoading(false);
         setError("Failed To Switch Network");
       }
     }
@@ -110,7 +108,7 @@ const Navbar = (props) => {
     });
     setTokenB({
       symbol: "Select Token",
-      image: "",
+      image: "/Testv4.jpeg",
       address: MATIC_TOKEN_ADDRESS,
       balance: 0,
       tokenIsSet: false,

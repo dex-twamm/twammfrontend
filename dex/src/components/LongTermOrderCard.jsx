@@ -9,12 +9,13 @@ import { LongSwapContext, ShortSwapContext } from "../providers";
 import { bigToFloat, bigToStr, POOL_ID } from "../utils";
 import { POOLS } from "../utils/pool";
 import LongTermSwapCardDropdown from "../components/LongTermSwapCardDropdown";
+import CircularProgressBar from "./alerts/CircularProgressBar";
 
 const LongTermOrderCard = (props) => {
   const { cancelPool, withdrawPool } = props;
   const remainingTimeRef = useRef();
 
-  const { swapAmount, currentBlock } = useContext(ShortSwapContext);
+  const { swapAmount, currentBlock, loading } = useContext(ShortSwapContext);
 
   const { sliderValueInSec, tokenA, tokenB, orderLogsDecoded, latestBlock } =
     useContext(LongSwapContext);
@@ -296,7 +297,7 @@ const LongTermOrderCard = (props) => {
         .reverse()}
     </>
   ) : (
-    <></>
+    <CircularProgressBar></CircularProgressBar>
   );
 };
 

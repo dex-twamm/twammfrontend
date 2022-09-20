@@ -9,8 +9,6 @@ const PopupModal = () => {
     setError,
     success,
     setSuccess,
-    loading,
-    setLoading,
     transactionHash,
     setTransactionHash,
   } = useContext(ShortSwapContext);
@@ -29,7 +27,6 @@ const PopupModal = () => {
   });
 
   const handleClose = () => {
-    setLoading(false);
     setError("");
     setSuccess("");
     setTransactionHash("");
@@ -53,11 +50,11 @@ const PopupModal = () => {
             </Alert>
           </Backdrop>
         )}
-        {loading && (
+        {/* {loading && (
           <Backdrop open={loading ? true : false} onClose={handleClose}>
             <CircularProgress />
           </Backdrop>
-        )}
+        )} */}
         {success && (
           <Backdrop open={success ? true : false} onClose={handleClose}>
             <Alert severity="success" onClose={handleClose}>

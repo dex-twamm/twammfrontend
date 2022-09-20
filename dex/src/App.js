@@ -63,9 +63,11 @@ function App() {
 		try {
 			await getProvider();
 			console.log('Wallet Connected Info', isWallletConnceted);
+			// setSuccess("Wallet Connected");
+			tokenBalance(account);
 		} catch (err) {
 			console.error(err);
-			setError('Wallet Connection Rejected');
+			// setError('Wallet Connection Rejected');
 		}
 	};
 
@@ -95,10 +97,10 @@ function App() {
 			if (needSigner) return web3Provider.getSigner();
 			if (web3Provider) setWalletConnected(true);
 
-			setSuccess('Wallet Connected');
+
 			return web3Provider;
 		} catch (err) {
-			setError('Wallet Connection Rejected');
+			// setError('Wallet Connection Rejected');
 		}
 	};
 
@@ -329,8 +331,8 @@ function App() {
 	}, [swapAmount, destAddress, srcAddress])
 
 	// Getting Each Token Balances
-	const tokenBalance = async (account) => {
-		// setLoading(true);
+	const tokenBalance = useCallback(async (account) => {
+		setLoading(true);
 		try {
 			const provider = await getProvider(true);
 			const tokenAddress = FAUCET_TOKEN_ADDRESS;
@@ -342,8 +344,8 @@ function App() {
 			const signer = await getProvider(true);
 
 			await getEthLogs(signer, walletAddress).then(res => {
-				console.log("=== Order Keys === ", res.keys())
-				console.log("=== Order Values === ", res.values())
+				// console.log("=== Order Keys === ", res.keys())
+				// console.log("=== Order Values === ", res.values())
 				const resArray = Array.from(res.values());
 				console.log("=== Order Logs === ", resArray)
 				setOrderLogsDecoded(resArray);
@@ -368,7 +370,7 @@ function App() {
 			console.log(e);
 			setLoading(false);
 		}
-	};
+	}, []);
 
 	useEffect(() => {
 		const account = localStorage.getItem('account');
@@ -378,8 +380,8 @@ function App() {
 			setWalletConnected(true);
 			setBalance(balance);
 		}
-		tokenBalance(account);
-	}, [isWallletConnceted]);
+
+	},);
 
 	useEffect(() => {
 		document.body.onclick = () => {
@@ -392,7 +394,7 @@ function App() {
 		if (web3Modal.cachedProvider) {
 			connectWallet();
 		}
-	}, []);
+	}, [provider]);
 
 	useEffect(() => {
 		if (provider?.on) {
