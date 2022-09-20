@@ -276,7 +276,7 @@ const Swap = (props) => {
               <Alert
                 severity="error"
                 sx={{ borderRadius: "16px" }}
-                onClose={() => setFormErrors({})}
+                onClose={() => setFormErrors()}
               >
                 {formErrors}
               </Alert>

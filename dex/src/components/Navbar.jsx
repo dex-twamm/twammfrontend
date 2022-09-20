@@ -22,7 +22,7 @@ const Navbar = (props) => {
     walletAddress,
     accountStatus,
     connectWallet,
-    disConnectWallet,
+    disconnectWallet,
   } = props;
   const { setError, setLoading, setSwapAmount } = useContext(ShortSwapContext);
   // const [netId, setNetId] = useState("");
@@ -156,6 +156,7 @@ const Navbar = (props) => {
       {showDisconnect && (
         <DisconnectWalletOption
           setOpen={setShowDisconnect}
+          disconnectWallet={disconnectWallet}
           open={showDisconnect}
         />
       )}

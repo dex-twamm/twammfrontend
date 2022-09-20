@@ -51,7 +51,7 @@ function App() {
 		isWallletConnceted, setFormErrors, expectedSwapOut,
 		setWalletConnected, setExpectedSwapOut,
 		setweb3provider, setCurrentBlock, currentBlock, setSpotPrice,
-		tolerance, deadline
+		tolerance, deadline, error
 	} = useContext(ShortSwapContext);
 	const { setOrderLogsDecoded, setLatestBlock, numberOfBlockIntervals } = useContext(LongSwapContext);
 
@@ -100,6 +100,20 @@ function App() {
 			setError('Wallet Connection Rejected');
 		}
 	};
+
+	// Refresh State
+	const refreshState = () => {
+		setAccount("");
+		setWalletConnected(false);
+		setBalance("");
+		localStorage.clear();
+	}
+
+	// Disconnect Wallet 
+	const disconnect = async () => {
+		web3Modal.clearCachedProvider();
+		refreshState();
+	}
 
 	//  Swap Token
 	const _swapTokens = async () => {
@@ -291,28 +305,27 @@ function App() {
 	};
 
 	//Spot Prices 
-	useCallback(async () => {
-		if (swapAmount) {
-			const swapAmountWei = ethers.utils.parseUnits(swapAmount, 'ether');
-			const assetIn = srcAddress;
-			const assetOut = destAddress;
-			const error = {};
-			const batchPrice = await runQueryBatchSwap(assetIn, assetOut, swapAmountWei).then((res) => {
-				console.log("Response From Query Batch Swap", res.errorMessage);
-				// setEquivalentAmount(res.expectedSwapOut);
-				setFormErrors(error.balError = res.errorMessage);
-				setSpotPrice(res.spotPrice);
-				setExpectedSwapOut(res.expectedSwapOut);
-			});
-			return batchPrice;
-		}
-	}, [swapAmount, destAddress, srcAddress]
-	)
+	const spotPrice = async () => {
 
-	// useEffect(() => {
-	// 	const interval = setInterval(() => { spotPrice() }, 2000);
-	// 	return () => clearInterval(interval);
-	// }, [swapAmount, srcAddress,])
+		const swapAmountWei = ethers.utils.parseUnits(swapAmount, 'ether');
+		const assetIn = srcAddress;
+		const assetOut = destAddress;
+		const error = {};
+		const batchPrice = await runQueryBatchSwap(assetIn, assetOut, swapAmountWei).then((res) => {
+			console.log("Response From Query Batch Swap", res.errorMessage);
+			setFormErrors(error.balError = res.errorMessage);
+			setSpotPrice(res.spotPrice);
+			setExpectedSwapOut(res.expectedSwapOut);
+		});
+		return batchPrice;
+
+	}
+
+
+	useEffect(() => {
+		const interval = setInterval(() => { spotPrice() }, 2000);
+		return () => clearInterval(interval);
+	}, [swapAmount, destAddress, srcAddress])
 
 	// Getting Each Token Balances
 	const tokenBalance = async (account) => {
@@ -368,6 +381,36 @@ function App() {
 		};
 	});
 
+	useEffect(() => {
+		if (web3Modal.cachedProvider) {
+			connectWallet();
+		}
+	}, []);
+
+	useEffect(() => {
+		if (provider?.on) {
+			const handleAccountsChanged = (accounts) => {
+				console.log("accountsChanged", accounts);
+				if (accounts) setAccount(accounts[0]);
+			};
+			const handleDisconnect = () => {
+				console.log("disconnect", error);
+				disconnect();
+			};
+
+			provider.on("accountsChanged", handleAccountsChanged);
+
+			provider.on("disconnect", handleDisconnect);
+
+			return () => {
+				if (provider.removeListener) {
+					provider.removeListener("accountsChanged", handleAccountsChanged);
+					provider.removeListener("disconnect", handleDisconnect);
+				}
+			};
+		}
+	}, [provider]);
+
 	let liquidityMarkup = (
 		<LiquidityPools
 			showRemoveLiquidity={setShowRemoveLiquidity}
@@ -399,7 +442,7 @@ function App() {
 				walletAddress={data.wallet.address}
 				accountStatus={isWallletConnceted ? true : false}
 				connectWallet={ShortSwapButtonClick}
-			// disConnectWallet={disconnect}
+				disconnectWallet={disconnect}
 			/>
 
 			<Routes>

@@ -65,14 +65,14 @@ const AddLiquidity = (props) => {
       name: "Faucet",
       symbol: "ETH",
       image: "/ethereum.png",
-      address: "sadfasdfsdaf",
+      address: "",
       balance: tokenBalances[0],
     },
     {
       name: "Matic",
       symbol: "DAI",
       image: "/Testv4.jpeg",
-      address: "sdfasdf",
+      address: "",
       balance: tokenBalances[1],
     },
     {
