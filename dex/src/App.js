@@ -360,7 +360,7 @@ function App() {
 
 			// Pool Token's Balance
 			await getLPTokensBalance(provider, walletAddress).then(res => {
-				setLPTokenBalance(bigToStr(res, 18));
+				setLPTokenBalance(res);
 				console.log('===Balance Of Pool ====', res);
 			});
 			setLoading(false);

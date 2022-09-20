@@ -1,5 +1,5 @@
 import { Contract, ethers } from "ethers";
-import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS, POOL_ID } from ".";
+import { bigToStr, FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS, POOL_ID } from ".";
 
 import {
   TOKEN_CONTRACT_ABI, TWAMM_POOL_ABI,
@@ -39,6 +39,8 @@ export const getLPTokensBalance = async (provider, walletAddress) => {
     provider);
 
   const balanceOfLPTokens = await tokenContract.balanceOf(walletAddress);
-  return balanceOfLPTokens;
+  const readableBalance = bigToStr(balanceOfLPTokens);
+  console.log("BLPT", readableBalance);
+  return [readableBalance, '0.2144', '0.2365', '0.0001', '0.0000'].sort().reverse();
 
 }
