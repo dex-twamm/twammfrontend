@@ -1,10 +1,11 @@
 import { Contract, ethers } from "ethers";
-import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from ".";
+import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS, POOL_ID } from ".";
 
 import {
-  TOKEN_CONTRACT_ABI,
+  TOKEN_CONTRACT_ABI, TWAMM_POOL_ABI,
 
 } from "../constants";
+import { POOLS } from "./pool";
 // To Retrieve Token Balances 
 export const getTokensBalance = async (provider, walletAddress) => {
   var tokenAddress = [FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS];
@@ -30,3 +31,14 @@ export const getTokensBalance = async (provider, walletAddress) => {
   return newBalance.map((item) => item);
 }
 
+
+export const getLPTokensBalance = async (provider, walletAddress) => {
+  const tokenContract = new Contract(
+    POOLS[POOL_ID].address,
+    TWAMM_POOL_ABI,
+    provider);
+
+  const balanceOfLPTokens = await tokenContract.balanceOf(walletAddress);
+  return balanceOfLPTokens;
+
+}

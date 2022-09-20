@@ -13,11 +13,12 @@ import LongSwap from './pages/LongSwap';
 import ShortSwap from './pages/ShortSwap';
 import { LongSwapContext, ShortSwapContext, UIContext } from './providers';
 import {
+	bigToStr,
 	FAUCET_TOKEN_ADDRESS, POOL_ID, truncateAddress,
 } from './utils';
 import { cancelLTO, exitPool, getPoolBalance, joinPool, withdrawLTO } from './utils/addLiquidity';
 import { runQueryBatchSwap } from './utils/batchSwap';
-import { getTokensBalance } from './utils/getAmount';
+import { getLPTokensBalance, getTokensBalance } from './utils/getAmount';
 import { getEthLogs } from './utils/get_ethLogs';
 import { getLastVirtualOrderBlock, placeLongTermOrder } from './utils/longSwap';
 import { POOLS } from './utils/pool';
@@ -51,7 +52,7 @@ function App() {
 		isWallletConnceted, setFormErrors, expectedSwapOut,
 		setWalletConnected, setExpectedSwapOut,
 		setweb3provider, setCurrentBlock, currentBlock, setSpotPrice,
-		tolerance, deadline, error
+		tolerance, deadline, error, setLPTokenBalance
 	} = useContext(ShortSwapContext);
 	const { setOrderLogsDecoded, setLatestBlock, numberOfBlockIntervals } = useContext(LongSwapContext);
 
@@ -355,6 +356,12 @@ function App() {
 			await getPoolBalance(provider, tokenAddress).then(res => {
 				setPoolCash(res);
 				console.log('===GET POOL BALANCE====', res);
+			});
+
+			// Pool Token's Balance
+			await getLPTokensBalance(provider, walletAddress).then(res => {
+				setLPTokenBalance(bigToStr(res, 18));
+				console.log('===Balance Of Pool ====', res);
 			});
 			setLoading(false);
 		} catch (e) {

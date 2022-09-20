@@ -25,6 +25,7 @@ export const ShortSwapProvider = ({ children }) => {
   const [web3provider, setweb3provider] = useState();
   const [currentBlock, setCurrentBlock] = useState();
   const [spotPrice, setSpotPrice] = useState(0);
+  const [LPTokenBalance, setLPTokenBalance] = useState(0);
 
   return (
     <ShortSwapContext.Provider
@@ -75,6 +76,8 @@ export const ShortSwapProvider = ({ children }) => {
         setCurrentBlock,
         spotPrice,
         setSpotPrice,
+        LPTokenBalance,
+        setLPTokenBalance,
       }}
     >
       {children}

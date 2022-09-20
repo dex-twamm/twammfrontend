@@ -1,5 +1,6 @@
 export const POOLS = {
     "0x40e1fb58abbd319db35964ea73e148919ed0ae5100020000000000000000010a": {
+        'address': "0x40e1fB58aBbd319dB35964eA73e148919Ed0Ae51",
         'fees': 0.5,
         'LTOContract': "0x9AD68324a94d1052445aBb6C094dd7abC888E5AA",
         'tokens': [
