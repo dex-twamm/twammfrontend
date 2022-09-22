@@ -2,7 +2,8 @@ import classnames from "classnames";
 import { useContext } from "react";
 import styles from "../css/Input.module.css";
 import { LongSwapContext, ShortSwapContext } from "../providers";
-import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from "../utils";
+import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS, POOL_ID } from "../utils";
+import { POOLS } from "../utils/pool";
 import Modal from "./Modal";
 
 const Input = (props) => {
@@ -20,27 +21,26 @@ const Input = (props) => {
     swapType,
     placeholder,
   } = props;
-  const { tokenBalances, selectToken, ethBalance } =
-    useContext(ShortSwapContext);
+  const { tokenBalances, selectToken } = useContext(ShortSwapContext);
   const { tokenA, tokenB } = useContext(LongSwapContext);
-
+  console.log("swap token", tokenA, tokenB);
   // console.log("Select Token Input.js", selectToken);
   // console.log("TOKEN A", tokenA);
-  console.log("====TOKEN BALANCES===", tokenBalances);
+  // console.log("====TOKEN BALANCES===", tokenBalances);
   const tokenDetails = [
     {
       name: "Faucet",
       symbol: "ETH",
       image: "/ethereum.png",
-      address: FAUCET_TOKEN_ADDRESS,
-      balance: tokenBalances[0],
+      address: POOLS[POOL_ID].tokens[1].address,
+      balance: tokenBalances[0] ?? 0,
     },
     {
       name: "Matic",
       symbol: "DAI",
       image: "/Testv4.jpeg",
-      address: MATIC_TOKEN_ADDRESS,
-      balance: tokenBalances[1],
+      address: POOLS[POOL_ID].tokens[0].address,
+      balance: tokenBalances[1] ?? 0,
     },
     {
       type: "coming_soon",

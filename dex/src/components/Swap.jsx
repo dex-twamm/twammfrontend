@@ -271,14 +271,10 @@ const Swap = (props) => {
               />
             </>
           )}
-          {formErrors && (
+          {formErrors.balError && (
             <div className={styles.errorAlert}>
-              <Alert
-                severity="error"
-                sx={{ borderRadius: "16px" }}
-                onClose={() => setFormErrors()}
-              >
-                {formErrors}
+              <Alert severity="error" sx={{ borderRadius: "16px" }}>
+                {formErrors.balError}
               </Alert>
             </div>
           )}

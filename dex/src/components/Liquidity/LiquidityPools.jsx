@@ -236,7 +236,8 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
             <Box
               sx={{
                 mt: "20px",
-                bgcolor: items != 0 ? "white" : "#FFA500",
+                bgcolor: " white",
+                opacity: items == 0 && 0.5,
                 width: "100%",
                 p: "8px",
                 borderRadius: "20px",

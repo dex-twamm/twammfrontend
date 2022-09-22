@@ -1,5 +1,10 @@
 import { createContext, useContext, useState } from "react";
-import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from "../../utils";
+import {
+  FAUCET_TOKEN_ADDRESS,
+  MATIC_TOKEN_ADDRESS,
+  POOL_ID,
+} from "../../utils";
+import { POOLS } from "../../utils/pool";
 import { ShortSwapContext } from "./ShortSwapProvider";
 
 export const LongSwapProvider = ({ children }) => {
@@ -15,15 +20,15 @@ export const LongSwapProvider = ({ children }) => {
   const [tokenA, setTokenA] = useState({
     symbol: "Faucet",
     image: "/ethereum.png",
-    address: FAUCET_TOKEN_ADDRESS,
+    address: POOLS[POOL_ID].tokens[1].address,
     balance: 0,
     tokenIsSet: false,
   });
 
   const [tokenB, setTokenB] = useState({
     symbol: "Select Token",
-    image: "",
-    address: MATIC_TOKEN_ADDRESS,
+    image: "/ethereum.png",
+    address: POOLS[POOL_ID].tokens[0].address,
     balance: 0,
     tokenIsSet: false,
   });

@@ -51,7 +51,7 @@ export async function runQueryBatchSwap(assetInAddress, assetOutAddress, swapAmo
         expectedSwapOut = (deltas[assetOutIndex] * -1).toString();
         // return Math.abs(spotPrices);
     } catch (e) {
-        errorMessage = e.match("BAL#304") ? "Try Giving Lesser Amount" : "Unknown Error"
+        errorMessage = e.match("BAL#304") && "Try Giving Lesser Amount";
         console.log(e);
     }
     console.log("ShortSwap Spot Price ", spotPrice, expectedSwapOut)

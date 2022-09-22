@@ -41,14 +41,14 @@ function App() {
 		swapAmount,
 		setError,
 		setLoading,
-		setSuccess,
+		setSuccess, formErrors,
 		setTokenBalances,
 		setTransactionHash,
 		ethBalance,
 		setPoolCash,
 		poolCash,
 		account,
-		setAccount,
+		setAccount, selectToken,
 		isWallletConnceted, setFormErrors, expectedSwapOut,
 		setWalletConnected, setExpectedSwapOut,
 		setweb3provider, setCurrentBlock, currentBlock, setSpotPrice,
@@ -313,10 +313,11 @@ function App() {
 		const swapAmountWei = ethers.utils.parseUnits(swapAmount, 'ether');
 		const assetIn = srcAddress;
 		const assetOut = destAddress;
-		const error = {};
+		const errors = {};
 		const batchPrice = await runQueryBatchSwap(assetIn, assetOut, swapAmountWei).then((res) => {
 			console.log("Response From Query Batch Swap", res.errorMessage);
-			setFormErrors(error.balError = res.errorMessage);
+			errors.balError = res.errorMessage;
+			setFormErrors(errors ?? "");
 			setSpotPrice(res.spotPrice);
 			setExpectedSwapOut(res.expectedSwapOut);
 		});
@@ -441,7 +442,7 @@ function App() {
 
 	// Condition of Liquidity existing
 	// if(liquidityExists) liquidityMarkup = <LiquidityPools/>
-
+	console.log("errors", formErrors);
 	return (
 		<div>
 			<Navbar

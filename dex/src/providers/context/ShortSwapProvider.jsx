@@ -10,7 +10,7 @@ export const ShortSwapProvider = ({ children }) => {
   const [error, setError] = useState();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState();
-  const [tokenBalances, setTokenBalances] = useState("");
+  const [tokenBalances, setTokenBalances] = useState(0);
   const [transactionHash, setTransactionHash] = useState();
   const [selectToken, setSelectToken] = useState("");
   const [ethBalance, setEthBalance] = useState("");
@@ -21,7 +21,7 @@ export const ShortSwapProvider = ({ children }) => {
   const [expectedSwapOut, setExpectedSwapOut] = useState(0);
   const [tolerance, setTolerance] = useState(0.5);
   const [deadline, setDeadline] = useState(30);
-  const [formErrors, setFormErrors] = useState();
+  const [formErrors, setFormErrors] = useState({});
   const [web3provider, setweb3provider] = useState();
   const [currentBlock, setCurrentBlock] = useState();
   const [spotPrice, setSpotPrice] = useState(0);
