@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Alert, Box, Slider, Typography, Button } from "@mui/material";
+import { Alert, Box, Slider, Typography, Button, Chip } from "@mui/material";
 import classNames from "classnames";
 import React, { useContext, useState } from "react";
 import lsStyles from "../css/LongSwap.module.css";
@@ -10,7 +10,6 @@ import styles from "../css/AddLiquidity.module.css";
 
 import {
   calculateNumBlockIntervals,
-  calculateValue,
   valueLabel,
 } from "../methods/longSwapMethod";
 import { LongSwapContext } from "../providers";
@@ -23,6 +22,8 @@ import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutl
 import LongTermSwapCardDropdown from "./LongTermSwapCardDropdown";
 import { BigNumber } from "ethers";
 import { bigToStr } from "../utils";
+import { getApproval } from "../utils/getApproval";
+import { WebContext } from "../providers/context/WebProvider";
 
 const Swap = (props) => {
   const { connectWallet, buttonText, swapType } = props;
@@ -49,6 +50,7 @@ const Swap = (props) => {
     currentBlock,
     setSpotPrice,
     spotPrice,
+    srcAddress,
   } = useContext(ShortSwapContext);
 
   const {
@@ -59,10 +61,15 @@ const Swap = (props) => {
     setTargetDate,
     targetDate,
     setNumberOfBlockIntervals,
+    allowance,
   } = useContext(LongSwapContext);
 
-  console.log("Form Errors", formErrors);
+  const { provider } = useContext(WebContext);
 
+  // console.log("Provider", provider);
+  // console.log("SC", srcAddress);
+  // console.log("Form Errors", formErrors);
+  console.log("SwapAmount", swapAmount, allowance, srcAddress);
   const handleDisplay = (event) => {
     console.log("Current Target Id", event.currentTarget.id);
     setSelectToken(event.currentTarget.id);
@@ -101,6 +108,10 @@ const Swap = (props) => {
   const handleClick = () => {
     buttonText === "Swap" && setFormErrors(validate(swapAmount));
     connectWallet();
+  };
+
+  const handleApproveButton = async () => {
+    getApproval(provider, srcAddress);
   };
 
   const validate = (values) => {
@@ -458,10 +469,23 @@ const Swap = (props) => {
                   )}
                 </Box>
               </Box>
+
               {/* <LongTermSwapCardDropdown open={open} handleClose={handleClose} tokenB={tokenB}/> */}
             </>
           )}
-
+          {allowance <= swapAmount && swapAmount ? (
+            <button
+              className={classNames(styles.btn, styles.btnConnect)}
+              style={{ color: "white", background: "#FFAAC9" }}
+              onClick={() => {
+                handleApproveButton();
+              }}
+            >{`Allow TWAMM Protocol to use your ${
+              tokenA.symbol ?? tokenB.symbol
+            }`}</button>
+          ) : (
+            <></>
+          )}
           <button
             className={classNames(styles.btn, styles.btnConnect)}
             onClick={handleClick}

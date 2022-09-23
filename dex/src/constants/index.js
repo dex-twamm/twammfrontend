@@ -1,4 +1,4 @@
-export const TOKEN_CONTRACT_ABI = [
+export const ERC20_TOKEN_CONTRACT_ABI = [
   {
     inputs: [
       {

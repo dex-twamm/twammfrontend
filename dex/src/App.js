@@ -1,6 +1,5 @@
-
 import { ethers, providers } from 'ethers';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import {
@@ -12,13 +11,12 @@ import Navbar from './components/Navbar';
 import LongSwap from './pages/LongSwap';
 import ShortSwap from './pages/ShortSwap';
 import { LongSwapContext, ShortSwapContext, UIContext } from './providers';
-import {
-	bigToStr,
-	FAUCET_TOKEN_ADDRESS, POOL_ID, truncateAddress,
-} from './utils';
+import { WebContext } from './providers/context/WebProvider';
+import { bigToStr, POOL_ID, truncateAddress } from './utils';
 import { cancelLTO, exitPool, getPoolBalance, joinPool, withdrawLTO } from './utils/addLiquidity';
 import { runQueryBatchSwap } from './utils/batchSwap';
 import { getLPTokensBalance, getTokensBalance } from './utils/getAmount';
+import { getAllowance } from './utils/getApproval';
 import { getEthLogs } from './utils/get_ethLogs';
 import { getLastVirtualOrderBlock, placeLongTermOrder } from './utils/longSwap';
 import { POOLS } from './utils/pool';
@@ -26,9 +24,7 @@ import { web3Modal } from './utils/providerOptions';
 import { swapTokens } from './utils/swap';
 
 function App() {
-	const [provider, setProvider] = useState();
 	const [balance, setBalance] = useState();
-	const [nonce, setNonce] = useState();
 	const [isPlacedLongTermOrder, setIsPlacedLongTermOrder] = useState(false);
 	const [showRemoveLiquidity, setShowRemoveLiquidity] = useState(false);
 	const [showAddLiquidity, setShowAddLiquidity] = useState(false);
@@ -41,30 +37,32 @@ function App() {
 		swapAmount,
 		setError,
 		setLoading,
-		setSuccess, formErrors,
+		formErrors,
 		setTokenBalances,
 		setTransactionHash,
 		ethBalance,
 		setPoolCash,
 		poolCash,
 		account,
-		setAccount, selectToken,
+		setAccount,
 		isWallletConnceted, setFormErrors, expectedSwapOut,
 		setWalletConnected, setExpectedSwapOut,
 		setweb3provider, setCurrentBlock, currentBlock, setSpotPrice,
 		tolerance, deadline, error, setLPTokenBalance
 	} = useContext(ShortSwapContext);
-	const { setOrderLogsDecoded, setLatestBlock, numberOfBlockIntervals } = useContext(LongSwapContext);
-
+	const { setOrderLogsDecoded, setLatestBlock, numberOfBlockIntervals, setAllowance } = useContext(LongSwapContext);
+	const { provider, setProvider } = useContext(WebContext);
 	// console.log("Settings Input", deadline, tolerance);
 	console.log("Current Block", currentBlock)
+
 	//  Connect Wallet 
 	const connectWallet = async () => {
 		try {
 			await getProvider();
 			console.log('Wallet Connected Info', isWallletConnceted);
+
 			// setSuccess("Wallet Connected");
-			tokenBalance(account);
+			// tokenBalance(account);
 		} catch (err) {
 			console.error(err);
 			// setError('Wallet Connection Rejected');
@@ -82,7 +80,6 @@ function App() {
 			localStorage.setItem('account', accounts);
 
 			setweb3provider(web3Provider);
-			setProvider(provider);
 			console.log("WEb 3 Provider", await web3Provider.getBlock("latest"));
 			// TODO - Update Every Transaction After 12 Seconds
 			setCurrentBlock(await web3Provider.getBlock("latest"));
@@ -180,6 +177,7 @@ function App() {
 			const blockIntervals = Math.ceil(numberOfBlockIntervals);
 			console.log("Intervals", numberOfBlockIntervals);
 			const signer = await getProvider(true);
+
 			const walletAddress = account;
 			// Call the PlaceLongTermOrders function from the `utils` folder*
 			await placeLongTermOrder(
@@ -310,41 +308,67 @@ function App() {
 	//Spot Prices 
 	const spotPrice = async () => {
 
-		const swapAmountWei = ethers.utils.parseUnits(swapAmount, 'ether');
-		const assetIn = srcAddress;
-		const assetOut = destAddress;
-		const errors = {};
-		const batchPrice = await runQueryBatchSwap(assetIn, assetOut, swapAmountWei).then((res) => {
-			console.log("Response From Query Batch Swap", res.errorMessage);
-			errors.balError = res.errorMessage;
-			setFormErrors(errors ?? "");
-			setSpotPrice(res.spotPrice);
-			setExpectedSwapOut(res.expectedSwapOut);
-		});
-		return batchPrice;
+		if (swapAmount) {
+			const swapAmountWei = ethers.utils.parseUnits(swapAmount, 'ether');
+			const assetIn = srcAddress;
+			const assetOut = destAddress;
+			const errors = {};
+			const batchPrice = await runQueryBatchSwap(assetIn, assetOut, swapAmountWei).then((res) => {
+				console.log("Response From Query Batch Swap", res.errorMessage);
+				errors.balError = res.errorMessage;
+				setFormErrors(errors ?? "");
+				setSpotPrice(res.spotPrice);
+				setExpectedSwapOut(res.expectedSwapOut);
+			});
+			return batchPrice;
+		}
+
 
 	}
 
+	// Use Memo 
+	useMemo(() => {
+		const allowance = async () => {
+			const provider = await getProvider(true);
+			const tokenAddress = srcAddress;
+			const walletAddress = account;
+			// Allowance 
+			if (srcAddress) {
+				await getAllowance(provider, walletAddress, tokenAddress).then(res => {
+					setAllowance(bigToStr(res));
+					console.log('===Allowance Response ====', bigToStr(res))
+
+				});
+				// Pool Balance 
+				await getPoolBalance(provider, tokenAddress).then(res => {
+					setPoolCash(res);
+					console.log('===GET POOL BALANCE====', res);
+				});
+			}
+		}
+		allowance();
+	}, [srcAddress])
+
 
 	useEffect(() => {
-		const interval = setInterval(() => { spotPrice() }, 2000);
-		return () => clearInterval(interval);
+		const interval = setTimeout(() => { spotPrice() }, 1000);
+		return () => clearTimeout(interval);
 	}, [swapAmount, destAddress, srcAddress])
 
+
 	// Getting Each Token Balances
-	const tokenBalance = useCallback(async (account) => {
+	const tokenBalance = useCallback(async () => {
 		setLoading(true);
+		const provider = await getProvider(true);
+		setProvider(provider);
+		// const tokenAddress = srcAddress;
+		const walletAddress = account;
 		try {
-			const provider = await getProvider(true);
-			const tokenAddress = FAUCET_TOKEN_ADDRESS;
-			const walletAddress = account;
 			await getLastVirtualOrderBlock(provider).then(res => {
 				console.log("Latest Block", res);
 				setLatestBlock(res)
 			});
-			const signer = await getProvider(true);
-
-			await getEthLogs(signer, walletAddress).then(res => {
+			await getEthLogs(provider, walletAddress).then(res => {
 				// console.log("=== Order Keys === ", res.keys())
 				// console.log("=== Order Values === ", res.values())
 				const resArray = Array.from(res.values());
@@ -356,11 +380,6 @@ function App() {
 				setTokenBalances(res);
 				// console.log("Response From Token Balance Then Block", res)
 			});
-			await getPoolBalance(provider, tokenAddress).then(res => {
-				setPoolCash(res);
-				console.log('===GET POOL BALANCE====', res);
-			});
-
 			// Pool Token's Balance
 			await getLPTokensBalance(provider, walletAddress).then(res => {
 				setLPTokenBalance(res);
@@ -371,9 +390,13 @@ function App() {
 			console.log(e);
 			setLoading(false);
 		}
-	}, []);
+	}, [account]);
+	useEffect(() => {
+		tokenBalance();
+	}, [tokenBalance])
 
 	useEffect(() => {
+		tokenBalance();
 		const account = localStorage.getItem('account');
 		const balance = localStorage.getItem('balance');
 		if (account && balance) {
@@ -381,8 +404,7 @@ function App() {
 			setWalletConnected(true);
 			setBalance(balance);
 		}
-
-	},);
+	}, []);
 
 	useEffect(() => {
 		document.body.onclick = () => {
@@ -452,6 +474,7 @@ function App() {
 				walletAddress={data.wallet.address}
 				accountStatus={isWallletConnceted ? true : false}
 				connectWallet={ShortSwapButtonClick}
+
 				disconnectWallet={disconnect}
 			/>
 

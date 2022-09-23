@@ -56,12 +56,12 @@
   cursor: not-allowed;
 }
 
+
 .btnConnect:enabled:hover {
-  background-color: #ffdeea;
+  background-color:#FEF5F8 ;
 }
 
 
 .swapunit{
   background-color:#808080 ;
 }
-

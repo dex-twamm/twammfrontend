@@ -38,7 +38,7 @@ export async function runQueryBatchSwap(assetInAddress, assetOutAddress, swapAmo
         const assets = [
             POOLS[POOL_ID].tokens[0].address, POOLS[POOL_ID].tokens[1].address
         ];
-        console.log("ShortSwap Assets", swapType, swaps, assets)
+        // console.log("ShortSwap Assets", swapType, swaps, assets)
         const deltas = await balancer.swaps.queryBatchSwap({
             kind: swapType,
             swaps,

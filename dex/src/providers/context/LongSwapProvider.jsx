@@ -14,6 +14,7 @@ export const LongSwapProvider = ({ children }) => {
   const [latestBlock, setLatestBlock] = useState("");
   const [numberOfBlockIntervals, setNumberOfBlockIntervals] = useState(1);
   const [targetDate, setTargetDate] = useState("");
+  const [allowance, setAllowance] = useState("");
   const { tokenBalances } = useContext(ShortSwapContext);
 
   console.log("Token Balances ", tokenBalances);
@@ -50,6 +51,8 @@ export const LongSwapProvider = ({ children }) => {
         setLatestBlock,
         numberOfBlockIntervals,
         setNumberOfBlockIntervals,
+        allowance,
+        setAllowance,
       }}
     >
       {children}

@@ -2,7 +2,7 @@ import { BigNumber } from "ethers";
 import { createContext, useState } from "react";
 
 export const ShortSwapProvider = ({ children }) => {
-  const [swapAmount, setSwapAmount] = useState(0);
+  const [swapAmount, setSwapAmount] = useState("0");
   const [srcAddress, setSrcAddress] = useState("");
   const [destAddress, setDestAddress] = useState("");
   const [equivalentAmount, setEquivalentAmount] = useState("");
@@ -26,6 +26,7 @@ export const ShortSwapProvider = ({ children }) => {
   const [currentBlock, setCurrentBlock] = useState();
   const [spotPrice, setSpotPrice] = useState(0);
   const [LPTokenBalance, setLPTokenBalance] = useState([]);
+  const [provider, setProvider] = useState("");
 
   return (
     <ShortSwapContext.Provider

@@ -1,15 +1,18 @@
-import { LongSwapProvider, ShortSwapProvider, UIProvider } from './context';
+import { LongSwapProvider, ShortSwapProvider, UIProvider } from "./context";
+import { WebProvider } from "./context/WebProvider";
 
 const AllProviders = ({ children }) => {
-	return (
-		<UIProvider>
-			<ShortSwapProvider>
-				<LongSwapProvider>{children}</LongSwapProvider>
-			</ShortSwapProvider>
-		</UIProvider>
-	);
+  return (
+    <WebProvider>
+      <UIProvider>
+        <ShortSwapProvider>
+          <LongSwapProvider>{children}</LongSwapProvider>
+        </ShortSwapProvider>
+      </UIProvider>
+    </WebProvider>
+  );
 };
 
 export default AllProviders;
 
-export * from './context';
+export * from "./context";
