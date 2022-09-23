@@ -2,7 +2,7 @@ import { BigNumber } from "ethers";
 import { createContext, useState } from "react";
 
 export const ShortSwapProvider = ({ children }) => {
-  const [swapAmount, setSwapAmount] = useState("0");
+  const [swapAmount, setSwapAmount] = useState(0);
   const [srcAddress, setSrcAddress] = useState("");
   const [destAddress, setDestAddress] = useState("");
   const [equivalentAmount, setEquivalentAmount] = useState("");

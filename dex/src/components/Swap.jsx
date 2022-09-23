@@ -51,6 +51,8 @@ const Swap = (props) => {
     setSpotPrice,
     spotPrice,
     srcAddress,
+    setTransactionHash,
+    transactionHash,
   } = useContext(ShortSwapContext);
 
   const {
@@ -111,7 +113,12 @@ const Swap = (props) => {
   };
 
   const handleApproveButton = async () => {
-    getApproval(provider, srcAddress);
+    try {
+      const approval = await getApproval(provider, srcAddress);
+      setTransactionHash(approval.hash);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const validate = (values) => {
@@ -418,9 +425,9 @@ const Swap = (props) => {
                     onClick={handleClose}
                   >
                     {" "}
-                    {` 1 ${tokenA.symbol} = ${spotPrice.toFixed(4)} ${
-                      tokenB.symbol
-                    }`}
+                    {` 1 ${tokenA.symbol} = ${spotPrice.toFixed(4)} 
+                     ${tokenB.symbol}
+                    `}
                     {/* <span style={{ color: "#333333", opacity: 0.7 }}>
                       {" "}
                       ($123)
@@ -480,9 +487,13 @@ const Swap = (props) => {
               onClick={() => {
                 handleApproveButton();
               }}
-            >{`Allow TWAMM Protocol to use your ${
-              tokenA.symbol ?? tokenB.symbol
-            }`}</button>
+            >
+              {transactionHash
+                ? `You can Now Trade ${tokenA.symbol ?? tokenB.symbol}`
+                : `Allow TWAMM Protocol to use your ${
+                    tokenA.symbol ?? tokenB.symbol
+                  }`}
+            </button>
           ) : (
             <></>
           )}
