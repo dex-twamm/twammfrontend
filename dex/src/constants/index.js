@@ -1873,7 +1873,7 @@ export const TWAMM_POOL_ABI = [
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "longTermSwapFeeUserCutPercentage",
+        "name": "longTermSwapFeeProtocolCutPercentage",
         "type": "uint256"
       }
     ],
@@ -2304,7 +2304,7 @@ export const TWAMM_POOL_ABI = [
   },
   {
     "inputs": [],
-    "name": "longTermSwapFeeUserCutPercentage",
+    "name": "longTermSwapFeeProtocolCutPercentage",
     "outputs": [
       {
         "internalType": "uint256",
@@ -2729,11 +2729,37 @@ export const TWAMM_POOL_ABI = [
       },
       {
         "internalType": "uint256",
-        "name": "newLongTermSwapFeeUserCutPercentage",
+        "name": "newLongTermSwapFeeProtocolCutPercentage",
         "type": "uint256"
       }
     ],
     "name": "setLongTermSwapFeePercentage",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "newMaxPerBlockSaleRatePercent",
+        "type": "uint256"
+      }
+    ],
+    "name": "setMaxPerBlockSaleRatePercent",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amountToAmmBalanceRatio",
+        "type": "uint256"
+      }
+    ],
+    "name": "setMinltoOrderAmountToAmmBalanceRatio",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -2760,6 +2786,19 @@ export const TWAMM_POOL_ABI = [
       }
     ],
     "name": "setSwapFeePercentage",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "virtualOrderExecutionPaused",
+        "type": "bool"
+      }
+    ],
+    "name": "setVirtualOrderExecutionPaused",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -3049,9 +3088,9 @@ export const LONGTERM_ABI = [
   {
     "inputs": [
       {
-        "internalType": "uint8",
+        "internalType": "uint256",
         "name": "tokenIndex",
-        "type": "uint8"
+        "type": "uint256"
       }
     ],
     "name": "getTokenBalanceFromLongTermOrder",
@@ -3070,14 +3109,29 @@ export const LONGTERM_ABI = [
     "name": "longTermOrders",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "uint32",
         "name": "orderBlockInterval",
-        "type": "uint256"
+        "type": "uint32"
       },
       {
-        "internalType": "uint256",
+        "internalType": "uint32",
+        "name": "lastOrderId",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint64",
+        "name": "maxPerBlockSaleRatePercent",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint64",
+        "name": "minltoOrderAmountToAmmBalanceRatio",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint64",
         "name": "lastVirtualOrderBlock",
-        "type": "uint256"
+        "type": "uint64"
       },
       {
         "internalType": "uint256",
@@ -3087,21 +3141,6 @@ export const LONGTERM_ABI = [
       {
         "internalType": "uint256",
         "name": "balanceB",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "lastOrderId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "maxPerBlockSaleRatePercent",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "minltoOrderAmountToAmmBalanceRatio",
         "type": "uint256"
       }
     ],
@@ -3231,7 +3270,7 @@ export const LONGTERM_ABI = [
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "amountToAmmBalanceRation",
+        "name": "amountToAmmBalanceRatio",
         "type": "uint256"
       }
     ],

@@ -5,7 +5,7 @@ import { getLongTermOrder } from "./longSwap";
 export async function getEthLogs(signer, walletAddress) {
 
   const exchangeContract = new Contract(
-    '0x40e1fB58aBbd319dB35964eA73e148919Ed0Ae51',
+    '0x20c0b25ace39df183b9ccbbd1d575764544aeb19',
     TWAMM_POOL_ABI,
     signer
   );
