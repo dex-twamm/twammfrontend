@@ -1,7 +1,7 @@
 // Sagar
 // import { Modal } from '@mui/material';
 import React, { useState } from "react";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, IconButton, Typography } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import AddIcon from "@mui/icons-material/Add";
 import Modal from "@mui/material/Modal";
@@ -14,6 +14,8 @@ import { height } from "@mui/system";
 import { useContext } from "react";
 import { ShortSwapContext } from "../providers";
 import { truncateAddress } from "../utils";
+import { HiExternalLink } from "react-icons/hi";
+import styles from "../css/LongTermOrderCard.module.css";
 
 const style = {
   position: "absolute",
@@ -193,8 +195,13 @@ const DisconnectWalletOption = ({ setOpen, open, disconnectWallet }) => {
                 justifyContent: "space-between",
               }}
             >
-              <Link to="/">
-                {" "}
+              {" "}
+              <Button
+                onClick={() => {
+                  navigator.clipboard.writeText(account);
+                }}
+                style={{ textTransform: "none" }}
+              >
                 <Typography
                   style={{
                     display: "flex",
@@ -216,9 +223,16 @@ const DisconnectWalletOption = ({ setOpen, open, disconnectWallet }) => {
                   />
                   Copy Address
                 </Typography>{" "}
-              </Link>
-
-              <Link to="/">
+              </Button>
+              <Button
+                onClick={() =>
+                  window.open(
+                    `https://goerli.etherscan.io/address/${account}`,
+                    "_blank"
+                  )
+                }
+                style={{ textTransform: "none" }}
+              >
                 <Typography
                   sx={{
                     display: "flex",
@@ -235,7 +249,7 @@ const DisconnectWalletOption = ({ setOpen, open, disconnectWallet }) => {
                   />
                   View on Explorer
                 </Typography>
-              </Link>
+              </Button>
             </Box>
           </Box>
           <Box
