@@ -46,10 +46,10 @@ export const swapTokens = async (signer, swapAmountWei, assetIn, assetOut, walle
       gasLimit: 2000000
     }
   );
-  const txResult = await swapTx.wait();
-  console.log("Swap Results After Placed", txResult)
   txHash = swapTx.hash;
   console.log(txHash);
+  const txResult = await swapTx.wait();
+  console.log("Swap Results After Placed", txResult)
   return txHash;
 
   // const swapResult = await swapTx.wait();

@@ -43,7 +43,7 @@ export const WebProvider = ({ children }) => {
   // const connectWallet = async () => {
   //   try {
   //     await getProvider();
-  //     console.log("Wallet Connected Info", isWallletConnceted);
+  //     console.log("Wallet Connected Info", isWalletConnected);
   //   } catch (err) {
   //     console.error(err);
   //     setError("Wallet Connection Rejected");

@@ -45,7 +45,7 @@ function App() {
 		poolCash,
 		account,
 		setAccount,
-		isWallletConnceted, setFormErrors, expectedSwapOut,
+		isWalletConnected, setFormErrors, expectedSwapOut,
 		setWalletConnected, setExpectedSwapOut,
 		setweb3provider, setCurrentBlock, currentBlock, setSpotPrice,
 		tolerance, deadline, error, setLPTokenBalance
@@ -59,7 +59,7 @@ function App() {
 	const connectWallet = async () => {
 		try {
 			await getProvider();
-			console.log('Wallet Connected Info', isWallletConnceted);
+			console.log('Wallet Connected Info', isWalletConnected);
 
 			// setSuccess("Wallet Connected");
 			// tokenBalance(account);
@@ -199,7 +199,7 @@ function App() {
 	async function ShortSwapButtonClick() {
 		try {
 
-			if (!isWallletConnceted) {
+			if (!isWalletConnected) {
 				await connectWallet();
 				const signer = await getProvider(true);
 				await getEthLogs(signer);
@@ -213,8 +213,8 @@ function App() {
 
 	//  Calling LongTermSwap
 	async function LongSwapButtonClick() {
-		console.log("Wallet", isWallletConnceted);
-		if (!isWallletConnceted) {
+		console.log("Wallet", isWalletConnected);
+		if (!isWalletConnected) {
 			await connectWallet();
 			const signer = await getProvider(true);
 			await getEthLogs(signer);
@@ -228,7 +228,7 @@ function App() {
 		try {
 			const walletAddress = account;
 			const signer = await getProvider(true);
-			if (!isWallletConnceted) {
+			if (!isWalletConnected) {
 				await connectWallet();
 			}
 			await joinPool(walletAddress, signer);
@@ -244,7 +244,7 @@ function App() {
 			const bptAmountIn = ethers.utils.parseUnits('0.001', 'ether');
 			const walletAddress = account;
 			const signer = await getProvider(true);
-			if (!isWallletConnceted) {
+			if (!isWalletConnected) {
 				await connectWallet();
 			}
 			await exitPool(walletAddress, signer, bptAmountIn);
@@ -262,7 +262,7 @@ function App() {
 		try {
 			const walletAddress = account;
 			const signer = await getProvider(true);
-			if (!isWallletConnceted) {
+			if (!isWalletConnected) {
 				await connectWallet();
 			}
 			await cancelLTO(walletAddress, signer, orderId);
@@ -280,7 +280,7 @@ function App() {
 		try {
 			const walletAddress = account;
 			const signer = await getProvider(true);
-			if (!isWallletConnceted) {
+			if (!isWalletConnected) {
 				await connectWallet();
 			}
 			await withdrawLTO(walletAddress, signer, orderId);
@@ -413,11 +413,11 @@ function App() {
 		};
 	});
 
-	useEffect(() => {
-		if (web3Modal.cachedProvider) {
-			connectWallet();
-		}
-	}, [provider]);
+	// useEffect(() => {
+	// 	if (web3Modal.cachedProvider) {
+	// 		connectWallet();
+	// 	}
+	// }, [provider]);
 
 	useEffect(() => {
 		if (provider?.on) {
@@ -472,9 +472,9 @@ function App() {
 				tokenImage={data.token.image}
 				walletBalance={data.wallet.balance}
 				walletAddress={data.wallet.address}
-				accountStatus={isWallletConnceted ? true : false}
+				accountStatus={isWalletConnected ? true : false}
 				connectWallet={ShortSwapButtonClick}
-
+				change={connectWallet}
 				disconnectWallet={disconnect}
 			/>
 
@@ -487,7 +487,7 @@ function App() {
 							tokenImage={data.token.image}
 							connectWallet={ShortSwapButtonClick}
 							buttonText={
-								!isWallletConnceted ? 'Connect Wallet' : 'Swap'
+								!isWalletConnected ? 'Connect Wallet' : 'Swap'
 							}
 							showSettings={showSettings}
 							setShowSettings={setShowSettings}
@@ -502,7 +502,7 @@ function App() {
 							tokenSymbol={data.token.symbol}
 							tokenImage={data.token.image}
 							buttonText={
-								!isWallletConnceted ? 'Connect Wallet' : 'Swap'
+								!isWalletConnected ? 'Connect Wallet' : 'Swap'
 							}
 							connectWallet={LongSwapButtonClick}
 							isPlacedLongTermOrder={isPlacedLongTermOrder}

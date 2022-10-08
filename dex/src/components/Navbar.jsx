@@ -23,12 +23,13 @@ const Navbar = (props) => {
     accountStatus,
     connectWallet,
     disconnectWallet,
+    change,
   } = props;
-  const { setError, setLoading, setSwapAmount, isWallletConnceted } =
+  const { setError, setLoading, setSwapAmount, isWalletConnected } =
     useContext(ShortSwapContext);
   // const [netId, setNetId] = useState("");
   // const [isOpen, setOpen] = useState(false);
-  console.log("Wallet Status", isWallletConnceted);
+  console.log("Wallet Status", isWalletConnected);
   const [showDisconnect, setShowDisconnect] = useState(false);
   const networks = [
     { name: "Ethereum", chainId: "1", logo: "/ethereum.png" },
@@ -67,7 +68,7 @@ const Navbar = (props) => {
     });
     console.log(chainId);
     const id = chainId;
-    if (window.ethereum.networkVersion !== id && isWallletConnceted) {
+    if (window.ethereum.networkVersion !== id && isWalletConnected) {
       try {
         await window.ethereum.request({
           method: "wallet_switchEthereumChain",
@@ -154,6 +155,7 @@ const Navbar = (props) => {
       {showDisconnect && (
         <DisconnectWalletOption
           setOpen={setShowDisconnect}
+          change={change}
           disconnectWallet={disconnectWallet}
           open={showDisconnect}
         />

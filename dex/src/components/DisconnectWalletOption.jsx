@@ -38,7 +38,12 @@ const style = {
   // boxSizing:'border-box'
 };
 
-const DisconnectWalletOption = ({ setOpen, open, disconnectWallet }) => {
+const DisconnectWalletOption = ({
+  setOpen,
+  open,
+  disconnectWallet,
+  change,
+}) => {
   const { account } = useContext(ShortSwapContext);
   // const [open, setOpen] = useState(true);
 
@@ -140,6 +145,7 @@ const DisconnectWalletOption = ({ setOpen, open, disconnectWallet }) => {
               </Button>
 
               <Button
+                onClick={change}
                 size="small"
                 sx={{
                   p: { md: "0px 9px", sm: "0px 9px", xs: "0px 10px" },

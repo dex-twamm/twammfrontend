@@ -53,6 +53,7 @@ const Swap = (props) => {
     srcAddress,
     setTransactionHash,
     transactionHash,
+    isWalletConnected,
   } = useContext(ShortSwapContext);
 
   const {
@@ -480,7 +481,10 @@ const Swap = (props) => {
               {/* <LongTermSwapCardDropdown open={open} handleClose={handleClose} tokenB={tokenB}/> */}
             </>
           )}
-          {allowance <= swapAmount && swapAmount ? (
+          {allowance <= swapAmount &&
+          swapAmount &&
+          tokenA.tokenIsSet &&
+          tokenB.tokenIsSet ? (
             <button
               className={classNames(styles.btn, styles.btnConnect)}
               style={{ color: "white", background: "#FFAAC9" }}
@@ -497,21 +501,33 @@ const Swap = (props) => {
           ) : (
             <></>
           )}
-          <button
-            className={classNames(styles.btn, styles.btnConnect)}
-            onClick={handleClick}
-            disabled={
-              !tokenA.tokenIsSet || !tokenB.tokenIsSet || !swapAmount
-                ? true
-                : false
-            }
-          >
-            {!tokenA.tokenIsSet || !tokenB.tokenIsSet
-              ? "Select a Token"
-              : !swapAmount
-              ? "Enter an Amount"
-              : buttonText}
-          </button>
+          {isWalletConnected ? (
+            <button
+              className={classNames(styles.btn, styles.btnConnect)}
+              onClick={handleClick}
+              disabled={
+                !tokenA.tokenIsSet ||
+                !tokenB.tokenIsSet ||
+                !swapAmount ||
+                allowance <= swapAmount
+                  ? true
+                  : false
+              }
+            >
+              {!tokenA.tokenIsSet || !tokenB.tokenIsSet
+                ? "Select a Token"
+                : !swapAmount
+                ? "Enter an Amount"
+                : buttonText}
+            </button>
+          ) : (
+            <button
+              className={classNames(styles.btn, styles.btnConnect)}
+              onClick={handleClick}
+            >
+              Connect Wallet
+            </button>
+          )}
         </Box>
       </form>
       <PopupModal></PopupModal>
