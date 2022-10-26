@@ -1,0 +1,107 @@
+.container {
+	width: 100%;
+
+	display: flex;
+	gap: 20px;
+	flex-direction: column;
+	/* position: relative; */
+}
+
+.mainBody {
+	position: relative;
+	margin: 0 1%;
+	padding: 10px;
+	width: 98%;
+	max-width: 480px;
+	height: fit-content;
+	border-radius: 24px;
+	background: white;
+	box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+		0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+@media (min-width: 490px) {
+	.mainBody {
+		margin: 0 auto;
+	}
+}
+
+@media (min-width: 960px) {
+	.mainBody {
+		/* margin-top: 135px; */
+	}
+}
+
+.swap {
+	padding: 0px 12px;
+	/* position: relative; */
+}
+
+.swapOptions {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding-bottom: 14px;
+}
+
+.textLink {
+	text-decoration: none;
+	padding: 5px;
+	font-size: 22px;
+	color: #000;
+	font-weight: 600;
+}
+
+.settingsIcon {
+	cursor: pointer;
+	font-size: 20px;
+}
+
+.btnConnect {
+	margin-top: 10px;
+	height: 60px;
+	background-color: #fdeaf1;
+	color: rgb(213, 0, 102);
+	width: 100%;
+	border-radius: 20px;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	padding: 10px;
+	transition: 0.3s;
+	font-size: 16px;
+	font-weight: 600;
+}
+
+.btnConnect:hover {
+	background-color: #ffdeea;
+}
+
+.dropdownItem {
+	-webkit-box-align: center;
+	align-items: center;
+	background-color: rgb(25, 27, 31);
+	border: 2px solid rgb(25, 27, 31);
+	border-radius: 16px;
+	color: rgb(255, 255, 255);
+	display: flex;
+	font-weight: 500;
+	-webkit-box-pack: justify;
+	justify-content: space-between;
+	padding: 6px 8px;
+	cursor: default;
+}
+
+.longTermOrderCard {
+	background-color: #ffffff;
+	width: 100%;
+	max-width: 480px;
+	margin: 0 auto;
+	margin-bottom: 20px;
+
+	box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+		0 4px 6px -4px rgb(0 0 0 / 0.1);
+	border-radius: 20px;
+
+	overflow: hidden;
+}
