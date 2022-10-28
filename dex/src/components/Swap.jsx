@@ -147,6 +147,8 @@ const Swap = (props) => {
     }
   };
 
+  console.log("Execution time--->", executionTime === "" ? true : false);
+
   return (
     <>
       <form onSubmit={handleSubmit} className={styles.form}>
@@ -509,6 +511,7 @@ const Swap = (props) => {
                 !tokenA.tokenIsSet ||
                 !tokenB.tokenIsSet ||
                 !swapAmount ||
+                (swapType === "long" && executionTime === "") ||
                 allowance <= swapAmount
                   ? true
                   : false
