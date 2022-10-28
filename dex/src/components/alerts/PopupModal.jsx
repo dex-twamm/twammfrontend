@@ -19,7 +19,7 @@ const PopupModal = () => {
       setError("");
       setSuccess("");
       setTransactionHash("");
-    }, 5000);
+    }, 15000);
 
     return () => {
       clearTimeout(timer);
