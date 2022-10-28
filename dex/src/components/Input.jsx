@@ -51,9 +51,9 @@ const Input = (props) => {
     },
   ];
 
-  const address = tokenA?.address;
-
   useEffect(() => {
+    const address = tokenA?.address;
+
     setTokenA({
       ...tokenA,
       symbol: "Faucet",
@@ -63,7 +63,7 @@ const Input = (props) => {
     });
     setEthBalance(tokenBalances?.[0]);
     setSrcAddress(address);
-  }, [setTokenA, tokenBalances, setEthBalance, setSrcAddress, address]);
+  }, [setTokenA, tokenBalances, setEthBalance, setSrcAddress]);
 
   return (
     <>
