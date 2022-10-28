@@ -22,7 +22,7 @@ export const LongSwapProvider = ({ children }) => {
     symbol: "Faucet",
     image: "/ethereum.png",
     address: POOLS[POOL_ID].tokens[1].address,
-    balance: 0,
+    balance: tokenBalances?.[0],
     tokenIsSet: false,
   });
 
@@ -30,7 +30,7 @@ export const LongSwapProvider = ({ children }) => {
     symbol: "Select Token",
     image: "/ethereum.png",
     address: POOLS[POOL_ID].tokens[0].address,
-    balance: 0,
+    balance: tokenBalances?.[1],
     tokenIsSet: false,
   });
 

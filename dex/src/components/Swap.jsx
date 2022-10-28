@@ -29,7 +29,6 @@ const Swap = (props) => {
   const { connectWallet, buttonText, swapType } = props;
 
   const [display, setDisplay] = useState(false);
-
   const [isSubmit, setIsSubmit] = useState(false);
   const [value, setValue] = useState(0.0);
   const [showModal, setShowModal] = useState(false);
@@ -103,6 +102,7 @@ const Swap = (props) => {
   //     "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png",
   //   address: MATIC_TOKEN_ADDRESS,
   // });
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsSubmit(true);

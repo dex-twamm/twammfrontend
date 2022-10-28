@@ -144,7 +144,7 @@ const DisconnectWalletOption = ({
                 Disconnect
               </Button>
 
-              <Button
+              {/* <Button
                 onClick={change}
                 size="small"
                 sx={{
@@ -159,7 +159,7 @@ const DisconnectWalletOption = ({
                 variant="outlined"
               >
                 Change
-              </Button>
+              </Button> */}
             </Box>
 
             <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
@@ -258,7 +258,7 @@ const DisconnectWalletOption = ({
               </Button>
             </Box>
           </Box>
-          <Box
+          {/* <Box
             sx={{
               background: "#DCDCDC",
               width: "100%",
@@ -275,7 +275,7 @@ const DisconnectWalletOption = ({
               {" "}
               Your transactions will appear here...
             </Typography>
-          </Box>
+          </Box> */}
         </Box>
       </Modal>
     </Box>

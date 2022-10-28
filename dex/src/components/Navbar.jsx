@@ -24,13 +24,15 @@ const Navbar = (props) => {
     connectWallet,
     disconnectWallet,
     change,
+    showDisconnect,
+    setShowDisconnect,
   } = props;
   const { setError, setLoading, setSwapAmount, isWalletConnected } =
     useContext(ShortSwapContext);
   // const [netId, setNetId] = useState("");
   // const [isOpen, setOpen] = useState(false);
   console.log("Wallet Status", isWalletConnected);
-  const [showDisconnect, setShowDisconnect] = useState(false);
+  // const [showDisconnect, setShowDisconnect] = useState(false);
   const networks = [
     { name: "Ethereum", chainId: "1", logo: "/ethereum.png" },
     { name: "Goerli", chainId: "5", logo: "/Testv4.jpeg" },

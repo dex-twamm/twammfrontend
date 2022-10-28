@@ -24,23 +24,24 @@ const Input = (props) => {
   const { tokenBalances, selectToken } = useContext(ShortSwapContext);
   const { tokenA, tokenB } = useContext(LongSwapContext);
   console.log("swap token", tokenA, tokenB);
-  // console.log("Select Token Input.js", selectToken);
+  console.log("Select Token Input.js", selectToken);
   // console.log("TOKEN A", tokenA);
   // console.log("====TOKEN BALANCES===", tokenBalances);
+
   const tokenDetails = [
     {
       name: "Faucet",
       symbol: "ETH",
       image: "/ethereum.png",
       address: POOLS[POOL_ID].tokens[1].address,
-      balance: tokenBalances[0] ?? 0,
+      balance: tokenBalances?.[0] ?? 0,
     },
     {
       name: "Matic",
       symbol: "DAI",
       image: "/Testv4.jpeg",
       address: POOLS[POOL_ID].tokens[0].address,
-      balance: tokenBalances[1] ?? 0,
+      balance: tokenBalances?.[1] ?? 0,
     },
     {
       type: "coming_soon",
@@ -49,6 +50,8 @@ const Input = (props) => {
       image: "/Testv4.jpeg",
     },
   ];
+
+  console.log("Token A--->", tokenA);
 
   return (
     <>
