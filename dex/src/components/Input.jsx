@@ -21,7 +21,8 @@ const Input = (props) => {
     swapType,
     placeholder,
   } = props;
-  const { tokenBalances, selectToken } = useContext(ShortSwapContext);
+  const { tokenBalances, selectToken, setEthBalance, setSrcAddress } =
+    useContext(ShortSwapContext);
   const { tokenA, tokenB } = useContext(LongSwapContext);
   console.log("swap token", tokenA, tokenB);
   // console.log("Select Token Input.js", selectToken);
@@ -49,6 +50,20 @@ const Input = (props) => {
       image: "/Testv4.jpeg",
     },
   ];
+
+  const address = tokenA?.address;
+
+  useEffect(() => {
+    setTokenA({
+      ...tokenA,
+      symbol: "Faucet",
+      image: "/ethereum.png",
+      balance: tokenBalances?.[0],
+      tokenIsSet: true,
+    });
+    setEthBalance(tokenBalances?.[0]);
+    setSrcAddress(address);
+  }, [setTokenA, tokenBalances, setEthBalance, setSrcAddress, address]);
 
   return (
     <>

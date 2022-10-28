@@ -147,8 +147,6 @@ const Swap = (props) => {
     }
   };
 
-  console.log("Execution time--->", executionTime === "" ? true : false);
-
   return (
     <>
       <form onSubmit={handleSubmit} className={styles.form}>

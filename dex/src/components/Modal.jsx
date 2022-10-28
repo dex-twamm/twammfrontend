@@ -16,13 +16,10 @@ const Modal = ({ display, setDisplay, setTokenA, setTokenB, tokenDetails }) => {
     setDisplay(!display);
   };
 
-  console.log("Select Tokon ko value--->", selectToken);
-
   // Handle Select Token Modal display
   const handleTokenSelection = (event) => {
     console.log("TokenSelected Prabin", selectToken);
     const token = event.currentTarget;
-    console.log("token = event.currentTarget", token);
     console.log("Modal:Handle", token.children[2].innerHTML);
     if (selectToken === "1") {
       setEthBalance(parseFloat(token.children[3].innerHTML).toFixed(2));
