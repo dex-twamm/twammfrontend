@@ -147,8 +147,6 @@ const Swap = (props) => {
     }
   };
 
-  console.log("Allowance--->", allowance, "swap amount---->", swapAmount);
-
   return (
     <>
       <form onSubmit={handleSubmit} className={styles.form}>
