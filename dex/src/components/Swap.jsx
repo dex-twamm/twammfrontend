@@ -147,6 +147,8 @@ const Swap = (props) => {
     }
   };
 
+  console.log("Allowance--->", allowance, "swap amount---->", swapAmount);
+
   return (
     <>
       <form onSubmit={handleSubmit} className={styles.form}>
@@ -487,7 +489,7 @@ const Swap = (props) => {
           tokenB.tokenIsSet ? (
             <button
               className={classNames(styles.btn, styles.btnConnect)}
-              style={{ color: "white", background: "#FFAAC9" }}
+              style={{ color: "white", background: "rgb(213, 0, 102)" }}
               onClick={() => {
                 handleApproveButton();
               }}
