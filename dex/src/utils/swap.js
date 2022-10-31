@@ -2,12 +2,19 @@ import { BigNumber, Contract } from "ethers";
 import { VAULT_CONTRACT_ABI, VAULT_CONTRACT_ADDRESS } from "../constants";
 import { POOL_ID, MAX_UINT256 } from ".";
 
-
-
 /*
   swapTokens: Swaps `swapAmountWei` of Eth/Crypto Dev tokens with `tokenToBeReceivedAfterSwap` amount of Eth/Crypto Dev tokens.
 */
-export const swapTokens = async (signer, swapAmountWei, assetIn, assetOut, walletAddress, expectedSwapOut, tolerance, deadline) => {
+export const swapTokens = async (
+  signer,
+  swapAmountWei,
+  assetIn,
+  assetOut,
+  walletAddress,
+  expectedSwapOut,
+  tolerance,
+  deadline
+) => {
   let txHash;
   // Create a new instance of the exchange contract
   const exchangeContract = new Contract(
@@ -17,11 +24,20 @@ export const swapTokens = async (signer, swapAmountWei, assetIn, assetOut, walle
   );
   const kind = 0; // GivenIn
 
-  const expectedSwapOutAfterTolerance = BigNumber.from(expectedSwapOut).mul(1000 - (10 * tolerance)).div(1000);
+  const expectedSwapOutAfterTolerance = BigNumber.from(expectedSwapOut)
+    .mul(1000 - 10 * tolerance)
+    .div(1000);
   const targetDate = new Date();
   targetDate.setSeconds(deadline * 60);
   const deadlineTimestamp = targetDate.getTime();
-  console.log("Inputs", expectedSwapOut, tolerance, deadline, swapAmountWei, expectedSwapOutAfterTolerance);
+  console.log(
+    "Inputs",
+    expectedSwapOut,
+    tolerance,
+    deadline,
+    swapAmountWei,
+    expectedSwapOutAfterTolerance
+  );
   const swapTx = await exchangeContract.swap(
     {
       poolId: POOL_ID,
@@ -41,15 +57,15 @@ export const swapTokens = async (signer, swapAmountWei, assetIn, assetOut, walle
     kind === 0 ? 0 : MAX_UINT256, // 0 if given in, infinite if given out.  // Slippage  // TODO // Need To QueryBatchSwap Price - 1%
     // swapAmountWei * SpotPrice *( 1- Slippage can be 0.005, 0.01, 0.02) Type Big Number
 
-    (BigNumber.from(Math.floor(deadlineTimestamp / 1000))), // Deadline // Minutes Into Seconds Then Type BigNumber  
+    BigNumber.from(Math.floor(deadlineTimestamp / 1000)), // Deadline // Minutes Into Seconds Then Type BigNumber
     {
-      gasLimit: 2000000
+      gasLimit: 2000000,
     }
   );
   txHash = swapTx.hash;
   console.log(txHash);
-  const txResult = await swapTx.wait();
-  console.log("Swap Results After Placed", txResult)
+  // const txResult = await swapTx.wait();
+  // console.log("Swap Results After Placed", txResult)
   return txHash;
 
   // const swapResult = await swapTx.wait();
