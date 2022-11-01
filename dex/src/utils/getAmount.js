@@ -1,12 +1,14 @@
 import { Contract, ethers } from "ethers";
-import { bigToStr, FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS, POOL_ID } from ".";
-
 import {
-  ERC20_TOKEN_CONTRACT_ABI, TWAMM_POOL_ABI,
+  bigToStr,
+  FAUCET_TOKEN_ADDRESS,
+  MATIC_TOKEN_ADDRESS,
+  POOL_ID,
+} from ".";
 
-} from "../constants";
+import { ERC20_TOKEN_CONTRACT_ABI, TWAMM_POOL_ABI } from "../constants";
 import { POOLS } from "./pool";
-// To Retrieve Token Balances 
+// To Retrieve Token Balances
 export const getTokensBalance = async (provider, walletAddress) => {
   var tokenAddress = [FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS];
   const newBalance = [];
@@ -29,20 +31,17 @@ export const getTokensBalance = async (provider, walletAddress) => {
   }
   // console.log(newBalance);
   return newBalance.map((item) => item);
-}
-
+};
 
 export const getLPTokensBalance = async (provider, walletAddress) => {
   const poolContract = new Contract(
     POOLS[POOL_ID].address,
     TWAMM_POOL_ABI,
-    provider);
+    provider
+  );
 
   const balanceOfLPTokens = await poolContract.balanceOf(walletAddress);
   const readableBalance = bigToStr(balanceOfLPTokens);
   console.log("BLPT", readableBalance);
-  return [readableBalance, '0.2144', '0.2365', '0.0001', '0.0000'].sort().reverse();
-
-}
-
-
+  return readableBalance;
+};

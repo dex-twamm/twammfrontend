@@ -18,7 +18,7 @@ const PopupModal = () => {
     let timer = setTimeout(() => {
       setError("");
       setSuccess("");
-      setTransactionHash("");
+      // setTransactionHash("");
     }, 15000);
 
     return () => {
