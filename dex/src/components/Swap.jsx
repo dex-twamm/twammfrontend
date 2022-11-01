@@ -116,6 +116,7 @@ const Swap = (props) => {
   const handleApproveButton = async () => {
     try {
       const approval = await getApproval(provider, srcAddress);
+      console.log("Approval---->", approval);
       setTransactionHash(approval.hash);
     } catch (e) {
       console.log(e);
@@ -487,7 +488,7 @@ const Swap = (props) => {
           tokenB.tokenIsSet ? (
             <button
               className={classNames(styles.btn, styles.btnConnect)}
-              style={{ color: "white", background: "rgb(213, 0, 102)" }}
+              style={{ color: "white", background: "rgb(253 109 178)" }}
               onClick={() => {
                 handleApproveButton();
               }}

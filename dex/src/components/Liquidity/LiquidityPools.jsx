@@ -86,19 +86,19 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
           Pools
         </Typography>
       </Box>
-      {/* {LPTokenBalance.map((items, index) => {
-        return ( */}
-      <Box
-        // key={index}
-        sx={{
-          //   width: { sm: "100%", xs: "50%", md: "60%" },
-          display: "flex",
-          flexDirection: { xs: "row-reverse", sm: "row" },
-          justifyContent: { xs: "flex-end", sm: "flex-end" },
-          alignItems: "center",
-        }}
-      >
-        {/* <Button
+      {LPTokenBalance.map((items, index) => {
+        return (
+          <Box
+            key={index}
+            sx={{
+              //   width: { sm: "100%", xs: "50%", md: "60%" },
+              display: "flex",
+              flexDirection: { xs: "row-reverse", sm: "row" },
+              justifyContent: { xs: "flex-end", sm: "flex-end" },
+              alignItems: "center",
+            }}
+          >
+            {/* <Button
 							  onClick={handleOpen}
 							  sx={{
 								  // backgroundColor:'#e94393',
@@ -126,7 +126,7 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 							  More  <KeyboardArrowDownIcon size='large' sx={{ml:"1px",}}/>
 						  </Button> */}
 
-        {/* <Button
+            {/* <Button
 							  onClick={() => showAddLiquidity(true)}
 							  sx={{
 								  backgroundColor:'#d50066',
@@ -235,17 +235,17 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 							  </Box>
 						  </Modal> */}
 
-        <Box
-          sx={{
-            mt: "20px",
-            bgcolor: " white",
-            // opacity: items == 0 && 0.5,
-            width: "100%",
-            p: "8px",
-            borderRadius: "20px",
-          }}
-        >
-          {/* <Box
+            <Box
+              sx={{
+                mt: "20px",
+                bgcolor: " white",
+                opacity: items == 0 && 0.5,
+                width: "100%",
+                p: "8px",
+                borderRadius: "20px",
+              }}
+            >
+              {/* <Box
                 sx={{
                   display: "flex",
                   justifyContent: "space-between",
@@ -254,7 +254,7 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                   pl: "10px",
                 }}
               > */}
-          {/* <Typography
+              {/* <Typography
                   style={{
                     fontWeight: 400,
                     color: "#333333",
@@ -264,8 +264,8 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                 >
                   Your positions (1)
                 </Typography> */}
-          {/* <Box sx={{ display: "flex", alignItems: "center", pl: "10px" }}> */}
-          {/* <Typography
+              {/* <Box sx={{ display: "flex", alignItems: "center", pl: "10px" }}> */}
+              {/* <Typography
 					style={{
 					  fontWeight: 400,
 					  color: "#333333",
@@ -276,9 +276,9 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 				  >
 					Show closed positions
 				  </Typography> */}
-          {/* <Switch size='large' defaultChecked />
-           */}
-          {/* <button
+              {/* <Switch size='large' defaultChecked />
+               */}
+              {/* <button
 					onClick={() => setButtonEnabled((state) => !state)}
 					className={styles.collectBtn}
 					style={{ height: "5%" }}
@@ -290,96 +290,96 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 					  )}
 					></div>
 				  </button> */}
-          {/* </Box> */}
-          {/* </Box> */}
-          <Box
-            style={{
-              marginTop: "5px",
-              border: "2px solid #f0f0f0",
-              borderRadius: "15px",
-              width: { sm: "60%", xs: "100%", md: "70%" },
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                flexDirection: "column",
-                boxSizing: "border-box",
-                p: 1,
-                minWidth: "100%",
-                height: "auto",
-              }}
-            >
+              {/* </Box> */}
+              {/* </Box> */}
               <Box
-                sx={{
-                  display: "flex",
-                  width: "100%",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  height: "2%",
-                  background: "white",
+                style={{
+                  marginTop: "5px",
+                  border: "2px solid #f0f0f0",
+                  borderRadius: "15px",
+                  width: { sm: "60%", xs: "100%", md: "70%" },
                 }}
               >
                 <Box
                   sx={{
                     display: "flex",
                     justifyContent: "space-between",
-                    alignItems: "center",
-                    m: 1,
+                    flexDirection: "column",
+                    boxSizing: "border-box",
+                    p: 1,
+                    minWidth: "100%",
+                    height: "auto",
                   }}
                 >
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Avatar
-                      sx={{
-                        background: "blue",
-                        height: "20px",
-                        width: "20px",
-                      }}
-                      alt="Testv4"
-                      src="/Testv4.jpeg"
-                    />
-                    <Avatar
-                      sizes="small"
-                      sx={{
-                        left: "-10px",
-                        // top: 4,
-                        background: "green",
-                        height: "20px",
-                        width: "20px",
-                      }}
-                      alt="Faucet"
-                      src="/ethereum.png"
-                    />
-                  </Box>
-                  <Typography
+                  <Box
                     sx={{
-                      mr: 1,
-                      fontWeight: 500,
-                      color: "#333333",
-                      fontSize: { xs: 16 },
-                      fontFamily: "Open Sans",
+                      display: "flex",
+                      width: "100%",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      height: "2%",
+                      background: "white",
                     }}
                   >
-                    {`${POOLS[POOL_ID].tokens[0].symbol} / ${POOLS[POOL_ID].tokens[1].symbol}`}
-                  </Typography>
-                  <span
-                    style={{
-                      padding: 3,
-                      // width: '45px',
-                      border: "1px solid #fdeaf1",
-                      borderRadius: "7px",
-                      background: "#fdeaf1",
-                      color: "#d50066",
-                      fontFamily: "Open Sans",
-                      fontWeight: 500,
-                    }}
-                  >
-                    {POOLS[POOL_ID]?.fees}%
-                  </span>
-                </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        m: 1,
+                      }}
+                    >
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <Avatar
+                          sx={{
+                            background: "blue",
+                            height: "20px",
+                            width: "20px",
+                          }}
+                          alt="Testv4"
+                          src="/Testv4.jpeg"
+                        />
+                        <Avatar
+                          sizes="small"
+                          sx={{
+                            left: "-10px",
+                            // top: 4,
+                            background: "green",
+                            height: "20px",
+                            width: "20px",
+                          }}
+                          alt="Faucet"
+                          src="/ethereum.png"
+                        />
+                      </Box>
+                      <Typography
+                        sx={{
+                          mr: 1,
+                          fontWeight: 500,
+                          color: "#333333",
+                          fontSize: { xs: 16 },
+                          fontFamily: "Open Sans",
+                        }}
+                      >
+                        {`${POOLS[POOL_ID].tokens[0].symbol} / ${POOLS[POOL_ID].tokens[1].symbol}`}
+                      </Typography>
+                      <span
+                        style={{
+                          padding: 3,
+                          // width: '45px',
+                          border: "1px solid #fdeaf1",
+                          borderRadius: "7px",
+                          background: "#fdeaf1",
+                          color: "#d50066",
+                          fontFamily: "Open Sans",
+                          fontWeight: 500,
+                        }}
+                      >
+                        {POOLS[POOL_ID]?.fees}%
+                      </span>
+                    </Box>
 
-                {/* <Box
+                    {/* <Box
 					  sx={{
 						display: "flex",
 						alignItems: "center",
@@ -414,37 +414,36 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 						In range{" "}
 					  </p>
 					</Box> */}
-              </Box>
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                m: 1,
-                width: "fit-content",
-              }}
-            >
-              <Typography
-                style={{
-                  fontWeight: 500,
-                  color: "grey",
-                  fontFamily: "Open Sans",
-                }}
-              >
-                Your LP Token Balance:{" "}
-                <span
-                  style={{
-                    fontWeight: 400,
-                    color: "#333333",
-                    fontFamily: "Open Sans",
+                  </Box>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    m: 1,
+                    width: "fit-content",
                   }}
                 >
-                  {/* {items} */}
-                  N/A
-                </span>
-              </Typography>
+                  <Typography
+                    style={{
+                      fontWeight: 500,
+                      color: "grey",
+                      fontFamily: "Open Sans",
+                    }}
+                  >
+                    Your LP Token Balance:{" "}
+                    <span
+                      style={{
+                        fontWeight: 400,
+                        color: "#333333",
+                        fontFamily: "Open Sans",
+                      }}
+                    >
+                      {items}
+                    </span>
+                  </Typography>
 
-              {/* <Box
+                  {/* <Box
 					sx={{
 					  display: "flex",
 					  alignItems: "center",
@@ -463,7 +462,7 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 					/>
 				  </Box> */}
 
-              {/* <Typography
+                  {/* <Typography
 					style={{
 					  fontWeight: 500,
 					  color: "grey",
@@ -481,76 +480,78 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 					  ∞ UNI per ETH
 					</span>
 				  </Typography> */}
-            </Box>
+                </Box>
 
-            <Box
-              sx={{
-                m: 1,
-                paddingRight: { xs: "10px", sm: "10px" },
-                display: "flex",
-                justifyContent: {
-                  xs: "space-between",
-                  sm: "flex-end",
-                  md: "flex-end",
-                },
-                width: { xs: "100%", sm: "100%" },
-                height: "40px",
-                alignItems: "center",
-              }}
-            >
-              <button
-                onClick={() =>
-                  window.open(
-                    `https://app.balancer.fi/#/pool/0x5c6ee304399dbdb9c8ef030ab642b10820db8f56000200000000000000000014/withdraw`,
-                    "_blank"
-                  )
-                }
-                style={{
-                  border: "1px solid #d50066",
-                  backgroundColor: "#fff",
-                  color: "#d50066",
-                  borderRadius: "12px",
-                  padding: "4px 6px",
-                  boxSizing: "border-box",
-                  cursor: "pointer",
-                  height: "35px",
-                  fontWeight: "500",
-                  fontFamily: "Open Sans",
-                  fontSize: "18px",
-                }}
-              >
-                Remove Liquidity
-              </button>
-              <button
-                onClick={() =>
-                  window.open(
-                    `https://app.balancer.fi/#/pool/0x5c6ee304399dbdb9c8ef030ab642b10820db8f56000200000000000000000014/invest`,
-                    "_blank"
-                  )
-                }
-                style={{
-                  backgroundColor: "#fdeaf1",
-                  borderRadius: "12px",
-                  fontFamily: "Open Sans",
-                  padding: "6px 8px",
-                  height: "35px",
-                  outline: "none",
-                  margin: "5px",
-                  color: "#d50066",
-                  fontWeight: "100",
-                  border: "none",
-                  marginLeft: "10px",
-                  fontSize: "18px",
-                  cursor: "pointer",
-                }}
-              >
-                Add Liquidity
-              </button>
+                <Box
+                  sx={{
+                    m: 1,
+                    paddingRight: { xs: "10px", sm: "10px" },
+                    display: "flex",
+                    justifyContent: {
+                      xs: "space-between",
+                      sm: "flex-end",
+                      md: "flex-end",
+                    },
+                    width: { xs: "100%", sm: "100%" },
+                    height: "40px",
+                    alignItems: "center",
+                  }}
+                >
+                  <button
+                    onClick={() =>
+                      window.open(
+                        `https://app.balancer.fi/#/pool/0x5c6ee304399dbdb9c8ef030ab642b10820db8f56000200000000000000000014/withdraw`,
+                        "_blank"
+                      )
+                    }
+                    style={{
+                      border: "1px solid #d50066",
+                      backgroundColor: "#fff",
+                      color: "#d50066",
+                      borderRadius: "12px",
+                      padding: "4px 6px",
+                      boxSizing: "border-box",
+                      cursor: "pointer",
+                      height: "35px",
+                      fontWeight: "500",
+                      fontFamily: "Open Sans",
+                      fontSize: "18px",
+                    }}
+                  >
+                    Remove Liquidity
+                  </button>
+                  {items != 0 && (
+                    <button
+                      onClick={() =>
+                        window.open(
+                          `https://app.balancer.fi/#/pool/0x5c6ee304399dbdb9c8ef030ab642b10820db8f56000200000000000000000014/invest`,
+                          "_blank"
+                        )
+                      }
+                      style={{
+                        backgroundColor: "#fdeaf1",
+                        borderRadius: "12px",
+                        fontFamily: "Open Sans",
+                        padding: "6px 8px",
+                        height: "35px",
+                        outline: "none",
+                        margin: "5px",
+                        color: "#d50066",
+                        fontWeight: "100",
+                        border: "none",
+                        marginLeft: "10px",
+                        fontSize: "18px",
+                      }}
+                    >
+                      Add Liquidity
+                    </button>
+                  )}
+                </Box>
+              </Box>
             </Box>
           </Box>
-        </Box>
-      </Box>
-      {/* ); })} */}
+        );
+      })}
     </Box>
   ) : (
     <CircularProgressBar
