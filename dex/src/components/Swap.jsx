@@ -26,8 +26,7 @@ import { getApproval } from "../utils/getApproval";
 import { WebContext } from "../providers/context/WebProvider";
 
 const Swap = (props) => {
-  const { connectWallet, buttonText, swapType, buttonChange, setButtonChange } =
-    props;
+  const { connectWallet, buttonText, swapType } = props;
 
   const [display, setDisplay] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
@@ -119,7 +118,6 @@ const Swap = (props) => {
       const approval = await getApproval(provider, srcAddress);
       console.log("Approval---->", approval);
       setTransactionHash(approval.hash);
-      setButtonChange(true);
     } catch (e) {
       console.log(e);
     }

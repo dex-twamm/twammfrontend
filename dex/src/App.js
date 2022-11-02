@@ -38,8 +38,6 @@ function App() {
   const [showSettings, setShowSettings] = useState(false);
   const [showDisconnect, setShowDisconnect] = useState(false);
 
-  const [buttonChange, setButtonChange] = useState(false);
-
   const {
     srcAddress,
     destAddress,
@@ -49,6 +47,7 @@ function App() {
     formErrors,
     setTokenBalances,
     setTransactionHash,
+    transactionHash,
     ethBalance,
     setPoolCash,
     poolCash,
@@ -374,7 +373,7 @@ function App() {
       }
     };
     allowance();
-  }, [srcAddress, buttonChange]);
+  }, [srcAddress, transactionHash]);
 
   useEffect(() => {
     const interval = setTimeout(() => {
@@ -517,8 +516,6 @@ function App() {
               buttonText={!isWalletConnected ? "Connect Wallet" : "Swap"}
               showSettings={showSettings}
               setShowSettings={setShowSettings}
-              buttonChange={buttonChange}
-              setButtonChange={setButtonChange}
             />
           }
         />
@@ -536,8 +533,6 @@ function App() {
               setShowSettings={setShowSettings}
               cancelPool={_cancelLTO}
               withdrawPool={_withdrawLTO}
-              buttonChange={buttonChange}
-              setButtonChange={setButtonChange}
             />
           }
         />
