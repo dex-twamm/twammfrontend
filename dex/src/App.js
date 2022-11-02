@@ -22,7 +22,7 @@ import {
 } from "./utils/addLiquidity";
 import { runQueryBatchSwap } from "./utils/batchSwap";
 import { getLPTokensBalance, getTokensBalance } from "./utils/getAmount";
-import { getAllowance } from "./utils/getApproval";
+import { getAllowance, getApproval } from "./utils/getApproval";
 import { getEthLogs } from "./utils/get_ethLogs";
 import { getLastVirtualOrderBlock, placeLongTermOrder } from "./utils/longSwap";
 import { POOLS } from "./utils/pool";
@@ -37,6 +37,8 @@ function App() {
   const { setShowDropdown } = useContext(UIContext);
   const [showSettings, setShowSettings] = useState(false);
   const [showDisconnect, setShowDisconnect] = useState(false);
+
+  const [buttonChange, setButtonChange] = useState(false);
 
   const {
     srcAddress,
@@ -97,7 +99,7 @@ function App() {
       const provider = await web3Modal.connect();
       const web3Provider = new providers.Web3Provider(provider);
       const accounts = await web3Provider.listAccounts();
-      // console.log('accounts', accounts);
+      console.log("accounts", accounts);
       localStorage.setItem("account", accounts);
 
       setweb3provider(web3Provider);
@@ -347,12 +349,15 @@ function App() {
     }
   };
 
+  console.log("Account--->", account);
   // Use Memo
   useMemo(() => {
     const allowance = async () => {
       const provider = await getProvider(true);
       const tokenAddress = srcAddress;
       const walletAddress = account;
+      console.log("Wallet Address--->", walletAddress);
+
       // Allowance
       if (srcAddress) {
         await getAllowance(provider, walletAddress, tokenAddress).then(
@@ -369,7 +374,7 @@ function App() {
       }
     };
     allowance();
-  }, [srcAddress]);
+  }, [srcAddress, buttonChange]);
 
   useEffect(() => {
     const interval = setTimeout(() => {
@@ -512,6 +517,8 @@ function App() {
               buttonText={!isWalletConnected ? "Connect Wallet" : "Swap"}
               showSettings={showSettings}
               setShowSettings={setShowSettings}
+              buttonChange={buttonChange}
+              setButtonChange={setButtonChange}
             />
           }
         />
@@ -529,6 +536,8 @@ function App() {
               setShowSettings={setShowSettings}
               cancelPool={_cancelLTO}
               withdrawPool={_withdrawLTO}
+              buttonChange={buttonChange}
+              setButtonChange={setButtonChange}
             />
           }
         />
