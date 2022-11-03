@@ -34,6 +34,7 @@ const Swap = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [open, setOpen] = useState(false);
   const [executionTime, setExecutionTIme] = useState("");
+  const [disableAllowBtn, setDisableAllowBtn] = useState(true);
 
   const handleClose = () => setOpen((state) => !state);
 
@@ -149,6 +150,16 @@ const Swap = (props) => {
   };
 
   console.log("Allowance Swap-->", allowance, swapAmount);
+
+  useEffect(() => {
+    typeof formErrors.balError === "undefined" ||
+    formErrors.balError === null ||
+    formErrors.balError === "Try Giving Lesser Amount"
+      ? setDisableAllowBtn(true)
+      : setDisableAllowBtn(false);
+  }, [formErrors.balError]);
+
+  console.log("Disable Allow Button--->", disableAllowBtn, formErrors);
 
   return (
     <>
@@ -494,6 +505,9 @@ const Swap = (props) => {
               onClick={() => {
                 handleApproveButton();
               }}
+              disabled={
+                disableAllowBtn || (swapType === "long" && executionTime === "")
+              }
             >
               {`Allow TWAMM Protocol to use your ${
                 tokenA.symbol ?? tokenB.symbol
@@ -511,6 +525,7 @@ const Swap = (props) => {
                 !tokenB.tokenIsSet ||
                 !swapAmount ||
                 (swapType === "long" && executionTime === "") ||
+                disableAllowBtn ||
                 allowance <= swapAmount
                   ? true
                   : false
