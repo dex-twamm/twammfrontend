@@ -22,7 +22,7 @@ import {
 } from "./utils/addLiquidity";
 import { runQueryBatchSwap } from "./utils/batchSwap";
 import { getLPTokensBalance, getTokensBalance } from "./utils/getAmount";
-import { getAllowance, getApproval } from "./utils/getApproval";
+import { getAllowance } from "./utils/getApproval";
 import { getEthLogs } from "./utils/get_ethLogs";
 import { getLastVirtualOrderBlock, placeLongTermOrder } from "./utils/longSwap";
 import { POOLS } from "./utils/pool";
@@ -44,7 +44,6 @@ function App() {
     swapAmount,
     setError,
     setLoading,
-    formErrors,
     setTokenBalances,
     setTransactionHash,
     transactionHash,
@@ -60,11 +59,9 @@ function App() {
     setExpectedSwapOut,
     setweb3provider,
     setCurrentBlock,
-    currentBlock,
     setSpotPrice,
     tolerance,
     deadline,
-    error,
     setLPTokenBalance,
   } = useContext(ShortSwapContext);
   const {
@@ -74,35 +71,26 @@ function App() {
     setAllowance,
   } = useContext(LongSwapContext);
   const { provider, setProvider } = useContext(WebContext);
-  // console.log("Settings Input", deadline, tolerance);
-  console.log("Current Block", currentBlock);
 
   //  Connect Wallet
   const connectWallet = async () => {
     try {
       await getProvider();
-      console.log("Wallet Connected Info", isWalletConnected);
-
-      // setSuccess("Wallet Connected");
-      // tokenBalance(account);
     } catch (err) {
       console.error(err);
-      // setError('Wallet Connection Rejected');
     }
   };
 
   //  Get Provider
   const getProvider = async (needSigner = false) => {
-    // setLoading(true);
     try {
       const provider = await web3Modal.connect();
       const web3Provider = new providers.Web3Provider(provider);
       const accounts = await web3Provider.listAccounts();
-      console.log("accounts", accounts);
       localStorage.setItem("account", accounts);
 
       setweb3provider(web3Provider);
-      console.log("WEb 3 Provider", await web3Provider.getBlock("latest"));
+
       // TODO - Update Every Transaction After 12 Seconds
       setCurrentBlock(await web3Provider.getBlock("latest"));
       const walletBalance = await web3Provider.getBalance(accounts[0]);
@@ -117,9 +105,7 @@ function App() {
       if (web3Provider) setWalletConnected(true);
 
       return web3Provider;
-    } catch (err) {
-      // setError('Wallet Connection Rejected');
-    }
+    } catch (err) {}
   };
 
   // Refresh State
@@ -142,18 +128,15 @@ function App() {
     const walletBalanceWei = ethers.utils.parseUnits(ethBalance, "ether");
     const pCash = ethers.utils.parseUnits(poolCash, "ether");
     const swapAmountWei = ethers.utils.parseUnits(swapAmount, "ether");
-    // console.log("Deadline", deadline);
 
-    // swapAmountWei.lte(walletBalanceWei && poolCash)
-    // 	? console.log('True')
-    // 	: console.log('False');
     if (swapAmountWei.lte(walletBalanceWei && pCash)) {
       try {
         const signer = await getProvider(true);
-        // console.log(signer);
+
         const assetIn = srcAddress;
         const assetOut = destAddress;
         const walletAddress = account;
+
         // Call the swapTokens function from the `utils` folder
         await swapTokens(
           signer,
@@ -186,7 +169,6 @@ function App() {
   //  Long Term Swap
   const _placeLongTermOrders = async () => {
     const swapAmountWei = ethers.utils.parseUnits(swapAmount, "ether");
-    // console.log('swapAmountWei', swapAmountWei);
     try {
       const tokenInIndex = POOLS[POOL_ID].tokens.findIndex(
         (object) => srcAddress === object.address
@@ -195,9 +177,7 @@ function App() {
         (object) => destAddress === object.address
       );
       const amountIn = swapAmountWei;
-      // console.log('amountIn', amountIn);
       const blockIntervals = Math.ceil(numberOfBlockIntervals);
-      console.log("Intervals", numberOfBlockIntervals);
       const signer = await getProvider(true);
 
       const walletAddress = account;
@@ -238,7 +218,6 @@ function App() {
 
   //  Calling LongTermSwap
   async function LongSwapButtonClick() {
-    console.log("Wallet", isWalletConnected);
     if (!isWalletConnected) {
       await connectWallet();
       const signer = await getProvider(true);
@@ -298,7 +277,6 @@ function App() {
   };
   //  WithdrawLTO
   const _withdrawLTO = async (orderId) => {
-    console.log("Order Id", orderId);
     setLoading(true);
     try {
       const walletAddress = account;
@@ -338,7 +316,6 @@ function App() {
         assetOut,
         swapAmountWei
       ).then((res) => {
-        console.log("Response From Query Batch Swap", res.errorMessage);
         errors.balError = res.errorMessage;
         setFormErrors(errors ?? "");
         setSpotPrice(res.spotPrice);
@@ -348,27 +325,23 @@ function App() {
     }
   };
 
-  console.log("Account--->", account);
   // Use Memo
   useMemo(() => {
     const allowance = async () => {
       const provider = await getProvider(true);
       const tokenAddress = srcAddress;
       const walletAddress = account;
-      console.log("Wallet Address--->", walletAddress);
 
       // Allowance
       if (srcAddress) {
         await getAllowance(provider, walletAddress, tokenAddress).then(
           (res) => {
             setAllowance(bigToStr(res));
-            console.log("===Allowance Response ====", bigToStr(res));
           }
         );
         // Pool Balance
         await getPoolBalance(provider, tokenAddress).then((res) => {
           setPoolCash(res);
-          console.log("===GET POOL BALANCE====", res);
         });
       }
     };
@@ -391,24 +364,18 @@ function App() {
     const walletAddress = account;
     try {
       await getLastVirtualOrderBlock(provider).then((res) => {
-        console.log("Latest Block", res);
         setLatestBlock(res);
       });
       await getEthLogs(provider, walletAddress).then((res) => {
-        // console.log("=== Order Keys === ", res.keys())
-        // console.log("=== Order Values === ", res.values())
         const resArray = Array.from(res.values());
-        console.log("=== Order Logs === ", resArray);
         setOrderLogsDecoded(resArray);
       });
       await getTokensBalance(provider, account).then((res) => {
         setTokenBalances(res);
-        // console.log("Response From Token Balance Then Block", res)
       });
       // Pool Token's Balance
       await getLPTokensBalance(provider, walletAddress).then((res) => {
         setLPTokenBalance(res);
-        console.log("===Balance Of Pool ====", res);
       });
       setLoading(false);
     } catch (e) {
@@ -438,20 +405,12 @@ function App() {
     };
   });
 
-  // useEffect(() => {
-  // 	if (web3Modal.cachedProvider) {
-  // 		connectWallet();
-  // 	}
-  // }, [provider]);
-
   useEffect(() => {
     if (provider?.on) {
       const handleAccountsChanged = (accounts) => {
-        console.log("accountsChanged", accounts);
         if (accounts) setAccount(accounts[0]);
       };
       const handleDisconnect = () => {
-        console.log("disconnect", error);
         disconnect();
       };
 
@@ -489,7 +448,6 @@ function App() {
 
   // Condition of Liquidity existing
   // if(liquidityExists) liquidityMarkup = <LiquidityPools/>
-  console.log("errors", formErrors);
   return (
     <div>
       <Navbar

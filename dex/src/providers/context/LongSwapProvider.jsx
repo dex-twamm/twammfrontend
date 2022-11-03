@@ -17,7 +17,6 @@ export const LongSwapProvider = ({ children }) => {
   const [allowance, setAllowance] = useState("");
   const { tokenBalances } = useContext(ShortSwapContext);
 
-  console.log("Token Balances ", tokenBalances);
   const [tokenA, setTokenA] = useState({
     symbol: "Faucet",
     image: "/ethereum.png",

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Alert, Box, Slider, Typography, Button, Chip } from "@mui/material";
+import { Alert, Box, Slider, Typography } from "@mui/material";
 import classNames from "classnames";
 import React, { useContext, useState } from "react";
 import lsStyles from "../css/LongSwap.module.css";
@@ -68,12 +68,7 @@ const Swap = (props) => {
 
   const { provider } = useContext(WebContext);
 
-  // console.log("Provider", provider);
-  // console.log("SC", srcAddress);
-  // console.log("Form Errors", formErrors);
-  console.log("SwapAmount", swapAmount, allowance, srcAddress);
   const handleDisplay = (event) => {
-    console.log("Current Target Id", event.currentTarget.id);
     setSelectToken(event.currentTarget.id);
     setDisplay(!display);
     setSpotPrice(0);
@@ -116,7 +111,6 @@ const Swap = (props) => {
   const handleApproveButton = async () => {
     try {
       const approval = await getApproval(provider, srcAddress);
-      console.log("Approval---->", approval);
       setTransactionHash(approval.hash);
     } catch (e) {
       console.log(e);
@@ -147,8 +141,6 @@ const Swap = (props) => {
       );
     }
   };
-
-  console.log("Allowance Swap-->", allowance, swapAmount);
 
   return (
     <>

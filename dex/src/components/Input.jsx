@@ -2,7 +2,7 @@ import classnames from "classnames";
 import { useContext, useEffect } from "react";
 import styles from "../css/Input.module.css";
 import { LongSwapContext, ShortSwapContext } from "../providers";
-import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS, POOL_ID } from "../utils";
+import { POOL_ID } from "../utils";
 import { POOLS } from "../utils/pool";
 import Modal from "./Modal";
 
@@ -18,16 +18,12 @@ const Input = (props) => {
     setDisplay,
     setTokenA,
     setTokenB,
-    swapType,
     placeholder,
   } = props;
   const { tokenBalances, selectToken, setEthBalance, setSrcAddress } =
     useContext(ShortSwapContext);
   const { tokenA, tokenB } = useContext(LongSwapContext);
-  console.log("swap token", tokenA, tokenB);
-  // console.log("Select Token Input.js", selectToken);
-  // console.log("TOKEN A", tokenA);
-  // console.log("====TOKEN BALANCES===", tokenBalances);
+
   const tokenDetails = [
     {
       name: "Faucet",

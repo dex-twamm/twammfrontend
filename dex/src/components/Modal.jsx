@@ -18,9 +18,7 @@ const Modal = ({ display, setDisplay, setTokenA, setTokenB, tokenDetails }) => {
 
   // Handle Select Token Modal display
   const handleTokenSelection = (event) => {
-    console.log("TokenSelected Prabin", selectToken);
     const token = event.currentTarget;
-    console.log("Modal:Handle", token.children[2].innerHTML);
     if (selectToken === "1") {
       setEthBalance(parseFloat(token.children[3].innerHTML).toFixed(2));
       setSrcAddress(token.children[2].innerHTML);
@@ -32,11 +30,7 @@ const Modal = ({ display, setDisplay, setTokenA, setTokenB, tokenDetails }) => {
           tokenIsSet: true,
         });
       }
-      console.log(
-        "Prabin TokenHandle",
-        token.children[1].innerHTML,
-        tokenB.symbol
-      );
+
       setTokenA({
         symbol: token.children[1].innerHTML,
         image: token.children[0].src.slice(21, token.length),
@@ -88,7 +82,6 @@ const Modal = ({ display, setDisplay, setTokenA, setTokenB, tokenDetails }) => {
 
     tokensList = tokensDetail.map((token) => {
       if (token.name === tokenA.symbol) {
-        console.log("Here");
         return (
           <div
             className={classNames(styles.modalToken, styles.modalTokenDisabled)}

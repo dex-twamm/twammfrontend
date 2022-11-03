@@ -26,7 +26,6 @@ const LongSwap = (props) => {
     ? Object.keys(orderLogsDecoded).length
     : 0;
   const cardListCount = ethLogsCount;
-  console.log("Logs Count", ethLogsCount, cardListCount);
 
   return (
     <div className={styles.container}>

@@ -29,10 +29,7 @@ const Navbar = (props) => {
   } = props;
   const { setError, setLoading, setSwapAmount, isWalletConnected } =
     useContext(ShortSwapContext);
-  // const [netId, setNetId] = useState("");
-  // const [isOpen, setOpen] = useState(false);
-  console.log("Wallet Status", isWalletConnected);
-  // const [showDisconnect, setShowDisconnect] = useState(false);
+
   const networks = [
     { name: "Ethereum", chainId: "1", logo: "/ethereum.png" },
     { name: "Goerli", chainId: "5", logo: "/Testv4.jpeg" },
@@ -62,13 +59,11 @@ const Navbar = (props) => {
   const handleSelect = async (networkName, logo, chainId) => {
     localStorage.setItem("coin_name", networkName);
     localStorage.setItem("coin_logo", logo);
-    // console.log(chainId);
     setSelectedNetwork({
       network: networkName,
       logo: logo,
       chainId: chainId,
     });
-    console.log(chainId);
     const id = chainId;
     if (window.ethereum.networkVersion !== id && isWalletConnected) {
       try {

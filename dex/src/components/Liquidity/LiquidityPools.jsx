@@ -42,13 +42,10 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
   //   const handleOpen = () => setOpen(true);
   //   const handleClose = () => setOpen(false);
 
-  console.log("Loading", loading);
-
   const handleMoreOption = () => {
     navigate("/");
   };
 
-  console.log("LP Token balance", LPTokenBalance, POOLS);
   return !loading ? (
     <Box
       sx={{

@@ -15,15 +15,15 @@ const LongTermOrderCard = (props) => {
   const { cancelPool, withdrawPool } = props;
   const remainingTimeRef = useRef();
 
-  const { swapAmount, currentBlock, loading } = useContext(ShortSwapContext);
+  const { swapAmount, currentBlock } = useContext(ShortSwapContext);
 
-  const { sliderValueInSec, tokenA, tokenB, orderLogsDecoded, latestBlock } =
+  const { sliderValueInSec, orderLogsDecoded, latestBlock } =
     useContext(LongSwapContext);
 
   const initialValue = Math.ceil(sliderValueInSec);
 
   const [progress, setProgress] = React.useState(1);
-  const [remainingTime, setRemainingTime] = React.useState(initialValue);
+  const [setRemainingTime] = React.useState(initialValue);
 
   let value = Math.ceil(sliderValueInSec);
 
@@ -66,29 +66,19 @@ const LongTermOrderCard = (props) => {
 
   // Status of Long Term Orders
   const checkStatus = (state, startBlock, expiryBlock) => {
-    console.log("Blocks", startBlock, expiryBlock, latestBlock);
     if (state === "completed") {
-      // setProgress(100);
       return { status: "Completed", progress: 100 };
     } else if (state === "cancelled") {
-      // setProgress(100);
-      // Progress Bar Color Set To Red === TODO
       return { status: "Cancelled", progress: 100 };
     } else if (latestBlock >= expiryBlock) {
-      // setProgress(100);
       return { status: "Execution Completed", progress: 100 };
     } else {
       if (expiryBlock > currentBlock.number) {
         const timeRemaining = (expiryBlock - currentBlock.number) * 12;
-        // const timeRemaining = (expiryBlock - latestBlock) * 12;
 
-        // const timeRemaining =
-        // (expiryBlock - provider.getBlock("latest").number) * 12;
-        // setProgress((latestBlock - startBlock) / (expiryBlock - startBlock));
         let date = new Date(0);
         date.setSeconds(timeRemaining); // specify value for SECONDS here
         const timeString = date.toISOString().substring(11, 19);
-        console.log(timeString);
 
         return {
           status: `Time Remaining: ${timeString}`,
@@ -120,28 +110,14 @@ const LongTermOrderCard = (props) => {
             convertedAmount = it.withdrawals.reduce((total, withdrawal) => {
               return total.add(withdrawal.proceeds);
             }, ethers.constants.Zero);
-
-            // if (it.state === "cancelled") {
-            //   console.log("Cancel Proceeds", it.cancelledProceeds);
-            //   convertedAmount = convertedAmount.add(it.cancelledProceeds);
-            // }
-            // console.log("ConvertedAMT", convertedAmount);
           } else {
             // Order Still In Progress
             convertedAmount = it.convertedValue;
           }
-          console.log("Converted Amount", convertedAmount.toString());
-          // console.log("Withdrawals 0", it.withdrawals[0].proceeds.toNumber());
-          // console.log("Withdrawals 1", it.withdrawals[1].proceeds.toNumber());
-          // const sRate = ethers.utils.formatEther(it.salesRate);
 
-          // console.log("Sales rate", sRate);
           const expBlock = it.expirationBlock;
           const amountOf = expBlock.sub(stBlock).mul(it.salesRate);
-          // console.log("StartBlock", stBlock);
-          // console.log("Exp BLock", expBlock);
-          // console.log("latestBlock", latestBlock);
-          // console.log("Amount of", amountOf)
+
           let soldToken;
           if (it.state === "cancelled") {
             soldToken = amountOf.sub(it.unsoldAmount);
@@ -151,11 +127,9 @@ const LongTermOrderCard = (props) => {
                 ? amountOf
                 : latestBlock.sub(stBlock).mul(it.salesRate);
           }
-          console.log("Sold Token", soldToken);
 
           const averagePrice =
             bigToFloat(convertedAmount, 18) / bigToFloat(soldToken, 18);
-          console.log("Average Price", averagePrice);
           return (
             <div className={styles.container} key={it.transactionHash}>
               <div className={styles.topSection}>

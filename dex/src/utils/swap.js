@@ -30,14 +30,7 @@ export const swapTokens = async (
   const targetDate = new Date();
   targetDate.setSeconds(deadline * 60);
   const deadlineTimestamp = targetDate.getTime();
-  console.log(
-    "Inputs",
-    expectedSwapOut,
-    tolerance,
-    deadline,
-    swapAmountWei,
-    expectedSwapOutAfterTolerance
-  );
+
   const swapTx = await exchangeContract.swap(
     {
       poolId: POOL_ID,
@@ -63,11 +56,6 @@ export const swapTokens = async (
     }
   );
   txHash = swapTx.hash;
-  console.log(txHash);
-  // const txResult = await swapTx.wait();
-  // console.log("Swap Results After Placed", txResult)
-  return txHash;
 
-  // const swapResult = await swapTx.wait();
-  // console.log(swapResult.transactionHash);
+  return txHash;
 };

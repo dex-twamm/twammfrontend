@@ -16,7 +16,6 @@ export const getTokensBalance = async (provider, walletAddress) => {
     const address = tokenAddress[index];
     const balances = await balanceContract(address);
     const readableBalance = ethers.utils.formatEther(balances);
-    // console.log("Balances", readableBalance);
     newBalance.push(readableBalance);
   }
   async function balanceContract(address) {
@@ -26,10 +25,8 @@ export const getTokensBalance = async (provider, walletAddress) => {
       provider
     );
     const balanceOfTokens = await ERC20Contract.balanceOf(walletAddress);
-    // console.log("Balance of_" + element + "_is=" + ethers.utils.formatEther(balanceOfLPTokens));
     return balanceOfTokens;
   }
-  // console.log(newBalance);
   return newBalance.map((item) => item);
 };
 
@@ -42,6 +39,5 @@ export const getLPTokensBalance = async (provider, walletAddress) => {
 
   const balanceOfLPTokens = await poolContract.balanceOf(walletAddress);
   const readableBalance = bigToStr(balanceOfLPTokens);
-  console.log("BLPT", readableBalance);
   return readableBalance;
 };
