@@ -1,0 +1,191 @@
+.container {
+	margin: 0 auto;
+	margin-right: 6px;
+	background-color: #ffffff;
+	border-radius: 16px;
+	border: 1px solid #f3f3f3;
+
+	box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+		0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+.topSection {
+	display: flex;
+	gap: 10px;
+	align-items: center;
+	justify-content: space-between;
+
+	padding: 5px 10px;
+	border-bottom: 2px solid #f3f3f3;
+}
+
+.orderId {
+	font-size: 12px;
+	font-weight: 600;
+}
+
+.iconExternalLink {
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+}
+
+.iconExternalLink:hover {
+	color: #d50066;
+}
+
+.bottomSection {
+	padding: 10px;
+
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+
+.tokenContainer {
+	display: grid;
+	gap: 10px;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+
+	margin: 0 10px;
+}
+
+.tokenWrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.tokenIcon {
+	width: 30px;
+	height: 30px;
+}
+
+.tokenText {
+	font-size: 10px;
+	text-align: center;
+	font-weight: 600;
+	margin-top: 5px;
+}
+
+.greenText {
+	color: green;
+}
+
+.timeRemaining {
+	margin-bottom: 5px;
+	color: green;
+	font-size: 10px;
+}
+
+.progress {
+	height: 5px;
+	background-color: #ededed;
+	border-radius: 10px;
+}
+
+.activeProgress {
+	height: 5px;
+	background-color: #d7d7d7;
+	border-radius: 10px;
+}
+
+.arrow {
+	grid-column: span 2 / span 2;
+
+	justify-self: center;
+	place-self: center;
+	margin-bottom: 40px;
+}
+
+.extrasContainer {
+	/* margin-top: -20px; */
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.fees,
+.averagePrice {
+	background-color: #707070;
+	color: #fff;
+	font-size: 8px;
+	font-weight: 600;
+	white-space: nowrap;
+
+	padding: 5px 10px;
+	border-radius: 10px;
+}
+
+.buttonContainer {
+	display: flex;
+	gap: 18px;
+}
+
+.button {
+	flex: 1;
+	text-align: center;
+	width: 100%;
+	padding: 8px;
+	border-radius: 16px;
+
+	/* font-size: 16px; */
+	font-weight: 600;
+	border: none;
+	outline: none;
+
+	cursor: pointer;
+
+	transition: all 0.2s ease-in-out;
+}
+
+.successButton {
+	background-color: #eaffea;
+	color: green;
+
+}
+
+.successButton:hover {
+	cursor: not-allowed;
+    opacity: 0.5;
+}
+.successButton:disabled {
+	cursor: not-allowed;
+    opacity: 0.5;;
+}
+
+.cancelButton {
+	color: rgb(213, 0, 102);
+	background-color: #fdeaf1;
+}
+
+.cancelButton:disabled{
+	cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* .cancelButton:hover {
+	background-color: #e3036f;
+} */
+
+.withdrawButton {
+	background-color: #eaffea;
+	color: green;
+}
+
+.withdrawButton:disabled {
+	cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.greenProgress {
+	background-color: green;
+	opacity: 0.5;
+}
+
+.redProgress {
+
+	background-color: rgb(210,66,66);
+	/* opacity: 0.5; */
+}
