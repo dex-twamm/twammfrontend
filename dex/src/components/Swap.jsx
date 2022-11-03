@@ -157,7 +157,13 @@ const Swap = (props) => {
     formErrors.balError === "Try Giving Lesser Amount"
       ? setDisableAllowBtn(true)
       : setDisableAllowBtn(false);
-  }, [formErrors.balError]);
+  }, [formErrors]);
+
+  useEffect(() => {
+    return () => {
+      setFormErrors({ balError: undefined });
+    };
+  }, [setFormErrors]);
 
   console.log("Disable Allow Button--->", disableAllowBtn, formErrors);
 
