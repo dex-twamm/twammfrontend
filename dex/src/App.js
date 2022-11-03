@@ -123,6 +123,10 @@ function App() {
     }
   };
 
+  useEffect(() => {
+    account && setWalletConnected(true);
+  }, [account, setWalletConnected]);
+
   // Refresh State
   const refreshState = () => {
     setAccount("");
