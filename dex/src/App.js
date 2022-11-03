@@ -37,6 +37,7 @@ function App() {
   const { setShowDropdown } = useContext(UIContext);
   const [showSettings, setShowSettings] = useState(false);
   const [showDisconnect, setShowDisconnect] = useState(false);
+  const [spotPriceLoading, setSpotPriceLoading] = useState(false);
 
   const {
     srcAddress,
@@ -329,6 +330,7 @@ function App() {
   //Spot Prices
   const spotPrice = async () => {
     if (swapAmount) {
+      setSpotPriceLoading(true);
       const swapAmountWei = ethers.utils.parseUnits(swapAmount, "ether");
       const assetIn = srcAddress;
       const assetOut = destAddress;
@@ -342,6 +344,7 @@ function App() {
         errors.balError = res.errorMessage;
         setFormErrors(errors ?? "");
         setSpotPrice(res.spotPrice);
+        setSpotPriceLoading(false);
         setExpectedSwapOut(res.expectedSwapOut);
       });
       return batchPrice;
@@ -516,6 +519,7 @@ function App() {
               buttonText={!isWalletConnected ? "Connect Wallet" : "Swap"}
               showSettings={showSettings}
               setShowSettings={setShowSettings}
+              spotPriceLoading={spotPriceLoading}
             />
           }
         />

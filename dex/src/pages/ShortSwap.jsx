@@ -12,6 +12,7 @@ const ShortSwap = ({
   buttonText,
   showSettings,
   setShowSettings,
+  spotPriceLoading,
 }) => {
   //   const [showSettings, setShowSettings] = useState(false);
 
@@ -40,6 +41,7 @@ const ShortSwap = ({
             tokenImage={tokenImage}
             connectWallet={connectWallet}
             buttonText={buttonText}
+            spotPriceLoading={spotPriceLoading}
           />
         </div>
       </div>
