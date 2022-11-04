@@ -1,7 +1,15 @@
 import { useEffect } from "react";
 import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Alert, Box, Slider, Typography, Button, Chip } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Slider,
+  Typography,
+  Button,
+  Chip,
+  CircularProgress,
+} from "@mui/material";
 import classNames from "classnames";
 import React, { useContext, useState } from "react";
 import lsStyles from "../css/LongSwap.module.css";
@@ -26,7 +34,7 @@ import { getApproval } from "../utils/getApproval";
 import { WebContext } from "../providers/context/WebProvider";
 
 const Swap = (props) => {
-  const { connectWallet, buttonText, swapType } = props;
+  const { connectWallet, buttonText, swapType, spotPriceLoading } = props;
 
   const [display, setDisplay] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
@@ -34,6 +42,7 @@ const Swap = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [open, setOpen] = useState(false);
   const [executionTime, setExecutionTIme] = useState("");
+  const [disableAllowBtn, setDisableAllowBtn] = useState(true);
 
   const handleClose = () => setOpen((state) => !state);
 
@@ -79,6 +88,12 @@ const Swap = (props) => {
     setSpotPrice(0);
     setExpectedSwapOut(0.0);
   };
+
+  useEffect(() => {
+    return () => {
+      setExpectedSwapOut(undefined);
+    };
+  }, [setExpectedSwapOut]);
 
   useEffect(() => {
     if (tokenA.symbol === tokenB.symbol)
@@ -149,6 +164,22 @@ const Swap = (props) => {
   };
 
   console.log("Allowance Swap-->", allowance, swapAmount);
+
+  useEffect(() => {
+    typeof formErrors.balError === "undefined" ||
+    formErrors.balError === null ||
+    formErrors.balError === "Try Giving Lesser Amount"
+      ? setDisableAllowBtn(true)
+      : setDisableAllowBtn(false);
+  }, [formErrors]);
+
+  useEffect(() => {
+    return () => {
+      setFormErrors({ balError: undefined });
+    };
+  }, [setFormErrors]);
+
+  console.log("Disable Allow Button--->", disableAllowBtn, formErrors);
 
   return (
     <>
@@ -462,7 +493,7 @@ const Swap = (props) => {
                     $1.23
                   </span> */}
 
-                  {open ? (
+                  {/* {open ? (
                     <KeyboardArrowUpOutlinedIcon
                       sx={{
                         fontSize: "24px",
@@ -477,7 +508,8 @@ const Swap = (props) => {
                       style={{ color: "#333333", cursor: "pointer" }}
                       onClick={handleClose}
                     />
-                  )}
+                  )} */}
+                  {spotPriceLoading && <CircularProgress size={15} />}
                 </Box>
               </Box>
 
@@ -494,6 +526,9 @@ const Swap = (props) => {
               onClick={() => {
                 handleApproveButton();
               }}
+              disabled={
+                disableAllowBtn || (swapType === "long" && executionTime === "")
+              }
             >
               {`Allow TWAMM Protocol to use your ${
                 tokenA.symbol ?? tokenB.symbol
@@ -511,6 +546,7 @@ const Swap = (props) => {
                 !tokenB.tokenIsSet ||
                 !swapAmount ||
                 (swapType === "long" && executionTime === "") ||
+                disableAllowBtn ||
                 allowance <= swapAmount
                   ? true
                   : false

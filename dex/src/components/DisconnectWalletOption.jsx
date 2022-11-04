@@ -122,7 +122,7 @@ const DisconnectWalletOption = ({
                 }}
                 id="modal-modal-title"
               >
-                Connect with Coinbase wallet
+                Connect with wallet
               </Typography>
 
               <Button

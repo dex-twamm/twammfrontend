@@ -68,11 +68,9 @@ const LongSwap = (props) => {
               withdrawPool={withdrawPool}
             ></LongTermOrderCard>
 
-            {/* <div style={{with:'100%',height:'auto',}}>
-                <LongTermSwapCardDropdown  tokenB={tokenB}/>
-              
-
-              </div> */}
+            {/* <div style={{ with: "100%", height: "auto" }}>
+              <LongTermSwapCardDropdown tokenB={tokenB} />
+            </div> */}
           </div>
         </div>
       </div>
