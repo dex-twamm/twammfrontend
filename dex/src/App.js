@@ -75,7 +75,6 @@ function App() {
     setAllowance,
   } = useContext(LongSwapContext);
   const { provider, setProvider } = useContext(WebContext);
-  // console.log("Settings Input", deadline, tolerance);
   console.log("Current Block", currentBlock);
 
   //  Connect Wallet
