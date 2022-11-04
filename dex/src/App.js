@@ -189,11 +189,7 @@ function App() {
   };
 
   useEffect(() => {
-    if (
-      error === "Transaction Error" ||
-      error === "Transaction Cancelled" ||
-      transactionHash
-    ) {
+    if (transactionHash) {
       setSwapAmount(0);
       setTokenB({
         symbol: "Select Token",
@@ -204,7 +200,7 @@ function App() {
       });
       setExpectedSwapOut(0);
     }
-  }, [error, setSwapAmount, setTokenB, setExpectedSwapOut, transactionHash]);
+  }, [setSwapAmount, setTokenB, setExpectedSwapOut, transactionHash]);
 
   // TODO Dynamically Set tokenInIndex and tokenOutIndex
   //  Long Term Swap

@@ -54,6 +54,7 @@ const Swap = (props) => {
     setExpectedSwapOut,
     formErrors,
     setFormErrors,
+    error,
     currentBlock,
     setSpotPrice,
     spotPrice,
@@ -171,6 +172,12 @@ const Swap = (props) => {
       ? setDisableAllowBtn(true)
       : setDisableAllowBtn(false);
   }, [formErrors]);
+
+  useEffect(() => {
+    if (error === "Transaction Error" || error === "Transaction Cancelled") {
+      setDisableAllowBtn(false);
+    }
+  }, [error, setDisableAllowBtn]);
 
   useEffect(() => {
     return () => {
