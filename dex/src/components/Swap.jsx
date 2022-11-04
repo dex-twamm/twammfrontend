@@ -26,8 +26,7 @@ import PopupModal from "./alerts/PopupModal";
 import Input from "./Input";
 import { FiChevronDown } from "react-icons/fi";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutlined";
-import LongTermSwapCardDropdown from "./LongTermSwapCardDropdown";
+
 import { BigNumber } from "ethers";
 import { bigToStr } from "../utils";
 import { getApproval } from "../utils/getApproval";

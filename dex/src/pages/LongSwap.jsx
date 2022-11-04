@@ -43,7 +43,7 @@ const LongSwap = (props) => {
             />
           </div>
 
-          {/* {showSettings && <PopupSettings />} */}
+          {showSettings && <PopupSettings swapType="long" />}
         </div>
         <Swap
           swapType="long"
