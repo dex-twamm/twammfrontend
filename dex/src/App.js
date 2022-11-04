@@ -43,6 +43,7 @@ function App() {
     srcAddress,
     destAddress,
     swapAmount,
+    setSwapAmount,
     setError,
     setLoading,
     formErrors,
@@ -73,6 +74,7 @@ function App() {
     setLatestBlock,
     numberOfBlockIntervals,
     setAllowance,
+    setTokenB,
   } = useContext(LongSwapContext);
   const { provider, setProvider } = useContext(WebContext);
   console.log("Current Block", currentBlock);
@@ -185,6 +187,24 @@ function App() {
       setError("Insufficient Balance");
     }
   };
+
+  useEffect(() => {
+    if (
+      error === "Transaction Error" ||
+      error === "Transaction Cancelled" ||
+      transactionHash
+    ) {
+      setSwapAmount(0);
+      setTokenB({
+        symbol: "Select Token",
+        image: "/ethereum.png",
+        address: POOLS[POOL_ID].tokens[0].address,
+        balance: 0,
+        tokenIsSet: false,
+      });
+      setExpectedSwapOut(0);
+    }
+  }, [error, setSwapAmount, setTokenB, setExpectedSwapOut, transactionHash]);
 
   // TODO Dynamically Set tokenInIndex and tokenOutIndex
   //  Long Term Swap
