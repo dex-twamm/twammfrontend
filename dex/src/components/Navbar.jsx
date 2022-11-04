@@ -27,7 +27,7 @@ const Navbar = (props) => {
     showDisconnect,
     setShowDisconnect,
   } = props;
-  const { setError, setLoading, setSwapAmount, isWalletConnected } =
+  const { error, setError, setLoading, setSwapAmount, isWalletConnected } =
     useContext(ShortSwapContext);
   // const [netId, setNetId] = useState("");
   // const [isOpen, setOpen] = useState(false);
@@ -40,6 +40,7 @@ const Navbar = (props) => {
   ];
 
   const nId = window.ethereum?.networkVersion;
+  console.log("nId--->", nId);
   const initialNetwork = networks.filter((id) => id.chainId === nId);
 
   const [selectedNetwork, setSelectedNetwork] = useState({
@@ -60,30 +61,39 @@ const Navbar = (props) => {
   }, [coin_name]);
 
   const handleSelect = async (networkName, logo, chainId) => {
-    localStorage.setItem("coin_name", networkName);
-    localStorage.setItem("coin_logo", logo);
+    // localStorage.setItem("coin_name", networkName);
+    // localStorage.setItem("coin_logo", logo);
     // console.log(chainId);
-    setSelectedNetwork({
-      network: networkName,
-      logo: logo,
-      chainId: chainId,
-    });
-    console.log(chainId);
+
+    console.log("chainId", chainId);
     const id = chainId;
-    if (window.ethereum.networkVersion !== id && isWalletConnected) {
+    if (isWalletConnected) {
       try {
         await window.ethereum.request({
           method: "wallet_switchEthereumChain",
           params: [{ chainId: toHex(id) }],
         });
+        setSelectedNetwork({
+          network: networkName,
+          logo: logo,
+          chainId: chainId,
+        });
+
+        localStorage.setItem("coin_name", networkName);
+        localStorage.setItem("coin_logo", logo);
 
         window.location.reload();
+        // localStorage.setItem("prev_coin_name", networkName);
+        // localStorage.setItem("prev_coin_logo", logo);
+        // localStorage.setItem("prev_chain_id", chainId);
       } catch (err) {
         console.error(err);
         setError("Failed To Switch Network");
       }
     }
   };
+
+  console.log("Selected network-->", selectedNetwork);
 
   const tabOptions = [
     {
