@@ -144,7 +144,7 @@ const NavOptionDropdwon = () => {
 							sx={{ fontSize:19, color: '#565A69' }}
 						/>
 					</div> */}
-          <div
+          {/* <div
             style={{
               display: "flex",
               justifyContent: "space-between",
@@ -165,7 +165,7 @@ const NavOptionDropdwon = () => {
                 background: "white",
               }}
             />
-          </div>
+          </div> */}
         </div>
         {/* <button className="btn">Claim UNI</button> */}
       </div>
