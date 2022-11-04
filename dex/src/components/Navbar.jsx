@@ -83,9 +83,6 @@ const Navbar = (props) => {
         localStorage.setItem("coin_logo", logo);
 
         window.location.reload();
-        // localStorage.setItem("prev_coin_name", networkName);
-        // localStorage.setItem("prev_coin_logo", logo);
-        // localStorage.setItem("prev_chain_id", chainId);
       } catch (err) {
         console.error(err);
         setError("Failed To Switch Network");
