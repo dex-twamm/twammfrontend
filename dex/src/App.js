@@ -309,7 +309,7 @@ function App() {
       if (!isWalletConnected) {
         await connectWallet();
       }
-      await cancelLTO(walletAddress, signer, orderId);
+      await cancelLTO(walletAddress, signer, orderId, setOrderLogsDecoded);
       setLoading(false);
     } catch (e) {
       console.log(e);
@@ -326,7 +326,7 @@ function App() {
       if (!isWalletConnected) {
         await connectWallet();
       }
-      await withdrawLTO(walletAddress, signer, orderId);
+      await withdrawLTO(walletAddress, signer, orderId, setOrderLogsDecoded);
       setLoading(false);
     } catch (e) {
       console.log(e);

@@ -37,6 +37,8 @@ const PopupModal = () => {
 
   const buttonAction = <Button onClick={handleButtonClick}>View</Button>;
 
+  console.log("<---Transaction hash--->", transactionHash);
+
   const AlertStyle = {
     margin: "5px",
   };

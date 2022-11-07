@@ -143,7 +143,7 @@ const LongTermOrderCard = (props) => {
               // Order Still In Progress
               convertedAmount = it.convertedValue;
             }
-            console.log("Converted Amount", convertedAmount.toString());
+            //console.log("Converted Amount", convertedAmount?.toString());
             // console.log("Withdrawals 0", it.withdrawals[0].proceeds.toNumber());
             // console.log("Withdrawals 1", it.withdrawals[1].proceeds.toNumber());
             // const sRate = ethers.utils.formatEther(it.salesRate);
@@ -257,7 +257,9 @@ const LongTermOrderCard = (props) => {
                   </div>
 
                   <div className={styles.extrasContainer}>
-                    <div className={styles.fees}>{dummyOrder.fees} fees</div>
+                    <div className={styles.fees}>
+                      {POOLS[POOL_ID]?.fees} fees
+                    </div>
                     {soldToken != 0 && (
                       <div className={styles.averagePrice}>
                         {averagePrice.toFixed(4)} Average Price
@@ -270,6 +272,20 @@ const LongTermOrderCard = (props) => {
                   )}
 
                   <div className={styles.buttonContainer}>
+                    {orderStatus.status !== "Cancelled" &&
+                      orderStatus.status !== "Completed" && (
+                        <button
+                          className={classNames(
+                            styles.button,
+                            styles.withdrawButton
+                          )}
+                          onClick={() => {
+                            withdrawPool(it.orderId.toNumber());
+                          }}
+                        >
+                          Withdraw
+                        </button>
+                      )}
                     <button
                       className={classNames(
                         styles.button,
@@ -290,21 +306,6 @@ const LongTermOrderCard = (props) => {
                         ? "Cancel"
                         : "Completed"}
                     </button>
-
-                    {orderStatus.status !== "Cancelled" &&
-                      orderStatus.status !== "Completed" && (
-                        <button
-                          className={classNames(
-                            styles.button,
-                            styles.withdrawButton
-                          )}
-                          onClick={() => {
-                            withdrawPool(it.orderId.toNumber());
-                          }}
-                        >
-                          Withdraw
-                        </button>
-                      )}
                   </div>
                 </div>
               </div>

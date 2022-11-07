@@ -523,13 +523,7 @@ const Swap = (props) => {
               {/* <LongTermSwapCardDropdown open={open} handleClose={handleClose} tokenB={tokenB}/> */}
             </>
           )}
-          {transactionHash && (
-            <div className={styles.errorAlert}>
-              <Alert severity="success" sx={{ borderRadius: "16px" }}>
-                Transaction success!
-              </Alert>
-            </div>
-          )}
+
           {allowance <= swapAmount &&
           swapAmount &&
           tokenA.tokenIsSet &&

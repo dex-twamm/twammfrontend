@@ -7,8 +7,9 @@ import PopupSettings from "../components/PopupSettings";
 import Swap from "../components/Swap";
 import lsStyles from "../css/LongSwap.module.css";
 import styles from "../css/ShortSwap.module.css";
-import { LongSwapContext } from "../providers";
+import { LongSwapContext, ShortSwapContext } from "../providers";
 import LongTermSwapCardDropdown from "../components/LongTermSwapCardDropdown";
+import { Alert } from "@mui/material";
 
 const LongSwap = (props) => {
   const {
@@ -21,7 +22,8 @@ const LongSwap = (props) => {
   } = props;
 
   const [showSettings, setShowSettings] = useState(false);
-  const { orderLogsDecoded, tokenB } = useContext(LongSwapContext);
+  const { orderLogsDecoded } = useContext(LongSwapContext);
+  const { transactionHash } = useContext(ShortSwapContext);
   const ethLogsCount = orderLogsDecoded
     ? Object.keys(orderLogsDecoded).length
     : 0;
@@ -54,6 +56,16 @@ const LongSwap = (props) => {
         />
       </div>
       {/* {isPlacedLongTermOrder && ( */}
+      {transactionHash && (
+        <div className={styles.errorAlert}>
+          <Alert
+            severity="success"
+            sx={{ borderRadius: "16px", width: "fit-content", margin: "auto" }}
+          >
+            Transaction success!
+          </Alert>
+        </div>
+      )}
       <div className={lsStyles.ordersWrapper}>
         <h4 className={lsStyles.longTermText}>Your Long Term Orders</h4>
         <div className={styles.scroller}>
