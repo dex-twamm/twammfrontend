@@ -19,6 +19,7 @@ const LongSwap = (props) => {
     buttonText,
     cancelPool,
     withdrawPool,
+    isPlacedLongTermOrder,
   } = props;
 
   const [showSettings, setShowSettings] = useState(false);
@@ -55,8 +56,7 @@ const LongSwap = (props) => {
           buttonText={buttonText}
         />
       </div>
-      {/* {isPlacedLongTermOrder && ( */}
-      {transactionHash && (
+      {isPlacedLongTermOrder && (
         <div className={styles.errorAlert}>
           <Alert
             severity="success"

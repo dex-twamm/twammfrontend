@@ -187,6 +187,16 @@ const Swap = (props) => {
 
   console.log("Disable Allow Button--->", disableAllowBtn, formErrors);
 
+  console.log(
+    "allowance <= swapAmount--->",
+    parseFloat(allowance),
+    "<=",
+    typeof swapAmount,
+    allowance <= swapAmount,
+    tokenA.tokenIsSet,
+    tokenB.tokenIsSet
+  );
+
   return (
     <>
       <form onSubmit={handleSubmit} className={styles.form}>
@@ -524,7 +534,7 @@ const Swap = (props) => {
             </>
           )}
 
-          {allowance <= swapAmount &&
+          {parseFloat(allowance) <= swapAmount &&
           swapAmount &&
           tokenA.tokenIsSet &&
           tokenB.tokenIsSet ? (
@@ -555,7 +565,7 @@ const Swap = (props) => {
                 !swapAmount ||
                 (swapType === "long" && executionTime === "") ||
                 disableAllowBtn ||
-                allowance <= swapAmount
+                parseFloat(allowance) <= swapAmount
                   ? true
                   : false
               }

@@ -190,7 +190,10 @@ const Input = (props) => {
           </button>
         </div>
         <div className={styles.balance}>
-          Balance:{id === 1 ? tokenA.balance : tokenB.balance}
+          Balance :{" "}
+          {id === 1
+            ? parseFloat(tokenA?.balance)?.toFixed(4)
+            : parseFloat(tokenB?.balance)?.toFixed(2)}
         </div>
       </div>
 

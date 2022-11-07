@@ -178,7 +178,7 @@ function App() {
           });
         setLoading(false);
       } catch (err) {
-        console.error(err);
+        console.error("errrrrrr", err);
         setLoading(false);
         setError("Transaction Cancelled");
       }
