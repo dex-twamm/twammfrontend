@@ -53,13 +53,14 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
   return !loading ? (
     <Box
       sx={{
-        width: { sm: "100%", xs: "100%", md: "800px" },
+        // width: { sm: "100%", xs: "100%", md: "800px" },
+        width: "fit-content",
         p: "8px",
         borderRadius: "20px",
         dispay: "flex",
         justifyContent: "center",
         margin: "auto",
-        mt: "24px",
+        // mt: "24px",
         fontFamily: "Open Sans",
         // border:'1px solid red',
       }}
@@ -80,10 +81,16 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
             md: "space-between",
           },
           flexDirection: { xs: "column", sm: "row", md: "row" },
+          padding: "24px 0",
         }}
       >
         <Typography
-          sx={{ fontSize: "30px", fontFamily: "Open Sans", color: "#333333" }}
+          sx={{
+            fontSize: "22px",
+            fontFamily: "Open Sans",
+            color: "#333333",
+            fontWeight: "600",
+          }}
         >
           Pools
         </Typography>
@@ -239,12 +246,16 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 
         <Box
           sx={{
-            mt: "20px",
             bgcolor: " white",
             // opacity: items == 0 && 0.5,
             width: "100%",
             p: "8px",
             borderRadius: "20px",
+            background:
+              "linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%), rgba(255, 255, 255, 0.3)",
+            backdropFilter: "blur(2px)",
+
+            border: "1px solid white",
           }}
         >
           {/* <Box
@@ -297,8 +308,8 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
           <Box
             style={{
               marginTop: "5px",
-              border: "2px solid #f0f0f0",
-              borderRadius: "15px",
+              // border: "2px solid #f0f0f0",
+              // borderRadius: "15px",
               width: { sm: "60%", xs: "100%", md: "70%" },
             }}
           >
@@ -320,14 +331,16 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                   justifyContent: "space-between",
                   alignItems: "center",
                   height: "2%",
-                  background: "white",
+                  // background: "white",
+                  paddingBottom: "20px",
                 }}
               >
                 <Box
                   sx={{
                     display: "flex",
-                    justifyContent: "space-between",
+                    columnGap: "20px",
                     alignItems: "center",
+
                     m: 1,
                   }}
                 >
@@ -335,8 +348,8 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                     <Avatar
                       sx={{
                         background: "blue",
-                        height: "20px",
-                        width: "20px",
+                        height: "40px",
+                        width: "40px",
                       }}
                       alt="Testv4"
                       src="/Testv4.jpeg"
@@ -347,8 +360,8 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                         left: "-10px",
                         // top: 4,
                         background: "green",
-                        height: "20px",
-                        width: "20px",
+                        height: "40px",
+                        width: "40px",
                       }}
                       alt="Faucet"
                       src="/ethereum.png"
@@ -367,14 +380,18 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                   </Typography>
                   <span
                     style={{
-                      padding: 3,
+                      padding: "8px 24px",
                       // width: '45px',
                       border: "1px solid #fdeaf1",
-                      borderRadius: "7px",
-                      background: "#fdeaf1",
-                      color: "#d50066",
+                      // borderRadius: "7px",
+                      // background: "#fdeaf1",
+                      color: "red",
                       fontFamily: "Open Sans",
                       fontWeight: 500,
+
+                      background: "#EE4D3745",
+                      // opacity: "0.2",
+                      borderRadius: "17px",
                     }}
                   >
                     {POOLS[POOL_ID]?.fees}%
@@ -424,6 +441,7 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                 alignItems: "center",
                 m: 1,
                 width: "fit-content",
+                paddingBottom: "20px",
               }}
             >
               <Typography
@@ -489,13 +507,15 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                 m: 1,
                 paddingRight: { xs: "10px", sm: "10px" },
                 display: "flex",
+                flexDirection: "column-reverse",
+                rowGap: "10px",
                 justifyContent: {
                   xs: "space-between",
                   sm: "flex-end",
                   md: "flex-end",
                 },
-                width: { xs: "100%", sm: "100%" },
-                height: "40px",
+                // width: { xs: "100%", sm: "100%" },
+                // height: "40px",
                 alignItems: "center",
               }}
             >
@@ -508,17 +528,17 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                     )
                   }
                   style={{
-                    border: "1px solid #d50066",
-                    backgroundColor: "#fff",
-                    color: "#d50066",
-                    borderRadius: "12px",
-                    padding: "4px 6px",
-                    boxSizing: "border-box",
-                    cursor: "pointer",
-                    height: "35px",
-                    fontWeight: "500",
                     fontFamily: "Open Sans",
+                    padding: "15px 100px",
+                    outline: "none",
+                    color: "white",
+                    fontWeight: "100",
+                    border: "none",
                     fontSize: "18px",
+                    cursor: "pointer",
+                    backgroundColor: "#FF6969",
+                    borderRadius: "17px",
+                    width: "100%",
                   }}
                 >
                   Remove Liquidity
@@ -532,19 +552,17 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                   )
                 }
                 style={{
-                  backgroundColor: "#fdeaf1",
-                  borderRadius: "12px",
                   fontFamily: "Open Sans",
-                  padding: "6px 8px",
-                  height: "35px",
+                  padding: "15px 100px",
                   outline: "none",
-                  margin: "5px",
-                  color: "#d50066",
+                  color: "white",
                   fontWeight: "100",
                   border: "none",
-                  marginLeft: "10px",
                   fontSize: "18px",
                   cursor: "pointer",
+                  backgroundColor: "#554994",
+                  borderRadius: "17px",
+                  width: "100%",
                 }}
               >
                 Add Liquidity

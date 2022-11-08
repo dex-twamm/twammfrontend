@@ -74,7 +74,9 @@
 
   .tabContainerCenter {
     /* position: absolute; */
-    margin: 0 auto;
+    width: fit-content;
+    display: flex;
+    align-items: center;
     /* height: fit-content; */
     /* top: 40px; */
     /* right: 50%; */
