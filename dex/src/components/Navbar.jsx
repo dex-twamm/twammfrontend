@@ -95,7 +95,7 @@ const Navbar = (props) => {
   const tabOptions = [
     {
       value: "Swap",
-      path: "/",
+      path: "/swap",
     },
     {
       value: "Long Term Swap",

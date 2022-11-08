@@ -8,6 +8,7 @@ import {
   RemoveLiquidity,
 } from "./components/Liquidity";
 import Navbar from "./components/Navbar";
+import Home from "./pages/Home";
 import LongSwap from "./pages/LongSwap";
 import ShortSwap from "./pages/ShortSwap";
 import { LongSwapContext, ShortSwapContext, UIContext } from "./providers";
@@ -514,7 +515,7 @@ function App() {
   console.log("errors", formErrors);
   return (
     <div>
-      <Navbar
+      {/* <Navbar
         tokenName={data.token.name}
         tokenImage={data.token.image}
         walletBalance={data.wallet.balance}
@@ -525,11 +526,12 @@ function App() {
         disconnectWallet={disconnect}
         showDisconnect={showDisconnect}
         setShowDisconnect={setShowDisconnect}
-      />
+      /> */}
 
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route
-          path="/"
+          path="/swap"
           element={
             <ShortSwap
               tokenSymbol={data.token.symbol}
