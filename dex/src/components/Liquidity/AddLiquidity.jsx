@@ -1,6 +1,6 @@
 import { faArrowLeft, faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Box } from "@mui/material";
+import { Box, Tabs } from "@mui/material";
 import classNames from "classnames";
 import React, { useContext, useEffect, useState } from "react";
 import { FiChevronDown } from "react-icons/fi";

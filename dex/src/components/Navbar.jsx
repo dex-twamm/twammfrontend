@@ -1,5 +1,6 @@
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Typography } from "@mui/material";
 import classNames from "classnames";
 import React, { useContext, useEffect, useState } from "react";
 import { RiArrowDropDownLine } from "react-icons/ri";
@@ -15,7 +16,6 @@ const Navbar = (props) => {
   const { setTokenA, setTokenB } = useContext(LongSwapContext);
 
   const location = useLocation();
-  const currentPath = location.pathname;
 
   const {
     walletBalance,
@@ -92,54 +92,6 @@ const Navbar = (props) => {
 
   console.log("Selected network-->", selectedNetwork);
 
-  const tabOptions = [
-    {
-      value: "Swap",
-      path: "/swap",
-    },
-    {
-      value: "Long Term Swap",
-      path: "/longterm",
-    },
-    {
-      value: "Add Liquidity",
-      path: "/liquidity",
-    },
-  ];
-
-  const onNavLinkClick = () => {
-    setSwapAmount("");
-    setTokenA({
-      symbol: "Faucet",
-      image: "/ethereum.png",
-      address: FAUCET_TOKEN_ADDRESS,
-      balance: 0,
-      tokenIsSet: true,
-    });
-    setTokenB({
-      symbol: "Select Token",
-      image: "/Testv4.jpeg",
-      address: MATIC_TOKEN_ADDRESS,
-      balance: 0,
-      tokenIsSet: false,
-    });
-  };
-
-  const tabList = tabOptions.map((option, index) => (
-    <Link to={option.path} key={index}>
-      <div
-        onClick={onNavLinkClick}
-        key={index}
-        className={classNames(
-          styles.tabButton,
-          currentPath === option.path && styles.activeTab
-        )}
-      >
-        {option.value}
-      </div>
-    </Link>
-  ));
-
   const networkList = networks.map((network, index) => {
     return (
       <p
@@ -174,12 +126,25 @@ const Navbar = (props) => {
           <Link to="/">
             <img
               className={styles.logo}
-              src="unicorn.png"
+              src="logo.png"
               alt="logo"
               width="20px"
             />
           </Link>
-          <div className={styles.tabContainerCenter}>{tabList}</div>
+          <p
+            className={styles.longswap}
+            style={{
+              fontFamily: "Futura",
+              fontWeight: "700",
+              fontSize: "18px",
+              lineHeight: "24px",
+              letterSpacing: "0.4px",
+
+              color: "#554994",
+            }}
+          >
+            Longswap
+          </p>
         </div>
         <div className={styles.tabContainerRight}>
           <div className={styles.dropdown}>
@@ -187,7 +152,7 @@ const Navbar = (props) => {
               <div id="networkType" className={styles.dropdownContainer}>
                 <img
                   src={selectedNetwork.logo}
-                  className={styles.logo}
+                  className={styles.networkIcon}
                   alt="Ethereum"
                 />
                 <span>{selectedNetwork.network}</span>
@@ -235,7 +200,12 @@ const Navbar = (props) => {
               className={styles.menuThreeDot}
               onClick={() => setShowDropdown((state) => !state)}
             >
-              <FontAwesomeIcon icon={faEllipsis} />
+              <FontAwesomeIcon
+                style={{
+                  background: "transparent",
+                }}
+                icon={faEllipsis}
+              />
             </button>
 
             {showDropdown && (

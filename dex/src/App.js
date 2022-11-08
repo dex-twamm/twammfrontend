@@ -1,6 +1,6 @@
 import { ethers, providers } from "ethers";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import {
   AddLiquidity,
@@ -31,6 +31,7 @@ import { web3Modal } from "./utils/providerOptions";
 import { swapTokens } from "./utils/swap";
 
 function App() {
+  const location = useLocation();
   const [balance, setBalance] = useState();
   const [isPlacedLongTermOrder, setIsPlacedLongTermOrder] = useState(false);
   const [showRemoveLiquidity, setShowRemoveLiquidity] = useState(false);
@@ -514,19 +515,23 @@ function App() {
   // if(liquidityExists) liquidityMarkup = <LiquidityPools/>
   console.log("errors", formErrors);
   return (
-    <div>
-      {/* <Navbar
-        tokenName={data.token.name}
-        tokenImage={data.token.image}
-        walletBalance={data.wallet.balance}
-        walletAddress={data.wallet.address}
-        accountStatus={isWalletConnected ? true : false}
-        connectWallet={ShortSwapButtonClick}
-        change={connectWallet}
-        disconnectWallet={disconnect}
-        showDisconnect={showDisconnect}
-        setShowDisconnect={setShowDisconnect}
-      /> */}
+    <div className="main">
+      {(location.pathname === "/swap" ||
+        location.pathname === "/longterm" ||
+        location.pathname === "/liquidity") && (
+        <Navbar
+          tokenName={data.token.name}
+          tokenImage={data.token.image}
+          walletBalance={data.wallet.balance}
+          walletAddress={data.wallet.address}
+          accountStatus={isWalletConnected ? true : false}
+          connectWallet={ShortSwapButtonClick}
+          change={connectWallet}
+          disconnectWallet={disconnect}
+          showDisconnect={showDisconnect}
+          setShowDisconnect={setShowDisconnect}
+        />
+      )}
 
       <Routes>
         <Route path="/" element={<Home />} />

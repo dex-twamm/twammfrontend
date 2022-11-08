@@ -197,9 +197,9 @@ const LongTermOrderCard = (props) => {
                       <p className={styles.tokenText}>
                         <span>
                           {bigToStr(soldToken, 18)}{" "}
-                          {POOLS[POOL_ID].tokens[it.sellTokenIndex].symbol}
+                          {POOLS[POOL_ID].tokens[it.sellTokenIndex].symbol} of
                         </span>
-                        <span> of {bigToStr(amountOf, 18)}</span>
+                        <span> {bigToStr(amountOf, 18)}</span>
                       </p>
                     </div>
                     <div className={styles.arrow}>
@@ -216,7 +216,13 @@ const LongTermOrderCard = (props) => {
                         />
                       </svg>
                     </div>
-                    <div>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                      }}
+                    >
                       <img
                         className={styles.tokenIcon}
                         src={POOLS[POOL_ID].tokens[it.buyTokenIndex].image}

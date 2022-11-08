@@ -10,6 +10,7 @@ import styles from "../css/ShortSwap.module.css";
 import { LongSwapContext, ShortSwapContext } from "../providers";
 import LongTermSwapCardDropdown from "../components/LongTermSwapCardDropdown";
 import { Alert } from "@mui/material";
+import Tabs from "../components/Tabs";
 
 const LongSwap = (props) => {
   const {
@@ -33,6 +34,7 @@ const LongSwap = (props) => {
 
   return (
     <div className={styles.container}>
+      <Tabs />
       <div className={styles.mainBody}>
         <div className={styles.swap}>
           <div className={styles.swapOptions}>

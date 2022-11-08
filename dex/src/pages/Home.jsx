@@ -17,7 +17,18 @@ const Home = () => {
       <div className={styles.navSection}>
         <div className={styles.company}>
           <img src="/main_logo.png" alt="logo" />
-          <Typography className={styles.companyName}>Longswap</Typography>
+          <Typography
+            className={styles.companyName}
+            sx={{
+              fontFamily: "Futura",
+              fontWeight: "700",
+              fontSize: "24px",
+              letterSpacing: "0.4px",
+              color: "#000000",
+            }}
+          >
+            Longswap
+          </Typography>
         </div>
         <div className={styles.midRightSection}>
           <div className={styles.midSection}>
@@ -43,7 +54,7 @@ const Home = () => {
       <Paper elevation={0} className={styles.paper}>
         <Grid container sx={{ borderRadius: "24px", backgroundColor: "black" }}>
           <Grid className={styles.leftGrid} item sm={8}>
-            <h1 className={styles.bannerText}>look beyond limits</h1>
+            <h1 className={styles.bannerText}>Look beyond limits</h1>
             <img src="/banner_image.png" alt="banner" />
             <div className="">
               <button className={styles.launch} onClick={handleLaunch}>

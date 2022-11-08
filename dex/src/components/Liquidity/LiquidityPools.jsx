@@ -11,6 +11,7 @@ import { useContext } from "react";
 import { ShortSwapContext } from "../../providers";
 
 import CircularProgressBar from "../alerts/CircularProgressBar";
+import Tabs from "../Tabs";
 
 const style = {
   position: "absolute",
@@ -63,6 +64,7 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
         // border:'1px solid red',
       }}
     >
+      <Tabs />
       <Box
         sx={{
           display: "flex",
