@@ -566,6 +566,7 @@ function App() {
                 setShowSettings={setShowSettings}
                 cancelPool={_cancelLTO}
                 withdrawPool={_withdrawLTO}
+                spotPriceLoading={spotPriceLoading}
               />
             }
           />

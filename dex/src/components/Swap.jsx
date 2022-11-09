@@ -9,6 +9,7 @@ import {
   Button,
   Chip,
   CircularProgress,
+  Skeleton,
 } from "@mui/material";
 import classNames from "classnames";
 import React, { useContext, useState } from "react";
@@ -204,6 +205,8 @@ const Swap = (props) => {
       setTransactionHash(undefined);
     };
   }, []);
+
+  console.log("Spot price loading", spotPriceLoading);
 
   return (
     <>
@@ -482,7 +485,7 @@ const Swap = (props) => {
                       display: { xs: "none", sm: "block" },
                     }}
                   />
-                  <span
+                  <p
                     style={{
                       cursor: "pointer",
                       boxSizing: "border-box",
@@ -491,18 +494,26 @@ const Swap = (props) => {
                       fontFamily: "Open Sans",
                       fontSize: "16px",
                       fontWeight: 500,
+                      display: "flex",
                     }}
                     onClick={handleClose}
                   >
                     {" "}
-                    {` 1 ${tokenA.symbol} = ${spotPrice.toFixed(4)} 
-                     ${tokenB.symbol}
-                    `}
+                    {` 1 ${tokenA.symbol} = ${" "}`}
+                    {"  "}
+                    <label>
+                      {" "}
+                      {spotPriceLoading ? (
+                        <Skeleton width={"100px"} />
+                      ) : (
+                        ` ${spotPrice.toFixed(4)} ${tokenB.symbol}`
+                      )}
+                    </label>
                     {/* <span style={{ color: "#333333", opacity: 0.7 }}>
                       {" "}
                       ($123)
                     </span> */}
-                  </span>
+                  </p>
                 </Box>
 
                 <Box
@@ -544,7 +555,7 @@ const Swap = (props) => {
                       onClick={handleClose}
                     />
                   )} */}
-                  {spotPriceLoading && <CircularProgress size={15} />}
+                  {/* {spotPriceLoading && <CircularProgress size={15} />} */}
                 </Box>
               </Box>
 
@@ -592,16 +603,21 @@ const Swap = (props) => {
                 !swapAmount ||
                 (swapType === "long" && executionTime === "") ||
                 disableAllowBtn ||
+                spotPriceLoading ||
                 parseFloat(allowance) <= swapAmount
                   ? true
                   : false
               }
             >
-              {!tokenA.tokenIsSet || !tokenB.tokenIsSet
-                ? "Select a Token"
-                : !swapAmount
-                ? "Enter an Amount"
-                : buttonText}
+              {!tokenA.tokenIsSet || !tokenB.tokenIsSet ? (
+                "Select a Token"
+              ) : !swapAmount ? (
+                "Enter an Amount"
+              ) : spotPriceLoading ? (
+                <CircularProgress sx={{ color: "white" }} />
+              ) : (
+                buttonText
+              )}
             </button>
           ) : (
             <button

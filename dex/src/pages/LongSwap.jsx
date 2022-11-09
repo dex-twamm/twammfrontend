@@ -23,6 +23,7 @@ const LongSwap = (props) => {
     withdrawPool,
     isPlacedLongTermOrder,
     setIsPlacedLongTermOrder,
+    spotPriceLoading,
   } = props;
 
   const [showSettings, setShowSettings] = useState(false);
@@ -58,6 +59,7 @@ const LongSwap = (props) => {
           tokenImage={tokenImage}
           connectWallet={connectWallet}
           buttonText={buttonText}
+          spotPriceLoading={spotPriceLoading}
         />
       </div>
       <PopupModal
