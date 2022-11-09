@@ -75,7 +75,8 @@ export async function cancelLTO(
   walletAdress,
   signer,
   orderId,
-  setOrderLogsDecoded
+  setOrderLogsDecoded,
+  setMessage
 ) {
   const poolContract = new Contract(
     VAULT_CONTRACT_ADDRESS,
@@ -102,7 +103,8 @@ export async function cancelLTO(
     }
   );
   const exitPoolResult = await exitPoolTx.wait();
-  setOrderLogsDecoded(exitPoolResult?.logs);
+  // setOrderLogsDecoded(exitPoolResult?.logs);
+  setMessage("LTO Cancelled !");
   console.log("exitPoolResult-->", exitPoolResult);
 }
 
@@ -110,7 +112,8 @@ export async function withdrawLTO(
   walletAdress,
   signer,
   orderId,
-  setOrderLogsDecoded
+  setOrderLogsDecoded,
+  setMessage
 ) {
   const poolContract = new Contract(
     VAULT_CONTRACT_ADDRESS,
@@ -137,8 +140,9 @@ export async function withdrawLTO(
     }
   );
   const withdrawLTOResult = await withdrawLTOTx.wait();
-  setOrderLogsDecoded(withdrawLTOResult?.logs);
+  // setOrderLogsDecoded(withdrawLTOResult?.logs);
   console.log("withdrawLTOResult", withdrawLTOResult);
+  setMessage("LTO Withdrawn!");
 }
 
 export async function getPoolBalance(signer, tokenAddress) {

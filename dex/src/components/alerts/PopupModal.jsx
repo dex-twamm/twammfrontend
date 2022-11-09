@@ -3,7 +3,12 @@ import { useEffect } from "react";
 import { useContext } from "react";
 import { ShortSwapContext } from "../../providers";
 
-const PopupModal = ({ isPlacedLongTermOrder, setIsPlacedLongTermOrder }) => {
+const PopupModal = ({
+  isPlacedLongTermOrder,
+  setIsPlacedLongTermOrder,
+  message,
+  setMessage,
+}) => {
   const {
     error,
     setError,
@@ -27,10 +32,12 @@ const PopupModal = ({ isPlacedLongTermOrder, setIsPlacedLongTermOrder }) => {
   });
 
   const handleClose = () => {
+    console.log("hello");
     setError("");
     setSuccess("");
     setTransactionHash("");
-    setIsPlacedLongTermOrder(false);
+    setIsPlacedLongTermOrder && setIsPlacedLongTermOrder(false);
+    setMessage("");
   };
   const handleButtonClick = () => {
     window.open(`https://goerli.etherscan.io/tx/${transactionHash}`);
@@ -40,7 +47,7 @@ const PopupModal = ({ isPlacedLongTermOrder, setIsPlacedLongTermOrder }) => {
 
   console.log("<---Transaction hash--->", transactionHash);
 
-  console.log("successs", success);
+  console.log("successs", message ? true : false, message);
 
   const AlertStyle = {
     margin: "5px",
@@ -84,6 +91,18 @@ const PopupModal = ({ isPlacedLongTermOrder, setIsPlacedLongTermOrder }) => {
           >
             <Alert severity="success" onClose={handleClose}>
               Transaction success!
+            </Alert>
+          </Backdrop>
+        )}
+        {message && (
+          <Backdrop
+            open={
+              typeof message !== "undefined" || message !== "" ? true : false
+            }
+            onClose={handleClose}
+          >
+            <Alert severity="success" onClose={handleClose}>
+              {message}
             </Alert>
           </Backdrop>
         )}

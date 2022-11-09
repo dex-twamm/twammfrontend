@@ -18,7 +18,8 @@ export async function placeLongTermOrder(
   amountIn,
   numberOfBlockIntervals,
   signer,
-  walletAddress
+  walletAddress,
+  setTransactionHash
 ) {
   let txHash;
 
@@ -55,6 +56,7 @@ export async function placeLongTermOrder(
   );
   console.log("===LongTerm Placed====", placeLtoTx);
   txHash = placeLtoTx.hash;
+  setTransactionHash(placeLtoTx.hash);
 
   console.log("====Swap Results After Placed=====", await placeLtoTx.wait());
   console.log(txHash);

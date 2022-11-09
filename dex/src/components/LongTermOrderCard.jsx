@@ -135,6 +135,7 @@ const LongTermOrderCard = (props) => {
       ) : (
         orderLogsDecoded
           .map((it) => {
+            console.log("ITTTTTTT", it.orderId.toNumber());
             const orderStatus = checkStatus(
               it.state,
               it.startBlock,
@@ -164,19 +165,19 @@ const LongTermOrderCard = (props) => {
 
             // console.log("Sales rate", sRate);
             const expBlock = it.expirationBlock;
-            const amountOf = expBlock.sub(stBlock).mul(it.salesRate);
+            const amountOf = expBlock?.sub(stBlock)?.mul(it?.salesRate);
             // console.log("StartBlock", stBlock);
             // console.log("Exp BLock", expBlock);
             // console.log("latestBlock", latestBlock);
             // console.log("Amount of", amountOf)
             let soldToken;
             if (it.state === "cancelled") {
-              soldToken = amountOf.sub(it.unsoldAmount);
+              soldToken = amountOf?.sub(it?.unsoldAmount);
             } else {
               soldToken =
                 latestBlock > expBlock
                   ? amountOf
-                  : latestBlock.sub(stBlock).mul(it.salesRate);
+                  : latestBlock?.sub(stBlock)?.mul(it.salesRate);
             }
             console.log("Sold Token", soldToken);
 

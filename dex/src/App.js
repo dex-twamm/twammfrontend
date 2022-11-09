@@ -78,6 +78,8 @@ function App() {
     numberOfBlockIntervals,
     setAllowance,
     setTokenB,
+    message,
+    setMessage,
   } = useContext(LongSwapContext);
   const { provider, setProvider } = useContext(WebContext);
   console.log("Current Block", currentBlock);
@@ -231,7 +233,8 @@ function App() {
         amountIn,
         blockIntervals,
         signer,
-        walletAddress
+        walletAddress,
+        setTransactionHash
       )
         .then((res) => {
           setTransactionHash(res);
@@ -312,7 +315,13 @@ function App() {
       if (!isWalletConnected) {
         await connectWallet();
       }
-      await cancelLTO(walletAddress, signer, orderId, setOrderLogsDecoded);
+      await cancelLTO(
+        walletAddress,
+        signer,
+        orderId,
+        setOrderLogsDecoded,
+        setMessage
+      );
       setLoading(false);
     } catch (e) {
       console.log(e);
@@ -329,7 +338,13 @@ function App() {
       if (!isWalletConnected) {
         await connectWallet();
       }
-      await withdrawLTO(walletAddress, signer, orderId, setOrderLogsDecoded);
+      await withdrawLTO(
+        walletAddress,
+        signer,
+        orderId,
+        setOrderLogsDecoded,
+        setMessage
+      );
       setLoading(false);
     } catch (e) {
       console.log(e);
