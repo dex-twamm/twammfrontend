@@ -1,10 +1,6 @@
 body {
   margin: 0;
-  background: linear-gradient(
-    168.53deg,
-    rgba(234, 255, 254, 0.7) 0%,
-    rgba(205, 201, 241, 0.7) 97.46%
-  );
+  background: linear-gradient(180deg, #b9fbff 0%, #d1c9f1 100%);
   box-shadow: 40px 40px 100px rgba(24, 48, 63, 0.2);
 }
 
