@@ -561,6 +561,7 @@ function App() {
                 buttonText={!isWalletConnected ? "Connect Wallet" : "Swap"}
                 connectWallet={LongSwapButtonClick}
                 isPlacedLongTermOrder={isPlacedLongTermOrder}
+                setIsPlacedLongTermOrder={setIsPlacedLongTermOrder}
                 showSettings={showSettings}
                 setShowSettings={setShowSettings}
                 cancelPool={_cancelLTO}

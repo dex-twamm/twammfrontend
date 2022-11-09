@@ -22,6 +22,7 @@ const LongSwap = (props) => {
     cancelPool,
     withdrawPool,
     isPlacedLongTermOrder,
+    setIsPlacedLongTermOrder,
   } = props;
 
   const [showSettings, setShowSettings] = useState(false);
@@ -59,17 +60,11 @@ const LongSwap = (props) => {
           buttonText={buttonText}
         />
       </div>
-      <PopupModal></PopupModal>
-      {isPlacedLongTermOrder && (
-        <div className={styles.errorAlert}>
-          <Alert
-            severity="success"
-            sx={{ borderRadius: "16px", width: "fit-content", margin: "auto" }}
-          >
-            Transaction success!
-          </Alert>
-        </div>
-      )}
+      <PopupModal
+        isPlacedLongTermOrder={isPlacedLongTermOrder}
+        setIsPlacedLongTermOrder={setIsPlacedLongTermOrder}
+      ></PopupModal>
+
       <div className={lsStyles.ordersWrapper}>
         <h4 className={lsStyles.longTermText}>Your Long Term Orders</h4>
         <div className={styles.scroller}>

@@ -1098,3 +1098,15 @@ input[type="number"]:focus {
 .MuiBackdrop-root {
   z-index: 2;
 }
+
+/* longswap execution time slider */
+
+.MuiSlider-rail {
+  background: rgb(205, 198, 252);
+  background: linear-gradient(
+    90deg,
+    rgba(205, 198, 252, 1) 0%,
+    rgba(149, 138, 228, 1) 46%,
+    rgba(6, 0, 43, 1) 100%
+  );
+}

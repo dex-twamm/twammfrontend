@@ -4,6 +4,7 @@
   /* background-color: #ffffff; */
   border-radius: 16px;
   border: 1px solid #f3f3f3;
+  background-color: #ffffffab;
 
   /* box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); */
 }
@@ -84,8 +85,8 @@
 }
 
 .progress {
-  height: 5px;
-  background-color: #ededed;
+  height: 10px;
+  background-color: #6b78bd;
   border-radius: 10px;
   border: 1px solid white;
 }
@@ -137,7 +138,7 @@
   flex: 1;
   text-align: center;
   width: 100%;
-  padding: 8px;
+  padding: 15px 50px;
   border-radius: 8px;
 
   font-weight: 600;
@@ -157,8 +158,8 @@
 }
 
 .successButton {
-  background-color: #eaffea;
-  color: green;
+  color: #eaffea;
+  background: #5cbd57;
 }
 
 .successButton:hover {
@@ -171,8 +172,8 @@
 }
 
 .cancelButton {
-  color: rgb(213, 0, 102);
-  background-color: #fdeaf1;
+  color: white;
+  background: #ff6969;
 }
 
 .cancelButton:disabled {
@@ -185,8 +186,8 @@
 } */
 
 .withdrawButton {
-  background-color: #eaffea;
-  color: green;
+  color: #eaffea;
+  background: #5cbd57;
 }
 
 .withdrawButton:disabled {

@@ -201,6 +201,7 @@ const Swap = (props) => {
     return () => {
       setTargetDate("");
       setExecutionTIme("");
+      setTransactionHash(undefined);
     };
   }, []);
 

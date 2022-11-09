@@ -278,20 +278,6 @@ const LongTermOrderCard = (props) => {
                   )}
 
                   <div className={styles.buttonContainer}>
-                    {orderStatus.status !== "Cancelled" &&
-                      orderStatus.status !== "Completed" && (
-                        <button
-                          className={classNames(
-                            styles.button,
-                            styles.withdrawButton
-                          )}
-                          onClick={() => {
-                            withdrawPool(it.orderId.toNumber());
-                          }}
-                        >
-                          Withdraw
-                        </button>
-                      )}
                     <button
                       className={classNames(
                         styles.button,
@@ -312,6 +298,20 @@ const LongTermOrderCard = (props) => {
                         ? "Cancel"
                         : "Completed"}
                     </button>
+                    {orderStatus.status !== "Cancelled" &&
+                      orderStatus.status !== "Completed" && (
+                        <button
+                          className={classNames(
+                            styles.button,
+                            styles.withdrawButton
+                          )}
+                          onClick={() => {
+                            withdrawPool(it.orderId.toNumber());
+                          }}
+                        >
+                          Withdraw
+                        </button>
+                      )}
                   </div>
                 </div>
               </div>
