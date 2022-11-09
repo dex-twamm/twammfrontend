@@ -439,6 +439,14 @@ const Swap = (props) => {
                   onChange={handleChange}
                   aria-labelledby="non-linear-slider"
                 />
+                {swapAmount &&
+                tokenA.tokenIsSet &&
+                tokenB.tokenIsSet &&
+                !executionTime ? (
+                  <p style={{ fontSize: "12px", marginBottom: "0px" }}>
+                    execution time is required.
+                  </p>
+                ) : null}
               </Box>
             </div>
           )}

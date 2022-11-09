@@ -35,6 +35,8 @@ const LongSwap = (props) => {
   const cardListCount = ethLogsCount;
   console.log("Logs Count", ethLogsCount, cardListCount);
 
+  console.log("Is long term order placed", isPlacedLongTermOrder);
+
   return (
     <div className={styles.container}>
       <Tabs />
