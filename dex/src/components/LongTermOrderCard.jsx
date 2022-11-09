@@ -15,7 +15,8 @@ const LongTermOrderCard = (props) => {
   const { cancelPool, withdrawPool } = props;
   const remainingTimeRef = useRef();
 
-  const { swapAmount, currentBlock, loading } = useContext(ShortSwapContext);
+  const { swapAmount, currentBlock, isWalletConnected } =
+    useContext(ShortSwapContext);
 
   const { sliderValueInSec, tokenA, tokenB, orderLogsDecoded, latestBlock } =
     useContext(LongSwapContext);
@@ -105,7 +106,20 @@ const LongTermOrderCard = (props) => {
   // Mapping Data from EthLogs
   console.log("orderLogsDecoded", orderLogsDecoded);
 
-  return orderLogsDecoded ? (
+  return !isWalletConnected ? (
+    <>
+      <p
+        style={{
+          fontFamily: "Open Sans",
+          marginBottom: "0px",
+          fontSize: "14px",
+          padding: "0 5px",
+        }}
+      >
+        No long term orders placed for this address{" "}
+      </p>
+    </>
+  ) : orderLogsDecoded ? (
     <>
       {orderLogsDecoded.length === 0 ? (
         <p
