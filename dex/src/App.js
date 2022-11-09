@@ -2,6 +2,7 @@ import { ethers, providers } from "ethers";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
+import PopupModal from "./components/alerts/PopupModal";
 import {
   AddLiquidity,
   LiquidityPools,
@@ -515,60 +516,62 @@ function App() {
   // if(liquidityExists) liquidityMarkup = <LiquidityPools/>
   console.log("errors", formErrors);
   return (
-    <div className="main">
-      {(location.pathname === "/swap" ||
-        location.pathname === "/longterm" ||
-        location.pathname === "/liquidity") && (
-        <Navbar
-          tokenName={data.token.name}
-          tokenImage={data.token.image}
-          walletBalance={data.wallet.balance}
-          walletAddress={data.wallet.address}
-          accountStatus={isWalletConnected ? true : false}
-          connectWallet={ShortSwapButtonClick}
-          change={connectWallet}
-          disconnectWallet={disconnect}
-          showDisconnect={showDisconnect}
-          setShowDisconnect={setShowDisconnect}
-        />
-      )}
+    <>
+      <div className="main">
+        {(location.pathname === "/swap" ||
+          location.pathname === "/longterm" ||
+          location.pathname === "/liquidity") && (
+          <Navbar
+            tokenName={data.token.name}
+            tokenImage={data.token.image}
+            walletBalance={data.wallet.balance}
+            walletAddress={data.wallet.address}
+            accountStatus={isWalletConnected ? true : false}
+            connectWallet={ShortSwapButtonClick}
+            change={connectWallet}
+            disconnectWallet={disconnect}
+            showDisconnect={showDisconnect}
+            setShowDisconnect={setShowDisconnect}
+          />
+        )}
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route
-          path="/swap"
-          element={
-            <ShortSwap
-              tokenSymbol={data.token.symbol}
-              tokenImage={data.token.image}
-              connectWallet={ShortSwapButtonClick}
-              buttonText={!isWalletConnected ? "Connect Wallet" : "Swap"}
-              showSettings={showSettings}
-              setShowSettings={setShowSettings}
-              spotPriceLoading={spotPriceLoading}
-            />
-          }
-        />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route
+            path="/swap"
+            element={
+              <ShortSwap
+                tokenSymbol={data.token.symbol}
+                tokenImage={data.token.image}
+                connectWallet={ShortSwapButtonClick}
+                buttonText={!isWalletConnected ? "Connect Wallet" : "Swap"}
+                showSettings={showSettings}
+                setShowSettings={setShowSettings}
+                spotPriceLoading={spotPriceLoading}
+              />
+            }
+          />
 
-        <Route
-          path="/longterm"
-          element={
-            <LongSwap
-              tokenSymbol={data.token.symbol}
-              tokenImage={data.token.image}
-              buttonText={!isWalletConnected ? "Connect Wallet" : "Swap"}
-              connectWallet={LongSwapButtonClick}
-              isPlacedLongTermOrder={isPlacedLongTermOrder}
-              showSettings={showSettings}
-              setShowSettings={setShowSettings}
-              cancelPool={_cancelLTO}
-              withdrawPool={_withdrawLTO}
-            />
-          }
-        />
-        <Route path="/liquidity" element={liquidityMarkup} />
-      </Routes>
-    </div>
+          <Route
+            path="/longterm"
+            element={
+              <LongSwap
+                tokenSymbol={data.token.symbol}
+                tokenImage={data.token.image}
+                buttonText={!isWalletConnected ? "Connect Wallet" : "Swap"}
+                connectWallet={LongSwapButtonClick}
+                isPlacedLongTermOrder={isPlacedLongTermOrder}
+                showSettings={showSettings}
+                setShowSettings={setShowSettings}
+                cancelPool={_cancelLTO}
+                withdrawPool={_withdrawLTO}
+              />
+            }
+          />
+          <Route path="/liquidity" element={liquidityMarkup} />
+        </Routes>
+      </div>
+    </>
   );
 }
 

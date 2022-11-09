@@ -47,6 +47,7 @@ const ShortSwap = ({
             spotPriceLoading={spotPriceLoading}
           />
         </div>
+        <PopupModal></PopupModal>
       </div>
     </>
   );

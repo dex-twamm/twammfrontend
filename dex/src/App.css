@@ -1094,3 +1094,7 @@ input[type="number"]:focus {
   border-radius: 20px;
   margin: 0;
 }
+
+.MuiBackdrop-root {
+  z-index: 2;
+}

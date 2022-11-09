@@ -11,6 +11,7 @@ import { LongSwapContext, ShortSwapContext } from "../providers";
 import LongTermSwapCardDropdown from "../components/LongTermSwapCardDropdown";
 import { Alert } from "@mui/material";
 import Tabs from "../components/Tabs";
+import PopupModal from "../components/alerts/PopupModal";
 
 const LongSwap = (props) => {
   const {
@@ -58,6 +59,7 @@ const LongSwap = (props) => {
           buttonText={buttonText}
         />
       </div>
+      <PopupModal></PopupModal>
       {isPlacedLongTermOrder && (
         <div className={styles.errorAlert}>
           <Alert

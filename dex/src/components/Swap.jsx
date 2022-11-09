@@ -612,7 +612,6 @@ const Swap = (props) => {
           )}
         </Box>
       </form>
-      <PopupModal></PopupModal>
     </>
   );
 };
