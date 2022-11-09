@@ -67,10 +67,10 @@ const Home = () => {
             <img className={styles.design} src="/design_image.png" alt="" />
           </Grid>
           <Grid className={styles.bottomGrid} item sm={4}>
-            <Typography className={styles.bottomLeftText}>
+            <div className={styles.bottomLeftText}>
               Swap, earn, and build on the leading decentralized crypto trading
               protocol.
-            </Typography>
+            </div>
             <div className={styles.socialMedia}>
               <img src="/linkedIn.png" alt="" />
               <img src="/discord.png" alt="" />
@@ -78,10 +78,10 @@ const Home = () => {
             </div>
           </Grid>
           <Grid className={styles.bottomGrid} item sm={4}>
-            <Typography className={styles.bottomMiddleText}>
+            <div className={styles.bottomMiddleText}>
               The most experienced, speciallised team across the industry.
-            </Typography>
-            <Typography className={styles.text}>Work with us</Typography>
+            </div>
+            <div className={styles.text}>Work with us</div>
           </Grid>
           <Grid className={styles.bottomGrid} item sm={4}>
             <div className={styles.threePlus}>
@@ -96,10 +96,10 @@ const Home = () => {
             </div>
 
             <h4 className={styles.htext}>A growing network of DeFi Apps.</h4>
-            <Typography className={styles.bottomRightText}>
+            <div className={styles.bottomRightText}>
               Developers, traders, and liquidity providers participate together
               in a financial marketplace that is open and accessible to all.
-            </Typography>
+            </div>
           </Grid>
         </Grid>
       </Paper>
