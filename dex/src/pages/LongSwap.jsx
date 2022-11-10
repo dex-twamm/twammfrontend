@@ -70,6 +70,8 @@ const LongSwap = (props) => {
         <PopupModal
           isPlacedLongTermOrder={isPlacedLongTermOrder}
           setIsPlacedLongTermOrder={setIsPlacedLongTermOrder}
+          message={message}
+          setMessage={setMessage}
         ></PopupModal>
 
         <div className={lsStyles.ordersWrapper}>
@@ -93,7 +95,6 @@ const LongSwap = (props) => {
           </div>
         </div>
       </div>
-      <PopupModal message={message} setMessage={setMessage}></PopupModal>
     </>
   );
 };
