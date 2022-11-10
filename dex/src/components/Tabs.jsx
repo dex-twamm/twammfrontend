@@ -8,7 +8,7 @@ import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from "../utils";
 const tabOptions = [
   {
     value: "Swap",
-    path: "/swap",
+    path: "/",
   },
   {
     value: "Long Term Swap",

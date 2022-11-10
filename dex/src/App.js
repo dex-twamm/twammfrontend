@@ -556,27 +556,23 @@ function App() {
   return (
     <>
       <div className="main">
-        {(location.pathname === "/swap" ||
-          location.pathname === "/longterm" ||
-          location.pathname === "/liquidity") && (
-          <Navbar
-            tokenName={data.token.name}
-            tokenImage={data.token.image}
-            walletBalance={data.wallet.balance}
-            walletAddress={data.wallet.address}
-            accountStatus={isWalletConnected ? true : false}
-            connectWallet={ShortSwapButtonClick}
-            change={connectWallet}
-            disconnectWallet={disconnect}
-            showDisconnect={showDisconnect}
-            setShowDisconnect={setShowDisconnect}
-          />
-        )}
+        <Navbar
+          tokenName={data.token.name}
+          tokenImage={data.token.image}
+          walletBalance={data.wallet.balance}
+          walletAddress={data.wallet.address}
+          accountStatus={isWalletConnected ? true : false}
+          connectWallet={ShortSwapButtonClick}
+          change={connectWallet}
+          disconnectWallet={disconnect}
+          showDisconnect={showDisconnect}
+          setShowDisconnect={setShowDisconnect}
+        />
 
         <Routes>
-          <Route path="/" element={<Home />} />
+          {/* <Route path="/" element={<Home />} /> */}
           <Route
-            path="/swap"
+            path="/"
             element={
               <ShortSwap
                 tokenSymbol={data.token.symbol}
