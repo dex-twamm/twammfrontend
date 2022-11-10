@@ -55,6 +55,7 @@ const PopupModal = ({
 
   const AlertStyle = {
     margin: "5px",
+    background: "rgba(255, 255, 255, 0.5)",
   };
   return (
     <>
@@ -94,7 +95,7 @@ const PopupModal = ({
             onClose={handleClose}
           >
             <Alert severity="success" onClose={handleClose}>
-              Transaction success!
+              LTO Placed!
             </Alert>
           </Backdrop>
         )}

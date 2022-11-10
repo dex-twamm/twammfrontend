@@ -63,6 +63,7 @@ const LongSwap = (props) => {
             connectWallet={connectWallet}
             buttonText={buttonText}
             spotPriceLoading={spotPriceLoading}
+            setIsPlacedLongTermOrder={setIsPlacedLongTermOrder}
           />
         </div>
         <PopupModal

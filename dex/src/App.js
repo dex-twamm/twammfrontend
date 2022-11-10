@@ -49,6 +49,7 @@ function App() {
     setSwapAmount,
     setError,
     setLoading,
+    loading,
     formErrors,
     setTokenBalances,
     setTransactionHash,
@@ -241,7 +242,6 @@ function App() {
       )
         .then((res) => {
           setTransactionHash(res);
-          setMessage("Transacton Placed !");
         })
         .finally(setLoading(false));
       setIsPlacedLongTermOrder(true);

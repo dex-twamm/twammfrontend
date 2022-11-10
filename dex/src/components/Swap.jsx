@@ -34,7 +34,13 @@ import { getApproval } from "../utils/getApproval";
 import { WebContext } from "../providers/context/WebProvider";
 
 const Swap = (props) => {
-  const { connectWallet, buttonText, swapType, spotPriceLoading } = props;
+  const {
+    connectWallet,
+    buttonText,
+    swapType,
+    spotPriceLoading,
+    setIsPlacedLongTermOrder,
+  } = props;
 
   const [display, setDisplay] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
@@ -203,6 +209,7 @@ const Swap = (props) => {
       setTargetDate("");
       setExecutionTIme("");
       setTransactionHash(undefined);
+      setIsPlacedLongTermOrder && setIsPlacedLongTermOrder(false);
     };
   }, []);
 
