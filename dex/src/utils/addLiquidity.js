@@ -12,6 +12,7 @@ import {
   VAULT_CONTRACT_ABI,
   VAULT_CONTRACT_ADDRESS,
 } from "../constants";
+import { getEthLogs } from "./get_ethLogs";
 
 export async function joinPool(walletAddress, signer) {
   const encodedRequest = defaultAbiCoder.encode(
@@ -76,7 +77,8 @@ export async function cancelLTO(
   signer,
   orderId,
   setOrderLogsDecoded,
-  setMessage
+  setMessage,
+  provider
 ) {
   const poolContract = new Contract(
     VAULT_CONTRACT_ADDRESS,
@@ -103,8 +105,12 @@ export async function cancelLTO(
     }
   );
   const exitPoolResult = await exitPoolTx.wait();
-  // setOrderLogsDecoded(exitPoolResult?.logs);
   setMessage("LTO Cancelled !");
+  await getEthLogs(provider, walletAdress).then((res) => {
+    const resArray = Array.from(res.values());
+    setOrderLogsDecoded(resArray);
+  });
+
   console.log("exitPoolResult-->", exitPoolResult);
 }
 
@@ -113,7 +119,8 @@ export async function withdrawLTO(
   signer,
   orderId,
   setOrderLogsDecoded,
-  setMessage
+  setMessage,
+  provider
 ) {
   const poolContract = new Contract(
     VAULT_CONTRACT_ADDRESS,
@@ -140,7 +147,10 @@ export async function withdrawLTO(
     }
   );
   const withdrawLTOResult = await withdrawLTOTx.wait();
-  // setOrderLogsDecoded(withdrawLTOResult?.logs);
+  await getEthLogs(provider, walletAdress).then((res) => {
+    const resArray = Array.from(res.values());
+    setOrderLogsDecoded(resArray);
+  });
   console.log("withdrawLTOResult", withdrawLTOResult);
   setMessage("LTO Withdrawn!");
 }

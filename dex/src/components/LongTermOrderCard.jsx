@@ -18,8 +18,14 @@ const LongTermOrderCard = (props) => {
   const { swapAmount, currentBlock, isWalletConnected } =
     useContext(ShortSwapContext);
 
-  const { sliderValueInSec, tokenA, tokenB, orderLogsDecoded, latestBlock } =
-    useContext(LongSwapContext);
+  const {
+    sliderValueInSec,
+    tokenA,
+    tokenB,
+    orderLogsDecoded,
+    latestBlock,
+    disableActionBtn,
+  } = useContext(LongSwapContext);
 
   const initialValue = Math.ceil(sliderValueInSec);
 
@@ -304,7 +310,8 @@ const LongTermOrderCard = (props) => {
                       disabled={
                         orderStatus.status === "Cancelled" ||
                         orderStatus.status === "Completed" ||
-                        orderStatus.status === "Execution Completed"
+                        orderStatus.status === "Execution Completed" ||
+                        disableActionBtn
                       }
                       onClick={() => {
                         cancelPool(it?.orderId?.toNumber());
@@ -324,6 +331,7 @@ const LongTermOrderCard = (props) => {
                           onClick={() => {
                             withdrawPool(it?.orderId?.toNumber());
                           }}
+                          disabled={disableActionBtn}
                         >
                           Withdraw
                         </button>

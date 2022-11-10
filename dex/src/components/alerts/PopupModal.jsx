@@ -106,7 +106,14 @@ const PopupModal = ({
             }
             onClose={handleClose}
           >
-            <Alert severity="success" onClose={handleClose}>
+            <Alert
+              severity={
+                message === "Cancel Failed !" || message === "Withdraw Failed !"
+                  ? "error"
+                  : "success"
+              }
+              onClose={handleClose}
+            >
               {message}
             </Alert>
           </Backdrop>

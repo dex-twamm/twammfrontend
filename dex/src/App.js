@@ -81,6 +81,8 @@ function App() {
     setTokenB,
     message,
     setMessage,
+    disableActionBtn,
+    setDisableActionBtn,
   } = useContext(LongSwapContext);
   const { provider, setProvider } = useContext(WebContext);
   console.log("Current Block", currentBlock);
@@ -245,6 +247,10 @@ function App() {
         })
         .finally(setLoading(false));
       setIsPlacedLongTermOrder(true);
+      await getEthLogs(provider, walletAddress).then((res) => {
+        const resArray = Array.from(res.values());
+        setOrderLogsDecoded(resArray);
+      });
     } catch (err) {
       console.error(err);
       setLoading(false);
@@ -313,6 +319,7 @@ function App() {
   // cancelLTO
   const _cancelLTO = async (orderId) => {
     setLoading(true);
+    setDisableActionBtn(true);
     try {
       const walletAddress = account;
       const signer = await getProvider(true);
@@ -324,17 +331,22 @@ function App() {
         signer,
         orderId,
         setOrderLogsDecoded,
-        setMessage
+        setMessage,
+        provider
       );
       setLoading(false);
+      setDisableActionBtn(false);
     } catch (e) {
       console.log(e);
+      setMessage("Cancel Failed !");
       setLoading(false);
+      setDisableActionBtn(false);
     }
   };
   //  WithdrawLTO
   const _withdrawLTO = async (orderId) => {
     console.log("Order Id", orderId);
+    setDisableActionBtn(true);
     setLoading(true);
     try {
       const walletAddress = account;
@@ -347,12 +359,16 @@ function App() {
         signer,
         orderId,
         setOrderLogsDecoded,
-        setMessage
+        setMessage,
+        provider
       );
       setLoading(false);
+      setDisableActionBtn(false);
     } catch (e) {
       console.log(e);
+      setMessage("Withdraw Failed !");
       setLoading(false);
+      setDisableActionBtn(false);
     }
   };
 
@@ -535,6 +551,8 @@ function App() {
   // if(liquidityExists) liquidityMarkup = <LiquidityPools/>
   console.log("errors", formErrors);
 
+  console.log("Loading--->", loading);
+
   return (
     <>
       <div className="main">
@@ -591,6 +609,7 @@ function App() {
                 spotPriceLoading={spotPriceLoading}
                 message={message}
                 setMessage={setMessage}
+                loading={loading}
               />
             }
           />

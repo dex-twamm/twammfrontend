@@ -9,7 +9,7 @@ import lsStyles from "../css/LongSwap.module.css";
 import styles from "../css/ShortSwap.module.css";
 import { LongSwapContext, ShortSwapContext } from "../providers";
 import LongTermSwapCardDropdown from "../components/LongTermSwapCardDropdown";
-import { Alert } from "@mui/material";
+import { Alert, CircularProgress } from "@mui/material";
 import Tabs from "../components/Tabs";
 import PopupModal from "../components/alerts/PopupModal";
 
@@ -24,10 +24,11 @@ const LongSwap = (props) => {
     isPlacedLongTermOrder,
     setIsPlacedLongTermOrder,
     spotPriceLoading,
+    loading,
   } = props;
 
   const [showSettings, setShowSettings] = useState(false);
-  const { orderLogsDecoded } = useContext(LongSwapContext);
+  const { orderLogsDecoded, message, setMessage } = useContext(LongSwapContext);
   const { transactionHash } = useContext(ShortSwapContext);
   const ethLogsCount = orderLogsDecoded
     ? Object.keys(orderLogsDecoded).length
@@ -92,7 +93,7 @@ const LongSwap = (props) => {
           </div>
         </div>
       </div>
-      <PopupModal></PopupModal>
+      <PopupModal message={message} setMessage={setMessage}></PopupModal>
     </>
   );
 };

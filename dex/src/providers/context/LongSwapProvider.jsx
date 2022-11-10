@@ -16,6 +16,7 @@ export const LongSwapProvider = ({ children }) => {
   const [targetDate, setTargetDate] = useState("");
   const [allowance, setAllowance] = useState("");
   const [message, setMessage] = useState("");
+  const [disableActionBtn, setDisableActionBtn] = useState(false);
   const { tokenBalances } = useContext(ShortSwapContext);
 
   console.log("Token Balances ", tokenBalances);
@@ -56,6 +57,8 @@ export const LongSwapProvider = ({ children }) => {
         setAllowance,
         message,
         setMessage,
+        disableActionBtn,
+        setDisableActionBtn,
       }}
     >
       {children}
