@@ -135,7 +135,8 @@ const LongTermOrderCard = (props) => {
       ) : (
         orderLogsDecoded
           .map((it) => {
-            console.log("ITTTTTTT", it.orderId.toNumber());
+            console.log("ITTTTTTT--->O", orderLogsDecoded);
+            console.log("ITTTTTTT", it);
             const orderStatus = checkStatus(
               it.state,
               it.startBlock,
@@ -187,8 +188,8 @@ const LongTermOrderCard = (props) => {
             return (
               <div className={styles.container} key={it.transactionHash}>
                 <div className={styles.topSection}>
-                  <p className={styles.orderId} key={it.orderId.toNumber()}>
-                    {it.orderId.toNumber()}
+                  <p className={styles.orderId} key={it?.orderId?.toNumber()}>
+                    {it?.orderId?.toNumber()}
                   </p>
 
                   <HiExternalLink
@@ -306,7 +307,7 @@ const LongTermOrderCard = (props) => {
                         orderStatus.status === "Execution Completed"
                       }
                       onClick={() => {
-                        cancelPool(it.orderId.toNumber());
+                        cancelPool(it?.orderId?.toNumber());
                       }}
                     >
                       {orderStatus.status !== "Completed"
@@ -321,7 +322,7 @@ const LongTermOrderCard = (props) => {
                             styles.withdrawButton
                           )}
                           onClick={() => {
-                            withdrawPool(it.orderId.toNumber());
+                            withdrawPool(it?.orderId?.toNumber());
                           }}
                         >
                           Withdraw

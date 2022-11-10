@@ -32,13 +32,17 @@ const PopupModal = ({
   });
 
   const handleClose = () => {
-    console.log("hello");
     setError("");
     setSuccess("");
-    setTransactionHash("");
+    // setTransactionHash("");
     setIsPlacedLongTermOrder && setIsPlacedLongTermOrder(false);
     setMessage("");
   };
+
+  const handleTransactonClose = () => {
+    setTransactionHash("");
+  };
+
   const handleButtonClick = () => {
     window.open(`https://goerli.etherscan.io/tx/${transactionHash}`);
   };
@@ -79,7 +83,7 @@ const PopupModal = ({
             variant="outlined"
             severity="info"
             action={buttonAction}
-            onClose={handleClose}
+            onClose={handleTransactonClose}
           >
             View Your Tx Progress
           </Alert>

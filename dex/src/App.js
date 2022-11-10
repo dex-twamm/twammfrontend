@@ -176,7 +176,10 @@ function App() {
           tolerance,
           deadline
         )
-          .then((res) => setTransactionHash(res))
+          .then((res) => {
+            setTransactionHash(res);
+            setMessage("Transaction Success!");
+          })
           .catch((err) => {
             console.error(err);
             setError("Transaction Error");
@@ -238,6 +241,7 @@ function App() {
       )
         .then((res) => {
           setTransactionHash(res);
+          setMessage("Transacton Placed !");
         })
         .finally(setLoading(false));
       setIsPlacedLongTermOrder(true);
@@ -530,6 +534,7 @@ function App() {
   // Condition of Liquidity existing
   // if(liquidityExists) liquidityMarkup = <LiquidityPools/>
   console.log("errors", formErrors);
+
   return (
     <>
       <div className="main">
@@ -563,6 +568,8 @@ function App() {
                 showSettings={showSettings}
                 setShowSettings={setShowSettings}
                 spotPriceLoading={spotPriceLoading}
+                message={message}
+                setMessage={setMessage}
               />
             }
           />
@@ -582,6 +589,8 @@ function App() {
                 cancelPool={_cancelLTO}
                 withdrawPool={_withdrawLTO}
                 spotPriceLoading={spotPriceLoading}
+                message={message}
+                setMessage={setMessage}
               />
             }
           />

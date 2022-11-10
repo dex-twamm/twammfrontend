@@ -14,6 +14,8 @@ const ShortSwap = ({
   showSettings,
   setShowSettings,
   spotPriceLoading,
+  message,
+  setMessage,
 }) => {
   //   const [showSettings, setShowSettings] = useState(false);
 
@@ -47,7 +49,7 @@ const ShortSwap = ({
             spotPriceLoading={spotPriceLoading}
           />
         </div>
-        <PopupModal></PopupModal>
+        <PopupModal message={message} setMessage={setMessage}></PopupModal>
       </div>
     </>
   );

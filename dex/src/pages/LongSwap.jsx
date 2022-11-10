@@ -27,7 +27,7 @@ const LongSwap = (props) => {
   } = props;
 
   const [showSettings, setShowSettings] = useState(false);
-  const { orderLogsDecoded, message, setMessage } = useContext(LongSwapContext);
+  const { orderLogsDecoded } = useContext(LongSwapContext);
   const { transactionHash } = useContext(ShortSwapContext);
   const ethLogsCount = orderLogsDecoded
     ? Object.keys(orderLogsDecoded).length
@@ -91,7 +91,7 @@ const LongSwap = (props) => {
           </div>
         </div>
       </div>
-      <PopupModal message={message} setMessage={setMessage}></PopupModal>
+      <PopupModal></PopupModal>
     </>
   );
 };
