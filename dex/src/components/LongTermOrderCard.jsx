@@ -116,7 +116,7 @@ const LongTermOrderCard = (props) => {
           padding: "0 5px",
         }}
       >
-        No long term orders placed for this address{" "}
+        Connet wallet to view placed orders{" "}
       </p>
     </>
   ) : orderLogsDecoded ? (
