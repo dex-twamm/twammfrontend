@@ -1,10 +1,10 @@
 import { createContext, useContext, useState } from "react";
-import {
-  FAUCET_TOKEN_ADDRESS,
-  MATIC_TOKEN_ADDRESS,
-  POOL_ID,
-} from "../../utils";
-import { POOLS } from "../../utils/pool";
+// import {
+//   FAUCET_TOKEN_ADDRESS,
+//   MATIC_TOKEN_ADDRESS,
+//   POOL_ID,
+// } from "../../utils";
+import { POOLS, POOL_ID } from "../../utils/pool";
 import { ShortSwapContext } from "./ShortSwapProvider";
 
 export const LongSwapProvider = ({ children }) => {

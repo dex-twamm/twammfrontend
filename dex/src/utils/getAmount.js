@@ -1,16 +1,19 @@
 import { Contract, ethers } from "ethers";
 import {
   bigToStr,
-  FAUCET_TOKEN_ADDRESS,
-  MATIC_TOKEN_ADDRESS,
-  POOL_ID,
+  // FAUCET_TOKEN_ADDRESS,
+  // MATIC_TOKEN_ADDRESS,
+  // POOL_ID,
 } from ".";
 
 import { ERC20_TOKEN_CONTRACT_ABI, TWAMM_POOL_ABI } from "../constants";
-import { POOLS } from "./pool";
+import { POOLS, POOL_ID } from "./pool";
 // To Retrieve Token Balances
 export const getTokensBalance = async (provider, walletAddress) => {
-  var tokenAddress = [FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS];
+  var tokenAddress = [
+    POOLS[POOL_ID]?.TOKEN_TWO_ADDRESS,
+    POOLS[POOL_ID]?.TOKEN_ONE_ADDRESS,
+  ];
   const newBalance = [];
   for (let index = 0; index < tokenAddress.length; index++) {
     const address = tokenAddress[index];

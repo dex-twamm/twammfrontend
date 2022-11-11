@@ -6,8 +6,8 @@ import { useRef } from "react";
 import { HiExternalLink } from "react-icons/hi";
 import styles from "../css/LongTermOrderCard.module.css";
 import { LongSwapContext, ShortSwapContext } from "../providers";
-import { bigToFloat, bigToStr, POOL_ID } from "../utils";
-import { POOLS } from "../utils/pool";
+import { bigToFloat, bigToStr } from "../utils";
+import { POOLS, POOL_ID } from "../utils/pool";
 import LongTermSwapCardDropdown from "../components/LongTermSwapCardDropdown";
 import CircularProgressBar from "./alerts/CircularProgressBar";
 

@@ -1,8 +1,8 @@
 import { Contract, ethers } from "ethers";
-import { POOL_ID } from ".";
+// import { POOL_ID } from ".";
 import { TWAMM_POOL_ABI } from "../constants";
 import { getLongTermOrder } from "./longSwap";
-import { POOLS } from "./pool";
+import { POOLS, POOL_ID } from "./pool";
 
 export async function getEthLogs(signer, walletAddress) {
   const exchangeContract = new Contract(

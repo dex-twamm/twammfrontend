@@ -3,8 +3,8 @@ import classnames from "classnames";
 import { useContext, useEffect } from "react";
 import styles from "../css/Input.module.css";
 import { LongSwapContext, ShortSwapContext } from "../providers";
-import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS, POOL_ID } from "../utils";
-import { POOLS } from "../utils/pool";
+// import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS, POOL_ID } from "../utils";
+import { POOLS, POOL_ID } from "../utils/pool";
 import Modal from "./Modal";
 
 const Input = (props) => {

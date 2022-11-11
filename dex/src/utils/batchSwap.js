@@ -1,7 +1,7 @@
 import { BalancerSDK } from "@balancer-labs/sdk";
 import { ethers } from "ethers";
-import { bigToStr, POOL_ID } from ".";
-import { POOLS } from "./pool";
+// import { bigToStr, POOL_ID } from ".";
+import { POOLS, POOL_ID } from "./pool";
 
 export async function runQueryBatchSwap(
   assetInAddress,

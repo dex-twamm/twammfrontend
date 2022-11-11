@@ -2,8 +2,8 @@ import { Alert, Backdrop, Button, CircularProgress } from "@mui/material";
 import { useEffect } from "react";
 import { useContext } from "react";
 import { ShortSwapContext } from "../../providers";
-import { POOL_ID } from "../../utils";
-import { POOLS } from "../../utils/pool";
+// import { POOL_ID } from "../../utils";
+import { POOLS, POOL_ID } from "../../utils/pool";
 
 const PopupModal = ({
   isPlacedLongTermOrder,

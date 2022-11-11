@@ -5,12 +5,12 @@ import {
   VAULT_CONTRACT_ADDRESS,
 } from "../constants";
 import {
-  POOL_ID,
-  FAUCET_TOKEN_ADDRESS,
-  MATIC_TOKEN_ADDRESS,
+  // POOL_ID,
+  // FAUCET_TOKEN_ADDRESS,
+  // MATIC_TOKEN_ADDRESS,
   MAX_UINT256,
 } from ".";
-import { POOLS } from "./pool";
+import { POOLS, POOL_ID } from "./pool";
 
 export async function placeLongTermOrder(
   tokenInIndex,
@@ -45,7 +45,10 @@ export async function placeLongTermOrder(
     walletAddress,
     walletAddress,
     {
-      assets: [MATIC_TOKEN_ADDRESS, FAUCET_TOKEN_ADDRESS],
+      assets: [
+        POOLS[POOL_ID]?.TOKEN_ONE_ADDRESS,
+        POOLS[POOL_ID]?.TOKEN_TWO_ADDRESS,
+      ],
       maxAmountsIn: [MAX_UINT256, MAX_UINT256],
       fromInternalBalance: false,
       userData: encodedRequest,

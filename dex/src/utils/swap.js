@@ -1,6 +1,7 @@
 import { BigNumber, Contract } from "ethers";
 import { VAULT_CONTRACT_ABI, VAULT_CONTRACT_ADDRESS } from "../constants";
-import { POOL_ID, MAX_UINT256 } from ".";
+import { MAX_UINT256 } from ".";
+import { POOL_ID } from "./pool";
 
 /*
   swapTokens: Swaps `swapAmountWei` of Eth/Crypto Dev tokens with `tokenToBeReceivedAfterSwap` amount of Eth/Crypto Dev tokens.

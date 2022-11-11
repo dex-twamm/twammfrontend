@@ -1,5 +1,7 @@
+export const POOL_ID =
+  "0x20c0b25ace39df183b9ccbbd1d575764544aeb190002000000000000000001f8";
+
 export const POOLS = {
-  POOL_ID: "0x20c0b25ace39df183b9ccbbd1d575764544aeb190002000000000000000001f8",
   "0x20c0b25ace39df183b9ccbbd1d575764544aeb190002000000000000000001f8": {
     address: "0x20c0b25ace39df183b9ccbbd1d575764544aeb19",
     balancerPoolUrl:
@@ -8,8 +10,8 @@ export const POOLS = {
     transactionUrl: "https://goerli.etherscan.io/tx/",
     fees: 0.5,
     LTOContract: "0xC392dF9Ee383d6Bce110757FdE7762f0372f6A5D",
-    TOKEN_ONE_ADDRESS: "0xBA62BCfcAaFc6622853cca2BE6Ac7d845BC0f2Dc",
-    TOKEN_TWO_ADDRESS: "0x499d11E0b6eAC7c0593d8Fb292DCBbF815Fb29Ae",
+    TOKEN_ONE_ADDRESS: "0x499d11E0b6eAC7c0593d8Fb292DCBbF815Fb29Ae",
+    TOKEN_TWO_ADDRESS: "0xBA62BCfcAaFc6622853cca2BE6Ac7d845BC0f2Dc",
     tokens: [
       {
         symbol: "Testv4",

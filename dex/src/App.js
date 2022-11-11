@@ -14,7 +14,7 @@ import LongSwap from "./pages/LongSwap";
 import ShortSwap from "./pages/ShortSwap";
 import { LongSwapContext, ShortSwapContext, UIContext } from "./providers";
 import { WebContext } from "./providers/context/WebProvider";
-import { bigToStr, POOL_ID, truncateAddress } from "./utils";
+import { bigToStr, truncateAddress } from "./utils";
 import {
   cancelLTO,
   exitPool,
@@ -27,7 +27,7 @@ import { getLPTokensBalance, getTokensBalance } from "./utils/getAmount";
 import { getAllowance, getApproval } from "./utils/getApproval";
 import { getEthLogs } from "./utils/get_ethLogs";
 import { getLastVirtualOrderBlock, placeLongTermOrder } from "./utils/longSwap";
-import { POOLS } from "./utils/pool";
+import { POOLS, POOL_ID } from "./utils/pool";
 import { web3Modal } from "./utils/providerOptions";
 import { swapTokens } from "./utils/swap";
 
