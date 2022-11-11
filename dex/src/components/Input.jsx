@@ -29,42 +29,45 @@ const Input = (props) => {
   // console.log("Select Token Input.js", selectToken);
   // console.log("TOKEN A", tokenA);
   // console.log("====TOKEN BALANCES===", tokenBalances);
-  const tokenDetails = [
-    {
-      name: "Faucet",
-      symbol: "ETH",
-      image: "/ethereum.png",
-      address: POOLS[POOL_ID].tokens[1].address,
-      balance: tokenBalances[0] ?? 0,
-    },
-    {
-      name: "Matic",
-      symbol: "DAI",
-      image: "/Testv4.jpeg",
-      address: POOLS[POOL_ID].tokens[0].address,
-      balance: tokenBalances[1] ?? 0,
-    },
-    // {
-    //   type: "coming_soon",
-    //   name: "Test Token",
-    //   symbol: "CST",
-    //   image: "/Testv4.jpeg",
-    // },
-  ];
+  // const tokenDetails = [
+  //   {
+  //     name: "Faucet",
+  //     symbol: "ETH",
+  //     image: "/ethereum.png",
+  //     address: POOLS[POOL_ID].tokens[1].address,
+  //     balance: tokenBalances[0] ?? 0,
+  //   },
+  //   {
+  //     name: "Matic",
+  //     symbol: "DAI",
+  //     image: "/Testv4.jpeg",
+  //     address: POOLS[POOL_ID].tokens[0].address,
+  //     balance: tokenBalances[1] ?? 0,
+  //   },
+  //   {
+  //     type: "coming_soon",
+  //     name: "Test Token",
+  //     symbol: "CST",
+  //     image: "/Testv4.jpeg",
+  //   },
+  // ];
 
-  const tokenDetailss = POOLS[POOL_ID]?.tokens;
+  const tokenDetails = POOLS[POOL_ID]?.tokens;
 
   useEffect(() => {
     const address = tokenA?.address;
+
+    const balance =
+      tokenBalances && tokenBalances?.filter((item) => item[address]);
 
     setTokenA({
       ...tokenA,
       symbol: "Faucet",
       image: "/ethereum.png",
-      balance: tokenBalances?.[0],
+      balance: balance?.[0]?.[address],
       tokenIsSet: true,
     });
-    setEthBalance(tokenBalances?.[0]);
+    setEthBalance(balance?.[0]?.[address]);
     setSrcAddress(address);
   }, [setTokenA, tokenBalances, setEthBalance, setSrcAddress]);
 

@@ -20,7 +20,7 @@ export const getTokensBalance = async (provider, walletAddress) => {
     const balances = await balanceContract(address);
     const readableBalance = ethers.utils.formatEther(balances);
     // console.log("Balances", readableBalance);
-    newBalance.push(readableBalance);
+    newBalance.push({ [address]: readableBalance });
   }
   async function balanceContract(address) {
     const ERC20Contract = new Contract(

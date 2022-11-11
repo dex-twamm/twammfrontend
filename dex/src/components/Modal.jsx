@@ -66,6 +66,11 @@ const Modal = ({
   let tokensList;
   let tokensDetail = tokenDetails;
   const getMarkup = (token) => {
+    const balance =
+      tokenBalances && tokenBalances?.filter((item) => item[token.address]);
+
+    // console.log('balance', balance[])
+
     return (
       <>
         <img
@@ -79,7 +84,8 @@ const Modal = ({
           {token.address}
         </p>
         <p className={styles.comingSoon}>
-          {parseFloat(token.balance).toFixed(2)}
+          {parseFloat(balance?.[0]?.[token?.address]).toFixed(2)}
+          {/* {parseFloat(token.balance).toFixed(2)} */}
         </p>
         {token.type === "coming_soon" && (
           <div className={styles.comingSoon}>
