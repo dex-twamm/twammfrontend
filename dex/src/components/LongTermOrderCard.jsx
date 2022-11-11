@@ -205,7 +205,7 @@ const LongTermOrderCard = (props) => {
                     className={styles.iconExternalLink}
                     onClick={() =>
                       window.open(
-                        `https://goerli.etherscan.io/tx/${it.transactionHash}`,
+                        `${POOLS[POOL_ID]?.transactionUrl}${it.transactionHash}`,
                         "_blank"
                       )
                     }

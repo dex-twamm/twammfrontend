@@ -234,7 +234,7 @@ const DisconnectWalletOption = ({
               <Button
                 onClick={() =>
                   window.open(
-                    `${POOLS[POOL_ID]?.etherScanUrl}/${account}`,
+                    `${POOLS[POOL_ID]?.ethersScanUrl}${account}`,
                     "_blank"
                   )
                 }

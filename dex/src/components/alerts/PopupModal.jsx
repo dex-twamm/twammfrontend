@@ -2,6 +2,8 @@ import { Alert, Backdrop, Button, CircularProgress } from "@mui/material";
 import { useEffect } from "react";
 import { useContext } from "react";
 import { ShortSwapContext } from "../../providers";
+import { POOL_ID } from "../../utils";
+import { POOLS } from "../../utils/pool";
 
 const PopupModal = ({
   isPlacedLongTermOrder,
@@ -44,7 +46,7 @@ const PopupModal = ({
   };
 
   const handleButtonClick = () => {
-    window.open(`https://goerli.etherscan.io/tx/${transactionHash}`);
+    window.open(`${POOLS[POOL_ID]?.transactonUrl}${transactionHash}`);
   };
 
   const buttonAction = <Button onClick={handleButtonClick}>View</Button>;
