@@ -13,9 +13,10 @@ import CloseIcon from "@mui/icons-material/Close";
 import { height } from "@mui/system";
 import { useContext } from "react";
 import { ShortSwapContext } from "../providers";
-import { truncateAddress } from "../utils";
+import { POOL_ID, truncateAddress } from "../utils";
 import { HiExternalLink } from "react-icons/hi";
 import styles from "../css/LongTermOrderCard.module.css";
+import { POOLS } from "../utils/pool";
 
 const style = {
   position: "absolute",
@@ -233,7 +234,7 @@ const DisconnectWalletOption = ({
               <Button
                 onClick={() =>
                   window.open(
-                    `https://goerli.etherscan.io/address/${account}`,
+                    `${POOLS[POOL_ID]?.etherScanUrl}/${account}`,
                     "_blank"
                   )
                 }

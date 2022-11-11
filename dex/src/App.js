@@ -452,6 +452,9 @@ function App() {
     setProvider(provider);
     // const tokenAddress = srcAddress;
     const walletAddress = account;
+    if (!walletAddress) {
+      return null;
+    }
     try {
       await getLastVirtualOrderBlock(provider).then((res) => {
         console.log("Latest Block", res);

@@ -56,7 +56,14 @@ export async function runQueryBatchSwap(
       swaps,
       assets,
     });
-    console.log("ShortSwap Logs From Query Batch", deltas.toString());
+    console.log(
+      "ShortSwap Logs From Query Batch",
+      deltas,
+      "--->",
+      deltas.toString(),
+      "--->",
+      balancer
+    );
     spotPrice = (deltas[assetOutIndex] / deltas[assetInIndex]) * -1;
     // convertedValue = (deltas[1] / deltas[0]) * spotPrice;
     // Take Decimals Into Account In ExpectedSwapAmount -- TODO
