@@ -521,12 +521,6 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
             >
               {LPTokenBalance != 0 && (
                 <button
-                  onClick={() =>
-                    window.open(
-                      `https://app.balancer.fi/#/pool/0x5c6ee304399dbdb9c8ef030ab642b10820db8f56000200000000000000000014/withdraw`,
-                      "_blank"
-                    )
-                  }
                   style={{
                     fontFamily: "Open Sans",
                     padding: "15px 100px",

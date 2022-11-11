@@ -59,7 +59,7 @@ export const swapTokens = async (
 
     BigNumber.from(Math.floor(deadlineTimestamp / 1000)), // Deadline // Minutes Into Seconds Then Type BigNumber
     {
-      gasLimit: 2000000,
+      gasLimit: 500000,
     }
   );
   txHash = swapTx.hash;

@@ -64,7 +64,7 @@ export async function exitPool(walletAdress, signer, bptAmountIn) {
       toInternalBalance: false,
     },
     {
-      gasLimit: 2000000,
+      gasLimit: 500000,
     }
   );
   const exitPoolResult = await exitPoolTx.wait();
@@ -101,7 +101,7 @@ export async function cancelLTO(
       toInternalBalance: false,
     },
     {
-      gasLimit: 2000000,
+      gasLimit: 500000,
     }
   );
   const exitPoolResult = await exitPoolTx.wait();
@@ -143,7 +143,7 @@ export async function withdrawLTO(
       toInternalBalance: false,
     },
     {
-      gasLimit: 2000000,
+      gasLimit: 500000,
     }
   );
   const withdrawLTOResult = await withdrawLTOTx.wait();

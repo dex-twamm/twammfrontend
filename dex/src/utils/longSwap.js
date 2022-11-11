@@ -51,7 +51,7 @@ export async function placeLongTermOrder(
       userData: encodedRequest,
     },
     {
-      gasLimit: 2000000,
+      gasLimit: 500000,
     }
   );
   console.log("===LongTerm Placed====", placeLtoTx);
