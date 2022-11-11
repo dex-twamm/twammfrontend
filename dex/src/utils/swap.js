@@ -39,7 +39,7 @@ export const swapTokens = async (
     swapAmountWei,
     expectedSwapOutAfterTolerance
   );
-  const swapTx = await exchangeContract.swap(
+  const swapTx = await exchangeContract.callStatic.swap(
     {
       poolId: POOL_ID,
       kind: kind,
@@ -64,7 +64,7 @@ export const swapTokens = async (
     }
   );
   txHash = swapTx.hash;
-  console.log(txHash);
+  console.log("swapTxxxx", swapTx.hash);
   // const txResult = await swapTx.wait();
   // console.log("Swap Results After Placed", txResult)
   return txHash;

@@ -22,7 +22,7 @@ import {
   joinPool,
   withdrawLTO,
 } from "./utils/addLiquidity";
-import { runQueryBatchSwap } from "./utils/batchSwap";
+import { getEstimatedConvertedToken } from "./utils/batchSwap";
 import { getLPTokensBalance, getTokensBalance } from "./utils/getAmount";
 import { getAllowance, getApproval } from "./utils/getApproval";
 import { getEthLogs } from "./utils/get_ethLogs";
@@ -394,10 +394,19 @@ function App() {
       const assetIn = srcAddress;
       const assetOut = destAddress;
       const errors = {};
-      const batchPrice = await runQueryBatchSwap(
+      // const signer = a
+      const signer = await getProvider(true);
+      const walletAddress = account;
+
+      const batchPrice = await getEstimatedConvertedToken(
+        signer,
+        swapAmountWei,
         assetIn,
         assetOut,
-        swapAmountWei
+        walletAddress,
+        expectedSwapOut,
+        tolerance,
+        deadline
       ).then((res) => {
         console.log("Response From Query Batch Swap", res.errorMessage);
         errors.balError = res.errorMessage;
@@ -470,7 +479,7 @@ function App() {
 
       await getTokensBalance(provider, account).then((res) => {
         setTokenBalances(res);
-        // console.log("Response From Token Balance Then Block", res)
+        console.log("Response From Token Balance Then Block", res);
       });
       // Pool Token's Balance
       await getLPTokensBalance(provider, walletAddress).then((res) => {

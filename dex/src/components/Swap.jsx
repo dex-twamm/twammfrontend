@@ -521,7 +521,7 @@ const Swap = (props) => {
                       {spotPriceLoading ? (
                         <Skeleton width={"100px"} />
                       ) : (
-                        ` ${spotPrice.toFixed(4)} ${tokenB.symbol}`
+                        ` ${spotPrice?.toFixed(4)} ${tokenB.symbol}`
                       )}
                     </label>
                     {/* <span style={{ color: "#333333", opacity: 0.7 }}>

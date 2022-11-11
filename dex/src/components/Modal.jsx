@@ -5,7 +5,14 @@ import styles from "../css/Modal.module.css";
 import { LongSwapContext, ShortSwapContext } from "../providers";
 import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from "../utils";
 
-const Modal = ({ display, setDisplay, setTokenA, setTokenB, tokenDetails }) => {
+const Modal = ({
+  display,
+  setDisplay,
+  setTokenA,
+  setTokenB,
+  tokenDetails,
+  tokenBalances,
+}) => {
   // useContext To Retrieve The Source and Destination Address of The Token
   const { setSrcAddress, setDestAddress, selectToken, setEthBalance } =
     useContext(ShortSwapContext);

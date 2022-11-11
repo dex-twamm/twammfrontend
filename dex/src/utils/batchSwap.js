@@ -1,82 +1,74 @@
-import { BalancerSDK } from "@balancer-labs/sdk";
-import { ethers } from "ethers";
-// import { bigToStr, POOL_ID } from ".";
-import { POOLS, POOL_ID } from "./pool";
+import { BigNumber, Contract } from "ethers";
+import { VAULT_CONTRACT_ABI, VAULT_CONTRACT_ADDRESS } from "../constants";
+import { MAX_UINT256 } from ".";
+import { POOL_ID } from "./pool";
 
-export async function runQueryBatchSwap(
-  assetInAddress,
-  assetOutAddress,
-  swapAmount
-) {
-  let spotPrice,
-    expectedSwapOut = 0;
-  let errorMessage = "";
-  const assetInIndex = POOLS[POOL_ID].tokens.findIndex(
-    (object) => assetInAddress === object.address
+/*
+  swapTokens: Swaps `swapAmountWei` of Eth/Crypto Dev tokens with `tokenToBeReceivedAfterSwap` amount of Eth/Crypto Dev tokens.
+*/
+export const getEstimatedConvertedToken = async (
+  signer,
+  swapAmountWei,
+  assetIn,
+  assetOut,
+  walletAddress,
+  expectedSwapOut,
+  tolerance,
+  deadline
+) => {
+  let txHash;
+  // Create a new instance of the exchange contract
+  const exchangeContract = new Contract(
+    VAULT_CONTRACT_ADDRESS,
+    VAULT_CONTRACT_ABI,
+    signer
   );
-  const assetOutIndex = POOLS[POOL_ID].tokens.findIndex(
-    (object) => assetOutAddress === object.address
-  );
+  const kind = 0; // GivenIn
 
+  const expectedSwapOutAfterTolerance = BigNumber.from(expectedSwapOut)
+    .mul(1000 - 10 * tolerance)
+    .div(1000);
+  const targetDate = new Date();
+  targetDate.setSeconds(deadline * 60);
+  const deadlineTimestamp = targetDate.getTime();
   console.log(
-    "ShortSwap Address",
-    assetInAddress,
-    assetInIndex,
-    assetOutIndex,
-    swapAmount
+    "Inputs",
+    expectedSwapOut,
+    tolerance,
+    deadline,
+    swapAmountWei,
+    expectedSwapOutAfterTolerance
   );
-  try {
-    const config = {
-      network: 5,
-      rpcUrl: `https://goerli.infura.io/v3/3c2a9ef715cf4789b9137212d45270e9`,
-    };
+  const swapTx = await exchangeContract.callStatic.swap(
+    {
+      poolId: POOL_ID,
+      kind: kind,
+      assetIn: assetIn,
+      assetOut: assetOut,
+      amount: swapAmountWei,
+      userData: "0x",
+    },
+    {
+      sender: walletAddress,
+      fromInternalBalance: false,
+      recipient: walletAddress,
+      toInternalBalance: false,
+    },
+    // expectedSwapOutAfterTolerance,
+    kind === 0 ? 0 : MAX_UINT256, // 0 if given in, infinite if given out.  // Slippage  // TODO // Need To QueryBatchSwap Price - 1%
+    // swapAmountWei * SpotPrice *( 1- Slippage can be 0.005, 0.01, 0.02) Type Big Number
 
-    const balancer = new BalancerSDK(config);
-    const swapType = 0;
-    const swaps = [
-      // First pool swap: 0.01ETH > USDC
-      {
-        poolId: POOL_ID,
-        // MATIC
-        assetInIndex: assetInIndex,
-        // FAUCET
-        assetOutIndex: assetOutIndex,
-        amount: swapAmount,
-        userData: "0x",
-      },
-    ];
+    BigNumber.from(Math.floor(deadlineTimestamp / 1000)), // Deadline // Minutes Into Seconds Then Type BigNumber
+    {
+      gasLimit: 500000,
+    }
+  );
+  txHash = swapTx;
+  console.log("swapTxxxx", txHash);
+  // const txResult = await swapTx.wait();
+  // console.log("Swap Results After Placed", txResult)
+  return txHash;
 
-    const assets = [
-      POOLS[POOL_ID].tokens[0].address,
-      POOLS[POOL_ID].tokens[1].address,
-    ];
-    // console.log("ShortSwap Assets", swapType, swaps, assets)
-    const deltas = await balancer.swaps.queryBatchSwap({
-      kind: swapType,
-      swaps,
-      assets,
-    });
-    console.log(
-      "ShortSwap Logs From Query Batch",
-      deltas,
-      "--->",
-      deltas.toString(),
-      "--->",
-      balancer
-    );
-    spotPrice = (deltas[assetOutIndex] / deltas[assetInIndex]) * -1;
-    // convertedValue = (deltas[1] / deltas[0]) * spotPrice;
-    // Take Decimals Into Account In ExpectedSwapAmount -- TODO
-    expectedSwapOut = (deltas[assetOutIndex] * -1).toString();
-    // return Math.abs(spotPrices);
-  } catch (e) {
-    errorMessage = e.match("BAL#304") && "Try Giving Lesser Amount";
-    console.log(e);
-  }
-  console.log("ShortSwap Spot Price ", spotPrice, expectedSwapOut);
-  return {
-    spotPrice: Math.abs(spotPrice),
-    expectedSwapOut: expectedSwapOut,
-    errorMessage: errorMessage,
-  };
-}
+  // const swapResult = await swapTx.wait();
+  // console.log(swapResult.transactionHash);
+};

@@ -44,13 +44,15 @@ const Input = (props) => {
       address: POOLS[POOL_ID].tokens[0].address,
       balance: tokenBalances[1] ?? 0,
     },
-    {
-      type: "coming_soon",
-      name: "Test Token",
-      symbol: "CST",
-      image: "/Testv4.jpeg",
-    },
+    // {
+    //   type: "coming_soon",
+    //   name: "Test Token",
+    //   symbol: "CST",
+    //   image: "/Testv4.jpeg",
+    // },
   ];
+
+  const tokenDetailss = POOLS[POOL_ID]?.tokens;
 
   useEffect(() => {
     const address = tokenA?.address;
@@ -206,6 +208,7 @@ const Input = (props) => {
           setTokenA={setTokenA}
           setTokenB={setTokenB}
           tokenDetails={tokenDetails}
+          tokenBalances={tokenBalances}
         />
       )}
     </>

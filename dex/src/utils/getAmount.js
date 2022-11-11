@@ -32,7 +32,7 @@ export const getTokensBalance = async (provider, walletAddress) => {
     // console.log("Balance of_" + element + "_is=" + ethers.utils.formatEther(balanceOfLPTokens));
     return balanceOfTokens;
   }
-  // console.log(newBalance);
+  console.log("newBalance", newBalance);
   return newBalance.map((item) => item);
 };
 
