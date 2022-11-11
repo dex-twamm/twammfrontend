@@ -15,10 +15,17 @@ const LongTermOrderCard = (props) => {
   const { cancelPool, withdrawPool } = props;
   const remainingTimeRef = useRef();
 
-  const { swapAmount, currentBlock, loading } = useContext(ShortSwapContext);
+  const { swapAmount, currentBlock, isWalletConnected } =
+    useContext(ShortSwapContext);
 
-  const { sliderValueInSec, tokenA, tokenB, orderLogsDecoded, latestBlock } =
-    useContext(LongSwapContext);
+  const {
+    sliderValueInSec,
+    tokenA,
+    tokenB,
+    orderLogsDecoded,
+    latestBlock,
+    disableActionBtn,
+  } = useContext(LongSwapContext);
 
   const initialValue = Math.ceil(sliderValueInSec);
 
@@ -105,7 +112,20 @@ const LongTermOrderCard = (props) => {
   // Mapping Data from EthLogs
   console.log("orderLogsDecoded", orderLogsDecoded);
 
-  return orderLogsDecoded ? (
+  return !isWalletConnected ? (
+    <>
+      <p
+        style={{
+          fontFamily: "Open Sans",
+          marginBottom: "0px",
+          fontSize: "14px",
+          padding: "0 5px",
+        }}
+      >
+        Connet wallet to view placed orders{" "}
+      </p>
+    </>
+  ) : orderLogsDecoded ? (
     <>
       {orderLogsDecoded.length === 0 ? (
         <p
@@ -121,6 +141,8 @@ const LongTermOrderCard = (props) => {
       ) : (
         orderLogsDecoded
           .map((it) => {
+            console.log("ITTTTTTT--->O", orderLogsDecoded);
+            console.log("ITTTTTTT", it);
             const orderStatus = checkStatus(
               it.state,
               it.startBlock,
@@ -150,19 +172,19 @@ const LongTermOrderCard = (props) => {
 
             // console.log("Sales rate", sRate);
             const expBlock = it.expirationBlock;
-            const amountOf = expBlock.sub(stBlock).mul(it.salesRate);
+            const amountOf = expBlock?.sub(stBlock)?.mul(it?.salesRate);
             // console.log("StartBlock", stBlock);
             // console.log("Exp BLock", expBlock);
             // console.log("latestBlock", latestBlock);
             // console.log("Amount of", amountOf)
             let soldToken;
             if (it.state === "cancelled") {
-              soldToken = amountOf.sub(it.unsoldAmount);
+              soldToken = amountOf?.sub(it?.unsoldAmount);
             } else {
               soldToken =
                 latestBlock > expBlock
                   ? amountOf
-                  : latestBlock.sub(stBlock).mul(it.salesRate);
+                  : latestBlock?.sub(stBlock)?.mul(it.salesRate);
             }
             console.log("Sold Token", soldToken);
 
@@ -172,8 +194,8 @@ const LongTermOrderCard = (props) => {
             return (
               <div className={styles.container} key={it.transactionHash}>
                 <div className={styles.topSection}>
-                  <p className={styles.orderId} key={it.orderId.toNumber()}>
-                    {it.orderId.toNumber()}
+                  <p className={styles.orderId} key={it?.orderId?.toNumber()}>
+                    {it?.orderId?.toNumber()}
                   </p>
 
                   <HiExternalLink
@@ -288,10 +310,11 @@ const LongTermOrderCard = (props) => {
                       disabled={
                         orderStatus.status === "Cancelled" ||
                         orderStatus.status === "Completed" ||
-                        orderStatus.status === "Execution Completed"
+                        orderStatus.status === "Execution Completed" ||
+                        disableActionBtn
                       }
                       onClick={() => {
-                        cancelPool(it.orderId.toNumber());
+                        cancelPool(it?.orderId?.toNumber());
                       }}
                     >
                       {orderStatus.status !== "Completed"
@@ -306,8 +329,9 @@ const LongTermOrderCard = (props) => {
                             styles.withdrawButton
                           )}
                           onClick={() => {
-                            withdrawPool(it.orderId.toNumber());
+                            withdrawPool(it?.orderId?.toNumber());
                           }}
+                          disabled={disableActionBtn}
                         >
                           Withdraw
                         </button>

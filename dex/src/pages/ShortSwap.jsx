@@ -1,5 +1,6 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { CircularProgress } from "@mui/material";
 import PopupModal from "../components/alerts/PopupModal";
 import PopupSettings from "../components/PopupSettings";
 import Swap from "../components/Swap";
@@ -14,6 +15,8 @@ const ShortSwap = ({
   showSettings,
   setShowSettings,
   spotPriceLoading,
+  message,
+  setMessage,
 }) => {
   //   const [showSettings, setShowSettings] = useState(false);
 
@@ -47,7 +50,7 @@ const ShortSwap = ({
             spotPriceLoading={spotPriceLoading}
           />
         </div>
-        <PopupModal></PopupModal>
+        <PopupModal message={message} setMessage={setMessage}></PopupModal>
       </div>
     </>
   );

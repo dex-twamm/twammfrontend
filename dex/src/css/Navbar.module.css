@@ -232,20 +232,20 @@
 }
 
 .btnConnect {
-  background-color: #fdeaf1;
+  background-color: #9180e0;
   outline: none;
   border: 1px solid #fff;
   border-radius: 14px;
   transition: all 0.2s ease-in-out;
   padding: 10px;
   font-size: 16px;
-  color: #d50066;
+  color: white;
   font-weight: 600;
   cursor: pointer;
 }
 
 .btnConnect:hover {
-  background-color: #ffd6e5;
+  /* background-color: #ffd6e5; */
 }
 
 input[type="number"]:focus {

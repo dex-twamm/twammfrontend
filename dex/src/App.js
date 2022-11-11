@@ -49,6 +49,7 @@ function App() {
     setSwapAmount,
     setError,
     setLoading,
+    loading,
     formErrors,
     setTokenBalances,
     setTransactionHash,
@@ -78,6 +79,10 @@ function App() {
     numberOfBlockIntervals,
     setAllowance,
     setTokenB,
+    message,
+    setMessage,
+    disableActionBtn,
+    setDisableActionBtn,
   } = useContext(LongSwapContext);
   const { provider, setProvider } = useContext(WebContext);
   console.log("Current Block", currentBlock);
@@ -174,7 +179,10 @@ function App() {
           tolerance,
           deadline
         )
-          .then((res) => setTransactionHash(res))
+          .then((res) => {
+            setTransactionHash(res);
+            setMessage("Transaction Success!");
+          })
           .catch((err) => {
             console.error(err);
             setError("Transaction Error");
@@ -231,13 +239,18 @@ function App() {
         amountIn,
         blockIntervals,
         signer,
-        walletAddress
+        walletAddress,
+        setTransactionHash
       )
         .then((res) => {
           setTransactionHash(res);
         })
         .finally(setLoading(false));
       setIsPlacedLongTermOrder(true);
+      await getEthLogs(provider, walletAddress).then((res) => {
+        const resArray = Array.from(res.values());
+        setOrderLogsDecoded(resArray);
+      });
     } catch (err) {
       console.error(err);
       setLoading(false);
@@ -306,22 +319,34 @@ function App() {
   // cancelLTO
   const _cancelLTO = async (orderId) => {
     setLoading(true);
+    setDisableActionBtn(true);
     try {
       const walletAddress = account;
       const signer = await getProvider(true);
       if (!isWalletConnected) {
         await connectWallet();
       }
-      await cancelLTO(walletAddress, signer, orderId, setOrderLogsDecoded);
+      await cancelLTO(
+        walletAddress,
+        signer,
+        orderId,
+        setOrderLogsDecoded,
+        setMessage,
+        provider
+      );
       setLoading(false);
+      setDisableActionBtn(false);
     } catch (e) {
       console.log(e);
+      setMessage("Cancel Failed !");
       setLoading(false);
+      setDisableActionBtn(false);
     }
   };
   //  WithdrawLTO
   const _withdrawLTO = async (orderId) => {
     console.log("Order Id", orderId);
+    setDisableActionBtn(true);
     setLoading(true);
     try {
       const walletAddress = account;
@@ -329,11 +354,21 @@ function App() {
       if (!isWalletConnected) {
         await connectWallet();
       }
-      await withdrawLTO(walletAddress, signer, orderId, setOrderLogsDecoded);
+      await withdrawLTO(
+        walletAddress,
+        signer,
+        orderId,
+        setOrderLogsDecoded,
+        setMessage,
+        provider
+      );
       setLoading(false);
+      setDisableActionBtn(false);
     } catch (e) {
       console.log(e);
+      setMessage("Withdraw Failed !");
       setLoading(false);
+      setDisableActionBtn(false);
     }
   };
 
@@ -515,30 +550,29 @@ function App() {
   // Condition of Liquidity existing
   // if(liquidityExists) liquidityMarkup = <LiquidityPools/>
   console.log("errors", formErrors);
+
+  console.log("Loading--->", loading);
+
   return (
     <>
       <div className="main">
-        {(location.pathname === "/swap" ||
-          location.pathname === "/longterm" ||
-          location.pathname === "/liquidity") && (
-          <Navbar
-            tokenName={data.token.name}
-            tokenImage={data.token.image}
-            walletBalance={data.wallet.balance}
-            walletAddress={data.wallet.address}
-            accountStatus={isWalletConnected ? true : false}
-            connectWallet={ShortSwapButtonClick}
-            change={connectWallet}
-            disconnectWallet={disconnect}
-            showDisconnect={showDisconnect}
-            setShowDisconnect={setShowDisconnect}
-          />
-        )}
+        <Navbar
+          tokenName={data.token.name}
+          tokenImage={data.token.image}
+          walletBalance={data.wallet.balance}
+          walletAddress={data.wallet.address}
+          accountStatus={isWalletConnected ? true : false}
+          connectWallet={ShortSwapButtonClick}
+          change={connectWallet}
+          disconnectWallet={disconnect}
+          showDisconnect={showDisconnect}
+          setShowDisconnect={setShowDisconnect}
+        />
 
         <Routes>
-          <Route path="/" element={<Home />} />
+          {/* <Route path="/" element={<Home />} /> */}
           <Route
-            path="/swap"
+            path="/"
             element={
               <ShortSwap
                 tokenSymbol={data.token.symbol}
@@ -548,6 +582,8 @@ function App() {
                 showSettings={showSettings}
                 setShowSettings={setShowSettings}
                 spotPriceLoading={spotPriceLoading}
+                message={message}
+                setMessage={setMessage}
               />
             }
           />
@@ -566,6 +602,10 @@ function App() {
                 setShowSettings={setShowSettings}
                 cancelPool={_cancelLTO}
                 withdrawPool={_withdrawLTO}
+                spotPriceLoading={spotPriceLoading}
+                message={message}
+                setMessage={setMessage}
+                loading={loading}
               />
             }
           />

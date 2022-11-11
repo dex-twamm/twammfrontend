@@ -183,8 +183,8 @@
 .btnConnect {
   margin-top: 10px;
   height: 60px;
-  background-color: #fdeaf1;
-  color: rgb(213, 0, 102);
+  background-color: #9180e0;
+  color: white;
   width: 100%;
   border-radius: 20px;
   border: none;
@@ -198,7 +198,7 @@
 }
 
 .btnConnect:enabled:hover {
-  background-color: #ffdeea;
+  /* background-color: #ffdeea; */
 }
 
 .btnConnect:disabled {

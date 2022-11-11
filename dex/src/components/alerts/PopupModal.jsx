@@ -3,7 +3,12 @@ import { useEffect } from "react";
 import { useContext } from "react";
 import { ShortSwapContext } from "../../providers";
 
-const PopupModal = ({ isPlacedLongTermOrder, setIsPlacedLongTermOrder }) => {
+const PopupModal = ({
+  isPlacedLongTermOrder,
+  setIsPlacedLongTermOrder,
+  message,
+  setMessage,
+}) => {
   const {
     error,
     setError,
@@ -29,9 +34,15 @@ const PopupModal = ({ isPlacedLongTermOrder, setIsPlacedLongTermOrder }) => {
   const handleClose = () => {
     setError("");
     setSuccess("");
-    setTransactionHash("");
-    setIsPlacedLongTermOrder(false);
+    // setTransactionHash("");
+    setIsPlacedLongTermOrder && setIsPlacedLongTermOrder(false);
+    setMessage("");
   };
+
+  const handleTransactonClose = () => {
+    setTransactionHash("");
+  };
+
   const handleButtonClick = () => {
     window.open(`https://goerli.etherscan.io/tx/${transactionHash}`);
   };
@@ -40,10 +51,11 @@ const PopupModal = ({ isPlacedLongTermOrder, setIsPlacedLongTermOrder }) => {
 
   console.log("<---Transaction hash--->", transactionHash);
 
-  console.log("successs", success);
+  console.log("successs", message ? true : false, message);
 
   const AlertStyle = {
     margin: "5px",
+    background: "rgba(255, 255, 255, 0.5)",
   };
   return (
     <>
@@ -72,7 +84,7 @@ const PopupModal = ({ isPlacedLongTermOrder, setIsPlacedLongTermOrder }) => {
             variant="outlined"
             severity="info"
             action={buttonAction}
-            onClose={handleClose}
+            onClose={handleTransactonClose}
           >
             View Your Tx Progress
           </Alert>
@@ -83,7 +95,26 @@ const PopupModal = ({ isPlacedLongTermOrder, setIsPlacedLongTermOrder }) => {
             onClose={handleClose}
           >
             <Alert severity="success" onClose={handleClose}>
-              Transaction success!
+              LTO Placed!
+            </Alert>
+          </Backdrop>
+        )}
+        {message && (
+          <Backdrop
+            open={
+              typeof message !== "undefined" || message !== "" ? true : false
+            }
+            onClose={handleClose}
+          >
+            <Alert
+              severity={
+                message === "Cancel Failed !" || message === "Withdraw Failed !"
+                  ? "error"
+                  : "success"
+              }
+              onClose={handleClose}
+            >
+              {message}
             </Alert>
           </Backdrop>
         )}
