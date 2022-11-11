@@ -26,8 +26,7 @@ import PopupModal from "./alerts/PopupModal";
 import Input from "./Input";
 import { FiChevronDown } from "react-icons/fi";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutlined";
-import LongTermSwapCardDropdown from "./LongTermSwapCardDropdown";
+
 import { BigNumber } from "ethers";
 import { bigToStr } from "../utils";
 import { getApproval } from "../utils/getApproval";
@@ -55,6 +54,7 @@ const Swap = (props) => {
     setExpectedSwapOut,
     formErrors,
     setFormErrors,
+    error,
     currentBlock,
     setSpotPrice,
     spotPrice,
@@ -174,12 +174,36 @@ const Swap = (props) => {
   }, [formErrors]);
 
   useEffect(() => {
+    if (error === "Transaction Error" || error === "Transaction Cancelled") {
+      setDisableAllowBtn(false);
+    }
+  }, [error, setDisableAllowBtn]);
+
+  useEffect(() => {
     return () => {
       setFormErrors({ balError: undefined });
     };
   }, [setFormErrors]);
 
   console.log("Disable Allow Button--->", disableAllowBtn, formErrors);
+
+  console.log(
+    "allowance <= swapAmount--->",
+    parseFloat(allowance),
+    "<=",
+    typeof swapAmount,
+    allowance <= swapAmount,
+    tokenA.tokenIsSet,
+    tokenB.tokenIsSet
+  );
+
+  useEffect(() => {
+    return () => {
+      setTargetDate("");
+      setExecutionTIme("");
+      setTransactionHash(undefined);
+    };
+  }, []);
 
   return (
     <>
@@ -303,7 +327,11 @@ const Swap = (props) => {
           )} */}
           {swapType !== "long" && (
             <>
-              <FontAwesomeIcon className={style.iconDown} icon={faArrowDown} />
+              <FontAwesomeIcon
+                style={{ zIndex: "1", cursor: "pointer" }}
+                className={style.iconDown}
+                icon={faArrowDown}
+              />
               <Input
                 id={2}
                 input={
@@ -331,6 +359,7 @@ const Swap = (props) => {
               </Alert>
             </div>
           )}
+
           {swapType === "long" && (
             <div className={lsStyles.rangeSelect}>
               <Box
@@ -369,9 +398,12 @@ const Swap = (props) => {
                   <Box
                     sx={{
                       float: "left",
-                      fontSize: "12px",
                       display: "flex",
                       fontFamily: "Open Sans",
+                      fontWeight: "600",
+                      fontSize: "16px",
+                      lineHeight: "22px",
+                      color: "#000000",
                     }}
                   >
                     Execution Time
@@ -379,10 +411,13 @@ const Swap = (props) => {
                   <Box
                     sx={{
                       float: "right",
-                      fontSize: "12px",
                       display: "flex",
-                      paddingRight: "2px",
                       fontFamily: "Open Sans",
+                      fontWeight: "600",
+                      fontSize: "16px",
+                      lineHeight: "22px",
+                      color: "#000000",
+                      paddingRight: "2px",
                     }}
                   >
                     Order Completetion Date
@@ -396,7 +431,7 @@ const Swap = (props) => {
                   sx={{
                     height: 15,
                     width: 1,
-                    color: "#ffaac9",
+                    color: "#6D64A5",
                   }}
                   onChange={handleChange}
                   aria-labelledby="non-linear-slider"
@@ -516,13 +551,18 @@ const Swap = (props) => {
               {/* <LongTermSwapCardDropdown open={open} handleClose={handleClose} tokenB={tokenB}/> */}
             </>
           )}
-          {allowance <= swapAmount &&
+
+          {parseFloat(allowance) <= swapAmount &&
           swapAmount &&
           tokenA.tokenIsSet &&
           tokenB.tokenIsSet ? (
             <button
               className={classNames(styles.btn, styles.btnConnect)}
-              style={{ color: "white", background: "rgb(253 109 178)" }}
+              style={{
+                background: "#554994",
+                borderRadius: "17px",
+                color: "white",
+              }}
               onClick={() => {
                 handleApproveButton();
               }}
@@ -540,6 +580,11 @@ const Swap = (props) => {
           {isWalletConnected ? (
             <button
               className={classNames(styles.btn, styles.btnConnect)}
+              style={{
+                background: "#554994",
+                borderRadius: "17px",
+                color: "white",
+              }}
               onClick={handleClick}
               disabled={
                 !tokenA.tokenIsSet ||
@@ -547,7 +592,7 @@ const Swap = (props) => {
                 !swapAmount ||
                 (swapType === "long" && executionTime === "") ||
                 disableAllowBtn ||
-                allowance <= swapAmount
+                parseFloat(allowance) <= swapAmount
                   ? true
                   : false
               }
@@ -568,7 +613,6 @@ const Swap = (props) => {
           )}
         </Box>
       </form>
-      <PopupModal></PopupModal>
     </>
   );
 };

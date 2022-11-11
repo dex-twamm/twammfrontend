@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PopupModal from "../components/alerts/PopupModal";
 import PopupSettings from "../components/PopupSettings";
 import Swap from "../components/Swap";
+import Tabs from "../components/Tabs";
 import styles from "../css/ShortSwap.module.css";
 
 const ShortSwap = ({
@@ -19,6 +20,8 @@ const ShortSwap = ({
   return (
     <>
       <div className={styles.container}>
+        <Tabs />
+
         <div className={styles.mainBody}>
           <div className={styles.swap}>
             <div className={styles.swapOptions}>
@@ -44,6 +47,7 @@ const ShortSwap = ({
             spotPriceLoading={spotPriceLoading}
           />
         </div>
+        <PopupModal></PopupModal>
       </div>
     </>
   );

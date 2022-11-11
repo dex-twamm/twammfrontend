@@ -68,7 +68,7 @@ const LongTermSwapCardDropdown = (props) => {
                     width: "100%",
                     display: "flex",
                     alignItems: "center",
-                    justifyContent: "center",
+                    // justifyContent: "center",
                     color: "#333333",
                     fontSize: "18px",
                     fontFamily: "Open Sans",
@@ -155,13 +155,13 @@ const LongTermSwapCardDropdown = (props) => {
                                 sm: "flex-start",
                               },
                               fontFamily: "Open Sans",
-                              fontSize: { xs: "16px", sm: "18px" },
+                              fontSize: { xs: "14px", sm: "16px" },
                               color: "#333333",
                               width: "100%",
                               ml: { xs: "5px", sm: "0px" },
                             }}
                           >
-                            {`Withdrawal of ${withdrawnAmount} `}
+                            {`Token withdrawal of ${withdrawnAmount} `}
                             <IconButton onClick={handleClick}>
                               <LaunchIcon
                                 fontSize="medium"

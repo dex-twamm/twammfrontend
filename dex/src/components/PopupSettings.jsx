@@ -3,7 +3,7 @@ import React, { useContext, useState } from "react";
 import styles from "../css/PopupSettings.module.css";
 import { ShortSwapContext } from "../providers";
 
-const PopupSettings = () => {
+const PopupSettings = ({ swapType }) => {
   const { tolerance, setTolerance, deadline, setDeadline } =
     useContext(ShortSwapContext);
 
@@ -13,40 +13,43 @@ const PopupSettings = () => {
       className={styles.settingsContainer}
       style={{ background: "white" }}
     >
-      <h4 className={styles.settingsTitle}>Transaction Settings</h4>
+      {!swapType && (
+        <h4 className={styles.settingsTitle}>Transaction Settings</h4>
+      )}
       <div className={styles.settings}>
-        <div className={styles.slippage}>
-          <p>Slippage tolerance ?</p>
-          <div className={styles.slippageTolerance}>
-            <button
-              className={classNames(
-                styles.btn,
-                tolerance === 0.5 && styles.active
-              )}
-              onClick={() => setTolerance(0.5)}
-            >
-              0.5
-            </button>
-            <button
-              className={classNames(
-                styles.btn,
-                tolerance === 1 && styles.active
-              )}
-              onClick={() => setTolerance(1)}
-            >
-              1
-            </button>
-            <button
-              className={classNames(
-                styles.btn,
-                tolerance === 2 && styles.active
-              )}
-              onClick={() => setTolerance(2)}
-            >
-              2
-            </button>
+        {!swapType && (
+          <div className={styles.slippage}>
+            <p>Slippage tolerance ?</p>
+            <div className={styles.slippageTolerance}>
+              <button
+                className={classNames(
+                  styles.btn,
+                  tolerance === 0.5 && styles.active
+                )}
+                onClick={() => setTolerance(0.5)}
+              >
+                0.5
+              </button>
+              <button
+                className={classNames(
+                  styles.btn,
+                  tolerance === 1 && styles.active
+                )}
+                onClick={() => setTolerance(1)}
+              >
+                1
+              </button>
+              <button
+                className={classNames(
+                  styles.btn,
+                  tolerance === 2 && styles.active
+                )}
+                onClick={() => setTolerance(2)}
+              >
+                2
+              </button>
 
-            {/* <div className={styles.inputContainer}>
+              {/* <div className={styles.inputContainer}>
               <input
                 className={styles.inputSlippageTolerance}
                 type="number"
@@ -55,8 +58,9 @@ const PopupSettings = () => {
               />
               <p>%</p>
             </div> */}
+            </div>
           </div>
-        </div>
+        )}
         <div className={styles.slippage}>
           <p>Transaction deadline ?</p>
           <div className={styles.transactionDeadline}>

@@ -1,5 +1,6 @@
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Typography } from "@mui/material";
 import classNames from "classnames";
 import React, { useContext, useEffect, useState } from "react";
 import { RiArrowDropDownLine } from "react-icons/ri";
@@ -15,7 +16,6 @@ const Navbar = (props) => {
   const { setTokenA, setTokenB } = useContext(LongSwapContext);
 
   const location = useLocation();
-  const currentPath = location.pathname;
 
   const {
     walletBalance,
@@ -27,7 +27,7 @@ const Navbar = (props) => {
     showDisconnect,
     setShowDisconnect,
   } = props;
-  const { setError, setLoading, setSwapAmount, isWalletConnected } =
+  const { error, setError, setLoading, setSwapAmount, isWalletConnected } =
     useContext(ShortSwapContext);
   // const [netId, setNetId] = useState("");
   // const [isOpen, setOpen] = useState(false);
@@ -40,6 +40,7 @@ const Navbar = (props) => {
   ];
 
   const nId = window.ethereum?.networkVersion;
+  console.log("nId--->", nId);
   const initialNetwork = networks.filter((id) => id.chainId === nId);
 
   const [selectedNetwork, setSelectedNetwork] = useState({
@@ -60,22 +61,26 @@ const Navbar = (props) => {
   }, [coin_name]);
 
   const handleSelect = async (networkName, logo, chainId) => {
-    localStorage.setItem("coin_name", networkName);
-    localStorage.setItem("coin_logo", logo);
+    // localStorage.setItem("coin_name", networkName);
+    // localStorage.setItem("coin_logo", logo);
     // console.log(chainId);
-    setSelectedNetwork({
-      network: networkName,
-      logo: logo,
-      chainId: chainId,
-    });
-    console.log(chainId);
+
+    console.log("chainId", chainId);
     const id = chainId;
-    if (window.ethereum.networkVersion !== id && isWalletConnected) {
+    if (isWalletConnected) {
       try {
         await window.ethereum.request({
           method: "wallet_switchEthereumChain",
           params: [{ chainId: toHex(id) }],
         });
+        setSelectedNetwork({
+          network: networkName,
+          logo: logo,
+          chainId: chainId,
+        });
+
+        localStorage.setItem("coin_name", networkName);
+        localStorage.setItem("coin_logo", logo);
 
         window.location.reload();
       } catch (err) {
@@ -85,53 +90,7 @@ const Navbar = (props) => {
     }
   };
 
-  const tabOptions = [
-    {
-      value: "Swap",
-      path: "/",
-    },
-    {
-      value: "Long Term Swap",
-      path: "/longterm",
-    },
-    {
-      value: "Add Liquidity",
-      path: "/liquidity",
-    },
-  ];
-
-  const onNavLinkClick = () => {
-    setSwapAmount("");
-    setTokenA({
-      symbol: "Faucet",
-      image: "/ethereum.png",
-      address: FAUCET_TOKEN_ADDRESS,
-      balance: 0,
-      tokenIsSet: true,
-    });
-    setTokenB({
-      symbol: "Select Token",
-      image: "/Testv4.jpeg",
-      address: MATIC_TOKEN_ADDRESS,
-      balance: 0,
-      tokenIsSet: false,
-    });
-  };
-
-  const tabList = tabOptions.map((option, index) => (
-    <Link to={option.path} key={index}>
-      <div
-        onClick={onNavLinkClick}
-        key={index}
-        className={classNames(
-          styles.tabButton,
-          currentPath === option.path && styles.activeTab
-        )}
-      >
-        {option.value}
-      </div>
-    </Link>
-  ));
+  console.log("Selected network-->", selectedNetwork);
 
   const networkList = networks.map((network, index) => {
     return (
@@ -167,12 +126,25 @@ const Navbar = (props) => {
           <Link to="/">
             <img
               className={styles.logo}
-              src="unicorn.png"
+              src="logo.png"
               alt="logo"
               width="20px"
             />
           </Link>
-          <div className={styles.tabContainerCenter}>{tabList}</div>
+          <p
+            className={styles.longswap}
+            style={{
+              fontFamily: "Futura",
+              fontWeight: "700",
+              fontSize: "18px",
+              lineHeight: "24px",
+              letterSpacing: "0.4px",
+
+              color: "#554994",
+            }}
+          >
+            Longswap
+          </p>
         </div>
         <div className={styles.tabContainerRight}>
           <div className={styles.dropdown}>
@@ -180,7 +152,7 @@ const Navbar = (props) => {
               <div id="networkType" className={styles.dropdownContainer}>
                 <img
                   src={selectedNetwork.logo}
-                  className={styles.logo}
+                  className={styles.networkIcon}
                   alt="Ethereum"
                 />
                 <span>{selectedNetwork.network}</span>
@@ -228,7 +200,12 @@ const Navbar = (props) => {
               className={styles.menuThreeDot}
               onClick={() => setShowDropdown((state) => !state)}
             >
-              <FontAwesomeIcon icon={faEllipsis} />
+              <FontAwesomeIcon
+                style={{
+                  background: "transparent",
+                }}
+                icon={faEllipsis}
+              />
             </button>
 
             {showDropdown && (

@@ -122,7 +122,7 @@ const DisconnectWalletOption = ({
                 }}
                 id="modal-modal-title"
               >
-                Connect with wallet
+                Wallet Connected
               </Typography>
 
               <Button

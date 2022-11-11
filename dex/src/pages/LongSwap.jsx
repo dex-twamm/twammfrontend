@@ -7,8 +7,11 @@ import PopupSettings from "../components/PopupSettings";
 import Swap from "../components/Swap";
 import lsStyles from "../css/LongSwap.module.css";
 import styles from "../css/ShortSwap.module.css";
-import { LongSwapContext } from "../providers";
+import { LongSwapContext, ShortSwapContext } from "../providers";
 import LongTermSwapCardDropdown from "../components/LongTermSwapCardDropdown";
+import { Alert } from "@mui/material";
+import Tabs from "../components/Tabs";
+import PopupModal from "../components/alerts/PopupModal";
 
 const LongSwap = (props) => {
   const {
@@ -18,10 +21,13 @@ const LongSwap = (props) => {
     buttonText,
     cancelPool,
     withdrawPool,
+    isPlacedLongTermOrder,
+    setIsPlacedLongTermOrder,
   } = props;
 
   const [showSettings, setShowSettings] = useState(false);
-  const { orderLogsDecoded, tokenB } = useContext(LongSwapContext);
+  const { orderLogsDecoded } = useContext(LongSwapContext);
+  const { transactionHash } = useContext(ShortSwapContext);
   const ethLogsCount = orderLogsDecoded
     ? Object.keys(orderLogsDecoded).length
     : 0;
@@ -30,6 +36,7 @@ const LongSwap = (props) => {
 
   return (
     <div className={styles.container}>
+      <Tabs />
       <div className={styles.mainBody}>
         <div className={styles.swap}>
           <div className={styles.swapOptions}>
@@ -43,7 +50,7 @@ const LongSwap = (props) => {
             />
           </div>
 
-          {/* {showSettings && <PopupSettings />} */}
+          {showSettings && <PopupSettings swapType="long" />}
         </div>
         <Swap
           swapType="long"
@@ -53,7 +60,11 @@ const LongSwap = (props) => {
           buttonText={buttonText}
         />
       </div>
-      {/* {isPlacedLongTermOrder && ( */}
+      <PopupModal
+        isPlacedLongTermOrder={isPlacedLongTermOrder}
+        setIsPlacedLongTermOrder={setIsPlacedLongTermOrder}
+      ></PopupModal>
+
       <div className={lsStyles.ordersWrapper}>
         <h4 className={lsStyles.longTermText}>Your Long Term Orders</h4>
         <div className={styles.scroller}>

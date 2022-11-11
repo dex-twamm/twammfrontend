@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useContext } from "react";
 import { ShortSwapContext } from "../../providers";
 
-const PopupModal = () => {
+const PopupModal = ({ isPlacedLongTermOrder, setIsPlacedLongTermOrder }) => {
   const {
     error,
     setError,
@@ -30,12 +30,17 @@ const PopupModal = () => {
     setError("");
     setSuccess("");
     setTransactionHash("");
+    setIsPlacedLongTermOrder(false);
   };
   const handleButtonClick = () => {
     window.open(`https://goerli.etherscan.io/tx/${transactionHash}`);
   };
 
   const buttonAction = <Button onClick={handleButtonClick}>View</Button>;
+
+  console.log("<---Transaction hash--->", transactionHash);
+
+  console.log("successs", success);
 
   const AlertStyle = {
     margin: "5px",
@@ -71,6 +76,16 @@ const PopupModal = () => {
           >
             View Your Tx Progress
           </Alert>
+        )}
+        {isPlacedLongTermOrder && (
+          <Backdrop
+            open={isPlacedLongTermOrder ? true : false}
+            onClose={handleClose}
+          >
+            <Alert severity="success" onClose={handleClose}>
+              Transaction success!
+            </Alert>
+          </Backdrop>
         )}
       </div>
     </>

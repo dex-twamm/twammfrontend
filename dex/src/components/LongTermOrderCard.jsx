@@ -143,7 +143,7 @@ const LongTermOrderCard = (props) => {
               // Order Still In Progress
               convertedAmount = it.convertedValue;
             }
-            console.log("Converted Amount", convertedAmount.toString());
+            //console.log("Converted Amount", convertedAmount?.toString());
             // console.log("Withdrawals 0", it.withdrawals[0].proceeds.toNumber());
             // console.log("Withdrawals 1", it.withdrawals[1].proceeds.toNumber());
             // const sRate = ethers.utils.formatEther(it.salesRate);
@@ -197,9 +197,9 @@ const LongTermOrderCard = (props) => {
                       <p className={styles.tokenText}>
                         <span>
                           {bigToStr(soldToken, 18)}{" "}
-                          {POOLS[POOL_ID].tokens[it.sellTokenIndex].symbol}
+                          {POOLS[POOL_ID].tokens[it.sellTokenIndex].symbol} of
                         </span>
-                        <span> of {bigToStr(amountOf, 18)}</span>
+                        <span> {bigToStr(amountOf, 18)}</span>
                       </p>
                     </div>
                     <div className={styles.arrow}>
@@ -216,7 +216,13 @@ const LongTermOrderCard = (props) => {
                         />
                       </svg>
                     </div>
-                    <div>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                      }}
+                    >
                       <img
                         className={styles.tokenIcon}
                         src={POOLS[POOL_ID].tokens[it.buyTokenIndex].image}
@@ -257,7 +263,9 @@ const LongTermOrderCard = (props) => {
                   </div>
 
                   <div className={styles.extrasContainer}>
-                    <div className={styles.fees}>{dummyOrder.fees} fees</div>
+                    <div className={styles.fees}>
+                      {POOLS[POOL_ID]?.fees} fees
+                    </div>
                     {soldToken != 0 && (
                       <div className={styles.averagePrice}>
                         {averagePrice.toFixed(4)} Average Price
@@ -290,7 +298,6 @@ const LongTermOrderCard = (props) => {
                         ? "Cancel"
                         : "Completed"}
                     </button>
-
                     {orderStatus.status !== "Cancelled" &&
                       orderStatus.status !== "Completed" && (
                         <button
