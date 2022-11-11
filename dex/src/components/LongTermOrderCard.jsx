@@ -15,7 +15,7 @@ const LongTermOrderCard = (props) => {
   const { cancelPool, withdrawPool } = props;
   const remainingTimeRef = useRef();
 
-  const { swapAmount, currentBlock, isWalletConnected } =
+  const { swapAmount, currentBlock, isWalletConnected, loading } =
     useContext(ShortSwapContext);
 
   const {
@@ -25,6 +25,7 @@ const LongTermOrderCard = (props) => {
     orderLogsDecoded,
     latestBlock,
     disableActionBtn,
+    orderLogsLoading,
   } = useContext(LongSwapContext);
 
   const initialValue = Math.ceil(sliderValueInSec);
@@ -110,7 +111,7 @@ const LongTermOrderCard = (props) => {
   useEffect(() => {}, [currentBlock]);
 
   // Mapping Data from EthLogs
-  console.log("orderLogsDecoded", orderLogsDecoded);
+  console.log("orderLogsDecoded", orderLogsLoading);
 
   return !isWalletConnected ? (
     <>
@@ -125,9 +126,11 @@ const LongTermOrderCard = (props) => {
         Connet wallet to view placed orders{" "}
       </p>
     </>
-  ) : orderLogsDecoded ? (
+  ) : orderLogsLoading ? (
+    <CircularProgressBar></CircularProgressBar>
+  ) : (
     <>
-      {orderLogsDecoded.length === 0 ? (
+      {orderLogsDecoded?.length === 0 ? (
         <p
           style={{
             fontFamily: "Open Sans",
@@ -344,8 +347,6 @@ const LongTermOrderCard = (props) => {
           .reverse()
       )}
     </>
-  ) : (
-    <CircularProgressBar></CircularProgressBar>
   );
 };
 

@@ -10,13 +10,14 @@ import { ShortSwapContext } from "./ShortSwapProvider";
 export const LongSwapProvider = ({ children }) => {
   const [sliderValue, setSliderValue] = useState(1);
 
-  const [orderLogsDecoded, setOrderLogsDecoded] = useState();
+  const [orderLogsDecoded, setOrderLogsDecoded] = useState([]);
   const [latestBlock, setLatestBlock] = useState("");
   const [numberOfBlockIntervals, setNumberOfBlockIntervals] = useState(1);
   const [targetDate, setTargetDate] = useState("");
   const [allowance, setAllowance] = useState("");
   const [message, setMessage] = useState("");
   const [disableActionBtn, setDisableActionBtn] = useState(false);
+  const [orderLogsLoading, setOrderLogsLoading] = useState(false);
   const { tokenBalances } = useContext(ShortSwapContext);
 
   console.log("Token Balances ", tokenBalances);
@@ -59,6 +60,8 @@ export const LongSwapProvider = ({ children }) => {
         setMessage,
         disableActionBtn,
         setDisableActionBtn,
+        orderLogsLoading,
+        setOrderLogsLoading,
       }}
     >
       {children}

@@ -83,6 +83,8 @@ function App() {
     setMessage,
     disableActionBtn,
     setDisableActionBtn,
+    orderLogsLoading,
+    setOrderLogsLoading,
   } = useContext(LongSwapContext);
   const { provider, setProvider } = useContext(WebContext);
   console.log("Current Block", currentBlock);
@@ -445,6 +447,7 @@ function App() {
   // Getting Each Token Balances
   const tokenBalance = useCallback(async () => {
     setLoading(true);
+    setOrderLogsLoading(true);
     const provider = await getProvider(true);
     setProvider(provider);
     // const tokenAddress = srcAddress;
@@ -461,6 +464,7 @@ function App() {
         console.log("=== Order Logs === ", resArray);
         setOrderLogsDecoded(resArray);
       });
+
       await getTokensBalance(provider, account).then((res) => {
         setTokenBalances(res);
         // console.log("Response From Token Balance Then Block", res)
@@ -471,9 +475,11 @@ function App() {
         console.log("===Balance Of Pool ====", res);
       });
       setLoading(false);
+      setOrderLogsLoading(false);
     } catch (e) {
       console.log(e);
       setLoading(false);
+      setOrderLogsLoading(false);
     }
   }, [account]);
   useEffect(() => {
