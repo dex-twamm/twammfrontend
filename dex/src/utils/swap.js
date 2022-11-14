@@ -39,7 +39,7 @@ export const swapTokens = async (
     swapAmountWei,
     expectedSwapOutAfterTolerance
   );
-  const swapTx = await exchangeContract.callStatic.swap(
+  const swapTx = await exchangeContract.swap(
     {
       poolId: POOL_ID,
       kind: kind,
