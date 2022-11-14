@@ -93,10 +93,10 @@
 
 .comingSoon > span {
   font-size: 12px;
-  background-color: green;
+  /* background-color: #c1bae9; */
   padding: 5px 10px;
 
-  border-radius: 16px;
+  /* border-radius: 16px; */
   color: white;
 }
 

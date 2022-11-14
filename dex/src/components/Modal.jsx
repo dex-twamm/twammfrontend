@@ -1,4 +1,4 @@
-import { Backdrop } from "@mui/material";
+import { Backdrop, Skeleton } from "@mui/material";
 import classNames from "classnames";
 import React, { useContext, useEffect, useState } from "react";
 import styles from "../css/Modal.module.css";
@@ -84,7 +84,11 @@ const Modal = ({
           {token.address}
         </p>
         <p className={styles.comingSoon}>
-          {parseFloat(balance?.[0]?.[token?.address]).toFixed(2)}
+          {balance ? (
+            parseFloat(balance?.[0]?.[token?.address]).toFixed(2)
+          ) : (
+            <Skeleton width={100} />
+          )}
           {/* {parseFloat(token.balance).toFixed(2)} */}
         </p>
         {token.type === "coming_soon" && (

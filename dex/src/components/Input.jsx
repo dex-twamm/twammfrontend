@@ -1,4 +1,4 @@
-import { Backdrop } from "@mui/material";
+import { Backdrop, Skeleton } from "@mui/material";
 import classnames from "classnames";
 import { useContext, useEffect } from "react";
 import styles from "../css/Input.module.css";
@@ -197,9 +197,15 @@ const Input = (props) => {
         </div>
         <div className={styles.balance}>
           Balance :{" "}
-          {id === 1
-            ? parseFloat(tokenA?.balance)?.toFixed(4)
-            : parseFloat(tokenB?.balance)?.toFixed(2)}
+          {tokenBalances ? (
+            id === 1 ? (
+              parseFloat(tokenA?.balance)?.toFixed(4)
+            ) : (
+              parseFloat(tokenB?.balance)?.toFixed(2)
+            )
+          ) : (
+            <Skeleton width={60} />
+          )}
         </div>
       </div>
 
