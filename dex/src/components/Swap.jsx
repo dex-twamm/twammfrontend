@@ -28,7 +28,7 @@ import Input from "./Input";
 import { FiChevronDown } from "react-icons/fi";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
-import { BigNumber } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { bigToStr } from "../utils";
 import { getApproval } from "../utils/getApproval";
 import { WebContext } from "../providers/context/WebProvider";
@@ -171,10 +171,9 @@ const Swap = (props) => {
   };
 
   console.log("Allowance Swap-->", allowance, swapAmount);
+  // console.log(first);
 
   useEffect(() => {
-    typeof formErrors.balError === "undefined" ||
-    formErrors.balError === null ||
     formErrors.balError === "Try Giving Lesser Amount"
       ? setDisableAllowBtn(true)
       : setDisableAllowBtn(false);
@@ -198,10 +197,12 @@ const Swap = (props) => {
     "allowance <= swapAmount--->",
     parseFloat(allowance),
     "<=",
-    typeof swapAmount,
+    swapAmount,
     allowance <= swapAmount,
     tokenA.tokenIsSet,
-    tokenB.tokenIsSet
+    tokenB.tokenIsSet,
+    disableAllowBtn,
+    spotPriceLoading
   );
 
   useEffect(() => {
@@ -213,7 +214,7 @@ const Swap = (props) => {
     };
   }, []);
 
-  console.log("Spot price loading", spotPriceLoading);
+  console.log("Spot price loading", expectedSwapOut);
 
   return (
     <>
@@ -521,7 +522,7 @@ const Swap = (props) => {
                       {spotPriceLoading ? (
                         <Skeleton width={"100px"} />
                       ) : (
-                        ` ${spotPrice?.toFixed(4)} ${tokenB.symbol}`
+                        ` ${spotPrice.toFixed(4)} ${tokenB.symbol}`
                       )}
                     </label>
                     {/* <span style={{ color: "#333333", opacity: 0.7 }}>

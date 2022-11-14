@@ -64,7 +64,7 @@ export const getEstimatedConvertedToken = async (
     }
   );
   txHash = swapTx;
-  console.log("swapTxxxx", txHash);
+  console.log("swapTxxxx", txHash.toNumber());
   // const txResult = await swapTx.wait();
   // console.log("Swap Results After Placed", txResult)
   return txHash;

@@ -46,10 +46,15 @@ const PopupModal = ({
   };
 
   const handleButtonClick = () => {
-    window.open(`${POOLS[POOL_ID]?.transactonUrl}${transactionHash}`);
+    console.log(
+      "links",
+      POOLS[POOL_ID].transactionUrl,
+      `${POOLS[POOL_ID]?.transactonUrl}${transactionHash}`
+    );
+    window.open(`${POOLS[POOL_ID].transactionUrl}${transactionHash}`);
   };
 
-  const buttonAction = <Button onClick={handleButtonClick}>View</Button>;
+  const buttonAction = <Button onClick={handleButtonClick}> View</Button>;
 
   console.log("<---Transaction hash--->", transactionHash);
 

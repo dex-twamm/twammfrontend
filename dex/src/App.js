@@ -388,6 +388,8 @@ function App() {
 
   //Spot Prices
   const spotPrice = async () => {
+    console.log("Expected swap out ---->", swapAmount);
+
     if (swapAmount) {
       setSpotPriceLoading(true);
       const swapAmountWei = ethers.utils.parseUnits(swapAmount, "ether");
@@ -398,26 +400,38 @@ function App() {
       const signer = await getProvider(true);
       const walletAddress = account;
 
-      const batchPrice = await getEstimatedConvertedToken(
-        signer,
-        swapAmountWei,
-        assetIn,
-        assetOut,
-        walletAddress,
-        expectedSwapOut,
-        tolerance,
-        deadline
-      ).then((res) => {
-        console.log("Response From Query Batch Swap", res.errorMessage);
-        errors.balError = res.errorMessage;
-        setFormErrors(errors ?? "");
-        setSpotPrice(res.spotPrice);
+      console.log("Expected swap out ---->", expectedSwapOut);
+      try {
+        const batchPrice = await getEstimatedConvertedToken(
+          signer,
+          swapAmountWei,
+          assetIn,
+          assetOut,
+          walletAddress,
+          expectedSwapOut,
+          tolerance,
+          deadline
+        ).then((res) => {
+          console.log("Response From Query Batch Swap", res.errorMessage);
+          errors.balError = res.errorMessage;
+          setFormErrors(errors ?? "");
+          console.log("Response of spot price");
+          setSpotPrice(parseFloat(res) / parseFloat(swapAmountWei));
+          setSpotPriceLoading(false);
+          setExpectedSwapOut(res);
+        });
+        return batchPrice;
+      } catch (e) {
+        setFormErrors({
+          balError: "Try Giving Lesser Amount",
+        });
+
         setSpotPriceLoading(false);
-        setExpectedSwapOut(res.expectedSwapOut);
-      });
-      return batchPrice;
+      }
     }
   };
+
+  console.log("priceeeee", spotPrice);
 
   console.log("Account--->", account);
   // Use Memo
@@ -447,6 +461,7 @@ function App() {
   }, [srcAddress, transactionHash]);
 
   useEffect(() => {
+    console.log("ajsdhkasd----", swapAmount, destAddress, srcAddress);
     const interval = setTimeout(() => {
       spotPrice();
     }, 1000);
