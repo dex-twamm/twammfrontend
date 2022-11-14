@@ -9,11 +9,11 @@ import { POOLS, POOL_ID } from "../utils/pool";
 const tabOptions = [
   {
     value: "Swap",
-    path: "/",
+    path: "/shortswap",
   },
   {
     value: "Long Term Swap",
-    path: "/longterm",
+    path: "/",
   },
   {
     value: "Add Liquidity",

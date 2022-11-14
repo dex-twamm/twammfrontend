@@ -590,7 +590,7 @@ function App() {
         <Routes>
           {/* <Route path="/" element={<Home />} /> */}
           <Route
-            path="/"
+            path="/shortswap"
             element={
               <ShortSwap
                 tokenSymbol={data.token.symbol}
@@ -607,7 +607,7 @@ function App() {
           />
 
           <Route
-            path="/longterm"
+            path="/"
             element={
               <LongSwap
                 tokenSymbol={data.token.symbol}
