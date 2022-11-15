@@ -173,13 +173,13 @@ const LongTermOrderCard = (props) => {
             // console.log("Withdrawals 1", it.withdrawals[1].proceeds.toNumber());
             // const sRate = ethers.utils.formatEther(it.salesRate);
 
-            // console.log("Sales rate", sRate);
+            //console.log("Sales rate", it.salesRate?.toNumber());
             const expBlock = it.expirationBlock;
             const amountOf = expBlock?.sub(stBlock)?.mul(it?.salesRate);
-            // console.log("StartBlock", stBlock);
-            // console.log("Exp BLock", expBlock);
-            // console.log("latestBlock", latestBlock);
-            // console.log("Amount of", amountOf)
+            //console.log("StartBlock", stBlock);
+            //console.log("Exp BLock", expBlock?.toNumber());
+            //console.log("latestBlock", latestBlock);
+            //console.log("Amount of", amountOf.toString());
             let soldToken;
             if (it.state === "cancelled") {
               soldToken = amountOf?.sub(it?.unsoldAmount);
@@ -189,7 +189,7 @@ const LongTermOrderCard = (props) => {
                   ? amountOf
                   : latestBlock?.sub(stBlock)?.mul(it.salesRate);
             }
-            console.log("Sold Token", soldToken);
+            //console.log("Sold Token", soldToken?.toString());
 
             const averagePrice =
               bigToFloat(convertedAmount, 18) / bigToFloat(soldToken, 18);

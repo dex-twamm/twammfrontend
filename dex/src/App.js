@@ -182,8 +182,16 @@ function App() {
           deadline
         )
           .then((res) => {
-            setTransactionHash(res);
-            setMessage("Transaction Success!");
+            console.log("Responseeeee----->", res);
+            setTransactionHash(res.hash);
+            const swapResult = async (res) => {
+              const result = await res.wait();
+              return result;
+            };
+            swapResult(res).then((response) => {
+              console.log("Responseeeeeee", response);
+              if (response.status === 1) setMessage("Transaction Success!");
+            });
           })
           .catch((err) => {
             console.error(err);
@@ -259,6 +267,15 @@ function App() {
       setError("Transaction Cancelled");
     }
   };
+
+  // useEffect(() => {
+  //   (async () => {
+  //     await getLastVirtualOrderBlock(provider).then((res) => {
+  //       console.log("Latest Block", res);
+  //       setLatestBlock(res);
+  //     });
+  //   })();
+  // }, [setOrderLogsDecoded, setLatestBlock]);
   //   Calling Swap
   async function ShortSwapButtonClick() {
     try {
@@ -392,7 +409,9 @@ function App() {
 
     if (swapAmount) {
       setSpotPriceLoading(true);
+      //todo : Change this to use token decimal places
       const swapAmountWei = ethers.utils.parseUnits(swapAmount, "ether");
+
       const assetIn = srcAddress;
       const assetOut = destAddress;
       const errors = {};
@@ -412,8 +431,8 @@ function App() {
           tolerance,
           deadline
         ).then((res) => {
-          console.log("Response From Query Batch Swap", res.errorMessage);
-          errors.balError = res.errorMessage;
+          console.log("Response From Query Batch Swap", res);
+          errors.balError = undefined;
           setFormErrors(errors ?? "");
           console.log("Response of spot price");
           setSpotPrice(parseFloat(res) / parseFloat(swapAmountWei));
@@ -422,9 +441,18 @@ function App() {
         });
         return batchPrice;
       } catch (e) {
-        setFormErrors({
-          balError: "Try Giving Lesser Amount",
-        });
+        console.log("erroror", typeof e, { ...e });
+        if (e.reason.match("BAL#304")) {
+          setFormErrors({
+            balError: "Try Giving Lesser Amount",
+          });
+        }
+
+        if (e.reason.match("BAL#510")) {
+          setFormErrors({
+            balError: "Invalid Amount!",
+          });
+        }
 
         setSpotPriceLoading(false);
       }
@@ -465,7 +493,9 @@ function App() {
     const interval = setTimeout(() => {
       spotPrice();
     }, 1000);
-    return () => clearTimeout(interval);
+    return () => {
+      clearTimeout(interval);
+    };
   }, [swapAmount, destAddress, srcAddress]);
 
   // Getting Each Token Balances
@@ -509,6 +539,7 @@ function App() {
       setOrderLogsLoading(false);
     }
   }, [account]);
+
   useEffect(() => {
     tokenBalance();
   }, [tokenBalance]);

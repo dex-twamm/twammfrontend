@@ -39,6 +39,31 @@ export const swapTokens = async (
     swapAmountWei,
     expectedSwapOutAfterTolerance
   );
+
+  const gasEstimate = await exchangeContract.estimateGas.swap(
+    {
+      poolId: POOL_ID,
+      kind: kind,
+      assetIn: assetIn,
+      assetOut: assetOut,
+      amount: swapAmountWei,
+      userData: "0x",
+    },
+    {
+      sender: walletAddress,
+      fromInternalBalance: false,
+      recipient: walletAddress,
+      toInternalBalance: false,
+    },
+    // expectedSwapOutAfterTolerance,
+    kind === 0 ? 0 : MAX_UINT256, // 0 if given in, infinite if given out.  // Slippage  // TODO // Need To QueryBatchSwap Price - 1%
+    // swapAmountWei * SpotPrice *( 1- Slippage can be 0.005, 0.01, 0.02) Type Big Number
+
+    BigNumber.from(Math.floor(deadlineTimestamp / 1000)) // Deadline // Minutes Into Seconds Then Type BigNumber
+  );
+
+  console.log("Gas Estimage,", gasEstimate.toNumber() * 1.2);
+
   const swapTx = await exchangeContract.swap(
     {
       poolId: POOL_ID,
@@ -60,14 +85,14 @@ export const swapTokens = async (
 
     BigNumber.from(Math.floor(deadlineTimestamp / 1000)), // Deadline // Minutes Into Seconds Then Type BigNumber
     {
-      gasLimit: 500000,
+      gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
     }
   );
   txHash = swapTx.hash;
   console.log("swapTxxxx", swapTx.hash);
   // const txResult = await swapTx.wait();
   // console.log("Swap Results After Placed", txResult)
-  return txHash;
+  return swapTx;
 
   // const swapResult = await swapTx.wait();
   // console.log(swapResult.transactionHash);
