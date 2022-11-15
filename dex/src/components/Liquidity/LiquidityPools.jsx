@@ -5,8 +5,8 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../../css/LiquidityPools.css";
 
-import { POOL_ID } from "../../utils";
-import { POOLS } from "../../utils/pool";
+// import { POOL_ID } from "../../utils";
+import { POOLS, POOL_ID } from "../../utils/pool";
 import { useContext } from "react";
 import { ShortSwapContext } from "../../providers";
 
@@ -521,12 +521,6 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
             >
               {LPTokenBalance != 0 && (
                 <button
-                  onClick={() =>
-                    window.open(
-                      `https://app.balancer.fi/#/pool/0x5c6ee304399dbdb9c8ef030ab642b10820db8f56000200000000000000000014/withdraw`,
-                      "_blank"
-                    )
-                  }
                   style={{
                     fontFamily: "Open Sans",
                     padding: "15px 100px",
@@ -546,10 +540,7 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
               )}
               <button
                 onClick={() =>
-                  window.open(
-                    `https://app.balancer.fi/#/pool/0x5c6ee304399dbdb9c8ef030ab642b10820db8f56000200000000000000000014/invest`,
-                    "_blank"
-                  )
+                  window.open(`${POOLS[POOL_ID]?.balancerPoolUrl}`, "_blank")
                 }
                 style={{
                   fontFamily: "Open Sans",

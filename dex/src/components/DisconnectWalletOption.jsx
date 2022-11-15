@@ -16,6 +16,7 @@ import { ShortSwapContext } from "../providers";
 import { truncateAddress } from "../utils";
 import { HiExternalLink } from "react-icons/hi";
 import styles from "../css/LongTermOrderCard.module.css";
+import { POOLS, POOL_ID } from "../utils/pool";
 
 const style = {
   position: "absolute",
@@ -233,7 +234,7 @@ const DisconnectWalletOption = ({
               <Button
                 onClick={() =>
                   window.open(
-                    `https://goerli.etherscan.io/address/${account}`,
+                    `${POOLS[POOL_ID]?.ethersScanUrl}${account}`,
                     "_blank"
                   )
                 }

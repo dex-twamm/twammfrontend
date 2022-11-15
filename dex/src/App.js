@@ -14,7 +14,7 @@ import LongSwap from "./pages/LongSwap";
 import ShortSwap from "./pages/ShortSwap";
 import { LongSwapContext, ShortSwapContext, UIContext } from "./providers";
 import { WebContext } from "./providers/context/WebProvider";
-import { bigToStr, POOL_ID, truncateAddress } from "./utils";
+import { bigToStr, truncateAddress } from "./utils";
 import {
   cancelLTO,
   exitPool,
@@ -22,12 +22,12 @@ import {
   joinPool,
   withdrawLTO,
 } from "./utils/addLiquidity";
-import { runQueryBatchSwap } from "./utils/batchSwap";
+import { getEstimatedConvertedToken } from "./utils/batchSwap";
 import { getLPTokensBalance, getTokensBalance } from "./utils/getAmount";
 import { getAllowance, getApproval } from "./utils/getApproval";
 import { getEthLogs } from "./utils/get_ethLogs";
 import { getLastVirtualOrderBlock, placeLongTermOrder } from "./utils/longSwap";
-import { POOLS } from "./utils/pool";
+import { POOLS, POOL_ID } from "./utils/pool";
 import { web3Modal } from "./utils/providerOptions";
 import { swapTokens } from "./utils/swap";
 
@@ -83,6 +83,8 @@ function App() {
     setMessage,
     disableActionBtn,
     setDisableActionBtn,
+    orderLogsLoading,
+    setOrderLogsLoading,
   } = useContext(LongSwapContext);
   const { provider, setProvider } = useContext(WebContext);
   console.log("Current Block", currentBlock);
@@ -180,8 +182,16 @@ function App() {
           deadline
         )
           .then((res) => {
-            setTransactionHash(res);
-            setMessage("Transaction Success!");
+            console.log("Responseeeee----->", res);
+            setTransactionHash(res.hash);
+            const swapResult = async (res) => {
+              const result = await res.wait();
+              return result;
+            };
+            swapResult(res).then((response) => {
+              console.log("Responseeeeeee", response);
+              if (response.status === 1) setMessage("Transaction Success!");
+            });
           })
           .catch((err) => {
             console.error(err);
@@ -257,6 +267,15 @@ function App() {
       setError("Transaction Cancelled");
     }
   };
+
+  // useEffect(() => {
+  //   (async () => {
+  //     await getLastVirtualOrderBlock(provider).then((res) => {
+  //       console.log("Latest Block", res);
+  //       setLatestBlock(res);
+  //     });
+  //   })();
+  // }, [setOrderLogsDecoded, setLatestBlock]);
   //   Calling Swap
   async function ShortSwapButtonClick() {
     try {
@@ -386,27 +405,61 @@ function App() {
 
   //Spot Prices
   const spotPrice = async () => {
+    console.log("Expected swap out ---->", swapAmount);
+
     if (swapAmount) {
       setSpotPriceLoading(true);
+      //todo : Change this to use token decimal places
       const swapAmountWei = ethers.utils.parseUnits(swapAmount, "ether");
+
       const assetIn = srcAddress;
       const assetOut = destAddress;
       const errors = {};
-      const batchPrice = await runQueryBatchSwap(
-        assetIn,
-        assetOut,
-        swapAmountWei
-      ).then((res) => {
-        console.log("Response From Query Batch Swap", res.errorMessage);
-        errors.balError = res.errorMessage;
-        setFormErrors(errors ?? "");
-        setSpotPrice(res.spotPrice);
+      // const signer = a
+      const signer = await getProvider(true);
+      const walletAddress = account;
+
+      console.log("Expected swap out ---->", expectedSwapOut);
+      try {
+        const batchPrice = await getEstimatedConvertedToken(
+          signer,
+          swapAmountWei,
+          assetIn,
+          assetOut,
+          walletAddress,
+          expectedSwapOut,
+          tolerance,
+          deadline
+        ).then((res) => {
+          console.log("Response From Query Batch Swap", res);
+          errors.balError = undefined;
+          setFormErrors(errors ?? "");
+          console.log("Response of spot price");
+          setSpotPrice(parseFloat(res) / parseFloat(swapAmountWei));
+          setSpotPriceLoading(false);
+          setExpectedSwapOut(res);
+        });
+        return batchPrice;
+      } catch (e) {
+        console.log("erroror", typeof e, { ...e });
+        if (e.reason.match("BAL#304")) {
+          setFormErrors({
+            balError: "Try Giving Lesser Amount",
+          });
+        }
+
+        if (e.reason.match("BAL#510")) {
+          setFormErrors({
+            balError: "Invalid Amount!",
+          });
+        }
+
         setSpotPriceLoading(false);
-        setExpectedSwapOut(res.expectedSwapOut);
-      });
-      return batchPrice;
+      }
     }
   };
+
+  console.log("priceeeee", spotPrice);
 
   console.log("Account--->", account);
   // Use Memo
@@ -436,19 +489,26 @@ function App() {
   }, [srcAddress, transactionHash]);
 
   useEffect(() => {
+    console.log("ajsdhkasd----", swapAmount, destAddress, srcAddress);
     const interval = setTimeout(() => {
       spotPrice();
     }, 1000);
-    return () => clearTimeout(interval);
+    return () => {
+      clearTimeout(interval);
+    };
   }, [swapAmount, destAddress, srcAddress]);
 
   // Getting Each Token Balances
   const tokenBalance = useCallback(async () => {
     setLoading(true);
+    setOrderLogsLoading(true);
     const provider = await getProvider(true);
     setProvider(provider);
     // const tokenAddress = srcAddress;
     const walletAddress = account;
+    if (!walletAddress) {
+      return null;
+    }
     try {
       await getLastVirtualOrderBlock(provider).then((res) => {
         console.log("Latest Block", res);
@@ -461,9 +521,10 @@ function App() {
         console.log("=== Order Logs === ", resArray);
         setOrderLogsDecoded(resArray);
       });
+
       await getTokensBalance(provider, account).then((res) => {
         setTokenBalances(res);
-        // console.log("Response From Token Balance Then Block", res)
+        console.log("Response From Token Balance Then Block", res);
       });
       // Pool Token's Balance
       await getLPTokensBalance(provider, walletAddress).then((res) => {
@@ -471,11 +532,14 @@ function App() {
         console.log("===Balance Of Pool ====", res);
       });
       setLoading(false);
+      setOrderLogsLoading(false);
     } catch (e) {
       console.log(e);
       setLoading(false);
+      setOrderLogsLoading(false);
     }
   }, [account]);
+
   useEffect(() => {
     tokenBalance();
   }, [tokenBalance]);
@@ -572,7 +636,7 @@ function App() {
         <Routes>
           {/* <Route path="/" element={<Home />} /> */}
           <Route
-            path="/"
+            path="/shortswap"
             element={
               <ShortSwap
                 tokenSymbol={data.token.symbol}
@@ -589,7 +653,7 @@ function App() {
           />
 
           <Route
-            path="/longterm"
+            path="/"
             element={
               <LongSwap
                 tokenSymbol={data.token.symbol}

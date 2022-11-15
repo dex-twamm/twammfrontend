@@ -4,15 +4,16 @@ import classNames from "classnames";
 import styles from "../css/Navbar.module.css";
 import { LongSwapContext, ShortSwapContext } from "../providers";
 import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from "../utils";
+import { POOLS, POOL_ID } from "../utils/pool";
 
 const tabOptions = [
   {
     value: "Swap",
-    path: "/",
+    path: "/shortswap",
   },
   {
     value: "Long Term Swap",
-    path: "/longterm",
+    path: "/",
   },
   {
     value: "Add Liquidity",
@@ -31,14 +32,14 @@ const Tabs = () => {
     setTokenA({
       symbol: "Faucet",
       image: "/ethereum.png",
-      address: FAUCET_TOKEN_ADDRESS,
+      address: POOLS[POOL_ID]?.TOKEN_TWO_ADDRESS,
       balance: 0,
       tokenIsSet: true,
     });
     setTokenB({
       symbol: "Select Token",
       image: "/Testv4.jpeg",
-      address: MATIC_TOKEN_ADDRESS,
+      address: POOLS[POOL_ID]?.TOKEN_ONE_ADDRESS,
       balance: 0,
       tokenIsSet: false,
     });

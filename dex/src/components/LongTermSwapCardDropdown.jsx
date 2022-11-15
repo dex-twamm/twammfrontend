@@ -5,6 +5,7 @@ import CircleIcon from "@mui/icons-material/Circle";
 import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutlined";
 import { FiChevronDown } from "react-icons/fi";
 import { bigToStr } from "../utils";
+import { POOLS, POOL_ID } from "../utils/pool";
 
 const LongTermSwapCardDropdown = (props) => {
   const [open, setOpen] = useState(false);
@@ -109,7 +110,7 @@ const LongTermSwapCardDropdown = (props) => {
                     const transactionHash = items.transactionHash;
                     const handleClick = () => {
                       window.open(
-                        `https://goerli.etherscan.io/tx/${transactionHash}`
+                        `${POOLS[POOL_ID]?.transactionUrl}${transactionHash}`
                       );
                     };
                     return (

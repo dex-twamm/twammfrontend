@@ -6,6 +6,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { FiChevronDown } from "react-icons/fi";
 import styles from "../../css/AddLiquidity.module.css";
 import { LongSwapContext, ShortSwapContext } from "../../providers";
+import { POOLS, POOL_ID } from "../../utils/pool";
 import { DisconnectWalletOption } from "../DisconnectWalletOption";
 import FeeTierOptions from "../FeeTierOptions";
 import Input from "../Input";
@@ -60,28 +61,29 @@ const AddLiquidity = (props) => {
     }
   }, [tokenB, buttonText, setButtonText, swapAmount]);
 
-  const tokenDetails = [
-    {
-      name: "Faucet",
-      symbol: "ETH",
-      image: "/ethereum.png",
-      address: "",
-      balance: tokenBalances[0],
-    },
-    {
-      name: "Matic",
-      symbol: "DAI",
-      image: "/Testv4.jpeg",
-      address: "",
-      balance: tokenBalances[1],
-    },
-    {
-      type: "coming_soon",
-      name: "Test Token",
-      symbol: "CST",
-      image: "/Testv4.jpeg",
-    },
-  ];
+  // const tokenDetails = [
+  //   {
+  //     name: "Faucet",
+  //     symbol: "ETH",
+  //     image: "/ethereum.png",
+  //     address: "",
+  //     balance: tokenBalances[0],
+  //   },
+  //   {
+  //     name: "Matic",
+  //     symbol: "DAI",
+  //     image: "/Testv4.jpeg",
+  //     address: "",
+  //     balance: tokenBalances[1],
+  //   },
+  //   {
+  //     type: "coming_soon",
+  //     name: "Test Token",
+  //     symbol: "CST",
+  //     image: "/Testv4.jpeg",
+  //   },
+  // ];
+  const tokenDetails = POOLS[POOL_ID]?.tokens;
 
   console.log("Prabin", tokenA, tokenB);
 

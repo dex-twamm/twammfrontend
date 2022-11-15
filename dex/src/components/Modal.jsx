@@ -1,11 +1,18 @@
-import { Backdrop } from "@mui/material";
+import { Backdrop, Skeleton } from "@mui/material";
 import classNames from "classnames";
 import React, { useContext, useEffect, useState } from "react";
 import styles from "../css/Modal.module.css";
 import { LongSwapContext, ShortSwapContext } from "../providers";
 import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from "../utils";
 
-const Modal = ({ display, setDisplay, setTokenA, setTokenB, tokenDetails }) => {
+const Modal = ({
+  display,
+  setDisplay,
+  setTokenA,
+  setTokenB,
+  tokenDetails,
+  tokenBalances,
+}) => {
   // useContext To Retrieve The Source and Destination Address of The Token
   const { setSrcAddress, setDestAddress, selectToken, setEthBalance } =
     useContext(ShortSwapContext);
@@ -59,6 +66,11 @@ const Modal = ({ display, setDisplay, setTokenA, setTokenB, tokenDetails }) => {
   let tokensList;
   let tokensDetail = tokenDetails;
   const getMarkup = (token) => {
+    const balance =
+      tokenBalances && tokenBalances?.filter((item) => item[token.address]);
+
+    // console.log('balance', balance[])
+
     return (
       <>
         <img
@@ -72,7 +84,12 @@ const Modal = ({ display, setDisplay, setTokenA, setTokenB, tokenDetails }) => {
           {token.address}
         </p>
         <p className={styles.comingSoon}>
-          {parseFloat(token.balance).toFixed(2)}
+          {balance ? (
+            parseFloat(balance?.[0]?.[token?.address]).toFixed(2)
+          ) : (
+            <Skeleton width={100} />
+          )}
+          {/* {parseFloat(token.balance).toFixed(2)} */}
         </p>
         {token.type === "coming_soon" && (
           <div className={styles.comingSoon}>

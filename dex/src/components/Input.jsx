@@ -1,10 +1,10 @@
-import { Backdrop } from "@mui/material";
+import { Backdrop, Skeleton } from "@mui/material";
 import classnames from "classnames";
 import { useContext, useEffect } from "react";
 import styles from "../css/Input.module.css";
 import { LongSwapContext, ShortSwapContext } from "../providers";
-import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS, POOL_ID } from "../utils";
-import { POOLS } from "../utils/pool";
+// import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS, POOL_ID } from "../utils";
+import { POOLS, POOL_ID } from "../utils/pool";
 import Modal from "./Modal";
 
 const Input = (props) => {
@@ -29,40 +29,45 @@ const Input = (props) => {
   // console.log("Select Token Input.js", selectToken);
   // console.log("TOKEN A", tokenA);
   // console.log("====TOKEN BALANCES===", tokenBalances);
-  const tokenDetails = [
-    {
-      name: "Faucet",
-      symbol: "ETH",
-      image: "/ethereum.png",
-      address: POOLS[POOL_ID].tokens[1].address,
-      balance: tokenBalances[0] ?? 0,
-    },
-    {
-      name: "Matic",
-      symbol: "DAI",
-      image: "/Testv4.jpeg",
-      address: POOLS[POOL_ID].tokens[0].address,
-      balance: tokenBalances[1] ?? 0,
-    },
-    {
-      type: "coming_soon",
-      name: "Test Token",
-      symbol: "CST",
-      image: "/Testv4.jpeg",
-    },
-  ];
+  // const tokenDetails = [
+  //   {
+  //     name: "Faucet",
+  //     symbol: "ETH",
+  //     image: "/ethereum.png",
+  //     address: POOLS[POOL_ID].tokens[1].address,
+  //     balance: tokenBalances[0] ?? 0,
+  //   },
+  //   {
+  //     name: "Matic",
+  //     symbol: "DAI",
+  //     image: "/Testv4.jpeg",
+  //     address: POOLS[POOL_ID].tokens[0].address,
+  //     balance: tokenBalances[1] ?? 0,
+  //   },
+  //   {
+  //     type: "coming_soon",
+  //     name: "Test Token",
+  //     symbol: "CST",
+  //     image: "/Testv4.jpeg",
+  //   },
+  // ];
+
+  const tokenDetails = POOLS[POOL_ID]?.tokens;
 
   useEffect(() => {
     const address = tokenA?.address;
+
+    const balance =
+      tokenBalances && tokenBalances?.filter((item) => item[address]);
 
     setTokenA({
       ...tokenA,
       symbol: "Faucet",
       image: "/ethereum.png",
-      balance: tokenBalances?.[0],
+      balance: balance?.[0]?.[address],
       tokenIsSet: true,
     });
-    setEthBalance(tokenBalances?.[0]);
+    setEthBalance(balance?.[0]?.[address]);
     setSrcAddress(address);
   }, [setTokenA, tokenBalances, setEthBalance, setSrcAddress]);
 
@@ -192,9 +197,15 @@ const Input = (props) => {
         </div>
         <div className={styles.balance}>
           Balance :{" "}
-          {id === 1
-            ? parseFloat(tokenA?.balance)?.toFixed(4)
-            : parseFloat(tokenB?.balance)?.toFixed(2)}
+          {tokenBalances ? (
+            id === 1 ? (
+              parseFloat(tokenA?.balance)?.toFixed(4)
+            ) : (
+              parseFloat(tokenB?.balance)?.toFixed(2)
+            )
+          ) : (
+            <Skeleton width={60} />
+          )}
         </div>
       </div>
 
@@ -206,6 +217,7 @@ const Input = (props) => {
           setTokenA={setTokenA}
           setTokenB={setTokenB}
           tokenDetails={tokenDetails}
+          tokenBalances={tokenBalances}
         />
       )}
     </>

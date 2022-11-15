@@ -1,11 +1,11 @@
 import { Contract, ethers } from "ethers";
 import { defaultAbiCoder } from "ethers/lib/utils";
 import {
-  FAUCET_TOKEN_ADDRESS,
+  // FAUCET_TOKEN_ADDRESS,
   fp,
-  MATIC_TOKEN_ADDRESS,
+  // MATIC_TOKEN_ADDRESS,
   MAX_UINT256,
-  POOL_ID,
+  // POOL_ID,
 } from ".";
 import {
   TWAMM_POOL_ABI,
@@ -13,6 +13,7 @@ import {
   VAULT_CONTRACT_ADDRESS,
 } from "../constants";
 import { getEthLogs } from "./get_ethLogs";
+import { POOLS, POOL_ID } from "./pool";
 
 export async function joinPool(walletAddress, signer) {
   const encodedRequest = defaultAbiCoder.encode(
@@ -31,7 +32,10 @@ export async function joinPool(walletAddress, signer) {
     walletAddress,
     walletAddress,
     {
-      assets: [MATIC_TOKEN_ADDRESS, FAUCET_TOKEN_ADDRESS],
+      assets: [
+        POOLS[POOL_ID]?.TOKEN_ONE_ADDRESS,
+        POOLS[POOL_ID]?.TOKEN_TWO_ADDRESS,
+      ],
       // Could Be User Input Same as Encoded Above -- Left to Figure It Out
       maxAmountsIn: [MAX_UINT256, MAX_UINT256],
       fromInternalBalance: false,
@@ -58,13 +62,16 @@ export async function exitPool(walletAdress, signer, bptAmountIn) {
     walletAdress,
     walletAdress,
     {
-      assets: [MATIC_TOKEN_ADDRESS, FAUCET_TOKEN_ADDRESS],
+      assets: [
+        POOLS[POOL_ID]?.TOKEN_ONE_ADDRESS,
+        POOLS[POOL_ID]?.TOKEN_TWO_ADDRESS,
+      ],
       minAmountsOut: [0, 0],
       userData: encodedRequest,
       toInternalBalance: false,
     },
     {
-      gasLimit: 2000000,
+      gasLimit: 500000,
     }
   );
   const exitPoolResult = await exitPoolTx.wait();
@@ -95,13 +102,16 @@ export async function cancelLTO(
     walletAdress,
     walletAdress,
     {
-      assets: [MATIC_TOKEN_ADDRESS, FAUCET_TOKEN_ADDRESS],
+      assets: [
+        POOLS[POOL_ID]?.TOKEN_ONE_ADDRESS,
+        POOLS[POOL_ID]?.TOKEN_TWO_ADDRESS,
+      ],
       minAmountsOut: [0, 0],
       userData: encodedRequest,
       toInternalBalance: false,
     },
     {
-      gasLimit: 2000000,
+      gasLimit: 500000,
     }
   );
   const exitPoolResult = await exitPoolTx.wait();
@@ -137,13 +147,16 @@ export async function withdrawLTO(
     walletAdress,
     walletAdress,
     {
-      assets: [MATIC_TOKEN_ADDRESS, FAUCET_TOKEN_ADDRESS],
+      assets: [
+        POOLS[POOL_ID]?.TOKEN_ONE_ADDRESS,
+        POOLS[POOL_ID]?.TOKEN_TWO_ADDRESS,
+      ],
       minAmountsOut: [0, 0],
       userData: encodedRequest,
       toInternalBalance: false,
     },
     {
-      gasLimit: 2000000,
+      gasLimit: 500000,
     }
   );
   const withdrawLTOResult = await withdrawLTOTx.wait();
