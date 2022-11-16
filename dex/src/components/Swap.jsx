@@ -222,15 +222,17 @@ const Swap = (props) => {
 
   console.log("Spot price loading", expectedSwapOut);
 
-  useEffect(() => {
-    if (typeof switchInput === "boolean") {
-      const num = expectedSwapOut && ethers.utils.formatEther(expectedSwapOut);
-      setSwapAmount(parseFloat(num)?.toFixed(4));
-      const token_a = tokenA;
-      setTokenA(tokenB);
-      setTokenB(token_a);
-    }
-  }, [switchInput]);
+  //for switching the input sectons in short swap
+
+  // useEffect(() => {
+  //   if (typeof switchInput === "boolean") {
+  //     const num = expectedSwapOut && ethers.utils.formatEther(expectedSwapOut);
+  //     setSwapAmount(parseFloat(num)?.toFixed(4));
+  //     const token_a = tokenA;
+  //     setTokenA(tokenB);
+  //     setTokenB(token_a);
+  //   }
+  // }, [switchInput]);
 
   console.log(
     "Switch Input datas",
