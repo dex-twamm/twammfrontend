@@ -365,12 +365,12 @@ const Swap = (props) => {
           )} */}
           {swapType !== "long" && (
             <>
-              <FontAwesomeIcon
+              {/* <FontAwesomeIcon
                 style={{ zIndex: "1", cursor: "pointer" }}
                 className={style.iconDown}
                 icon={faArrowDown}
                 onClick={handleInputSwitch}
-              />
+              /> */}
               <Input
                 id={2}
                 input={
