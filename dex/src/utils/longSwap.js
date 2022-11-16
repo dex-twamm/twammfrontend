@@ -68,8 +68,8 @@ export async function placeLongTermOrder(
 
 export async function getLongTermOrder(signer, orderId) {
   const contract = new Contract(
-    POOLS[POOL_ID].LTOContract,
-    LONGTERM_ABI,
+    VAULT_CONTRACT_ADDRESS,
+    VAULT_CONTRACT_ABI,
     signer
   );
   const getOrderDetails = await contract.getLongTermOrder(orderId);
