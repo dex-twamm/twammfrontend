@@ -3,6 +3,7 @@ export const POOL_ID =
 
 export const POOLS = {
   "0x20c0b25ace39df183b9ccbbd1d575764544aeb190002000000000000000001f8": {
+    VAULT_CONTRACT_ADDRESS: "0xBA12222222228d8Ba445958a75a0704d566BF2C8",
     address: "0x20c0b25ace39df183b9ccbbd1d575764544aeb19",
     balancerPoolUrl:
       "https://app.balancer.fi/#/pool/0x5c6ee304399dbdb9c8ef030ab642b10820db8f56000200000000000000000014/invest",

@@ -1,9 +1,5 @@
 import { BigNumber, Contract, ethers, utils } from "ethers";
-import {
-  LONGTERM_ABI,
-  VAULT_CONTRACT_ABI,
-  VAULT_CONTRACT_ADDRESS,
-} from "../constants";
+import { LONGTERM_ABI, VAULT_CONTRACT_ABI } from "../constants";
 import {
   // POOL_ID,
   // FAUCET_TOKEN_ADDRESS,
@@ -24,7 +20,7 @@ export async function placeLongTermOrder(
   let txHash;
 
   const exchangeContract = new Contract(
-    VAULT_CONTRACT_ADDRESS,
+    POOLS[POOL_ID].VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );

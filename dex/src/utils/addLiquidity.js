@@ -7,11 +7,7 @@ import {
   MAX_UINT256,
   // POOL_ID,
 } from ".";
-import {
-  TWAMM_POOL_ABI,
-  VAULT_CONTRACT_ABI,
-  VAULT_CONTRACT_ADDRESS,
-} from "../constants";
+import { TWAMM_POOL_ABI, VAULT_CONTRACT_ABI } from "../constants";
 import { getEthLogs } from "./get_ethLogs";
 import { POOLS, POOL_ID } from "./pool";
 
@@ -23,7 +19,7 @@ export async function joinPool(walletAddress, signer) {
     [1, [fp(1e-12), fp(1.0)], 0]
   );
   const poolContract = new Contract(
-    VAULT_CONTRACT_ADDRESS,
+    POOLS[POOL_ID].VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -48,7 +44,7 @@ export async function joinPool(walletAddress, signer) {
 
 export async function exitPool(walletAdress, signer, bptAmountIn) {
   const poolContract = new Contract(
-    VAULT_CONTRACT_ADDRESS,
+    POOLS[POOL_ID].VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -88,7 +84,7 @@ export async function cancelLTO(
   provider
 ) {
   const poolContract = new Contract(
-    VAULT_CONTRACT_ADDRESS,
+    POOLS[POOL_ID].VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -133,7 +129,7 @@ export async function withdrawLTO(
   provider
 ) {
   const poolContract = new Contract(
-    VAULT_CONTRACT_ADDRESS,
+    POOLS[POOL_ID].VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -170,7 +166,7 @@ export async function withdrawLTO(
 
 export async function getPoolBalance(signer, tokenAddress) {
   const poolContract = new Contract(
-    VAULT_CONTRACT_ADDRESS,
+    POOLS[POOL_ID].VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );
