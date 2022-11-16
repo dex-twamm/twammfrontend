@@ -39,6 +39,7 @@ const PopupModal = ({
     // setTransactionHash("");
     setIsPlacedLongTermOrder && setIsPlacedLongTermOrder(false);
     setMessage("");
+    window.locaton.reload();
   };
 
   const handleTransactonClose = () => {
