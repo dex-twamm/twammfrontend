@@ -49,6 +49,7 @@ const Swap = (props) => {
   const [open, setOpen] = useState(false);
   const [executionTime, setExecutionTIme] = useState("");
   const [disableAllowBtn, setDisableAllowBtn] = useState(true);
+  const [switchInput, setSwitchInput] = useState();
 
   const handleClose = () => setOpen((state) => !state);
 
@@ -173,6 +174,10 @@ const Swap = (props) => {
   console.log("Allowance Swap-->", allowance, swapAmount);
   // console.log(first);
 
+  const handleInputSwitch = () => {
+    setSwitchInput((prev) => !prev);
+  };
+
   useEffect(() => {
     formErrors.balError !== undefined
       ? setDisableAllowBtn(true)
@@ -211,10 +216,29 @@ const Swap = (props) => {
       setExecutionTIme("");
       setTransactionHash(undefined);
       setIsPlacedLongTermOrder && setIsPlacedLongTermOrder(false);
+      setSwitchInput(false);
     };
   }, []);
 
   console.log("Spot price loading", expectedSwapOut);
+
+  useEffect(() => {
+    if (typeof switchInput === "boolean") {
+      const num = expectedSwapOut && ethers.utils.formatEther(expectedSwapOut);
+      setSwapAmount(parseFloat(num)?.toFixed(4));
+      const token_a = tokenA;
+      setTokenA(tokenB);
+      setTokenB(token_a);
+    }
+  }, [switchInput]);
+
+  console.log(
+    "Switch Input datas",
+    tokenA,
+    tokenB,
+    swapAmount,
+    expectedSwapOut
+  );
 
   return (
     <>
@@ -307,6 +331,7 @@ const Swap = (props) => {
               </Box>
             </>
           )}
+
           <Input
             id={1}
             input={swapAmount ? swapAmount : ""}
@@ -342,6 +367,7 @@ const Swap = (props) => {
                 style={{ zIndex: "1", cursor: "pointer" }}
                 className={style.iconDown}
                 icon={faArrowDown}
+                onClick={handleInputSwitch}
               />
               <Input
                 id={2}
