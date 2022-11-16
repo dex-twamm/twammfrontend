@@ -39,7 +39,6 @@ const PopupModal = ({
     // setTransactionHash("");
     setIsPlacedLongTermOrder && setIsPlacedLongTermOrder(false);
     setMessage("");
-    window.locaton.reload();
   };
 
   const handleTransactonClose = () => {
@@ -102,7 +101,13 @@ const PopupModal = ({
             open={isPlacedLongTermOrder ? true : false}
             onClose={handleClose}
           >
-            <Alert severity="success" onClose={handleClose}>
+            <Alert
+              severity="success"
+              onClose={() => {
+                handleClose();
+                window.location.reload();
+              }}
+            >
               LTO Placed!
             </Alert>
           </Backdrop>
