@@ -8,6 +8,7 @@ import { Link, Navigate, useLocation } from "react-router-dom";
 import styles from "../css/Navbar.module.css";
 import { LongSwapContext, ShortSwapContext, UIContext } from "../providers";
 import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS, toHex } from "../utils";
+import { connectWallet } from "../utils/connetWallet";
 import { DisconnectWalletOption } from "./DisconnectWalletOption";
 import NavOptionDropdwon from "./navbarDropdown/NavOptionDropdwon";
 
@@ -21,14 +22,24 @@ const Navbar = (props) => {
     walletBalance,
     walletAddress,
     accountStatus,
-    connectWallet,
+    // connectWallet,
     disconnectWallet,
     change,
     showDisconnect,
     setShowDisconnect,
   } = props;
-  const { error, setError, setLoading, setSwapAmount, isWalletConnected } =
-    useContext(ShortSwapContext);
+  const {
+    error,
+    setError,
+    setLoading,
+    setSwapAmount,
+    isWalletConnected,
+    setweb3provider,
+    setCurrentBlock,
+    setBalance,
+    setAccount,
+    setWalletConnected,
+  } = useContext(ShortSwapContext);
   // const [netId, setNetId] = useState("");
   // const [isOpen, setOpen] = useState(false);
   console.log("Wallet Status", isWalletConnected);
@@ -111,6 +122,16 @@ const Navbar = (props) => {
     walletAddress && setShowDisconnect(true);
   };
 
+  const walletConnect = async () => {
+    await connectWallet(
+      setweb3provider,
+      setCurrentBlock,
+      setBalance,
+      setAccount,
+      setWalletConnected
+    );
+  };
+
   return (
     <header className={styles.header} id="header">
       {showDisconnect && (
@@ -186,7 +207,7 @@ const Navbar = (props) => {
             ) : (
               <button
                 className={classNames(styles.btn, styles.btnConnect)}
-                onClick={connectWallet}
+                onClick={walletConnect}
               >
                 Connect Wallet
               </button>
