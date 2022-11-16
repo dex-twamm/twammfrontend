@@ -10,13 +10,25 @@ import { bigToFloat, bigToStr } from "../utils";
 import { POOLS, POOL_ID } from "../utils/pool";
 import LongTermSwapCardDropdown from "../components/LongTermSwapCardDropdown";
 import CircularProgressBar from "./alerts/CircularProgressBar";
+import { _cancelLTO } from "../utils/_cancelLto";
+import { WebContext } from "../providers/context/WebProvider";
 
 const LongTermOrderCard = (props) => {
   const { cancelPool, withdrawPool } = props;
   const remainingTimeRef = useRef();
 
-  const { swapAmount, currentBlock, isWalletConnected, loading } =
-    useContext(ShortSwapContext);
+  const {
+    swapAmount,
+    currentBlock,
+    isWalletConnected,
+    setLoading,
+    account,
+    setweb3provider,
+    setCurrentBlock,
+    setBalance,
+    setAccount,
+    setWalletConnected,
+  } = useContext(ShortSwapContext);
 
   const {
     sliderValueInSec,
@@ -26,7 +38,12 @@ const LongTermOrderCard = (props) => {
     latestBlock,
     disableActionBtn,
     orderLogsLoading,
+    setDisableActionBtn,
+    setOrderLogsDecoded,
+    setMessage,
   } = useContext(LongSwapContext);
+
+  const { provider } = useContext(WebContext);
 
   const initialValue = Math.ceil(sliderValueInSec);
 
@@ -112,6 +129,24 @@ const LongTermOrderCard = (props) => {
 
   // Mapping Data from EthLogs
   console.log("orderLogsDecoded", orderLogsLoading);
+
+  const handleCancel = (orderId) => {
+    _cancelLTO(
+      orderId,
+      setLoading,
+      setDisableActionBtn,
+      account,
+      setweb3provider,
+      setCurrentBlock,
+      setBalance,
+      setAccount,
+      setWalletConnected,
+      isWalletConnected,
+      setOrderLogsDecoded,
+      setMessage,
+      provider
+    );
+  };
 
   return !isWalletConnected ? (
     <>
@@ -317,7 +352,8 @@ const LongTermOrderCard = (props) => {
                         disableActionBtn
                       }
                       onClick={() => {
-                        cancelPool(it?.orderId?.toNumber());
+                        handleCancel(it?.orderId?.toNumber());
+                        // cancelPool(it?.orderId?.toNumber());
                       }}
                     >
                       {orderStatus.status !== "Completed"

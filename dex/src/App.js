@@ -414,40 +414,40 @@ function App() {
     }
   };
 
-  // cancelLTO
-  const _cancelLTO = async (orderId) => {
-    setLoading(true);
-    setDisableActionBtn(true);
-    try {
-      const walletAddress = account;
-      const signer = await getProvider(
-        true,
-        setweb3provider,
-        setCurrentBlock,
-        setBalance,
-        setAccount,
-        setWalletConnected
-      );
-      if (!isWalletConnected) {
-        await connectWallet();
-      }
-      await cancelLTO(
-        walletAddress,
-        signer,
-        orderId,
-        setOrderLogsDecoded,
-        setMessage,
-        provider
-      );
-      setLoading(false);
-      setDisableActionBtn(false);
-    } catch (e) {
-      console.log(e);
-      setMessage("Cancel Failed !");
-      setLoading(false);
-      setDisableActionBtn(false);
-    }
-  };
+  // // cancelLTO
+  // const _cancelLTO = async (orderId) => {
+  //   setLoading(true);
+  //   setDisableActionBtn(true);
+  //   try {
+  //     const walletAddress = account;
+  //     const signer = await getProvider(
+  //       true,
+  //       setweb3provider,
+  //       setCurrentBlock,
+  //       setBalance,
+  //       setAccount,
+  //       setWalletConnected
+  //     );
+  //     if (!isWalletConnected) {
+  //       await connectWallet();
+  //     }
+  //     await cancelLTO(
+  //       walletAddress,
+  //       signer,
+  //       orderId,
+  //       setOrderLogsDecoded,
+  //       setMessage,
+  //       provider
+  //     );
+  //     setLoading(false);
+  //     setDisableActionBtn(false);
+  //   } catch (e) {
+  //     console.log(e);
+  //     setMessage("Cancel Failed !");
+  //     setLoading(false);
+  //     setDisableActionBtn(false);
+  //   }
+  // };
   //  WithdrawLTO
   const _withdrawLTO = async (orderId) => {
     console.log("Order Id", orderId);
@@ -778,7 +778,7 @@ function App() {
                 setIsPlacedLongTermOrder={setIsPlacedLongTermOrder}
                 showSettings={showSettings}
                 setShowSettings={setShowSettings}
-                cancelPool={_cancelLTO}
+                // cancelPool={_cancelLTO}
                 withdrawPool={_withdrawLTO}
                 spotPriceLoading={spotPriceLoading}
                 message={message}
