@@ -1,26 +1,16 @@
-import { POPUP_MESSAGE } from "../constants";
-import { cancelLTO } from "./addLiquidity";
+import { joinPool } from "./addLiquidity";
 import { connectWallet } from "./connetWallet";
 import { getProvider } from "./getProvider";
 
-// cancelLTO
-export const _cancelLTO = async (
-  orderId,
-  setLoading,
-  setDisableActionBtn,
+export const _joinPool = async (
   account,
   setweb3provider,
   setCurrentBlock,
   setBalance,
   setAccount,
   setWalletConnected,
-  isWalletConnected,
-  setOrderLogsDecoded,
-  setMessage,
-  provider
+  isWalletConnected
 ) => {
-  setLoading(true);
-  setDisableActionBtn(true);
   try {
     const walletAddress = account;
     const signer = await getProvider(
@@ -40,20 +30,8 @@ export const _cancelLTO = async (
         setWalletConnected
       );
     }
-    await cancelLTO(
-      walletAddress,
-      signer,
-      orderId,
-      setOrderLogsDecoded,
-      setMessage,
-      provider
-    );
-    setLoading(false);
-    setDisableActionBtn(false);
+    await joinPool(walletAddress, signer);
   } catch (e) {
     console.log(e);
-    setMessage(POPUP_MESSAGE.ltoCancelFailed);
-    setLoading(false);
-    setDisableActionBtn(false);
   }
 };

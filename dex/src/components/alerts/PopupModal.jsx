@@ -1,6 +1,7 @@
-import { Alert, Backdrop, Button, CircularProgress } from "@mui/material";
+import { Alert, Backdrop, Button } from "@mui/material";
 import { useEffect } from "react";
 import { useContext } from "react";
+import { POPUP_MESSAGE } from "../../constants";
 import { ShortSwapContext } from "../../providers";
 // import { POOL_ID } from "../../utils";
 import { POOLS, POOL_ID } from "../../utils/pool";
@@ -121,7 +122,8 @@ const PopupModal = ({
           >
             <Alert
               severity={
-                message === "Cancel Failed !" || message === "Withdraw Failed !"
+                message === POPUP_MESSAGE.ltoCancelFailed ||
+                message === POPUP_MESSAGE.ltoWithdrawFailed
                   ? "error"
                   : "success"
               }

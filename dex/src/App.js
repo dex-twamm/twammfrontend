@@ -28,6 +28,7 @@ import { connectWallet } from "./utils/connetWallet";
 import { getLPTokensBalance, getTokensBalance } from "./utils/getAmount";
 import { getAllowance, getApproval } from "./utils/getApproval";
 import { getProvider } from "./utils/getProvider";
+import { spotPrice } from "./utils/getSpotPrice";
 import { getEthLogs } from "./utils/get_ethLogs";
 import { getLastVirtualOrderBlock, placeLongTermOrder } from "./utils/longSwap";
 import { POOLS, POOL_ID } from "./utils/pool";
@@ -370,50 +371,51 @@ function App() {
   // }
 
   //  JoinPool
-  const _joinPool = async () => {
-    try {
-      const walletAddress = account;
-      const signer = await getProvider(
-        true,
-        setweb3provider,
-        setCurrentBlock,
-        setBalance,
-        setAccount,
-        setWalletConnected
-      );
-      if (!isWalletConnected) {
-        await connectWallet();
-      }
-      await joinPool(walletAddress, signer);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+
+  // const _joinPool = async () => {
+  //   try {
+  //     const walletAddress = account;
+  //     const signer = await getProvider(
+  //       true,
+  //       setweb3provider,
+  //       setCurrentBlock,
+  //       setBalance,
+  //       setAccount,
+  //       setWalletConnected
+  //     );
+  //     if (!isWalletConnected) {
+  //       await connectWallet();
+  //     }
+  //     await joinPool(walletAddress, signer);
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
 
   //  ExitPool
-  const _exitPool = async () => {
-    setLoading(true);
-    try {
-      const bptAmountIn = ethers.utils.parseUnits("0.001", "ether");
-      const walletAddress = account;
-      const signer = await getProvider(
-        true,
-        setweb3provider,
-        setCurrentBlock,
-        setBalance,
-        setAccount,
-        setWalletConnected
-      );
-      if (!isWalletConnected) {
-        await connectWallet();
-      }
-      await exitPool(walletAddress, signer, bptAmountIn);
-      setLoading(false);
-    } catch (e) {
-      console.log(e);
-      setLoading(false);
-    }
-  };
+  // const _exitPool = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const bptAmountIn = ethers.utils.parseUnits("0.001", "ether");
+  //     const walletAddress = account;
+  //     const signer = await getProvider(
+  //       true,
+  //       setweb3provider,
+  //       setCurrentBlock,
+  //       setBalance,
+  //       setAccount,
+  //       setWalletConnected
+  //     );
+  //     if (!isWalletConnected) {
+  //       await connectWallet();
+  //     }
+  //     await exitPool(walletAddress, signer, bptAmountIn);
+  //     setLoading(false);
+  //   } catch (e) {
+  //     console.log(e);
+  //     setLoading(false);
+  //   }
+  // };
 
   // // cancelLTO
   // const _cancelLTO = async (orderId) => {
@@ -450,40 +452,40 @@ function App() {
   //   }
   // };
   //  WithdrawLTO
-  const _withdrawLTO = async (orderId) => {
-    console.log("Order Id", orderId);
-    setDisableActionBtn(true);
-    setLoading(true);
-    try {
-      const walletAddress = account;
-      const signer = await getProvider(
-        true,
-        setweb3provider,
-        setCurrentBlock,
-        setBalance,
-        setAccount,
-        setWalletConnected
-      );
-      if (!isWalletConnected) {
-        await connectWallet();
-      }
-      await withdrawLTO(
-        walletAddress,
-        signer,
-        orderId,
-        setOrderLogsDecoded,
-        setMessage,
-        provider
-      );
-      setLoading(false);
-      setDisableActionBtn(false);
-    } catch (e) {
-      console.log(e);
-      setMessage(POPUP_MESSAGE.ltoWithdrawFailed);
-      setLoading(false);
-      setDisableActionBtn(false);
-    }
-  };
+  // const _withdrawLTO = async (orderId) => {
+  //   console.log("Order Id", orderId);
+  //   setDisableActionBtn(true);
+  //   setLoading(true);
+  //   try {
+  //     const walletAddress = account;
+  //     const signer = await getProvider(
+  //       true,
+  //       setweb3provider,
+  //       setCurrentBlock,
+  //       setBalance,
+  //       setAccount,
+  //       setWalletConnected
+  //     );
+  //     if (!isWalletConnected) {
+  //       await connectWallet();
+  //     }
+  //     await withdrawLTO(
+  //       walletAddress,
+  //       signer,
+  //       orderId,
+  //       setOrderLogsDecoded,
+  //       setMessage,
+  //       provider
+  //     );
+  //     setLoading(false);
+  //     setDisableActionBtn(false);
+  //   } catch (e) {
+  //     console.log(e);
+  //     setMessage(POPUP_MESSAGE.ltoWithdrawFailed);
+  //     setLoading(false);
+  //     setDisableActionBtn(false);
+  //   }
+  // };
 
   const data = {
     token: {
@@ -497,70 +499,69 @@ function App() {
     },
   };
 
-  //Spot Prices
-  const spotPrice = async () => {
-    console.log("Expected swap out ---->", swapAmount);
+  // //Spot Prices
+  // const spotPrice = async () => {
+  //   console.log("Expected swap out ---->", swapAmount);
 
-    if (swapAmount) {
-      setSpotPriceLoading(true);
-      //todo : Change this to use token decimal places
-      const swapAmountWei = ethers.utils.parseUnits(swapAmount, "ether");
+  //   if (swapAmount) {
+  //     setSpotPriceLoading(true);
+  //     //todo : Change this to use token decimal places
+  //     const swapAmountWei = ethers.utils.parseUnits(swapAmount, "ether");
 
-      const assetIn = srcAddress;
-      const assetOut = destAddress;
-      const errors = {};
-      // const signer = a
-      const signer = await getProvider(
-        true,
-        setweb3provider,
-        setCurrentBlock,
-        setBalance,
-        setAccount,
-        setWalletConnected
-      );
-      const walletAddress = account;
+  //     const assetIn = srcAddress;
+  //     const assetOut = destAddress;
+  //     const errors = {};
+  //     // const signer = a
+  //     const signer = await getProvider(
+  //       true,
+  //       setweb3provider,
+  //       setCurrentBlock,
+  //       setBalance,
+  //       setAccount,
+  //       setWalletConnected
+  //     );
+  //     const walletAddress = account;
 
-      console.log("Expected swap out ---->", expectedSwapOut);
-      try {
-        const batchPrice = await getEstimatedConvertedToken(
-          signer,
-          swapAmountWei,
-          assetIn,
-          assetOut,
-          walletAddress,
-          expectedSwapOut,
-          tolerance,
-          deadline
-        ).then((res) => {
-          console.log("Response From Query Batch Swap", res);
-          errors.balError = undefined;
-          setFormErrors(errors ?? "");
-          console.log("Response of spot price");
-          setSpotPrice(parseFloat(res) / parseFloat(swapAmountWei));
-          setSpotPriceLoading(false);
-          setExpectedSwapOut(res);
-        });
-        return batchPrice;
-      } catch (e) {
-        console.log("erroror", typeof e, { ...e });
-        if (e.reason.match("BAL#304")) {
-          setFormErrors({
-            balError: "Try Giving Lesser Amount",
-          });
-        }
+  //     console.log("Expected swap out ---->", expectedSwapOut);
+  //     try {
+  //       const batchPrice = await getEstimatedConvertedToken(
+  //         signer,
+  //         swapAmountWei,
+  //         assetIn,
+  //         assetOut,
+  //         walletAddress,
+  //         expectedSwapOut,
+  //         tolerance,
+  //         deadline
+  //       ).then((res) => {
+  //         console.log("Response From Query Batch Swap", res);
+  //         errors.balError = undefined;
+  //         setFormErrors(errors ?? "");
+  //         console.log("Response of spot price");
+  //         setSpotPrice(parseFloat(res) / parseFloat(swapAmountWei));
+  //         setSpotPriceLoading(false);
+  //         setExpectedSwapOut(res);
+  //       });
+  //       return batchPrice;
+  //     } catch (e) {
+  //       console.log("erroror", typeof e, { ...e });
+  //       if (e.reason.match("BAL#304")) {
+  //         setFormErrors({
+  //           balError: "Try Giving Lesser Amount",
+  //         });
+  //       }
 
-        if (e.reason.match("BAL#510")) {
-          setFormErrors({
-            balError: "Invalid Amount!",
-          });
-        }
+  //       if (e.reason.match("BAL#510")) {
+  //         setFormErrors({
+  //           balError: "Invalid Amount!",
+  //         });
+  //       }
+  //       setSpotPriceLoading(false);
+  //     }
+  //   }
+  // };
 
-        setSpotPriceLoading(false);
-      }
-    }
-  };
-
-  console.log("priceeeee", spotPrice);
+  // console.log("priceeeee", spotPrice);
 
   console.log("Account--->", account);
   // Use Memo
@@ -599,7 +600,24 @@ function App() {
   useEffect(() => {
     console.log("ajsdhkasd----", swapAmount, destAddress, srcAddress);
     const interval = setTimeout(() => {
-      spotPrice();
+      spotPrice(
+        swapAmount,
+        setSpotPriceLoading,
+        srcAddress,
+        destAddress,
+        setweb3provider,
+        setCurrentBlock,
+        setBalance,
+        setAccount,
+        setWalletConnected,
+        account,
+        expectedSwapOut,
+        tolerance,
+        deadline,
+        setFormErrors,
+        setSpotPrice,
+        setExpectedSwapOut
+      );
     }, 1000);
     return () => {
       clearTimeout(interval);
@@ -717,7 +735,7 @@ function App() {
   if (showAddLiquidity) {
     liquidityMarkup = (
       <AddLiquidity
-        connect={_joinPool}
+        // connect={_joinPool}
         showAddLiquidity={setShowAddLiquidity}
       />
     );
@@ -780,7 +798,7 @@ function App() {
                 showSettings={showSettings}
                 setShowSettings={setShowSettings}
                 // cancelPool={_cancelLTO}
-                withdrawPool={_withdrawLTO}
+                // withdrawPool={_withdrawLTO}
                 spotPriceLoading={spotPriceLoading}
                 message={message}
                 setMessage={setMessage}

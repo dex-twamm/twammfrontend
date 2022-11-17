@@ -1,27 +1,21 @@
-import { POPUP_MESSAGE } from "../constants";
-import { cancelLTO } from "./addLiquidity";
+import { ethers } from "ethers";
+import { exitPool } from "./addLiquidity";
 import { connectWallet } from "./connetWallet";
 import { getProvider } from "./getProvider";
 
-// cancelLTO
-export const _cancelLTO = async (
-  orderId,
+export const _exitPool = async (
   setLoading,
-  setDisableActionBtn,
   account,
   setweb3provider,
   setCurrentBlock,
   setBalance,
   setAccount,
   setWalletConnected,
-  isWalletConnected,
-  setOrderLogsDecoded,
-  setMessage,
-  provider
+  isWalletConnected
 ) => {
   setLoading(true);
-  setDisableActionBtn(true);
   try {
+    const bptAmountIn = ethers.utils.parseUnits("0.001", "ether");
     const walletAddress = account;
     const signer = await getProvider(
       true,
@@ -40,20 +34,10 @@ export const _cancelLTO = async (
         setWalletConnected
       );
     }
-    await cancelLTO(
-      walletAddress,
-      signer,
-      orderId,
-      setOrderLogsDecoded,
-      setMessage,
-      provider
-    );
+    await exitPool(walletAddress, signer, bptAmountIn);
     setLoading(false);
-    setDisableActionBtn(false);
   } catch (e) {
     console.log(e);
-    setMessage(POPUP_MESSAGE.ltoCancelFailed);
     setLoading(false);
-    setDisableActionBtn(false);
   }
 };

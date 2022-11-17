@@ -12,9 +12,10 @@ import LongTermSwapCardDropdown from "../components/LongTermSwapCardDropdown";
 import CircularProgressBar from "./alerts/CircularProgressBar";
 import { _cancelLTO } from "../utils/_cancelLto";
 import { WebContext } from "../providers/context/WebProvider";
+import { _withdrawLTO } from "../utils/_withdrawLto";
 
 const LongTermOrderCard = (props) => {
-  const { cancelPool, withdrawPool } = props;
+  // const { cancelPool, withdrawPool } = props;
   const remainingTimeRef = useRef();
 
   const {
@@ -132,6 +133,24 @@ const LongTermOrderCard = (props) => {
 
   const handleCancel = (orderId) => {
     _cancelLTO(
+      orderId,
+      setLoading,
+      setDisableActionBtn,
+      account,
+      setweb3provider,
+      setCurrentBlock,
+      setBalance,
+      setAccount,
+      setWalletConnected,
+      isWalletConnected,
+      setOrderLogsDecoded,
+      setMessage,
+      provider
+    );
+  };
+
+  const handleWithDraw = (orderId) => {
+    _withdrawLTO(
       orderId,
       setLoading,
       setDisableActionBtn,
@@ -368,7 +387,7 @@ const LongTermOrderCard = (props) => {
                             styles.withdrawButton
                           )}
                           onClick={() => {
-                            withdrawPool(it?.orderId?.toNumber());
+                            handleWithDraw(it?.orderId?.toNumber());
                           }}
                           disabled={disableActionBtn}
                         >

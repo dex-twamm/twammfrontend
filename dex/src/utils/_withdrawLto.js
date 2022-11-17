@@ -1,10 +1,9 @@
 import { POPUP_MESSAGE } from "../constants";
-import { cancelLTO } from "./addLiquidity";
+import { withdrawLTO } from "./addLiquidity";
 import { connectWallet } from "./connetWallet";
 import { getProvider } from "./getProvider";
 
-// cancelLTO
-export const _cancelLTO = async (
+export const _withdrawLTO = async (
   orderId,
   setLoading,
   setDisableActionBtn,
@@ -19,8 +18,9 @@ export const _cancelLTO = async (
   setMessage,
   provider
 ) => {
-  setLoading(true);
+  console.log("Order Id", orderId);
   setDisableActionBtn(true);
+  setLoading(true);
   try {
     const walletAddress = account;
     const signer = await getProvider(
@@ -40,7 +40,7 @@ export const _cancelLTO = async (
         setWalletConnected
       );
     }
-    await cancelLTO(
+    await withdrawLTO(
       walletAddress,
       signer,
       orderId,
@@ -52,7 +52,7 @@ export const _cancelLTO = async (
     setDisableActionBtn(false);
   } catch (e) {
     console.log(e);
-    setMessage(POPUP_MESSAGE.ltoCancelFailed);
+    setMessage(POPUP_MESSAGE.ltoWithdrawFailed);
     setLoading(false);
     setDisableActionBtn(false);
   }
