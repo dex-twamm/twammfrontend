@@ -1,4 +1,5 @@
 import { ethers } from "ethers";
+import { POPUP_MESSAGE } from "../constants";
 import { getProvider } from "./getProvider";
 import { swapTokens } from "./swap";
 
@@ -64,21 +65,22 @@ export const _swapTokens = async (
           };
           swapResult(res).then((response) => {
             console.log("Responseeeeeee", response);
-            if (response.status === 1) setMessage("Transaction Success!");
+            if (response.status === 1)
+              setMessage(POPUP_MESSAGE.shortSwapSuccess);
           });
         })
         .catch((err) => {
           console.error(err);
-          setError("Transaction Error");
+          setError(POPUP_MESSAGE.error);
         });
       setLoading(false);
     } catch (err) {
       console.error("errrrrrr", err);
       setLoading(false);
-      setError("Transaction Cancelled");
+      setError(POPUP_MESSAGE.transactionCancelled);
     }
   } else {
     setLoading(false);
-    setError("Insufficient Balance");
+    setError(POPUP_MESSAGE.insufficientBalance);
   }
 };

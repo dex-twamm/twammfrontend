@@ -1,6 +1,7 @@
 import { Contract } from "ethers";
 import { MAX_UINT256 } from ".";
-import { ERC20_TOKEN_CONTRACT_ABI, VAULT_CONTRACT_ADDRESS } from "../constants";
+import { ERC20_TOKEN_CONTRACT_ABI } from "../constants";
+import { POOLS, POOL_ID } from "./pool";
 
 export const getAllowance = async (provider, walletAddress, tokenAddress) => {
   console.log("Allowance Input provider", provider);
@@ -14,7 +15,7 @@ export const getAllowance = async (provider, walletAddress, tokenAddress) => {
 
   const allowance = await ERC20Contract.allowance(
     walletAddress,
-    VAULT_CONTRACT_ADDRESS
+    POOLS[POOL_ID].VAULT_CONTRACT_ADDRESS
   );
   console.log("Allowance---->", allowance);
   return allowance;
@@ -28,7 +29,7 @@ export const getApproval = async (provider, tokenAddress) => {
   );
 
   const allowance = await ERC20Contract.approve(
-    VAULT_CONTRACT_ADDRESS,
+    POOLS[POOL_ID].VAULT_CONTRACT_ADDRESS,
     MAX_UINT256
   );
   console.log("Allowanc-->", allowance);

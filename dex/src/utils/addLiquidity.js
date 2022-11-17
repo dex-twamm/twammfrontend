@@ -8,9 +8,9 @@ import {
   // POOL_ID,
 } from ".";
 import {
+  POPUP_MESSAGE,
   TWAMM_POOL_ABI,
   VAULT_CONTRACT_ABI,
-  VAULT_CONTRACT_ADDRESS,
 } from "../constants";
 import { getEthLogs } from "./get_ethLogs";
 import { POOLS, POOL_ID } from "./pool";
@@ -23,7 +23,7 @@ export async function joinPool(walletAddress, signer) {
     [1, [fp(1e-12), fp(1.0)], 0]
   );
   const poolContract = new Contract(
-    VAULT_CONTRACT_ADDRESS,
+    POOLS[POOL_ID].VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -48,7 +48,7 @@ export async function joinPool(walletAddress, signer) {
 
 export async function exitPool(walletAdress, signer, bptAmountIn) {
   const poolContract = new Contract(
-    VAULT_CONTRACT_ADDRESS,
+    POOLS[POOL_ID].VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -88,7 +88,7 @@ export async function cancelLTO(
   provider
 ) {
   const poolContract = new Contract(
-    VAULT_CONTRACT_ADDRESS,
+    POOLS[POOL_ID].VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -115,7 +115,7 @@ export async function cancelLTO(
     }
   );
   const exitPoolResult = await exitPoolTx.wait();
-  setMessage("LTO Cancelled !");
+  setMessage(POPUP_MESSAGE.ltoCancelSuccess);
   await getEthLogs(provider, walletAdress).then((res) => {
     const resArray = Array.from(res.values());
     setOrderLogsDecoded(resArray);
@@ -133,7 +133,7 @@ export async function withdrawLTO(
   provider
 ) {
   const poolContract = new Contract(
-    VAULT_CONTRACT_ADDRESS,
+    POOLS[POOL_ID].VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -165,12 +165,12 @@ export async function withdrawLTO(
     setOrderLogsDecoded(resArray);
   });
   console.log("withdrawLTOResult", withdrawLTOResult);
-  setMessage("LTO Withdrawn!");
+  setMessage(POPUP_MESSAGE.ltoWithdrawn);
 }
 
 export async function getPoolBalance(signer, tokenAddress) {
   const poolContract = new Contract(
-    VAULT_CONTRACT_ADDRESS,
+    POOLS[POOL_ID].VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );

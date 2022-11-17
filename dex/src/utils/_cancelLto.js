@@ -1,3 +1,4 @@
+import { POPUP_MESSAGE } from "../constants";
 import { cancelLTO } from "./addLiquidity";
 import { connectWallet } from "./connetWallet";
 import { getProvider } from "./getProvider";
@@ -45,7 +46,7 @@ export const _cancelLTO = async (
     setDisableActionBtn(false);
   } catch (e) {
     console.log(e);
-    setMessage("Cancel Failed !");
+    setMessage(POPUP_MESSAGE.ltoCancelFailed);
     setLoading(false);
     setDisableActionBtn(false);
   }

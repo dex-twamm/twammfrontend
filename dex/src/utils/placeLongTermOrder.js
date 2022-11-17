@@ -1,4 +1,5 @@
 import { ethers } from "ethers";
+import { POPUP_MESSAGE } from "../constants";
 import { getProvider } from "./getProvider";
 import { getEthLogs } from "./get_ethLogs";
 import { placeLongTermOrder } from "./longSwap";
@@ -67,6 +68,6 @@ export const _placeLongTermOrders = async (
   } catch (err) {
     console.error(err);
     setLoading(false);
-    setError("Transaction Cancelled");
+    setError(POPUP_MESSAGE.transactionCancelled);
   }
 };

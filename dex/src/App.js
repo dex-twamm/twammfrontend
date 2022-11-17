@@ -9,6 +9,7 @@ import {
   RemoveLiquidity,
 } from "./components/Liquidity";
 import Navbar from "./components/Navbar";
+import { POPUP_MESSAGE } from "./constants";
 import Home from "./pages/Home";
 import LongSwap from "./pages/LongSwap";
 import ShortSwap from "./pages/ShortSwap";
@@ -478,7 +479,7 @@ function App() {
       setDisableActionBtn(false);
     } catch (e) {
       console.log(e);
-      setMessage("Withdraw Failed !");
+      setMessage(POPUP_MESSAGE.ltoWithdrawFailed);
       setLoading(false);
       setDisableActionBtn(false);
     }

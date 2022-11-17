@@ -1,7 +1,7 @@
 import { BigNumber, Contract } from "ethers";
-import { VAULT_CONTRACT_ABI, VAULT_CONTRACT_ADDRESS } from "../constants";
+import { VAULT_CONTRACT_ABI } from "../constants";
 import { MAX_UINT256 } from ".";
-import { POOL_ID } from "./pool";
+import { POOLS, POOL_ID } from "./pool";
 
 /*
   swapTokens: Swaps `swapAmountWei` of Eth/Crypto Dev tokens with `tokenToBeReceivedAfterSwap` amount of Eth/Crypto Dev tokens.
@@ -19,7 +19,7 @@ export const getEstimatedConvertedToken = async (
   let txHash;
   // Create a new instance of the exchange contract
   const exchangeContract = new Contract(
-    VAULT_CONTRACT_ADDRESS,
+    POOLS[POOL_ID].VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );
