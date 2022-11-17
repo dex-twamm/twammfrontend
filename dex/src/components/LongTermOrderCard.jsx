@@ -95,12 +95,12 @@ const LongTermOrderCard = (props) => {
         // setProgress((latestBlock - startBlock) / (expiryBlock - startBlock));
         let date = new Date(0);
         date.setSeconds(timeRemaining); // specify value for SECONDS here
-        const timeString = date.toISOString().substring(11, 19);
+        const timeString = date.toISOString().substring(11, 16);
         console.log(timeString);
 
         return {
           status: `Time Remaining: ${timeString}`,
-          progress: (latestBlock - startBlock) / (expiryBlock - startBlock),
+          progress: (latestBlock - startBlock) * 100 / (expiryBlock - startBlock),
         };
       } else {
         return { status: "Execution Completed", progress: 100 };
@@ -166,7 +166,11 @@ const LongTermOrderCard = (props) => {
               // console.log("ConvertedAMT", convertedAmount);
             } else {
               // Order Still In Progress
-              convertedAmount = it.convertedValue;
+              let withdrawals = it.withdrawals.reduce((total, withdrawal) => {
+                return total.add(withdrawal.proceeds);
+              }, ethers.constants.Zero);
+              console.log("InProgress", withdrawals.toString(), it.convertedValue.toString());
+              convertedAmount = it.convertedValue.add(withdrawals);
             }
             //console.log("Converted Amount", convertedAmount?.toString());
             // console.log("Withdrawals 0", it.withdrawals[0].proceeds.toNumber());

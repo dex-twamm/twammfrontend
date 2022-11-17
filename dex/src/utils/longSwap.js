@@ -3,6 +3,7 @@ import {
   LONGTERM_ABI,
   VAULT_CONTRACT_ABI,
   VAULT_CONTRACT_ADDRESS,
+  TWAMM_POOL_ABI
 } from "../constants";
 import {
   // POOL_ID,
@@ -68,8 +69,8 @@ export async function placeLongTermOrder(
 
 export async function getLongTermOrder(signer, orderId) {
   const contract = new Contract(
-    POOLS[POOL_ID].LTOContract,
-    LONGTERM_ABI,
+    POOLS[POOL_ID].address,
+    TWAMM_POOL_ABI,
     signer
   );
   const getOrderDetails = await contract.getLongTermOrder(orderId);

@@ -1,19 +1,12 @@
 import { timeDeltaString } from "../utils";
 
 const valueLabel = (value, currentBlock) => {
-  // TODO 
-  console.log("cBlock", currentBlock);
-  const blockTimesSkew = ((new Date() - new Date(currentBlock.timestamp * 1000)) / 1000).toFixed(0);
-  console.log("Skew Time", blockTimesSkew)
-  const numBlocks = Math.ceil(value) * 50 + (currentBlock.number % 50 ? (50 - (currentBlock.number % 50)) : 0);
+  const numBlocks = Math.ceil(value) * 150 + (currentBlock.number % 150 ? (150 - (currentBlock.number % 150)) : 0);
 
-  console.log("numBlocks", numBlocks, currentBlock, (50 - (currentBlock.number % 50)));
+  console.log("numBlocks", numBlocks, currentBlock, (150 - (currentBlock.number % 150)));
 
-
-  const targetDate = new Date();
-  targetDate.setSeconds(targetDate.getSeconds() + Math.ceil(value) * 12 * 50 - (blockTimesSkew % 12))
-
-  // console.log("targetDate", targetDate - new Date());
+  const targetDate = new Date(currentBlock.timestamp * 1000);
+  targetDate.setSeconds(targetDate.getSeconds() + numBlocks * 12);
 
   const timeString = timeDeltaString((targetDate - new Date()) / 1000);
 
@@ -21,7 +14,7 @@ const valueLabel = (value, currentBlock) => {
     executionTime: timeString,
     targetDate: `${targetDate.toLocaleDateString()} ${targetDate.toLocaleTimeString()}`
   };
-  // console.log("Time Diff", timeString)
+  console.log("targetDate", targetDate, timeString)
   return values;
 
 };
