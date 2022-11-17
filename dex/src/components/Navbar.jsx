@@ -5,6 +5,7 @@ import classNames from "classnames";
 import React, { useContext, useEffect, useState } from "react";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { Link, Navigate, useLocation } from "react-router-dom";
+import { POPUP_MESSAGE } from "../constants";
 import styles from "../css/Navbar.module.css";
 import { LongSwapContext, ShortSwapContext, UIContext } from "../providers";
 import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS, toHex } from "../utils";
@@ -85,7 +86,7 @@ const Navbar = (props) => {
         window.location.reload();
       } catch (err) {
         console.error(err);
-        setError("Failed To Switch Network");
+        setError(POPUP_MESSAGE.networkSwitchFailed);
       }
     }
   };

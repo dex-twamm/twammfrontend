@@ -9,6 +9,7 @@ import {
   RemoveLiquidity,
 } from "./components/Liquidity";
 import Navbar from "./components/Navbar";
+import { POPUP_MESSAGE } from "./constants";
 import Home from "./pages/Home";
 import LongSwap from "./pages/LongSwap";
 import ShortSwap from "./pages/ShortSwap";
@@ -190,22 +191,23 @@ function App() {
             };
             swapResult(res).then((response) => {
               console.log("Responseeeeeee", response);
-              if (response.status === 1) setMessage("Transaction Success!");
+              if (response.status === 1)
+                setMessage(POPUP_MESSAGE.shortSwapSuccess);
             });
           })
           .catch((err) => {
             console.error(err);
-            setError("Transaction Error");
+            setError(POPUP_MESSAGE.error);
           });
         setLoading(false);
       } catch (err) {
         console.error("errrrrrr", err);
         setLoading(false);
-        setError("Transaction Cancelled");
+        setError(POPUP_MESSAGE.transactionCancelled);
       }
     } else {
       setLoading(false);
-      setError("Insufficient Balance");
+      setError(POPUP_MESSAGE.insufficientBalance);
     }
   };
 
@@ -264,7 +266,7 @@ function App() {
     } catch (err) {
       console.error(err);
       setLoading(false);
-      setError("Transaction Cancelled");
+      setError(POPUP_MESSAGE.transactionCancelled);
     }
   };
 
@@ -357,7 +359,7 @@ function App() {
       setDisableActionBtn(false);
     } catch (e) {
       console.log(e);
-      setMessage("Cancel Failed !");
+      setMessage(POPUP_MESSAGE.ltoCancelFailed);
       setLoading(false);
       setDisableActionBtn(false);
     }
@@ -385,7 +387,7 @@ function App() {
       setDisableActionBtn(false);
     } catch (e) {
       console.log(e);
-      setMessage("Withdraw Failed !");
+      setMessage(POPUP_MESSAGE.ltoWithdrawFailed);
       setLoading(false);
       setDisableActionBtn(false);
     }

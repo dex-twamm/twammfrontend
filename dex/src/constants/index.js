@@ -3360,3 +3360,17 @@ export const LONGTERM_ABI = [
     type: "function",
   },
 ];
+
+export const POPUP_MESSAGE = {
+  networkSwitchFailed: "Failed to switch network!",
+  shortSwapSuccess: "Token swap succcessfull!",
+  shortSwapFailed: "Token swap failed!",
+  transactionCancelled: "Transaction cancelled!",
+  error: "Transaction error!",
+  ltpPlaced: "Long term order placed!",
+  ltoCancelSuccess: "Long term order cancelled!",
+  ltoCancelFailed: "Long term order cancel failed!",
+  ltoWithdrawn: "Long term order withdrawn!",
+  ltoWithdrawFailed: "Long term order withdraw failed!",
+  insufficientBalance: "Balance insufficient for transation!",
+};

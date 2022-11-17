@@ -7,7 +7,11 @@ import {
   MAX_UINT256,
   // POOL_ID,
 } from ".";
-import { TWAMM_POOL_ABI, VAULT_CONTRACT_ABI } from "../constants";
+import {
+  POPUP_MESSAGE,
+  TWAMM_POOL_ABI,
+  VAULT_CONTRACT_ABI,
+} from "../constants";
 import { getEthLogs } from "./get_ethLogs";
 import { POOLS, POOL_ID } from "./pool";
 
@@ -111,7 +115,7 @@ export async function cancelLTO(
     }
   );
   const exitPoolResult = await exitPoolTx.wait();
-  setMessage("LTO Cancelled !");
+  setMessage(POPUP_MESSAGE.ltoCancelSuccess);
   await getEthLogs(provider, walletAdress).then((res) => {
     const resArray = Array.from(res.values());
     setOrderLogsDecoded(resArray);
@@ -161,7 +165,7 @@ export async function withdrawLTO(
     setOrderLogsDecoded(resArray);
   });
   console.log("withdrawLTOResult", withdrawLTOResult);
-  setMessage("LTO Withdrawn!");
+  setMessage(POPUP_MESSAGE.ltoWithdrawn);
 }
 
 export async function getPoolBalance(signer, tokenAddress) {
