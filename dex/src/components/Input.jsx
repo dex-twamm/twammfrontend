@@ -33,7 +33,7 @@ const Input = (props) => {
   //   {
   //     name: "Faucet",
   //     symbol: "ETH",
-  //     image: "/ethereum.png",
+  //     image: "ethereum.png",
   //     address: Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0].tokens[1].address,
   //     balance: tokenBalances[0] ?? 0,
   //   },
@@ -65,7 +65,7 @@ const Input = (props) => {
     setTokenA({
       ...tokenA,
       symbol: "Faucet",
-      image: "/ethereum.png",
+      image: "ethereum.png",
       balance: balance?.[0]?.[address],
       tokenIsSet: true,
     });

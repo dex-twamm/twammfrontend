@@ -115,7 +115,7 @@ const Swap = (props) => {
 
   // const [tokenA, setTokenA] = useState({
   //   symbol: "Faucet",
-  //   image: "/ethereum.png",
+  //   image: "ethereum.png",
   //   address: FAUCET_TOKEN_ADDRESS,
   // });
 

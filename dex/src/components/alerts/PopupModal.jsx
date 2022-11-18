@@ -118,7 +118,7 @@ const PopupModal = ({
                 window.location.reload();
               }}
             >
-              LTO Placed!
+              {POPUP_MESSAGE.ltoPlaced}
             </Alert>
           </Backdrop>
         )}

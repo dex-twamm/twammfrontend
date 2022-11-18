@@ -42,8 +42,6 @@ export const _cancelLTO = async (
         setWalletConnected
       );
     }
-    setTransactionHash(orderHash);
-
     await cancelLTO(
       walletAddress,
       signer,

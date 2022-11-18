@@ -3367,7 +3367,7 @@ export const POPUP_MESSAGE = {
   shortSwapFailed: "Token swap failed!",
   transactionCancelled: "Transaction cancelled!",
   error: "Transaction error!",
-  ltpPlaced: "Long term order placed!",
+  ltoPlaced: "Long term order placed!",
   ltoCancelSuccess: "Long term order cancelled!",
   ltoCancelFailed: "Long term order cancel failed!",
   ltoWithdrawn: "Long term order withdrawn!",

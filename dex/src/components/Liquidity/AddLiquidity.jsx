@@ -72,7 +72,7 @@ const AddLiquidity = (props) => {
   //   {
   //     name: "Faucet",
   //     symbol: "ETH",
-  //     image: "/ethereum.png",
+  //     image: "ethereum.png",
   //     address: "",
   //     balance: tokenBalances[0],
   //   },
@@ -315,7 +315,7 @@ const AddLiquidity = (props) => {
     //                             <img
     //                               className="imgCurrency"
     //                               alt="ETH Logo"
-    //                               src="/ethereum.png"
+    //                               src="ethereum.png"
     //                               style={{ height: "20px", width: "20px" }}
     //                             />
     //                             <span className="currency-label">ETH</span>
@@ -351,7 +351,7 @@ const AddLiquidity = (props) => {
     //                             <img
     //                               className="imgCurrency"
     //                               alt="ETH Logo"
-    //                               src="/ethereum.png"
+    //                               src="ethereum.png"
     //                               style={{ height: "20px", width: "20px" }}
     //                             />
     //                             <span className="currency-label">ETH</span>
@@ -439,7 +439,7 @@ const AddLiquidity = (props) => {
     //                       <img
     //                         className="imgCurrency"
     //                         alt="ETH Logo"
-    //                         src="/ethereum.png"
+    //                         src="ethereum.png"
     //                         style={{ height: "20px", width: "20px" }}
     //                       />
     //                       <span className="currency-label">ETH</span>
@@ -474,7 +474,7 @@ const AddLiquidity = (props) => {
     //                     <img
     //                       className="imgCurrency"
     //                       alt="ETH Logo"
-    //                       src="/ethereum.png"
+    //                       src="ethereum.png"
     //                       style={{ height: "20px", width: "20px" }}
     //                     />
     //                     <span className="currency-label">ETH</span>

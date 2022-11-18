@@ -352,7 +352,7 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                         width: "40px",
                       }}
                       alt="Testv4"
-                      src="/Testv4.jpeg"
+                      src="Testv4.jpeg"
                     />
                     <Avatar
                       sizes="small"
@@ -364,7 +364,7 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                         width: "40px",
                       }}
                       alt="Faucet"
-                      src="/ethereum.png"
+                      src="ethereum.png"
                     />
                   </Box>
                   <Typography
