@@ -259,7 +259,11 @@ const LongTermOrderCard = (props) => {
                     className={styles.iconExternalLink}
                     onClick={() =>
                       window.open(
-                        `${POOLS[POOL_ID]?.transactionUrl}${it.transactionHash}`,
+                        `${
+                          Object.values(
+                            POOLS[localStorage.getItem("coin_name")]
+                          )[0]?.transactionUrl
+                        }${it.transactionHash}`,
                         "_blank"
                       )
                     }
@@ -270,13 +274,26 @@ const LongTermOrderCard = (props) => {
                     <div className={styles.tokenWrapper}>
                       <img
                         className={styles.tokenIcon}
-                        src={POOLS[POOL_ID].tokens[it.sellTokenIndex].image}
-                        alt={POOLS[POOL_ID].tokens[it.sellTokenIndex].symbol}
+                        src={
+                          Object.values(
+                            POOLS[localStorage.getItem("coin_name")]
+                          )[0].tokens[it.sellTokenIndex].image
+                        }
+                        alt={
+                          Object.values(
+                            POOLS[localStorage.getItem("coin_name")]
+                          )[0].tokens[it.sellTokenIndex].symbol
+                        }
                       />
                       <p className={styles.tokenText}>
                         <span>
                           {bigToStr(soldToken, 18)}{" "}
-                          {POOLS[POOL_ID].tokens[it.sellTokenIndex].symbol} of
+                          {
+                            Object.values(
+                              POOLS[localStorage.getItem("coin_name")]
+                            )[0].tokens[it.sellTokenIndex].symbol
+                          }{" "}
+                          of
                         </span>
                         <span> {bigToStr(amountOf, 18)}</span>
                       </p>
@@ -304,8 +321,16 @@ const LongTermOrderCard = (props) => {
                     >
                       <img
                         className={styles.tokenIcon}
-                        src={POOLS[POOL_ID].tokens[it.buyTokenIndex].image}
-                        alt={POOLS[POOL_ID].tokens[it.buyTokenIndex].symbol}
+                        src={
+                          Object.values(
+                            POOLS[localStorage.getItem("coin_name")]
+                          )[0].tokens[it.buyTokenIndex].image
+                        }
+                        alt={
+                          Object.values(
+                            POOLS[localStorage.getItem("coin_name")]
+                          )[0].tokens[it.buyTokenIndex].symbol
+                        }
                       />
                       <p
                         className={classNames(
@@ -314,7 +339,11 @@ const LongTermOrderCard = (props) => {
                         )}
                       >
                         {bigToStr(convertedAmount, 18)}{" "}
-                        {POOLS[POOL_ID].tokens[it.buyTokenIndex].symbol}
+                        {
+                          Object.values(
+                            POOLS[localStorage.getItem("coin_name")]
+                          )[0].tokens[it.buyTokenIndex].symbol
+                        }
                       </p>
                     </div>
                   </div>
@@ -343,7 +372,12 @@ const LongTermOrderCard = (props) => {
 
                   <div className={styles.extrasContainer}>
                     <div className={styles.fees}>
-                      {POOLS[POOL_ID]?.fees} fees
+                      {
+                        Object.values(
+                          POOLS[localStorage.getItem("coin_name")]
+                        )[0]?.fees
+                      }{" "}
+                      fees
                     </div>
                     {soldToken != 0 && (
                       <div className={styles.averagePrice}>

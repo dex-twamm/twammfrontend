@@ -23,7 +23,9 @@ export async function joinPool(walletAddress, signer) {
     [1, [fp(1e-12), fp(1.0)], 0]
   );
   const poolContract = new Contract(
-    POOLS[POOL_ID].VAULT_CONTRACT_ADDRESS,
+    Object.values(
+      POOLS[localStorage.getItem("coin_name")]
+    )[0].VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -33,8 +35,10 @@ export async function joinPool(walletAddress, signer) {
     walletAddress,
     {
       assets: [
-        POOLS[POOL_ID]?.TOKEN_ONE_ADDRESS,
-        POOLS[POOL_ID]?.TOKEN_TWO_ADDRESS,
+        Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
+          ?.TOKEN_ONE_ADDRESS,
+        Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
+          ?.TOKEN_TWO_ADDRESS,
       ],
       // Could Be User Input Same as Encoded Above -- Left to Figure It Out
       maxAmountsIn: [MAX_UINT256, MAX_UINT256],
@@ -48,7 +52,9 @@ export async function joinPool(walletAddress, signer) {
 
 export async function exitPool(walletAdress, signer, bptAmountIn) {
   const poolContract = new Contract(
-    POOLS[POOL_ID].VAULT_CONTRACT_ADDRESS,
+    Object.values(
+      POOLS[localStorage.getItem("coin_name")]
+    )[0].VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -63,8 +69,10 @@ export async function exitPool(walletAdress, signer, bptAmountIn) {
     walletAdress,
     {
       assets: [
-        POOLS[POOL_ID]?.TOKEN_ONE_ADDRESS,
-        POOLS[POOL_ID]?.TOKEN_TWO_ADDRESS,
+        Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
+          ?.TOKEN_ONE_ADDRESS,
+        Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
+          ?.TOKEN_TWO_ADDRESS,
       ],
       minAmountsOut: [0, 0],
       userData: encodedRequest,
@@ -88,7 +96,9 @@ export async function cancelLTO(
   provider
 ) {
   const poolContract = new Contract(
-    POOLS[POOL_ID].VAULT_CONTRACT_ADDRESS,
+    Object.values(
+      POOLS[localStorage.getItem("coin_name")]
+    )[0].VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -103,8 +113,10 @@ export async function cancelLTO(
     walletAdress,
     {
       assets: [
-        POOLS[POOL_ID]?.TOKEN_ONE_ADDRESS,
-        POOLS[POOL_ID]?.TOKEN_TWO_ADDRESS,
+        Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
+          ?.TOKEN_ONE_ADDRESS,
+        Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
+          ?.TOKEN_TWO_ADDRESS,
       ],
       minAmountsOut: [0, 0],
       userData: encodedRequest,
@@ -133,7 +145,9 @@ export async function withdrawLTO(
   provider
 ) {
   const poolContract = new Contract(
-    POOLS[POOL_ID].VAULT_CONTRACT_ADDRESS,
+    Object.values(
+      POOLS[localStorage.getItem("coin_name")]
+    )[0].VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -148,8 +162,10 @@ export async function withdrawLTO(
     walletAdress,
     {
       assets: [
-        POOLS[POOL_ID]?.TOKEN_ONE_ADDRESS,
-        POOLS[POOL_ID]?.TOKEN_TWO_ADDRESS,
+        Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
+          ?.TOKEN_ONE_ADDRESS,
+        Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
+          ?.TOKEN_TWO_ADDRESS,
       ],
       minAmountsOut: [0, 0],
       userData: encodedRequest,
@@ -170,7 +186,9 @@ export async function withdrawLTO(
 
 export async function getPoolBalance(signer, tokenAddress) {
   const poolContract = new Contract(
-    POOLS[POOL_ID].VAULT_CONTRACT_ADDRESS,
+    Object.values(
+      POOLS[localStorage.getItem("coin_name")]
+    )[0].VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );

@@ -26,12 +26,12 @@ export const _placeLongTermOrders = async (
   const swapAmountWei = ethers.utils.parseUnits(swapAmount, "ether");
   // console.log('swapAmountWei', swapAmountWei);
   try {
-    const tokenInIndex = POOLS[POOL_ID].tokens.findIndex(
-      (object) => srcAddress === object.address
-    );
-    const tokenOutIndex = POOLS[POOL_ID].tokens.findIndex(
-      (object) => destAddress === object.address
-    );
+    const tokenInIndex = Object.values(
+      POOLS[localStorage.getItem("coin_name")]
+    )[0].tokens.findIndex((object) => srcAddress === object.address);
+    const tokenOutIndex = Object.values(
+      POOLS[localStorage.getItem("coin_name")]
+    )[0].tokens.findIndex((object) => destAddress === object.address);
     const amountIn = swapAmountWei;
     // console.log('amountIn', amountIn);
     const blockIntervals = Math.ceil(numberOfBlockIntervals);

@@ -90,7 +90,9 @@ const AddLiquidity = (props) => {
   //     image: "/Testv4.jpeg",
   //   },
   // ];
-  const tokenDetails = POOLS[POOL_ID]?.tokens;
+  const tokenDetails = Object.values(
+    POOLS[localStorage.getItem("coin_name")]
+  )[0]?.tokens;
 
   console.log("Prabin", tokenA, tokenB);
 

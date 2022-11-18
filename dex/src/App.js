@@ -93,6 +93,8 @@ function App() {
     setOrderLogsLoading,
   } = useContext(LongSwapContext);
   const { provider, setProvider } = useContext(WebContext);
+  const { setSelectedNetwork, nId, selectedNetwork } = useContext(UIContext);
+
   console.log("Current Block", currentBlock);
 
   //  Connect Wallet
@@ -235,7 +237,8 @@ function App() {
       setTokenB({
         symbol: "Select Token",
         image: "/ethereum.png",
-        address: POOLS[POOL_ID].tokens[0].address,
+        address: Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
+          .tokens[0].address,
         balance: 0,
         tokenIsSet: false,
       });
@@ -249,10 +252,10 @@ function App() {
   //   const swapAmountWei = ethers.utils.parseUnits(swapAmount, "ether");
   //   // console.log('swapAmountWei', swapAmountWei);
   //   try {
-  //     const tokenInIndex = POOLS[POOL_ID].tokens.findIndex(
+  //     const tokenInIndex = Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0].tokens.findIndex(
   //       (object) => srcAddress === object.address
   //     );
-  //     const tokenOutIndex = POOLS[POOL_ID].tokens.findIndex(
+  //     const tokenOutIndex = Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0].tokens.findIndex(
   //       (object) => destAddress === object.address
   //     );
   //     const amountIn = swapAmountWei;

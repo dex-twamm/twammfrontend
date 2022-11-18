@@ -234,7 +234,11 @@ const DisconnectWalletOption = ({
               <Button
                 onClick={() =>
                   window.open(
-                    `${POOLS[POOL_ID]?.ethersScanUrl}${account}`,
+                    `${
+                      Object.values(
+                        POOLS?.[localStorage.getItem("coin_name")]
+                      )?.[0]?.ethersScanUrl
+                    }${account}`,
                     "_blank"
                   )
                 }

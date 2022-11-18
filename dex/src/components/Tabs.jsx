@@ -32,14 +32,16 @@ const Tabs = () => {
     setTokenA({
       symbol: "Faucet",
       image: "/ethereum.png",
-      address: POOLS[POOL_ID]?.TOKEN_TWO_ADDRESS,
+      address: Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
+        ?.TOKEN_TWO_ADDRESS,
       balance: 0,
       tokenIsSet: true,
     });
     setTokenB({
       symbol: "Select Token",
       image: "/Testv4.jpeg",
-      address: POOLS[POOL_ID]?.TOKEN_ONE_ADDRESS,
+      address: Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
+        ?.TOKEN_ONE_ADDRESS,
       balance: 0,
       tokenIsSet: false,
     });

@@ -14,7 +14,13 @@ import { DisconnectWalletOption } from "./DisconnectWalletOption";
 import NavOptionDropdwon from "./navbarDropdown/NavOptionDropdwon";
 
 const Navbar = (props) => {
-  const { showDropdown, setShowDropdown } = useContext(UIContext);
+  const {
+    showDropdown,
+    setShowDropdown,
+    selectedNetwork,
+    setSelectedNetwork,
+    nId,
+  } = useContext(UIContext);
   const { setTokenA, setTokenB } = useContext(LongSwapContext);
 
   const location = useLocation();
@@ -51,15 +57,15 @@ const Navbar = (props) => {
     { name: "Coming Soon", chainId: "0", logo: "/ethereum.png" },
   ];
 
-  const nId = window.ethereum?.networkVersion;
-  console.log("nId--->", nId);
+  // const nId = window.ethereum?.networkVersion;
+  // console.log("nId--->", nId);
   const initialNetwork = networks.filter((id) => id.chainId === nId);
 
-  const [selectedNetwork, setSelectedNetwork] = useState({
-    network: "Select a Network",
-    logo: "/ethereum.png",
-    chainId: nId,
-  });
+  // const [selectedNetwork, setSelectedNetwork] = useState({
+  //   network: "Select a Network",
+  //   logo: "",
+  //   chainId: nId,
+  // });
 
   const coin_name = localStorage.getItem("coin_name");
   const coin_logo = localStorage.getItem("coin_logo");
@@ -175,7 +181,7 @@ const Navbar = (props) => {
                 <img
                   src={selectedNetwork.logo}
                   className={styles.networkIcon}
-                  alt="Ethereum"
+                  alt=""
                 />
                 <span>{selectedNetwork.network}</span>
                 <RiArrowDropDownLine className={styles.dropdownIcon} />

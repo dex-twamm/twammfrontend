@@ -34,14 +34,14 @@ const Input = (props) => {
   //     name: "Faucet",
   //     symbol: "ETH",
   //     image: "/ethereum.png",
-  //     address: POOLS[POOL_ID].tokens[1].address,
+  //     address: Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0].tokens[1].address,
   //     balance: tokenBalances[0] ?? 0,
   //   },
   //   {
   //     name: "Matic",
   //     symbol: "DAI",
   //     image: "/Testv4.jpeg",
-  //     address: POOLS[POOL_ID].tokens[0].address,
+  //     address: Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0].tokens[0].address,
   //     balance: tokenBalances[1] ?? 0,
   //   },
   //   {
@@ -52,7 +52,9 @@ const Input = (props) => {
   //   },
   // ];
 
-  const tokenDetails = POOLS[POOL_ID]?.tokens;
+  const tokenDetails = Object.values(
+    POOLS[localStorage.getItem("coin_name") ?? "Goerli"]
+  )[0]?.tokens;
 
   useEffect(() => {
     const address = tokenA?.address;

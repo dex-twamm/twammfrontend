@@ -24,7 +24,9 @@ export const LongSwapProvider = ({ children }) => {
   const [tokenA, setTokenA] = useState({
     symbol: "Faucet",
     image: "/ethereum.png",
-    address: POOLS[POOL_ID].tokens[1].address,
+    address: Object?.values(
+      POOLS?.[localStorage.getItem("coin_name") ?? "Goerli"]
+    )?.[0].tokens[1].address,
     balance: 0,
     tokenIsSet: false,
   });
@@ -32,7 +34,9 @@ export const LongSwapProvider = ({ children }) => {
   const [tokenB, setTokenB] = useState({
     symbol: "Select Token",
     image: "/ethereum.png",
-    address: POOLS[POOL_ID].tokens[0].address,
+    address: Object?.values(
+      POOLS?.[localStorage.getItem("coin_name") ?? "Goerli"]
+    )?.[0].tokens[0].address,
     balance: 0,
     tokenIsSet: false,
   });
