@@ -91,6 +91,8 @@ export async function cancelLTO(
   walletAdress,
   signer,
   orderId,
+  orderHash,
+  setTransactionHash,
   setOrderLogsDecoded,
   setMessage,
   provider
@@ -126,6 +128,7 @@ export async function cancelLTO(
       gasLimit: 500000,
     }
   );
+  setTransactionHash(orderHash);
   const exitPoolResult = await exitPoolTx.wait();
   setMessage(POPUP_MESSAGE.ltoCancelSuccess);
   await getEthLogs(provider, walletAdress).then((res) => {
@@ -140,6 +143,8 @@ export async function withdrawLTO(
   walletAdress,
   signer,
   orderId,
+  orderHash,
+  setTransactionHash,
   setOrderLogsDecoded,
   setMessage,
   provider
@@ -175,6 +180,7 @@ export async function withdrawLTO(
       gasLimit: 500000,
     }
   );
+  setTransactionHash(orderHash);
   const withdrawLTOResult = await withdrawLTOTx.wait();
   await getEthLogs(provider, walletAdress).then((res) => {
     const resArray = Array.from(res.values());

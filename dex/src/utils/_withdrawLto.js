@@ -5,6 +5,7 @@ import { getProvider } from "./getProvider";
 
 export const _withdrawLTO = async (
   orderId,
+  orderHash,
   setLoading,
   setDisableActionBtn,
   account,
@@ -16,7 +17,8 @@ export const _withdrawLTO = async (
   isWalletConnected,
   setOrderLogsDecoded,
   setMessage,
-  provider
+  provider,
+  setTransactionHash
 ) => {
   console.log("Order Id", orderId);
   setDisableActionBtn(true);
@@ -40,10 +42,13 @@ export const _withdrawLTO = async (
         setWalletConnected
       );
     }
+
     await withdrawLTO(
       walletAddress,
       signer,
       orderId,
+      orderHash,
+      setTransactionHash,
       setOrderLogsDecoded,
       setMessage,
       provider

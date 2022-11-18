@@ -29,6 +29,7 @@ const LongTermOrderCard = (props) => {
     setBalance,
     setAccount,
     setWalletConnected,
+    setTransactionHash,
   } = useContext(ShortSwapContext);
 
   const {
@@ -131,9 +132,10 @@ const LongTermOrderCard = (props) => {
   // Mapping Data from EthLogs
   console.log("orderLogsDecoded", orderLogsLoading);
 
-  const handleCancel = (orderId) => {
+  const handleCancel = (orderId, orderHash) => {
     _cancelLTO(
       orderId,
+      orderHash,
       setLoading,
       setDisableActionBtn,
       account,
@@ -145,13 +147,16 @@ const LongTermOrderCard = (props) => {
       isWalletConnected,
       setOrderLogsDecoded,
       setMessage,
-      provider
+      provider,
+      setTransactionHash
     );
   };
 
-  const handleWithDraw = (orderId) => {
+  const handleWithDraw = (orderId, orderHash) => {
+    console.log("Order hash", orderHash);
     _withdrawLTO(
       orderId,
+      orderHash,
       setLoading,
       setDisableActionBtn,
       account,
@@ -163,7 +168,8 @@ const LongTermOrderCard = (props) => {
       isWalletConnected,
       setOrderLogsDecoded,
       setMessage,
-      provider
+      provider,
+      setTransactionHash
     );
   };
 
@@ -405,7 +411,10 @@ const LongTermOrderCard = (props) => {
                         disableActionBtn
                       }
                       onClick={() => {
-                        handleCancel(it?.orderId?.toNumber());
+                        handleCancel(
+                          it?.orderId?.toNumber(),
+                          it?.transactionHash
+                        );
                         // cancelPool(it?.orderId?.toNumber());
                       }}
                     >
@@ -421,7 +430,10 @@ const LongTermOrderCard = (props) => {
                             styles.withdrawButton
                           )}
                           onClick={() => {
-                            handleWithDraw(it?.orderId?.toNumber());
+                            handleWithDraw(
+                              it?.orderId?.toNumber(),
+                              it?.transactionHash
+                            );
                           }}
                           disabled={disableActionBtn}
                         >

@@ -6,6 +6,7 @@ import { getProvider } from "./getProvider";
 // cancelLTO
 export const _cancelLTO = async (
   orderId,
+  orderHash,
   setLoading,
   setDisableActionBtn,
   account,
@@ -17,7 +18,8 @@ export const _cancelLTO = async (
   isWalletConnected,
   setOrderLogsDecoded,
   setMessage,
-  provider
+  provider,
+  setTransactionHash
 ) => {
   setLoading(true);
   setDisableActionBtn(true);
@@ -40,10 +42,14 @@ export const _cancelLTO = async (
         setWalletConnected
       );
     }
+    setTransactionHash(orderHash);
+
     await cancelLTO(
       walletAddress,
       signer,
       orderId,
+      orderHash,
+      setTransactionHash,
       setOrderLogsDecoded,
       setMessage,
       provider
