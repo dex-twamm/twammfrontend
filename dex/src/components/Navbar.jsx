@@ -52,7 +52,7 @@ const Navbar = (props) => {
   console.log("Wallet Status", isWalletConnected);
   // const [showDisconnect, setShowDisconnect] = useState(false);
   const networks = [
-    { name: "Ethereum", chainId: "1", logo: "ethereum.png" },
+    { name: "Ethereum", chainId: "5", logo: "ethereum.png" },
     { name: "Goerli", chainId: "5", logo: "/Testv4.jpeg" },
     { name: "Coming Soon", chainId: "0", logo: "ethereum.png" },
   ];
