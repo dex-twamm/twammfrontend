@@ -420,9 +420,6 @@ export const ERC20_TOKEN_CONTRACT_ABI = [
   },
 ];
 
-export const TOKEN_CONTRACT_ADDRESS =
-  "0x4E5696E26D085D13Cd8C6d1cf8c6bEE70D4c48df";
-
 export const VAULT_CONTRACT_ABI = [
   {
     inputs: [
@@ -1603,6 +1600,9 @@ export const VAULT_CONTRACT_ABI = [
   },
 ];
 
+export const VAULT_CONTRACT_ADDRESS =
+  "0xBA12222222228d8Ba445958a75a0704d566BF2C8";
+
 export const TWAMM_POOL_ABI = [
   {
     inputs: [
@@ -2125,6 +2125,55 @@ export const TWAMM_POOL_ABI = [
     inputs: [],
     name: "getLastInvariant",
     outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "orderId",
+        type: "uint256",
+      },
+    ],
+    name: "getLongTermOrder",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
       {
         internalType: "uint256",
         name: "",
@@ -2755,7 +2804,30 @@ export const TWAMM_POOL_ABI = [
         type: "uint256",
       },
     ],
-    name: "setMinltoOrderAmountToAmmBalanceRatio",
+    name: "setMinLtoOrderAmountToAmmBalanceRatio",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "maxUniqueOrderExpiries",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "maxNumberOfBlockIntervals",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "maxVirtualOrderExecutionLoops",
+        type: "uint256",
+      },
+    ],
+    name: "setOrderLimits",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
