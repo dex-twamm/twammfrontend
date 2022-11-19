@@ -422,7 +422,7 @@ const Swap = (props) => {
                       fontFamily: "Open Sans",
                     }}
                   >
-                    {`${targetDate} `}
+                    {`${targetDate} `.substring(0, 16)}
                   </Box>
 
                   <Box
