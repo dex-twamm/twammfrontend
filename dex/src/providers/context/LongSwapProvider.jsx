@@ -6,6 +6,7 @@ import { createContext, useContext, useState } from "react";
 // } from "../../utils";
 import { POOLS, POOL_ID } from "../../utils/pool";
 import { ShortSwapContext } from "./ShortSwapProvider";
+import ethLogo from "../../images/ethereum.png";
 
 export const LongSwapProvider = ({ children }) => {
   const [sliderValue, setSliderValue] = useState(1);
@@ -21,19 +22,18 @@ export const LongSwapProvider = ({ children }) => {
   const { tokenBalances } = useContext(ShortSwapContext);
 
   console.log("Token Balances ", tokenBalances);
+  const poolConfig = Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0];
   const [tokenA, setTokenA] = useState({
     symbol: "Faucet",
-    image: "ethereum.png",
-    address: Object?.values(
-      POOLS?.[localStorage.getItem("coin_name") ?? "Goerli"]
-    )?.[0].tokens[1].address,
+    image: poolConfig?.tokens[1].logo,
+    address: poolConfig.tokens[1].address,
     balance: 0,
     tokenIsSet: false,
   });
 
   const [tokenB, setTokenB] = useState({
     symbol: "Select Token",
-    image: "ethereum.png",
+    image: ethLogo,
     address: Object?.values(
       POOLS?.[localStorage.getItem("coin_name") ?? "Goerli"]
     )?.[0].tokens[0].address,

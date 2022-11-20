@@ -287,7 +287,7 @@ const LongTermOrderCard = (props) => {
                         src={
                           Object.values(
                             POOLS[localStorage.getItem("coin_name")]
-                          )[0].tokens[it.sellTokenIndex].image
+                          )[0].tokens[it.sellTokenIndex].logo
                         }
                         alt={
                           Object.values(
@@ -334,7 +334,7 @@ const LongTermOrderCard = (props) => {
                         src={
                           Object.values(
                             POOLS[localStorage.getItem("coin_name")]
-                          )[0].tokens[it.buyTokenIndex].image
+                          )[0].tokens[it.buyTokenIndex].logo
                         }
                         alt={
                           Object.values(

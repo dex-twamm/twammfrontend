@@ -307,7 +307,7 @@ const Swap = (props) => {
                       className={styles.select}
                     >
                       <div className={styles.currencyWrap}>
-                        {tokenB.image !== "" && (
+                        {tokenB.logo !== "" && (
                           <img
                             className={styles.cryptoImage}
                             src={tokenB.image}

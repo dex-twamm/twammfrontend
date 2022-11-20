@@ -24,14 +24,21 @@ const Modal = ({
   };
 
   // Handle Select Token Modal display
-  const handleTokenSelection = (event) => {
+  const handleTokenSelection = (token) => {
     console.log("TokenSelected Prabin", selectToken);
-    const token = event.currentTarget;
-    console.log("Modal:Handle", token.children[2].innerHTML);
-    if (selectToken === "1") {
-      setEthBalance(parseFloat(token.children[3].innerHTML).toFixed(2));
-      setSrcAddress(token.children[2].innerHTML);
-      if (token.children[1].innerHTML === tokenB.symbol) {
+    const chosenToken = tokenDetails.find(x => x.symbol === token.symbol);
+
+    let balances = tokenBalances.map((obj) => ({
+      address: Object.keys(obj)[0],
+      balance: parseFloat(Object.values(obj)[0]).toFixed(2),
+    }));
+
+    const chosenTokenBalance = 
+      (balances.find(x => x.address === chosenToken.address)).balance;
+    if (selectToken === "1") { //set tokenFrom
+      setEthBalance(chosenTokenBalance);
+      setSrcAddress(chosenToken.address);
+      if (chosenToken.symbol === tokenB.symbol) {
         setTokenB({
           symbol: tokenA.symbol,
           image: tokenA.image,
@@ -39,23 +46,18 @@ const Modal = ({
           tokenIsSet: true,
         });
       }
-      console.log(
-        "Prabin TokenHandle",
-        token.children[1].innerHTML,
-        tokenB.symbol
-      );
       setTokenA({
-        symbol: token.children[1].innerHTML,
-        image: token.children[0].src.slice(21, token.length),
-        balance: token.children[3].innerHTML,
+        symbol: chosenToken.symbol,
+        image: chosenToken.logo,
+        balance: chosenTokenBalance,
         tokenIsSet: true,
       });
-    } else if (selectToken === "2") {
-      setDestAddress(token.children[2].innerHTML);
+    } else if (selectToken === "2") { //setTokenTo
+      setDestAddress(chosenToken.address);
       setTokenB({
-        symbol: token.children[1].innerHTML,
-        image: token.children[0].src.slice(21, token.length),
-        balance: token.children[3].innerHTML,
+        symbol: chosenToken.symbol,
+        image: chosenToken.logo,
+        balance: chosenTokenBalance,
         tokenIsSet: true,
       });
     }
@@ -68,14 +70,13 @@ const Modal = ({
     const balance =
       tokenBalances && tokenBalances?.filter((item) => item[token.address]);
 
-    // console.log('balance', balance[])
 
     return (
       <>
         <img
           className={styles.modalTokenImg}
           alt="ETH logo"
-          src={token.image}
+          src={token.logo}
           style={{ width: "25px" }}
         />
         <p>{token.name}</p>
@@ -119,7 +120,7 @@ const Modal = ({
         <div
           className={styles.modalToken}
           key={token.symbol}
-          onClick={handleTokenSelection}
+          onClick={() => handleTokenSelection(token)}
         >
           {getMarkup(token)}
         </div>
@@ -131,7 +132,7 @@ const Modal = ({
         <div
           className={styles.modalToken}
           key={token.symbol}
-          onClick={handleTokenSelection}
+          onClick={() => handleTokenSelection(token)}
         >
           {getMarkup(token)}
         </div>

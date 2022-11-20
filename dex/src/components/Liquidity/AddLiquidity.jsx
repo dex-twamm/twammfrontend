@@ -173,10 +173,10 @@ const AddLiquidity = (props) => {
                 className={styles.select}
               >
                 <div className={styles.currencyWrap}>
-                  {tokenB.image !== "" && (
+                  {tokenB.logo !== "" && (
                     <img
                       className={styles.cryptoImage}
-                      src={tokenB.image}
+                      src={tokenB.logo}
                       alt="Ethereum"
                     />
                   )}
@@ -226,7 +226,7 @@ const AddLiquidity = (props) => {
               />
               <Input
                 id={2}
-                imgSrc={tokenB.image}
+                imgSrc={tokenB.logo}
                 symbol={tokenB.symbol}
                 handleDisplay={handleDisplay}
                 selectToken={selectToken}

@@ -28,20 +28,19 @@ const Tabs = () => {
   const { setTokenA, setTokenB } = useContext(LongSwapContext);
   const { setSwapAmount } = useContext(ShortSwapContext);
   const onNavLinkClick = () => {
+    const poolConfig = Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0];
     setSwapAmount("");
     setTokenA({
       symbol: "Faucet",
-      image: "ethereum.png",
-      address: Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
-        ?.TOKEN_TWO_ADDRESS,
+      image: poolConfig?.tokens[1].logo,
+      address: poolConfig?.tokens[1].address,
       balance: 0,
       tokenIsSet: true,
     });
     setTokenB({
       symbol: "Select Token",
-      image: "Testv4.jpeg",
-      address: Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
-        ?.TOKEN_ONE_ADDRESS,
+      image: poolConfig?.tokens[0].logo,
+      address: poolConfig?.tokens[0].address,
       balance: 0,
       tokenIsSet: false,
     });

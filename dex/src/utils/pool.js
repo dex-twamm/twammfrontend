@@ -1,3 +1,6 @@
+import ethLogo from  "../images/ethereum.png";
+import maticLogo from  "../images/Testv4.jpeg";
+
 export const POOL_ID =
   "0xdab1b8c505867ec1e7292b17d7a4b42b6e1626680002000000000000000002c1";
 
@@ -16,11 +19,12 @@ export const POOLS = {
       TOKEN_TWO_ADDRESS: "0xBA62BCfcAaFc6622853cca2BE6Ac7d845BC0f2Dc",
       tokens: [
         {
-          symbol: "DAI",
+          symbol: "MATIC",
           name: "Matic",
           decimals: 18,
           address: "0x499d11E0b6eAC7c0593d8Fb292DCBbF815Fb29Ae",
           image: "Testv4.jpeg",
+          logo: maticLogo,
         },
         {
           symbol: "FAU",
@@ -28,6 +32,7 @@ export const POOLS = {
           decimals: 18,
           address: "0xBA62BCfcAaFc6622853cca2BE6Ac7d845BC0f2Dc",
           image: "ethereum.png",
+          logo: ethLogo,
         },
       ],
     },
@@ -46,18 +51,18 @@ export const POOLS = {
       TOKEN_TWO_ADDRESS: "0xBA62BCfcAaFc6622853cca2BE6Ac7d845BC0f2Dc",
       tokens: [
         {
-          symbol: "DAI",
+          symbol: "MATIC",
           name: "Matic",
           decimals: 18,
           address: "0x499d11E0b6eAC7c0593d8Fb292DCBbF815Fb29Ae",
-          image: "Testv4.jpeg",
+          logo: maticLogo,
         },
         {
           symbol: "FAU",
           name: "Faucet",
           decimals: 18,
           address: "0xBA62BCfcAaFc6622853cca2BE6Ac7d845BC0f2Dc",
-          image: "ethereum.png",
+          logo: ethLogo,
         },
       ],
     },

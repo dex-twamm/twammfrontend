@@ -2,6 +2,7 @@ import { ethers, providers } from "ethers";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
+import ethLogo from "./images/ethereum.png";
 import PopupModal from "./components/alerts/PopupModal";
 import {
   AddLiquidity,
@@ -121,11 +122,11 @@ function App() {
   useEffect(() => {
     if (transactionHash) {
       setSwapAmount(0);
+      const poolConfig = Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0];
       setTokenB({
         symbol: "Select Token",
-        image: "ethereum.png",
-        address: Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
-          .tokens[0].address,
+        image: poolConfig?.tokens[0].logo,
+        address: poolConfig?.TOKEN_TWO_ADDRESS,
         balance: 0,
         tokenIsSet: false,
       });
@@ -137,7 +138,7 @@ function App() {
     token: {
       name: "Ethereum",
       symbol: "ETH",
-      image: "ethereum.png",
+      image: ethLogo,
     },
     wallet: {
       address: account === null ? "Wallet Address" : truncateAddress(account),
@@ -337,7 +338,7 @@ function App() {
       <div className="main">
         <Navbar
           tokenName={data.token.name}
-          tokenImage={data.token.image}
+          tokenImage={data.token.logo}
           walletBalance={data.wallet.balance}
           walletAddress={data.wallet.address}
           accountStatus={isWalletConnected ? true : false}
@@ -355,7 +356,7 @@ function App() {
             element={
               <ShortSwap
                 tokenSymbol={data.token.symbol}
-                tokenImage={data.token.image}
+                tokenImage={data.token.logo}
                 // connectWallet={ShortSwapButtonClick}
                 buttonText={!isWalletConnected ? "Connect Wallet" : "Swap"}
                 showSettings={showSettings}
@@ -372,7 +373,7 @@ function App() {
             element={
               <LongSwap
                 tokenSymbol={data.token.symbol}
-                tokenImage={data.token.image}
+                tokenImage={data.token.logo}
                 buttonText={!isWalletConnected ? "Connect Wallet" : "Swap"}
                 // connectWallet={LongSwapButtonClick}
                 isPlacedLongTermOrder={isPlacedLongTermOrder}

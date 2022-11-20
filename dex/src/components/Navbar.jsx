@@ -12,6 +12,8 @@ import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS, toHex } from "../utils";
 import { connectWallet } from "../utils/connetWallet";
 import { DisconnectWalletOption } from "./DisconnectWalletOption";
 import NavOptionDropdwon from "./navbarDropdown/NavOptionDropdwon";
+import goerliLogo from "../images/Testv4.jpeg";
+import ethLogo from "../images/ethereum.png";
 
 const Navbar = (props) => {
   const {
@@ -52,9 +54,9 @@ const Navbar = (props) => {
   console.log("Wallet Status", isWalletConnected);
   // const [showDisconnect, setShowDisconnect] = useState(false);
   const networks = [
-    { name: "Ethereum", chainId: "5", logo: "ethereum.png" },
-    { name: "Goerli", chainId: "5", logo: "/Testv4.jpeg" },
-    { name: "Coming Soon", chainId: "0", logo: "ethereum.png" },
+    { name: "Ethereum", chainId: "5", logo: ethLogo },
+    { name: "Goerli", chainId: "5", logo: goerliLogo },
+    { name: "Coming Soon", chainId: "0", logo: ethLogo },
   ];
 
   // const nId = window.ethereum?.networkVersion;

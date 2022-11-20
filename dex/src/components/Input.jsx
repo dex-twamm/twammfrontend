@@ -2,6 +2,7 @@ import { Backdrop, Skeleton } from "@mui/material";
 import classnames from "classnames";
 import { useContext, useEffect } from "react";
 import styles from "../css/Input.module.css";
+import ethLogo from "../images/ethereum.png";
 import { LongSwapContext, ShortSwapContext } from "../providers";
 // import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS, POOL_ID } from "../utils";
 import { POOLS, POOL_ID } from "../utils/pool";
@@ -52,12 +53,11 @@ const Input = (props) => {
   //   },
   // ];
 
-  const tokenDetails = Object.values(
-    POOLS[localStorage.getItem("coin_name") ?? "Goerli"]
-  )[0]?.tokens;
+  const tokenDetails = Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0].tokens;
 
   useEffect(() => {
     const address = tokenA?.address;
+    console.log("tokenA", tokenA);
 
     const balance =
       tokenBalances && tokenBalances?.filter((item) => item[address]);
@@ -65,7 +65,7 @@ const Input = (props) => {
     setTokenA({
       ...tokenA,
       symbol: "Faucet",
-      image: "ethereum.png",
+      image: ethLogo,
       balance: balance?.[0]?.[address],
       tokenIsSet: true,
     });
