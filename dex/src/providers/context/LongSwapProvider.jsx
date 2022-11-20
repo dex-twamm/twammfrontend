@@ -22,7 +22,12 @@ export const LongSwapProvider = ({ children }) => {
   const { tokenBalances } = useContext(ShortSwapContext);
 
   console.log("Token Balances ", tokenBalances);
-  const poolConfig = Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0];
+  let networkName = localStorage.getItem("coin_name");
+  if(!networkName || networkName === "undefined" ) {
+    networkName = "Ethereum";
+  }
+  console.log("networkName", networkName);
+  const poolConfig = Object.values(POOLS?.[networkName])?.[0];
   const [tokenA, setTokenA] = useState({
     symbol: "Faucet",
     image: poolConfig?.tokens[1].logo,
@@ -35,7 +40,7 @@ export const LongSwapProvider = ({ children }) => {
     symbol: "Select Token",
     image: ethLogo,
     address: Object?.values(
-      POOLS?.[localStorage.getItem("coin_name") ?? "Goerli"]
+      POOLS?.[networkName ?? "Goerli"]
     )?.[0].tokens[0].address,
     balance: 0,
     tokenIsSet: false,

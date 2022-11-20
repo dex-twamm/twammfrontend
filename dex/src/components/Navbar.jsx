@@ -60,8 +60,15 @@ const Navbar = (props) => {
   ];
 
   // const nId = window.ethereum?.networkVersion;
-  // console.log("nId--->", nId);
+  console.log("nId--->", nId);
   const initialNetwork = networks.filter((id) => id.chainId === nId);
+  console.log("initialNetwork", initialNetwork);
+
+  if(!localStorage.getItem("coin_name")) {
+    localStorage.setItem("coin_name", initialNetwork[0]?.name);
+    localStorage.setItem("coin_logo", initialNetwork[0]?.logo);
+  }
+
 
   // const [selectedNetwork, setSelectedNetwork] = useState({
   //   network: "Select a Network",

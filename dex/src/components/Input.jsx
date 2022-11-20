@@ -53,7 +53,11 @@ const Input = (props) => {
   //   },
   // ];
 
-  const tokenDetails = Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0].tokens;
+  let networkName = localStorage.getItem("coin_name");
+  if(networkName === undefined || networkName === "undefined" ) {
+    networkName = "Ethereum";
+  }
+  const tokenDetails = Object.values(POOLS?.[networkName])?.[0].tokens;
 
   useEffect(() => {
     const address = tokenA?.address;
