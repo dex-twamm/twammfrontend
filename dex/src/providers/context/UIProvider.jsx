@@ -13,7 +13,7 @@ const UIProvider = ({ children }) => {
   const nId = window.ethereum?.networkVersion;
 
   const [selectedNetwork, setSelectedNetwork] = useState({
-    network: "Select a Network",
+    network: "Goerli",
     logo: "",
     chainId: nId,
   });

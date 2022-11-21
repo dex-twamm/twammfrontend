@@ -1,7 +1,7 @@
 import { Contract } from "ethers";
 import { MAX_UINT256 } from ".";
 import { ERC20_TOKEN_CONTRACT_ABI } from "../constants";
-import { POOLS, POOL_ID } from "./pool";
+import { POOLS } from "./pool";
 
 export const getAllowance = async (
   provider,

@@ -189,7 +189,12 @@ function App() {
           currentNetwork?.network
         ).then((res) => {
           setPoolCash(res);
-          console.log("===GET POOL BALANCE====", res);
+          console.log(
+            "===GET POOL BALANCE====",
+            res,
+            tokenAddress,
+            currentNetwork?.network
+          );
         });
       }
     };

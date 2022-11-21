@@ -1,8 +1,5 @@
-import ethLogo from  "../images/ethereum.png";
-import maticLogo from  "../images/Testv4.jpeg";
-
-export const POOL_ID =
-  "0xdab1b8c505867ec1e7292b17d7a4b42b6e1626680002000000000000000002c1";
+import ethLogo from "../images/ethereum.png";
+import maticLogo from "../images/Testv4.jpeg";
 
 export const POOLS = {
   Goerli: {

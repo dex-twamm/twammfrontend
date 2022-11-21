@@ -7,7 +7,7 @@ import {
 } from ".";
 
 import { ERC20_TOKEN_CONTRACT_ABI, TWAMM_POOL_ABI } from "../constants";
-import { POOLS, POOL_ID } from "./pool";
+import { POOLS } from "./pool";
 // To Retrieve Token Balances
 export const getTokensBalance = async (
   provider,

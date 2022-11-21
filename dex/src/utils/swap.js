@@ -1,7 +1,7 @@
 import { BigNumber, Contract } from "ethers";
 import { VAULT_CONTRACT_ABI } from "../constants";
 import { MAX_UINT256 } from ".";
-import { POOLS, POOL_ID } from "./pool";
+import { POOLS } from "./pool";
 
 /*
   swapTokens: Swaps `swapAmountWei` of Eth/Crypto Dev tokens with `tokenToBeReceivedAfterSwap` amount of Eth/Crypto Dev tokens.
@@ -17,10 +17,11 @@ export const swapTokens = async (
   deadline,
   currentNetwork
 ) => {
+  // const currentNetwork = "Goerli";
   let txHash;
   // Create a new instance of the exchange contract
   const exchangeContract = new Contract(
-    Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
+    Object.values(POOLS[currentNetwork ?? "Goerli"])[0].VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -43,7 +44,7 @@ export const swapTokens = async (
 
   const gasEstimate = await exchangeContract.estimateGas.swap(
     {
-      poolId: Object.keys(POOLS[currentNetwork])[0],
+      poolId: Object.keys(POOLS[currentNetwork ?? "Goerli"])[0],
       kind: kind,
       assetIn: assetIn,
       assetOut: assetOut,
@@ -67,7 +68,7 @@ export const swapTokens = async (
 
   const swapTx = await exchangeContract.swap(
     {
-      poolId: Object.keys(POOLS[currentNetwork])[0],
+      poolId: Object.keys(POOLS[currentNetwork ?? "Goerli"])[0],
       kind: kind,
       assetIn: assetIn,
       assetOut: assetOut,

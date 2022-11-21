@@ -4,7 +4,7 @@ import { createContext, useContext, useState } from "react";
 //   MATIC_TOKEN_ADDRESS,
 //   POOL_ID,
 // } from "../../utils";
-import { POOLS, POOL_ID } from "../../utils/pool";
+import { POOLS } from "../../utils/pool";
 import { ShortSwapContext } from "./ShortSwapProvider";
 import ethLogo from "../../images/ethereum.png";
 import { useNetwork } from "./UIProvider";

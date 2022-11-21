@@ -2,7 +2,7 @@ import { Contract, ethers } from "ethers";
 // import { POOL_ID } from ".";
 import { TWAMM_POOL_ABI } from "../constants";
 import { getLongTermOrder } from "./longSwap";
-import { POOLS, POOL_ID } from "./pool";
+import { POOLS } from "./pool";
 
 export async function getEthLogs(signer, walletAddress, currentNetwork) {
   const exchangeContract = new Contract(

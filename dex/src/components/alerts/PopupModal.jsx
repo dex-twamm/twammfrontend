@@ -4,8 +4,7 @@ import { useContext } from "react";
 import { POPUP_MESSAGE } from "../../constants";
 import { ShortSwapContext } from "../../providers";
 import { useNetwork } from "../../providers/context/UIProvider";
-// import { POOL_ID } from "../../utils";
-import { POOLS, POOL_ID } from "../../utils/pool";
+import { POOLS } from "../../utils/pool";
 
 const PopupModal = ({
   isPlacedLongTermOrder,

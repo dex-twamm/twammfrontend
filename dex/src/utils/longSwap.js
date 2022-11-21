@@ -11,7 +11,7 @@ import {
   // MATIC_TOKEN_ADDRESS,
   MAX_UINT256,
 } from ".";
-import { POOLS, POOL_ID } from "./pool";
+import { POOLS } from "./pool";
 
 export async function placeLongTermOrder(
   tokenInIndex,
@@ -43,7 +43,7 @@ export async function placeLongTermOrder(
   );
 
   const placeLtoTx = await exchangeContract.joinPool(
-    POOL_ID,
+    Object.keys(POOLS[currentNetwork])[0],
     walletAddress,
     walletAddress,
     {

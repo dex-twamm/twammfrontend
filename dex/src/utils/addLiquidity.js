@@ -13,7 +13,7 @@ import {
   VAULT_CONTRACT_ABI,
 } from "../constants";
 import { getEthLogs } from "./get_ethLogs";
-import { POOLS, POOL_ID } from "./pool";
+import { POOLS } from "./pool";
 
 export async function joinPool(walletAddress, signer, currentNetwork) {
   const encodedRequest = defaultAbiCoder.encode(
@@ -28,7 +28,7 @@ export async function joinPool(walletAddress, signer, currentNetwork) {
     signer
   );
   const joinPool = await poolContract.joinPool(
-    POOL_ID,
+    Object.keys(POOLS[currentNetwork])[0],
     walletAddress,
     walletAddress,
     {
@@ -63,7 +63,7 @@ export async function exitPool(
     [4, bptAmountIn]
   );
   const exitPoolTx = await poolContract.exitPool(
-    POOL_ID,
+    Object.keys(POOLS[currentNetwork])[0],
     walletAdress,
     walletAdress,
     {
@@ -106,7 +106,7 @@ export async function cancelLTO(
     [4, orderId]
   );
   const exitPoolTx = await poolContract.exitPool(
-    POOL_ID,
+    Object.keys(POOLS[currentNetwork])[0],
     walletAdress,
     walletAdress,
     {
@@ -155,7 +155,7 @@ export async function withdrawLTO(
     [5, orderId]
   );
   const withdrawLTOTx = await poolContract.exitPool(
-    POOL_ID,
+    Object.keys,
     walletAdress,
     walletAdress,
     {
@@ -182,17 +182,17 @@ export async function withdrawLTO(
 }
 
 export async function getPoolBalance(signer, tokenAddress, currentNetwork) {
-  const poolContract = new Contract(
+  const vaultContract = new Contract(
     Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );
-  const poolBalance = await poolContract.getPoolTokenInfo(
-    POOL_ID,
+  const poolBalance = await vaultContract.getPoolTokenInfo(
+    Object.keys(POOLS[currentNetwork])[0],
     tokenAddress
   );
   const cash = poolBalance.cash._hex;
   const readableCash = ethers.utils.formatEther(cash);
   console.log("====Pool Cash====", ethers.utils.formatEther(cash));
-  return (readableCash * 0.3).toString();
+  return readableCash.toString();
 }

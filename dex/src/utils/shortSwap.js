@@ -39,7 +39,7 @@ export const _swapTokens = async (
     pCash.toString(),
     swapAmountWei.toString()
   );
-  if (swapAmountWei.lte(walletBalanceWei && pCash)) {
+  if (swapAmountWei.lte(walletBalanceWei)) {
     try {
       const signer = await getProvider(
         true,

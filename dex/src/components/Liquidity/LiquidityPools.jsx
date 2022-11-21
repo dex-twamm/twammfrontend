@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import "../../css/LiquidityPools.css";
 
 // import { POOL_ID } from "../../utils";
-import { POOLS, POOL_ID } from "../../utils/pool";
+import { POOLS } from "../../utils/pool";
 import { useContext } from "react";
 import { ShortSwapContext } from "../../providers";
 
