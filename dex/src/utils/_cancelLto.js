@@ -19,7 +19,8 @@ export const _cancelLTO = async (
   setOrderLogsDecoded,
   setMessage,
   provider,
-  setTransactionHash
+  setTransactionHash,
+  currentNetwork
 ) => {
   setLoading(true);
   setDisableActionBtn(true);
@@ -50,7 +51,8 @@ export const _cancelLTO = async (
       setTransactionHash,
       setOrderLogsDecoded,
       setMessage,
-      provider
+      provider,
+      currentNetwork
     );
     setLoading(false);
     setDisableActionBtn(false);

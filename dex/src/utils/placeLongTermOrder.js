@@ -21,16 +21,17 @@ export const _placeLongTermOrders = async (
   setIsPlacedLongTermOrder,
   setOrderLogsDecoded,
   setError,
-  provider
+  provider,
+  currentNetwork
 ) => {
   const swapAmountWei = ethers.utils.parseUnits(swapAmount, "ether");
   // console.log('swapAmountWei', swapAmountWei);
   try {
     const tokenInIndex = Object.values(
-      POOLS[localStorage.getItem("coin_name")]
+      POOLS[currentNetwork]
     )[0].tokens.findIndex((object) => srcAddress === object.address);
     const tokenOutIndex = Object.values(
-      POOLS[localStorage.getItem("coin_name")]
+      POOLS[currentNetwork]
     )[0].tokens.findIndex((object) => destAddress === object.address);
     const amountIn = swapAmountWei;
     // console.log('amountIn', amountIn);
@@ -54,7 +55,8 @@ export const _placeLongTermOrders = async (
       blockIntervals,
       signer,
       walletAddress,
-      setTransactionHash
+      setTransactionHash,
+      currentNetwork
     )
       .then((res) => {
         setTransactionHash(res);

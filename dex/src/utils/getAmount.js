@@ -9,12 +9,14 @@ import {
 import { ERC20_TOKEN_CONTRACT_ABI, TWAMM_POOL_ABI } from "../constants";
 import { POOLS, POOL_ID } from "./pool";
 // To Retrieve Token Balances
-export const getTokensBalance = async (provider, walletAddress) => {
+export const getTokensBalance = async (
+  provider,
+  walletAddress,
+  currentNetwork
+) => {
   var tokenAddress = [
-    Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
-      ?.TOKEN_TWO_ADDRESS,
-    Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
-      ?.TOKEN_ONE_ADDRESS,
+    Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
+    Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
   ];
   const newBalance = [];
   for (let index = 0; index < tokenAddress.length; index++) {
@@ -38,9 +40,13 @@ export const getTokensBalance = async (provider, walletAddress) => {
   return newBalance.map((item) => item);
 };
 
-export const getLPTokensBalance = async (provider, walletAddress) => {
+export const getLPTokensBalance = async (
+  provider,
+  walletAddress,
+  currentNetwork
+) => {
   const poolContract = new Contract(
-    Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0].address,
+    Object.values(POOLS?.[currentNetwork])?.[0].address,
     TWAMM_POOL_ABI,
     provider
   );

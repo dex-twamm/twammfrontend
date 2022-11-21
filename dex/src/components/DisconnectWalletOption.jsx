@@ -17,6 +17,7 @@ import { truncateAddress } from "../utils";
 import { HiExternalLink } from "react-icons/hi";
 import styles from "../css/LongTermOrderCard.module.css";
 import { POOLS, POOL_ID } from "../utils/pool";
+import { useNetwork } from "../providers/context/UIProvider";
 
 const style = {
   position: "absolute",
@@ -50,6 +51,7 @@ const DisconnectWalletOption = ({
 
   // const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const currentNetwork = useNetwork();
 
   return (
     <Box
@@ -235,9 +237,8 @@ const DisconnectWalletOption = ({
                 onClick={() =>
                   window.open(
                     `${
-                      Object.values(
-                        POOLS?.[localStorage.getItem("coin_name")]
-                      )?.[0]?.ethersScanUrl
+                      Object.values(POOLS?.[currentNetwork?.network])?.[0]
+                        ?.ethersScanUrl
                     }${account}`,
                     "_blank"
                   )

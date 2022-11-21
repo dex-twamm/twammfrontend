@@ -14,14 +14,13 @@ export const getEstimatedConvertedToken = async (
   walletAddress,
   expectedSwapOut,
   tolerance,
-  deadline
+  deadline,
+  currentNetwork
 ) => {
   let txHash;
   // Create a new instance of the exchange contract
   const exchangeContract = new Contract(
-    Object.values(
-      POOLS[localStorage.getItem("coin_name")]
-    )[0].VAULT_CONTRACT_ADDRESS,
+    Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -43,7 +42,7 @@ export const getEstimatedConvertedToken = async (
   );
   const swapTx = await exchangeContract.callStatic.swap(
     {
-      poolId: Object.keys(POOLS[localStorage.getItem("coin_name")])[0],
+      poolId: Object.keys(POOLS[currentNetwork])[0],
       kind: kind,
       assetIn: assetIn,
       assetOut: assetOut,

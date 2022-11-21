@@ -4,6 +4,7 @@ import { useContext, useEffect } from "react";
 import styles from "../css/Input.module.css";
 import ethLogo from "../images/ethereum.png";
 import { LongSwapContext, ShortSwapContext } from "../providers";
+import { useNetwork } from "../providers/context/UIProvider";
 // import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS, POOL_ID } from "../utils";
 import { POOLS, POOL_ID } from "../utils/pool";
 import Modal from "./Modal";
@@ -23,9 +24,16 @@ const Input = (props) => {
     swapType,
     placeholder,
   } = props;
-  const { tokenBalances, selectToken, setEthBalance, setSrcAddress } =
-    useContext(ShortSwapContext);
+  const {
+    tokenBalances,
+    selectToken,
+    setEthBalance,
+    setSrcAddress,
+    isWalletConnected,
+  } = useContext(ShortSwapContext);
   const { tokenA, tokenB } = useContext(LongSwapContext);
+  const currentNetwork = useNetwork();
+
   console.log("swap token", tokenA, tokenB);
   // console.log("Select Token Input.js", selectToken);
   // console.log("TOKEN A", tokenA);
@@ -35,14 +43,14 @@ const Input = (props) => {
   //     name: "Faucet",
   //     symbol: "ETH",
   //     image: "ethereum.png",
-  //     address: Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0].tokens[1].address,
+  //     address: Object.values(POOLS?.[currentNetwork?.network])?.[0].tokens[1].address,
   //     balance: tokenBalances[0] ?? 0,
   //   },
   //   {
   //     name: "Matic",
   //     symbol: "DAI",
   //     image: "/Testv4.jpeg",
-  //     address: Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0].tokens[0].address,
+  //     address: Object.values(POOLS?.[currentNetwork?.network])?.[0].tokens[0].address,
   //     balance: tokenBalances[1] ?? 0,
   //   },
   //   {
@@ -53,8 +61,12 @@ const Input = (props) => {
   //   },
   // ];
 
-  let networkName = localStorage.getItem("coin_name");
-  if(networkName === undefined || networkName === "undefined" ) {
+  let networkName = currentNetwork?.network;
+  if (
+    networkName === undefined ||
+    networkName === "undefined" ||
+    networkName === "Select a Network"
+  ) {
     networkName = "Ethereum";
   }
   const tokenDetails = Object.values(POOLS?.[networkName])?.[0].tokens;
@@ -203,7 +215,9 @@ const Input = (props) => {
         </div>
         <div className={styles.balance}>
           Balance :{" "}
-          {tokenBalances ? (
+          {!isWalletConnected ? (
+            "N/A"
+          ) : tokenBalances ? (
             id === 1 ? (
               parseFloat(tokenA?.balance)?.toFixed(4)
             ) : (

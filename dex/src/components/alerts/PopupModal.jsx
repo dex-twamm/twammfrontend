@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useContext } from "react";
 import { POPUP_MESSAGE } from "../../constants";
 import { ShortSwapContext } from "../../providers";
+import { useNetwork } from "../../providers/context/UIProvider";
 // import { POOL_ID } from "../../utils";
 import { POOLS, POOL_ID } from "../../utils/pool";
 
@@ -20,6 +21,8 @@ const PopupModal = ({
     transactionHash,
     setTransactionHash,
   } = useContext(ShortSwapContext);
+
+  const currentNetwork = useNetwork();
 
   // Timeout For Backdrop
   useEffect(() => {
@@ -49,17 +52,14 @@ const PopupModal = ({
   const handleButtonClick = () => {
     console.log(
       "links",
-      Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
-        .transactionUrl,
+      Object.values(POOLS?.[currentNetwork?.network])?.[0].transactionUrl,
       `${
-        Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
-          ?.transactonUrl
+        Object.values(POOLS?.[currentNetwork?.network])?.[0]?.transactonUrl
       }${transactionHash}`
     );
     window.open(
       `${
-        Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
-          .transactionUrl
+        Object.values(POOLS?.[currentNetwork?.network])?.[0].transactionUrl
       }${transactionHash}`
     );
   };

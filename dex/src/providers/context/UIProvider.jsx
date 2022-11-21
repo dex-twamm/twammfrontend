@@ -1,6 +1,11 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 const UIContext = createContext(null);
+
+export const useNetwork = () => {
+  const { selectedNetwork } = useContext(UIContext);
+  return selectedNetwork;
+};
 
 const UIProvider = ({ children }) => {
   const [showDropdown, setShowDropdown] = useState(false);

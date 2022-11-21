@@ -21,7 +21,8 @@ export const _swapTokens = async (
   setTransactionHash,
   setMessage,
   setError,
-  setLoading
+  setLoading,
+  currentNetwork
 ) => {
   const walletBalanceWei = ethers.utils.parseUnits(ethBalance, "ether");
   const pCash = ethers.utils.parseUnits(poolCash, "ether");
@@ -54,7 +55,8 @@ export const _swapTokens = async (
         walletAddress,
         expectedSwapOut,
         tolerance,
-        deadline
+        deadline,
+        currentNetwork
       )
         .then((res) => {
           console.log("Responseeeee----->", res);

@@ -20,14 +20,13 @@ export async function placeLongTermOrder(
   numberOfBlockIntervals,
   signer,
   walletAddress,
-  setTransactionHash
+  setTransactionHash,
+  currentNetwork
 ) {
   let txHash;
 
   const exchangeContract = new Contract(
-    Object.values(
-      POOLS[localStorage.getItem("coin_name")]
-    )[0].VAULT_CONTRACT_ADDRESS,
+    Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -49,10 +48,8 @@ export async function placeLongTermOrder(
     walletAddress,
     {
       assets: [
-        Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
-          ?.TOKEN_ONE_ADDRESS,
-        Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
-          ?.TOKEN_TWO_ADDRESS,
+        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
+        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
       ],
       maxAmountsIn: [MAX_UINT256, MAX_UINT256],
       fromInternalBalance: false,
@@ -71,9 +68,9 @@ export async function placeLongTermOrder(
   return txHash;
 }
 
-export async function getLongTermOrder(signer, orderId) {
+export async function getLongTermOrder(signer, orderId, currentNetwork) {
   const contract = new Contract(
-    Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0].LTOContract,
+    Object.values(POOLS?.[currentNetwork])?.[0].LTOContract,
     LONGTERM_ABI,
     signer
   );
@@ -83,9 +80,9 @@ export async function getLongTermOrder(signer, orderId) {
   return orderDetails;
 }
 
-export async function getLastVirtualOrderBlock(signer) {
+export async function getLastVirtualOrderBlock(signer, currentNetwork) {
   const contract = new Contract(
-    Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0].LTOContract,
+    Object.values(POOLS?.[currentNetwork])?.[0].LTOContract,
     LONGTERM_ABI,
     signer
   );

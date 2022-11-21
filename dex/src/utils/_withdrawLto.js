@@ -18,7 +18,8 @@ export const _withdrawLTO = async (
   setOrderLogsDecoded,
   setMessage,
   provider,
-  setTransactionHash
+  setTransactionHash,
+  currentNetwork
 ) => {
   console.log("Order Id", orderId);
   setDisableActionBtn(true);
@@ -51,7 +52,8 @@ export const _withdrawLTO = async (
       setTransactionHash,
       setOrderLogsDecoded,
       setMessage,
-      provider
+      provider,
+      currentNetwork
     );
     setLoading(false);
     setDisableActionBtn(false);

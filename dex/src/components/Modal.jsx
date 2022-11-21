@@ -14,6 +14,7 @@ const Modal = ({
 }) => {
   // useContext To Retrieve The Source and Destination Address of The Token
   const {
+    isWalletConnected,
     srcAddress,
     destAddress,
     setSrcAddress,
@@ -96,11 +97,14 @@ const Modal = ({
           {token.address}
         </p>
         <p className={styles.comingSoon}>
-          {balance ? (
+          {!isWalletConnected ? (
+            "N/A"
+          ) : balance ? (
             parseFloat(balance?.[0]?.[token?.address]).toFixed(2)
           ) : (
             <Skeleton width={100} />
           )}
+
           {/* {parseFloat(token.balance).toFixed(2)} */}
         </p>
         {token.type === "coming_soon" && (

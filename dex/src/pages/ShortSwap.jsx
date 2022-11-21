@@ -7,6 +7,7 @@ import Swap from "../components/Swap";
 import Tabs from "../components/Tabs";
 import styles from "../css/ShortSwap.module.css";
 import { ShortSwapContext } from "../providers";
+import { useNetwork } from "../providers/context/UIProvider";
 import { connectWallet } from "../utils/connetWallet";
 import { getProvider } from "../utils/getProvider";
 import { getEthLogs } from "../utils/get_ethLogs";
@@ -46,6 +47,8 @@ const ShortSwap = ({
     poolCash,
   } = useContext(ShortSwapContext);
 
+  const currentNetwork = useNetwork();
+
   async function ShortSwapButtonClick() {
     try {
       if (!isWalletConnected) {
@@ -83,7 +86,8 @@ const ShortSwap = ({
           deadline,
           setTransactionHash,
           setError,
-          setLoading
+          setLoading,
+          currentNetwork?.network
         );
       }
     } catch (err) {

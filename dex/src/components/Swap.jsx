@@ -32,6 +32,7 @@ import { BigNumber, ethers } from "ethers";
 import { bigToStr } from "../utils";
 import { getApproval } from "../utils/getApproval";
 import { WebContext } from "../providers/context/WebProvider";
+import { useNetwork } from "../providers/context/UIProvider";
 
 const Swap = (props) => {
   const {
@@ -84,6 +85,7 @@ const Swap = (props) => {
   } = useContext(LongSwapContext);
 
   const { provider } = useContext(WebContext);
+  const currentNetwork = useNetwork();
 
   // console.log("Provider", provider);
   // console.log("SC", srcAddress);
@@ -138,7 +140,11 @@ const Swap = (props) => {
 
   const handleApproveButton = async () => {
     try {
-      const approval = await getApproval(provider, srcAddress);
+      const approval = await getApproval(
+        provider,
+        srcAddress,
+        currentNetwork?.network
+      );
       console.log("Approval---->", approval);
       setTransactionHash(approval.hash);
     } catch (e) {
