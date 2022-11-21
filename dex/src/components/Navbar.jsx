@@ -13,9 +13,6 @@ import { connectWallet } from "../utils/connetWallet";
 import { DisconnectWalletOption } from "./DisconnectWalletOption";
 import NavOptionDropdwon from "./navbarDropdown/NavOptionDropdwon";
 
-import Testv4 from "../images/Testv4.jpeg";
-import Ethereum from "../images/ethereum.png";
-
 const Navbar = (props) => {
   const {
     showDropdown,
@@ -55,9 +52,9 @@ const Navbar = (props) => {
   console.log("Wallet Status", isWalletConnected);
   // const [showDisconnect, setShowDisconnect] = useState(false);
   const networks = [
-    { name: "Ethereum", chainId: "5", logo: Ethereum },
-    { name: "Goerli", chainId: "5", logo: Testv4 },
-    { name: "Coming Soon", chainId: "0", logo: Ethereum },
+    { name: "Ethereum", chainId: "5", logo: "ethereum.png" },
+    { name: "Goerli", chainId: "5", logo: "/Testv4.jpeg" },
+    { name: "Coming Soon", chainId: "0", logo: "ethereum.png" },
   ];
 
   // const nId = window.ethereum?.networkVersion;

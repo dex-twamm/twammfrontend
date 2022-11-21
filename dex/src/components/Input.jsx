@@ -6,7 +6,6 @@ import { LongSwapContext, ShortSwapContext } from "../providers";
 // import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS, POOL_ID } from "../utils";
 import { POOLS, POOL_ID } from "../utils/pool";
 import Modal from "./Modal";
-import Ethereum from "../images/ethereum.png";
 
 const Input = (props) => {
   const {
@@ -66,7 +65,7 @@ const Input = (props) => {
     setTokenA({
       ...tokenA,
       symbol: "Faucet",
-      image: Ethereum,
+      image: "ethereum.png",
       balance: balance?.[0]?.[address],
       tokenIsSet: true,
     });
