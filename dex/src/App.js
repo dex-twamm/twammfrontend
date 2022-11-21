@@ -36,6 +36,9 @@ import { web3Modal } from "./utils/providerOptions";
 import { _swapTokens } from "./utils/shortSwap";
 import { swapTokens } from "./utils/swap";
 
+import Ethereum from "./images/ethereum.png";
+import Testv4 from "./images/Testv4.jpeg";
+
 function App() {
   const location = useLocation();
   const [isPlacedLongTermOrder, setIsPlacedLongTermOrder] = useState(false);
@@ -123,7 +126,7 @@ function App() {
       setSwapAmount(0);
       setTokenB({
         symbol: "Select Token",
-        image: "ethereum.png",
+        image: Ethereum,
         address: Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
           .tokens[0].address,
         balance: 0,
@@ -137,7 +140,7 @@ function App() {
     token: {
       name: "Ethereum",
       symbol: "ETH",
-      image: "ethereum.png",
+      image: Ethereum,
     },
     wallet: {
       address: account === null ? "Wallet Address" : truncateAddress(account),
@@ -146,6 +149,7 @@ function App() {
   };
 
   console.log("Account--->", account);
+  console.log("Imasgahsdgahsdd", { Testv4 }, { Ethereum });
   // Use Memo
   useMemo(() => {
     const allowance = async () => {

@@ -3,8 +3,10 @@ import { Link, useLocation } from "react-router-dom";
 import classNames from "classnames";
 import styles from "../css/Navbar.module.css";
 import { LongSwapContext, ShortSwapContext } from "../providers";
-import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from "../utils";
 import { POOLS, POOL_ID } from "../utils/pool";
+
+import Testv4 from "../images/Testv4.jpeg";
+import Ethereum from "../images/ethereum.png";
 
 const tabOptions = [
   {
@@ -31,7 +33,7 @@ const Tabs = () => {
     setSwapAmount("");
     setTokenA({
       symbol: "Faucet",
-      image: "ethereum.png",
+      image: Ethereum,
       address: Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
         ?.TOKEN_TWO_ADDRESS,
       balance: 0,
@@ -39,7 +41,7 @@ const Tabs = () => {
     });
     setTokenB({
       symbol: "Select Token",
-      image: "Testv4.jpeg",
+      image: Testv4,
       address: Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
         ?.TOKEN_ONE_ADDRESS,
       balance: 0,

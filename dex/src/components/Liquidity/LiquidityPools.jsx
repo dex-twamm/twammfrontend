@@ -13,6 +13,9 @@ import { ShortSwapContext } from "../../providers";
 import CircularProgressBar from "../alerts/CircularProgressBar";
 import Tabs from "../Tabs";
 
+import Testv4 from "../../images/Testv4.jpeg";
+import Ethereum from "../../images/ethereum.png";
+
 const style = {
   position: "absolute",
   display: "flex",
@@ -352,7 +355,7 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                         width: "40px",
                       }}
                       alt="Testv4"
-                      src="Testv4.jpeg"
+                      src={Testv4}
                     />
                     <Avatar
                       sizes="small"
@@ -364,7 +367,7 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                         width: "40px",
                       }}
                       alt="Faucet"
-                      src="ethereum.png"
+                      src={Ethereum}
                     />
                   </Box>
                   <Typography
