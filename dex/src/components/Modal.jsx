@@ -13,8 +13,14 @@ const Modal = ({
   tokenBalances,
 }) => {
   // useContext To Retrieve The Source and Destination Address of The Token
-  const { setSrcAddress, setDestAddress, selectToken, setEthBalance } =
-    useContext(ShortSwapContext);
+  const {
+    srcAddress,
+    destAddress,
+    setSrcAddress,
+    setDestAddress,
+    selectToken,
+    setEthBalance,
+  } = useContext(ShortSwapContext);
 
   const { tokenA, tokenB } = useContext(LongSwapContext);
 
@@ -26,16 +32,19 @@ const Modal = ({
   // Handle Select Token Modal display
   const handleTokenSelection = (token) => {
     console.log("TokenSelected Prabin", selectToken);
-    const chosenToken = tokenDetails.find(x => x.symbol === token.symbol);
+    const chosenToken = tokenDetails.find((x) => x.symbol === token.symbol);
+    console.log("Chosen Token", chosenToken);
 
     let balances = tokenBalances.map((obj) => ({
       address: Object.keys(obj)[0],
       balance: parseFloat(Object.values(obj)[0]).toFixed(2),
     }));
 
-    const chosenTokenBalance = 
-      (balances.find(x => x.address === chosenToken.address)).balance;
-    if (selectToken === "1") { //set tokenFrom
+    const chosenTokenBalance = balances.find(
+      (x) => x.address === chosenToken.address
+    ).balance;
+    if (selectToken === "1") {
+      //set tokenFrom
       setEthBalance(chosenTokenBalance);
       setSrcAddress(chosenToken.address);
       if (chosenToken.symbol === tokenB.symbol) {
@@ -45,6 +54,7 @@ const Modal = ({
           balance: tokenA.balance,
           tokenIsSet: true,
         });
+        setDestAddress(tokenA.address);
       }
       setTokenA({
         symbol: chosenToken.symbol,
@@ -52,7 +62,8 @@ const Modal = ({
         balance: chosenTokenBalance,
         tokenIsSet: true,
       });
-    } else if (selectToken === "2") { //setTokenTo
+    } else if (selectToken === "2") {
+      //setTokenTo
       setDestAddress(chosenToken.address);
       setTokenB({
         symbol: chosenToken.symbol,
@@ -64,12 +75,13 @@ const Modal = ({
     handleModalClose();
   };
 
+  console.log("Tokenssssssss", tokenA, "----", tokenB);
+
   let tokensList;
   let tokensDetail = tokenDetails;
   const getMarkup = (token) => {
     const balance =
       tokenBalances && tokenBalances?.filter((item) => item[token.address]);
-
 
     return (
       <>

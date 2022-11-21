@@ -50,6 +50,7 @@ function App() {
   const {
     srcAddress,
     destAddress,
+    setDesAddress,
     swapAmount,
     setSwapAmount,
     setError,
@@ -122,7 +123,9 @@ function App() {
   useEffect(() => {
     if (transactionHash) {
       setSwapAmount(0);
-      const poolConfig = Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0];
+      const poolConfig = Object.values(
+        POOLS?.[localStorage.getItem("coin_name")]
+      )?.[0];
       setTokenB({
         symbol: "Select Token",
         image: poolConfig?.tokens[0].logo,
