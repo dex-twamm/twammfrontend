@@ -32,6 +32,13 @@ export const _swapTokens = async (
   // swapAmountWei.lte(walletBalanceWei && poolCash)
   // 	? console.log('True')
   // 	: console.log('False');
+
+  console.log(
+    "walletBalanceWeisdasd",
+    walletBalanceWei.toString(),
+    pCash.toString(),
+    swapAmountWei.toString()
+  );
   if (swapAmountWei.lte(walletBalanceWei && pCash)) {
     try {
       const signer = await getProvider(
@@ -46,6 +53,8 @@ export const _swapTokens = async (
       const assetIn = srcAddress;
       const assetOut = destAddress;
       const walletAddress = account;
+
+      console.log("hkhaskhaskjdasd", currentNetwork);
       // Call the swapTokens function from the `utils` folder
       await swapTokens(
         signer,

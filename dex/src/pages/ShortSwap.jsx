@@ -11,6 +11,7 @@ import { useNetwork } from "../providers/context/UIProvider";
 import { connectWallet } from "../utils/connetWallet";
 import { getProvider } from "../utils/getProvider";
 import { getEthLogs } from "../utils/get_ethLogs";
+import { POOLS } from "../utils/pool";
 import { _swapTokens } from "../utils/shortSwap";
 
 const ShortSwap = ({
@@ -48,6 +49,13 @@ const ShortSwap = ({
   } = useContext(ShortSwapContext);
 
   const currentNetwork = useNetwork();
+
+  // console.log(
+  //   "Current network currentNetwork",
+  //   Object.values(POOLS[currentNetwork.network])[0]
+  // );
+
+  console.log("iswalletashkasjdhsakd", isWalletConnected);
 
   async function ShortSwapButtonClick() {
     try {
