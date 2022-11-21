@@ -5,14 +5,24 @@ import classNames from "classnames";
 import React, { useContext, useEffect, useState } from "react";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { Link, Navigate, useLocation } from "react-router-dom";
+import { POPUP_MESSAGE } from "../constants";
 import styles from "../css/Navbar.module.css";
 import { LongSwapContext, ShortSwapContext, UIContext } from "../providers";
 import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS, toHex } from "../utils";
+import { connectWallet } from "../utils/connetWallet";
 import { DisconnectWalletOption } from "./DisconnectWalletOption";
 import NavOptionDropdwon from "./navbarDropdown/NavOptionDropdwon";
+import goerliLogo from "../images/Testv4.jpeg";
+import ethLogo from "../images/ethereum.png";
 
 const Navbar = (props) => {
-  const { showDropdown, setShowDropdown } = useContext(UIContext);
+  const {
+    showDropdown,
+    setShowDropdown,
+    selectedNetwork,
+    setSelectedNetwork,
+    nId,
+  } = useContext(UIContext);
   const { setTokenA, setTokenB } = useContext(LongSwapContext);
 
   const location = useLocation();
@@ -21,33 +31,50 @@ const Navbar = (props) => {
     walletBalance,
     walletAddress,
     accountStatus,
-    connectWallet,
+    // connectWallet,
     disconnectWallet,
     change,
     showDisconnect,
     setShowDisconnect,
   } = props;
-  const { error, setError, setLoading, setSwapAmount, isWalletConnected } =
-    useContext(ShortSwapContext);
+  const {
+    error,
+    setError,
+    setLoading,
+    setSwapAmount,
+    isWalletConnected,
+    setweb3provider,
+    setCurrentBlock,
+    setBalance,
+    setAccount,
+    setWalletConnected,
+  } = useContext(ShortSwapContext);
   // const [netId, setNetId] = useState("");
   // const [isOpen, setOpen] = useState(false);
   console.log("Wallet Status", isWalletConnected);
   // const [showDisconnect, setShowDisconnect] = useState(false);
   const networks = [
-    { name: "Ethereum", chainId: "1", logo: "/ethereum.png" },
-    { name: "Goerli", chainId: "5", logo: "/Testv4.jpeg" },
-    { name: "Coming Soon", chainId: "0", logo: "/ethereum.png" },
+    { name: "Ethereum", chainId: "5", logo: ethLogo },
+    { name: "Goerli", chainId: "5", logo: goerliLogo },
+    { name: "Coming Soon", chainId: "0", logo: ethLogo },
   ];
 
-  const nId = window.ethereum?.networkVersion;
+  // const nId = window.ethereum?.networkVersion;
   console.log("nId--->", nId);
   const initialNetwork = networks.filter((id) => id.chainId === nId);
+  console.log("initialNetwork", initialNetwork);
 
-  const [selectedNetwork, setSelectedNetwork] = useState({
-    network: "Select a Network",
-    logo: "/ethereum.png",
-    chainId: nId,
-  });
+  if(!localStorage.getItem("coin_name")) {
+    localStorage.setItem("coin_name", initialNetwork[0]?.name);
+    localStorage.setItem("coin_logo", initialNetwork[0]?.logo);
+  }
+
+
+  // const [selectedNetwork, setSelectedNetwork] = useState({
+  //   network: "Select a Network",
+  //   logo: "",
+  //   chainId: nId,
+  // });
 
   const coin_name = localStorage.getItem("coin_name");
   const coin_logo = localStorage.getItem("coin_logo");
@@ -85,7 +112,7 @@ const Navbar = (props) => {
         window.location.reload();
       } catch (err) {
         console.error(err);
-        setError("Failed To Switch Network");
+        setError(POPUP_MESSAGE.networkSwitchFailed);
       }
     }
   };
@@ -109,6 +136,16 @@ const Navbar = (props) => {
 
   const handleDisconnect = () => {
     walletAddress && setShowDisconnect(true);
+  };
+
+  const walletConnect = async () => {
+    await connectWallet(
+      setweb3provider,
+      setCurrentBlock,
+      setBalance,
+      setAccount,
+      setWalletConnected
+    );
   };
 
   return (
@@ -153,7 +190,7 @@ const Navbar = (props) => {
                 <img
                   src={selectedNetwork.logo}
                   className={styles.networkIcon}
-                  alt="Ethereum"
+                  alt=""
                 />
                 <span>{selectedNetwork.network}</span>
                 <RiArrowDropDownLine className={styles.dropdownIcon} />
@@ -186,7 +223,7 @@ const Navbar = (props) => {
             ) : (
               <button
                 className={classNames(styles.btn, styles.btnConnect)}
-                onClick={connectWallet}
+                onClick={walletConnect}
               >
                 Connect Wallet
               </button>

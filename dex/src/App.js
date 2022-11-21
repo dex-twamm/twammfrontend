@@ -2,6 +2,7 @@ import { ethers, providers } from "ethers";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
+import ethLogo from "./images/ethereum.png";
 import PopupModal from "./components/alerts/PopupModal";
 import {
   AddLiquidity,
@@ -9,6 +10,7 @@ import {
   RemoveLiquidity,
 } from "./components/Liquidity";
 import Navbar from "./components/Navbar";
+import { POPUP_MESSAGE } from "./constants";
 import Home from "./pages/Home";
 import LongSwap from "./pages/LongSwap";
 import ShortSwap from "./pages/ShortSwap";
@@ -23,17 +25,20 @@ import {
   withdrawLTO,
 } from "./utils/addLiquidity";
 import { getEstimatedConvertedToken } from "./utils/batchSwap";
+import { connectWallet } from "./utils/connetWallet";
 import { getLPTokensBalance, getTokensBalance } from "./utils/getAmount";
 import { getAllowance, getApproval } from "./utils/getApproval";
+import { getProvider } from "./utils/getProvider";
+import { spotPrice } from "./utils/getSpotPrice";
 import { getEthLogs } from "./utils/get_ethLogs";
 import { getLastVirtualOrderBlock, placeLongTermOrder } from "./utils/longSwap";
 import { POOLS, POOL_ID } from "./utils/pool";
 import { web3Modal } from "./utils/providerOptions";
+import { _swapTokens } from "./utils/shortSwap";
 import { swapTokens } from "./utils/swap";
 
 function App() {
   const location = useLocation();
-  const [balance, setBalance] = useState();
   const [isPlacedLongTermOrder, setIsPlacedLongTermOrder] = useState(false);
   const [showRemoveLiquidity, setShowRemoveLiquidity] = useState(false);
   const [showAddLiquidity, setShowAddLiquidity] = useState(false);
@@ -45,6 +50,7 @@ function App() {
   const {
     srcAddress,
     destAddress,
+    setDesAddress,
     swapAmount,
     setSwapAmount,
     setError,
@@ -72,6 +78,8 @@ function App() {
     deadline,
     error,
     setLPTokenBalance,
+    balance,
+    setBalance,
   } = useContext(ShortSwapContext);
   const {
     setOrderLogsDecoded,
@@ -87,52 +95,9 @@ function App() {
     setOrderLogsLoading,
   } = useContext(LongSwapContext);
   const { provider, setProvider } = useContext(WebContext);
+  const { setSelectedNetwork, nId, selectedNetwork } = useContext(UIContext);
+
   console.log("Current Block", currentBlock);
-
-  //  Connect Wallet
-  const connectWallet = async () => {
-    try {
-      await getProvider();
-      console.log("Wallet Connected Info", isWalletConnected);
-
-      // setSuccess("Wallet Connected");
-      // tokenBalance(account);
-    } catch (err) {
-      console.error(err);
-      // setError('Wallet Connection Rejected');
-    }
-  };
-
-  //  Get Provider
-  const getProvider = async (needSigner = false) => {
-    // setLoading(true);
-    try {
-      const provider = await web3Modal.connect();
-      const web3Provider = new providers.Web3Provider(provider);
-      const accounts = await web3Provider.listAccounts();
-      console.log("accounts", accounts);
-      localStorage.setItem("account", accounts);
-
-      setweb3provider(web3Provider);
-      console.log("WEb 3 Provider", await web3Provider.getBlock("latest"));
-      // TODO - Update Every Transaction After 12 Seconds
-      setCurrentBlock(await web3Provider.getBlock("latest"));
-      const walletBalance = await web3Provider.getBalance(accounts[0]);
-      const ethBalance = ethers.utils.formatEther(walletBalance);
-      const humanFriendlyBalance = parseFloat(ethBalance).toFixed(4);
-
-      localStorage.setItem("balance", humanFriendlyBalance);
-
-      setBalance(humanFriendlyBalance);
-      if (accounts) setAccount(accounts[0]);
-      if (needSigner) return web3Provider.getSigner();
-      if (web3Provider) setWalletConnected(true);
-
-      return web3Provider;
-    } catch (err) {
-      // setError('Wallet Connection Rejected');
-    }
-  };
 
   useEffect(() => {
     account && setWalletConnected(true);
@@ -154,68 +119,17 @@ function App() {
   };
 
   //  Swap Token
-  const _swapTokens = async () => {
-    const walletBalanceWei = ethers.utils.parseUnits(ethBalance, "ether");
-    const pCash = ethers.utils.parseUnits(poolCash, "ether");
-    const swapAmountWei = ethers.utils.parseUnits(swapAmount, "ether");
-    // console.log("Deadline", deadline);
-
-    // swapAmountWei.lte(walletBalanceWei && poolCash)
-    // 	? console.log('True')
-    // 	: console.log('False');
-    if (swapAmountWei.lte(walletBalanceWei && pCash)) {
-      try {
-        const signer = await getProvider(true);
-        // console.log(signer);
-        const assetIn = srcAddress;
-        const assetOut = destAddress;
-        const walletAddress = account;
-        // Call the swapTokens function from the `utils` folder
-        await swapTokens(
-          signer,
-          swapAmountWei,
-          assetIn,
-          assetOut,
-          walletAddress,
-          expectedSwapOut,
-          tolerance,
-          deadline
-        )
-          .then((res) => {
-            console.log("Responseeeee----->", res);
-            setTransactionHash(res.hash);
-            const swapResult = async (res) => {
-              const result = await res.wait();
-              return result;
-            };
-            swapResult(res).then((response) => {
-              console.log("Responseeeeeee", response);
-              if (response.status === 1) setMessage("Transaction Success!");
-            });
-          })
-          .catch((err) => {
-            console.error(err);
-            setError("Transaction Error");
-          });
-        setLoading(false);
-      } catch (err) {
-        console.error("errrrrrr", err);
-        setLoading(false);
-        setError("Transaction Cancelled");
-      }
-    } else {
-      setLoading(false);
-      setError("Insufficient Balance");
-    }
-  };
 
   useEffect(() => {
     if (transactionHash) {
       setSwapAmount(0);
+      const poolConfig = Object.values(
+        POOLS?.[localStorage.getItem("coin_name")]
+      )?.[0];
       setTokenB({
         symbol: "Select Token",
-        image: "/ethereum.png",
-        address: POOLS[POOL_ID].tokens[0].address,
+        image: poolConfig?.tokens[0].logo,
+        address: poolConfig?.TOKEN_TWO_ADDRESS,
         balance: 0,
         tokenIsSet: false,
       });
@@ -223,179 +137,11 @@ function App() {
     }
   }, [setSwapAmount, setTokenB, setExpectedSwapOut, transactionHash]);
 
-  // TODO Dynamically Set tokenInIndex and tokenOutIndex
-  //  Long Term Swap
-  const _placeLongTermOrders = async () => {
-    const swapAmountWei = ethers.utils.parseUnits(swapAmount, "ether");
-    // console.log('swapAmountWei', swapAmountWei);
-    try {
-      const tokenInIndex = POOLS[POOL_ID].tokens.findIndex(
-        (object) => srcAddress === object.address
-      );
-      const tokenOutIndex = POOLS[POOL_ID].tokens.findIndex(
-        (object) => destAddress === object.address
-      );
-      const amountIn = swapAmountWei;
-      // console.log('amountIn', amountIn);
-      const blockIntervals = Math.ceil(numberOfBlockIntervals);
-      console.log("Intervals", numberOfBlockIntervals);
-      const signer = await getProvider(true);
-
-      const walletAddress = account;
-      // Call the PlaceLongTermOrders function from the `utils` folder*
-      await placeLongTermOrder(
-        tokenInIndex,
-        tokenOutIndex,
-        amountIn,
-        blockIntervals,
-        signer,
-        walletAddress,
-        setTransactionHash
-      )
-        .then((res) => {
-          setTransactionHash(res);
-        })
-        .finally(setLoading(false));
-      setIsPlacedLongTermOrder(true);
-      await getEthLogs(provider, walletAddress).then((res) => {
-        const resArray = Array.from(res.values());
-        setOrderLogsDecoded(resArray);
-      });
-    } catch (err) {
-      console.error(err);
-      setLoading(false);
-      setError("Transaction Cancelled");
-    }
-  };
-
-  // useEffect(() => {
-  //   (async () => {
-  //     await getLastVirtualOrderBlock(provider).then((res) => {
-  //       console.log("Latest Block", res);
-  //       setLatestBlock(res);
-  //     });
-  //   })();
-  // }, [setOrderLogsDecoded, setLatestBlock]);
-  //   Calling Swap
-  async function ShortSwapButtonClick() {
-    try {
-      if (!isWalletConnected) {
-        await connectWallet();
-        const signer = await getProvider(true);
-        await getEthLogs(signer);
-      } else {
-        await _swapTokens();
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  //  Calling LongTermSwap
-  async function LongSwapButtonClick() {
-    console.log("Wallet", isWalletConnected);
-    if (!isWalletConnected) {
-      await connectWallet();
-      const signer = await getProvider(true);
-      await getEthLogs(signer);
-    } else {
-      await _placeLongTermOrders();
-    }
-  }
-
-  //  JoinPool
-  const _joinPool = async () => {
-    try {
-      const walletAddress = account;
-      const signer = await getProvider(true);
-      if (!isWalletConnected) {
-        await connectWallet();
-      }
-      await joinPool(walletAddress, signer);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  //  ExitPool
-  const _exitPool = async () => {
-    setLoading(true);
-    try {
-      const bptAmountIn = ethers.utils.parseUnits("0.001", "ether");
-      const walletAddress = account;
-      const signer = await getProvider(true);
-      if (!isWalletConnected) {
-        await connectWallet();
-      }
-      await exitPool(walletAddress, signer, bptAmountIn);
-      setLoading(false);
-    } catch (e) {
-      console.log(e);
-      setLoading(false);
-    }
-  };
-
-  // cancelLTO
-  const _cancelLTO = async (orderId) => {
-    setLoading(true);
-    setDisableActionBtn(true);
-    try {
-      const walletAddress = account;
-      const signer = await getProvider(true);
-      if (!isWalletConnected) {
-        await connectWallet();
-      }
-      await cancelLTO(
-        walletAddress,
-        signer,
-        orderId,
-        setOrderLogsDecoded,
-        setMessage,
-        provider
-      );
-      setLoading(false);
-      setDisableActionBtn(false);
-    } catch (e) {
-      console.log(e);
-      setMessage("Cancel Failed !");
-      setLoading(false);
-      setDisableActionBtn(false);
-    }
-  };
-  //  WithdrawLTO
-  const _withdrawLTO = async (orderId) => {
-    console.log("Order Id", orderId);
-    setDisableActionBtn(true);
-    setLoading(true);
-    try {
-      const walletAddress = account;
-      const signer = await getProvider(true);
-      if (!isWalletConnected) {
-        await connectWallet();
-      }
-      await withdrawLTO(
-        walletAddress,
-        signer,
-        orderId,
-        setOrderLogsDecoded,
-        setMessage,
-        provider
-      );
-      setLoading(false);
-      setDisableActionBtn(false);
-    } catch (e) {
-      console.log(e);
-      setMessage("Withdraw Failed !");
-      setLoading(false);
-      setDisableActionBtn(false);
-    }
-  };
-
   const data = {
     token: {
       name: "Ethereum",
       symbol: "ETH",
-      image: "/ethereum.png",
+      image: ethLogo,
     },
     wallet: {
       address: account === null ? "Wallet Address" : truncateAddress(account),
@@ -403,69 +149,18 @@ function App() {
     },
   };
 
-  //Spot Prices
-  const spotPrice = async () => {
-    console.log("Expected swap out ---->", swapAmount);
-
-    if (swapAmount) {
-      setSpotPriceLoading(true);
-      //todo : Change this to use token decimal places
-      const swapAmountWei = ethers.utils.parseUnits(swapAmount, "ether");
-
-      const assetIn = srcAddress;
-      const assetOut = destAddress;
-      const errors = {};
-      // const signer = a
-      const signer = await getProvider(true);
-      const walletAddress = account;
-
-      console.log("Expected swap out ---->", expectedSwapOut);
-      try {
-        const batchPrice = await getEstimatedConvertedToken(
-          signer,
-          swapAmountWei,
-          assetIn,
-          assetOut,
-          walletAddress,
-          expectedSwapOut,
-          tolerance,
-          deadline
-        ).then((res) => {
-          console.log("Response From Query Batch Swap", res);
-          errors.balError = undefined;
-          setFormErrors(errors ?? "");
-          console.log("Response of spot price");
-          setSpotPrice(parseFloat(res) / parseFloat(swapAmountWei));
-          setSpotPriceLoading(false);
-          setExpectedSwapOut(res);
-        });
-        return batchPrice;
-      } catch (e) {
-        console.log("erroror", typeof e, { ...e });
-        if (e.reason.match("BAL#304")) {
-          setFormErrors({
-            balError: "Try Giving Lesser Amount",
-          });
-        }
-
-        if (e.reason.match("BAL#510")) {
-          setFormErrors({
-            balError: "Invalid Amount!",
-          });
-        }
-
-        setSpotPriceLoading(false);
-      }
-    }
-  };
-
-  console.log("priceeeee", spotPrice);
-
   console.log("Account--->", account);
   // Use Memo
   useMemo(() => {
     const allowance = async () => {
-      const provider = await getProvider(true);
+      const provider = await getProvider(
+        true,
+        setweb3provider,
+        setCurrentBlock,
+        setBalance,
+        setAccount,
+        setWalletConnected
+      );
       const tokenAddress = srcAddress;
       const walletAddress = account;
       console.log("Wallet Address--->", walletAddress);
@@ -491,7 +186,24 @@ function App() {
   useEffect(() => {
     console.log("ajsdhkasd----", swapAmount, destAddress, srcAddress);
     const interval = setTimeout(() => {
-      spotPrice();
+      spotPrice(
+        swapAmount,
+        setSpotPriceLoading,
+        srcAddress,
+        destAddress,
+        setweb3provider,
+        setCurrentBlock,
+        setBalance,
+        setAccount,
+        setWalletConnected,
+        account,
+        expectedSwapOut,
+        tolerance,
+        deadline,
+        setFormErrors,
+        setSpotPrice,
+        setExpectedSwapOut
+      );
     }, 1000);
     return () => {
       clearTimeout(interval);
@@ -502,7 +214,14 @@ function App() {
   const tokenBalance = useCallback(async () => {
     setLoading(true);
     setOrderLogsLoading(true);
-    const provider = await getProvider(true);
+    const provider = await getProvider(
+      true,
+      setweb3provider,
+      setCurrentBlock,
+      setBalance,
+      setAccount,
+      setWalletConnected
+    );
     setProvider(provider);
     // const tokenAddress = srcAddress;
     const walletAddress = account;
@@ -602,7 +321,7 @@ function App() {
   if (showAddLiquidity) {
     liquidityMarkup = (
       <AddLiquidity
-        connect={_joinPool}
+        // connect={_joinPool}
         showAddLiquidity={setShowAddLiquidity}
       />
     );
@@ -622,11 +341,11 @@ function App() {
       <div className="main">
         <Navbar
           tokenName={data.token.name}
-          tokenImage={data.token.image}
+          tokenImage={data.token.logo}
           walletBalance={data.wallet.balance}
           walletAddress={data.wallet.address}
           accountStatus={isWalletConnected ? true : false}
-          connectWallet={ShortSwapButtonClick}
+          // connectWallet={ShortSwapButtonClick}
           change={connectWallet}
           disconnectWallet={disconnect}
           showDisconnect={showDisconnect}
@@ -640,8 +359,8 @@ function App() {
             element={
               <ShortSwap
                 tokenSymbol={data.token.symbol}
-                tokenImage={data.token.image}
-                connectWallet={ShortSwapButtonClick}
+                tokenImage={data.token.logo}
+                // connectWallet={ShortSwapButtonClick}
                 buttonText={!isWalletConnected ? "Connect Wallet" : "Swap"}
                 showSettings={showSettings}
                 setShowSettings={setShowSettings}
@@ -657,15 +376,15 @@ function App() {
             element={
               <LongSwap
                 tokenSymbol={data.token.symbol}
-                tokenImage={data.token.image}
+                tokenImage={data.token.logo}
                 buttonText={!isWalletConnected ? "Connect Wallet" : "Swap"}
-                connectWallet={LongSwapButtonClick}
+                // connectWallet={LongSwapButtonClick}
                 isPlacedLongTermOrder={isPlacedLongTermOrder}
                 setIsPlacedLongTermOrder={setIsPlacedLongTermOrder}
                 showSettings={showSettings}
                 setShowSettings={setShowSettings}
-                cancelPool={_cancelLTO}
-                withdrawPool={_withdrawLTO}
+                // cancelPool={_cancelLTO}
+                // withdrawPool={_withdrawLTO}
                 spotPriceLoading={spotPriceLoading}
                 message={message}
                 setMessage={setMessage}

@@ -7,6 +7,7 @@ import { FiChevronDown } from "react-icons/fi";
 import styles from "../../css/AddLiquidity.module.css";
 import { LongSwapContext, ShortSwapContext } from "../../providers";
 import { POOLS, POOL_ID } from "../../utils/pool";
+import { _joinPool } from "../../utils/_joinPool";
 import { DisconnectWalletOption } from "../DisconnectWalletOption";
 import FeeTierOptions from "../FeeTierOptions";
 import Input from "../Input";
@@ -14,7 +15,7 @@ import Modal from "../Modal";
 import { LiquidityPools } from "./LiquidityPools";
 
 const AddLiquidity = (props) => {
-  const { connect, showAddLiquidity } = props;
+  const { showAddLiquidity } = props;
   const [display, setDisplay] = useState(false);
   const [primaryToken, setPrimaryToken] = useState("");
   const [secondaryToken, setSecondaryToken] = useState();
@@ -30,7 +31,13 @@ const AddLiquidity = (props) => {
     setSelectToken,
     swapAmount,
     setSwapAmount,
-    tokenBalances,
+    account,
+    setweb3provider,
+    setCurrentBlock,
+    setBalance,
+    setAccount,
+    setWalletConnected,
+    isWalletConnected,
   } = useContext(ShortSwapContext);
 
   const handleToggle = () => setDisplay(!display);
@@ -65,7 +72,7 @@ const AddLiquidity = (props) => {
   //   {
   //     name: "Faucet",
   //     symbol: "ETH",
-  //     image: "/ethereum.png",
+  //     image: "ethereum.png",
   //     address: "",
   //     balance: tokenBalances[0],
   //   },
@@ -83,7 +90,9 @@ const AddLiquidity = (props) => {
   //     image: "/Testv4.jpeg",
   //   },
   // ];
-  const tokenDetails = POOLS[POOL_ID]?.tokens;
+  const tokenDetails = Object.values(
+    POOLS[localStorage.getItem("coin_name")]
+  )[0]?.tokens;
 
   console.log("Prabin", tokenA, tokenB);
 
@@ -91,6 +100,18 @@ const AddLiquidity = (props) => {
     console.log("Current Target Id", event.currentTarget.id);
     setSelectToken(event.currentTarget.id);
     setDisplay(!display);
+  };
+
+  const handleJoinPool = () => {
+    _joinPool(
+      account,
+      setweb3provider,
+      setCurrentBlock,
+      setBalance,
+      setAccount,
+      setWalletConnected,
+      isWalletConnected
+    );
   };
 
   return (
@@ -152,10 +173,10 @@ const AddLiquidity = (props) => {
                 className={styles.select}
               >
                 <div className={styles.currencyWrap}>
-                  {tokenB.image !== "" && (
+                  {tokenB.logo !== "" && (
                     <img
                       className={styles.cryptoImage}
-                      src={tokenB.image}
+                      src={tokenB.logo}
                       alt="Ethereum"
                     />
                   )}
@@ -205,7 +226,7 @@ const AddLiquidity = (props) => {
               />
               <Input
                 id={2}
-                imgSrc={tokenB.image}
+                imgSrc={tokenB.logo}
                 symbol={tokenB.symbol}
                 handleDisplay={handleDisplay}
                 selectToken={selectToken}
@@ -217,7 +238,7 @@ const AddLiquidity = (props) => {
               <button
                 className={classNames(styles.btn, styles.btnConnect)}
                 disabled={buttonDisabled}
-                onClick={connect}
+                onClick={handleJoinPool}
               >
                 {/* {buttonText} */}
                 {buttonText}
@@ -294,7 +315,7 @@ const AddLiquidity = (props) => {
     //                             <img
     //                               className="imgCurrency"
     //                               alt="ETH Logo"
-    //                               src="/ethereum.png"
+    //                               src="ethereum.png"
     //                               style={{ height: "20px", width: "20px" }}
     //                             />
     //                             <span className="currency-label">ETH</span>
@@ -330,7 +351,7 @@ const AddLiquidity = (props) => {
     //                             <img
     //                               className="imgCurrency"
     //                               alt="ETH Logo"
-    //                               src="/ethereum.png"
+    //                               src="ethereum.png"
     //                               style={{ height: "20px", width: "20px" }}
     //                             />
     //                             <span className="currency-label">ETH</span>
@@ -418,7 +439,7 @@ const AddLiquidity = (props) => {
     //                       <img
     //                         className="imgCurrency"
     //                         alt="ETH Logo"
-    //                         src="/ethereum.png"
+    //                         src="ethereum.png"
     //                         style={{ height: "20px", width: "20px" }}
     //                       />
     //                       <span className="currency-label">ETH</span>
@@ -453,7 +474,7 @@ const AddLiquidity = (props) => {
     //                     <img
     //                       className="imgCurrency"
     //                       alt="ETH Logo"
-    //                       src="/ethereum.png"
+    //                       src="ethereum.png"
     //                       style={{ height: "20px", width: "20px" }}
     //                     />
     //                     <span className="currency-label">ETH</span>

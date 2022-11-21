@@ -1,16 +1,21 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { CircularProgress } from "@mui/material";
+import { useContext } from "react";
 import PopupModal from "../components/alerts/PopupModal";
 import PopupSettings from "../components/PopupSettings";
 import Swap from "../components/Swap";
 import Tabs from "../components/Tabs";
 import styles from "../css/ShortSwap.module.css";
+import { ShortSwapContext } from "../providers";
+import { connectWallet } from "../utils/connetWallet";
+import { getProvider } from "../utils/getProvider";
+import { getEthLogs } from "../utils/get_ethLogs";
+import { _swapTokens } from "../utils/shortSwap";
 
 const ShortSwap = ({
   tokenSymbol,
   tokenImage,
-  connectWallet,
+  // connectWallet,
   buttonText,
   showSettings,
   setShowSettings,
@@ -19,6 +24,72 @@ const ShortSwap = ({
   setMessage,
 }) => {
   //   const [showSettings, setShowSettings] = useState(false);
+
+  const {
+    isWalletConnected,
+    setweb3provider,
+    setCurrentBlock,
+    setBalance,
+    setAccount,
+    setWalletConnected,
+    swapAmount,
+    srcAddress,
+    destAddress,
+    account,
+    setTransactionHash,
+    setLoading,
+    setError,
+    expectedSwapOut,
+    tolerance,
+    deadline,
+    ethBalance,
+    poolCash,
+  } = useContext(ShortSwapContext);
+
+  async function ShortSwapButtonClick() {
+    try {
+      if (!isWalletConnected) {
+        await connectWallet(
+          setweb3provider,
+          setCurrentBlock,
+          setBalance,
+          setAccount,
+          setWalletConnected
+        );
+        const signer = await getProvider(
+          true,
+          setweb3provider,
+          setCurrentBlock,
+          setBalance,
+          setAccount,
+          setWalletConnected
+        );
+        await getEthLogs(signer);
+      } else {
+        await _swapTokens(
+          ethBalance,
+          poolCash,
+          swapAmount,
+          setweb3provider,
+          setCurrentBlock,
+          setBalance,
+          setAccount,
+          setWalletConnected,
+          srcAddress,
+          destAddress,
+          account,
+          expectedSwapOut,
+          tolerance,
+          deadline,
+          setTransactionHash,
+          setError,
+          setLoading
+        );
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   return (
     <>
@@ -45,7 +116,7 @@ const ShortSwap = ({
           <Swap
             tokenSymbol={tokenSymbol}
             tokenImage={tokenImage}
-            connectWallet={connectWallet}
+            connectWallet={ShortSwapButtonClick}
             buttonText={buttonText}
             spotPriceLoading={spotPriceLoading}
           />

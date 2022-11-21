@@ -110,7 +110,11 @@ const LongTermSwapCardDropdown = (props) => {
                     const transactionHash = items.transactionHash;
                     const handleClick = () => {
                       window.open(
-                        `${POOLS[POOL_ID]?.transactionUrl}${transactionHash}`
+                        `${
+                          Object.values(
+                            POOLS[localStorage.getItem("coin_name")]
+                          )[0]?.transactionUrl
+                        }${transactionHash}`
                       );
                     };
                     return (

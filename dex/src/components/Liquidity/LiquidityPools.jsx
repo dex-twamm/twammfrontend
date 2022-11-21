@@ -352,7 +352,7 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                         width: "40px",
                       }}
                       alt="Testv4"
-                      src="/Testv4.jpeg"
+                      src="Testv4.jpeg"
                     />
                     <Avatar
                       sizes="small"
@@ -364,7 +364,7 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                         width: "40px",
                       }}
                       alt="Faucet"
-                      src="/ethereum.png"
+                      src="ethereum.png"
                     />
                   </Box>
                   <Typography
@@ -376,7 +376,15 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                       fontFamily: "Open Sans",
                     }}
                   >
-                    {`${POOLS[POOL_ID].tokens[0].symbol} / ${POOLS[POOL_ID].tokens[1].symbol}`}
+                    {`${
+                      Object.values(
+                        POOLS?.[localStorage.getItem("coin_name")]
+                      )?.[0].tokens[0].symbol
+                    } / ${
+                      Object.values(
+                        POOLS?.[localStorage.getItem("coin_name")]
+                      )?.[0].tokens[1].symbol
+                    }`}
                   </Typography>
                   <span
                     style={{
@@ -394,7 +402,12 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                       borderRadius: "17px",
                     }}
                   >
-                    {POOLS[POOL_ID]?.fees}%
+                    {
+                      Object.values(
+                        POOLS?.[localStorage.getItem("coin_name")]
+                      )?.[0]?.fees
+                    }
+                    %
                   </span>
                 </Box>
 
@@ -540,7 +553,14 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
               )}
               <button
                 onClick={() =>
-                  window.open(`${POOLS[POOL_ID]?.balancerPoolUrl}`, "_blank")
+                  window.open(
+                    `${
+                      Object.values(
+                        POOLS?.[localStorage.getItem("coin_name")]
+                      )?.[0]?.balancerPoolUrl
+                    }`,
+                    "_blank"
+                  )
                 }
                 style={{
                   fontFamily: "Open Sans",

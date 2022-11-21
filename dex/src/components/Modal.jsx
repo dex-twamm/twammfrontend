@@ -3,7 +3,6 @@ import classNames from "classnames";
 import React, { useContext, useEffect, useState } from "react";
 import styles from "../css/Modal.module.css";
 import { LongSwapContext, ShortSwapContext } from "../providers";
-import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from "../utils";
 
 const Modal = ({
   display,
@@ -14,8 +13,14 @@ const Modal = ({
   tokenBalances,
 }) => {
   // useContext To Retrieve The Source and Destination Address of The Token
-  const { setSrcAddress, setDestAddress, selectToken, setEthBalance } =
-    useContext(ShortSwapContext);
+  const {
+    srcAddress,
+    destAddress,
+    setSrcAddress,
+    setDestAddress,
+    selectToken,
+    setEthBalance,
+  } = useContext(ShortSwapContext);
 
   const { tokenA, tokenB } = useContext(LongSwapContext);
 
@@ -25,43 +30,52 @@ const Modal = ({
   };
 
   // Handle Select Token Modal display
-  const handleTokenSelection = (event) => {
+  const handleTokenSelection = (token) => {
     console.log("TokenSelected Prabin", selectToken);
-    const token = event.currentTarget;
-    console.log("Modal:Handle", token.children[2].innerHTML);
+    const chosenToken = tokenDetails.find((x) => x.symbol === token.symbol);
+    console.log("Chosen Token", chosenToken);
+
+    let balances = tokenBalances.map((obj) => ({
+      address: Object.keys(obj)[0],
+      balance: parseFloat(Object.values(obj)[0]).toFixed(2),
+    }));
+
+    const chosenTokenBalance = balances.find(
+      (x) => x.address === chosenToken.address
+    ).balance;
     if (selectToken === "1") {
-      setEthBalance(parseFloat(token.children[3].innerHTML).toFixed(2));
-      setSrcAddress(token.children[2].innerHTML);
-      if (token.children[1].innerHTML === tokenB.symbol) {
+      //set tokenFrom
+      setEthBalance(chosenTokenBalance);
+      setSrcAddress(chosenToken.address);
+      if (chosenToken.symbol === tokenB.symbol) {
         setTokenB({
           symbol: tokenA.symbol,
           image: tokenA.image,
           balance: tokenA.balance,
           tokenIsSet: true,
         });
+        setDestAddress(tokenA.address);
       }
-      console.log(
-        "Prabin TokenHandle",
-        token.children[1].innerHTML,
-        tokenB.symbol
-      );
       setTokenA({
-        symbol: token.children[1].innerHTML,
-        image: token.children[0].src.slice(21, token.length),
-        balance: token.children[3].innerHTML,
+        symbol: chosenToken.symbol,
+        image: chosenToken.logo,
+        balance: chosenTokenBalance,
         tokenIsSet: true,
       });
     } else if (selectToken === "2") {
-      setDestAddress(token.children[2].innerHTML);
+      //setTokenTo
+      setDestAddress(chosenToken.address);
       setTokenB({
-        symbol: token.children[1].innerHTML,
-        image: token.children[0].src.slice(21, token.length),
-        balance: token.children[3].innerHTML,
+        symbol: chosenToken.symbol,
+        image: chosenToken.logo,
+        balance: chosenTokenBalance,
         tokenIsSet: true,
       });
     }
     handleModalClose();
   };
+
+  console.log("Tokenssssssss", tokenA, "----", tokenB);
 
   let tokensList;
   let tokensDetail = tokenDetails;
@@ -69,14 +83,12 @@ const Modal = ({
     const balance =
       tokenBalances && tokenBalances?.filter((item) => item[token.address]);
 
-    // console.log('balance', balance[])
-
     return (
       <>
         <img
           className={styles.modalTokenImg}
           alt="ETH logo"
-          src={token.image}
+          src={token.logo}
           style={{ width: "25px" }}
         />
         <p>{token.name}</p>
@@ -120,7 +132,7 @@ const Modal = ({
         <div
           className={styles.modalToken}
           key={token.symbol}
-          onClick={handleTokenSelection}
+          onClick={() => handleTokenSelection(token)}
         >
           {getMarkup(token)}
         </div>
@@ -132,7 +144,7 @@ const Modal = ({
         <div
           className={styles.modalToken}
           key={token.symbol}
-          onClick={handleTokenSelection}
+          onClick={() => handleTokenSelection(token)}
         >
           {getMarkup(token)}
         </div>

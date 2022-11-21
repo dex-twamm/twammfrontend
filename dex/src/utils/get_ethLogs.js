@@ -6,7 +6,7 @@ import { POOLS, POOL_ID } from "./pool";
 
 export async function getEthLogs(signer, walletAddress) {
   const exchangeContract = new Contract(
-    POOLS[POOL_ID]?.address,
+    Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]?.address,
     TWAMM_POOL_ABI,
     signer
   );

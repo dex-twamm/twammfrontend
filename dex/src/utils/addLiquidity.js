@@ -8,9 +8,9 @@ import {
   // POOL_ID,
 } from ".";
 import {
+  POPUP_MESSAGE,
   TWAMM_POOL_ABI,
   VAULT_CONTRACT_ABI,
-  VAULT_CONTRACT_ADDRESS,
 } from "../constants";
 import { getEthLogs } from "./get_ethLogs";
 import { POOLS, POOL_ID } from "./pool";
@@ -23,7 +23,9 @@ export async function joinPool(walletAddress, signer) {
     [1, [fp(1e-12), fp(1.0)], 0]
   );
   const poolContract = new Contract(
-    VAULT_CONTRACT_ADDRESS,
+    Object.values(
+      POOLS[localStorage.getItem("coin_name")]
+    )[0].VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -33,8 +35,10 @@ export async function joinPool(walletAddress, signer) {
     walletAddress,
     {
       assets: [
-        POOLS[POOL_ID]?.TOKEN_ONE_ADDRESS,
-        POOLS[POOL_ID]?.TOKEN_TWO_ADDRESS,
+        Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
+          ?.TOKEN_ONE_ADDRESS,
+        Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
+          ?.TOKEN_TWO_ADDRESS,
       ],
       // Could Be User Input Same as Encoded Above -- Left to Figure It Out
       maxAmountsIn: [MAX_UINT256, MAX_UINT256],
@@ -48,7 +52,9 @@ export async function joinPool(walletAddress, signer) {
 
 export async function exitPool(walletAdress, signer, bptAmountIn) {
   const poolContract = new Contract(
-    VAULT_CONTRACT_ADDRESS,
+    Object.values(
+      POOLS[localStorage.getItem("coin_name")]
+    )[0].VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -63,8 +69,10 @@ export async function exitPool(walletAdress, signer, bptAmountIn) {
     walletAdress,
     {
       assets: [
-        POOLS[POOL_ID]?.TOKEN_ONE_ADDRESS,
-        POOLS[POOL_ID]?.TOKEN_TWO_ADDRESS,
+        Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
+          ?.TOKEN_ONE_ADDRESS,
+        Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
+          ?.TOKEN_TWO_ADDRESS,
       ],
       minAmountsOut: [0, 0],
       userData: encodedRequest,
@@ -83,12 +91,16 @@ export async function cancelLTO(
   walletAdress,
   signer,
   orderId,
+  orderHash,
+  setTransactionHash,
   setOrderLogsDecoded,
   setMessage,
   provider
 ) {
   const poolContract = new Contract(
-    VAULT_CONTRACT_ADDRESS,
+    Object.values(
+      POOLS[localStorage.getItem("coin_name")]
+    )[0].VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -103,8 +115,10 @@ export async function cancelLTO(
     walletAdress,
     {
       assets: [
-        POOLS[POOL_ID]?.TOKEN_ONE_ADDRESS,
-        POOLS[POOL_ID]?.TOKEN_TWO_ADDRESS,
+        Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
+          ?.TOKEN_ONE_ADDRESS,
+        Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
+          ?.TOKEN_TWO_ADDRESS,
       ],
       minAmountsOut: [0, 0],
       userData: encodedRequest,
@@ -114,8 +128,9 @@ export async function cancelLTO(
       gasLimit: 500000,
     }
   );
+  setTransactionHash(orderHash);
   const exitPoolResult = await exitPoolTx.wait();
-  setMessage("LTO Cancelled !");
+  setMessage(POPUP_MESSAGE.ltoCancelSuccess);
   await getEthLogs(provider, walletAdress).then((res) => {
     const resArray = Array.from(res.values());
     setOrderLogsDecoded(resArray);
@@ -128,12 +143,16 @@ export async function withdrawLTO(
   walletAdress,
   signer,
   orderId,
+  orderHash,
+  setTransactionHash,
   setOrderLogsDecoded,
   setMessage,
   provider
 ) {
   const poolContract = new Contract(
-    VAULT_CONTRACT_ADDRESS,
+    Object.values(
+      POOLS[localStorage.getItem("coin_name")]
+    )[0].VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -148,8 +167,10 @@ export async function withdrawLTO(
     walletAdress,
     {
       assets: [
-        POOLS[POOL_ID]?.TOKEN_ONE_ADDRESS,
-        POOLS[POOL_ID]?.TOKEN_TWO_ADDRESS,
+        Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
+          ?.TOKEN_ONE_ADDRESS,
+        Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
+          ?.TOKEN_TWO_ADDRESS,
       ],
       minAmountsOut: [0, 0],
       userData: encodedRequest,
@@ -159,18 +180,21 @@ export async function withdrawLTO(
       gasLimit: 500000,
     }
   );
+  setTransactionHash(orderHash);
   const withdrawLTOResult = await withdrawLTOTx.wait();
   await getEthLogs(provider, walletAdress).then((res) => {
     const resArray = Array.from(res.values());
     setOrderLogsDecoded(resArray);
   });
   console.log("withdrawLTOResult", withdrawLTOResult);
-  setMessage("LTO Withdrawn!");
+  setMessage(POPUP_MESSAGE.ltoWithdrawn);
 }
 
 export async function getPoolBalance(signer, tokenAddress) {
   const poolContract = new Contract(
-    VAULT_CONTRACT_ADDRESS,
+    Object.values(
+      POOLS[localStorage.getItem("coin_name")]
+    )[0].VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );

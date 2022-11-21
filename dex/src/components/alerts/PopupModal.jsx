@@ -1,6 +1,7 @@
-import { Alert, Backdrop, Button, CircularProgress } from "@mui/material";
+import { Alert, Backdrop, Button } from "@mui/material";
 import { useEffect } from "react";
 import { useContext } from "react";
+import { POPUP_MESSAGE } from "../../constants";
 import { ShortSwapContext } from "../../providers";
 // import { POOL_ID } from "../../utils";
 import { POOLS, POOL_ID } from "../../utils/pool";
@@ -48,13 +49,22 @@ const PopupModal = ({
   const handleButtonClick = () => {
     console.log(
       "links",
-      POOLS[POOL_ID].transactionUrl,
-      `${POOLS[POOL_ID]?.transactonUrl}${transactionHash}`
+      Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
+        .transactionUrl,
+      `${
+        Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
+          ?.transactonUrl
+      }${transactionHash}`
     );
-    window.open(`${POOLS[POOL_ID].transactionUrl}${transactionHash}`);
+    window.open(
+      `${
+        Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
+          .transactionUrl
+      }${transactionHash}`
+    );
   };
 
-  const buttonAction = <Button onClick={handleButtonClick}> View</Button>;
+  const buttonAction = <Button onClick={handleButtonClick}>View</Button>;
 
   console.log("<---Transaction hash--->", transactionHash);
 
@@ -108,7 +118,7 @@ const PopupModal = ({
                 window.location.reload();
               }}
             >
-              LTO Placed!
+              {POPUP_MESSAGE.ltoPlaced}
             </Alert>
           </Backdrop>
         )}
@@ -121,7 +131,8 @@ const PopupModal = ({
           >
             <Alert
               severity={
-                message === "Cancel Failed !" || message === "Withdraw Failed !"
+                message === POPUP_MESSAGE.ltoCancelFailed ||
+                message === POPUP_MESSAGE.ltoWithdrawFailed
                   ? "error"
                   : "success"
               }

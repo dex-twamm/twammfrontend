@@ -2,6 +2,7 @@ import { Backdrop, Skeleton } from "@mui/material";
 import classnames from "classnames";
 import { useContext, useEffect } from "react";
 import styles from "../css/Input.module.css";
+import ethLogo from "../images/ethereum.png";
 import { LongSwapContext, ShortSwapContext } from "../providers";
 // import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS, POOL_ID } from "../utils";
 import { POOLS, POOL_ID } from "../utils/pool";
@@ -33,15 +34,15 @@ const Input = (props) => {
   //   {
   //     name: "Faucet",
   //     symbol: "ETH",
-  //     image: "/ethereum.png",
-  //     address: POOLS[POOL_ID].tokens[1].address,
+  //     image: "ethereum.png",
+  //     address: Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0].tokens[1].address,
   //     balance: tokenBalances[0] ?? 0,
   //   },
   //   {
   //     name: "Matic",
   //     symbol: "DAI",
   //     image: "/Testv4.jpeg",
-  //     address: POOLS[POOL_ID].tokens[0].address,
+  //     address: Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0].tokens[0].address,
   //     balance: tokenBalances[1] ?? 0,
   //   },
   //   {
@@ -52,10 +53,15 @@ const Input = (props) => {
   //   },
   // ];
 
-  const tokenDetails = POOLS[POOL_ID]?.tokens;
+  let networkName = localStorage.getItem("coin_name");
+  if(networkName === undefined || networkName === "undefined" ) {
+    networkName = "Ethereum";
+  }
+  const tokenDetails = Object.values(POOLS?.[networkName])?.[0].tokens;
 
   useEffect(() => {
     const address = tokenA?.address;
+    console.log("tokenA", tokenA);
 
     const balance =
       tokenBalances && tokenBalances?.filter((item) => item[address]);
@@ -63,7 +69,7 @@ const Input = (props) => {
     setTokenA({
       ...tokenA,
       symbol: "Faucet",
-      image: "/ethereum.png",
+      image: ethLogo,
       balance: balance?.[0]?.[address],
       tokenIsSet: true,
     });

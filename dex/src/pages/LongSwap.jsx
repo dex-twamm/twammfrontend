@@ -8,35 +8,103 @@ import Swap from "../components/Swap";
 import lsStyles from "../css/LongSwap.module.css";
 import styles from "../css/ShortSwap.module.css";
 import { LongSwapContext, ShortSwapContext } from "../providers";
-import LongTermSwapCardDropdown from "../components/LongTermSwapCardDropdown";
-import { Alert, CircularProgress } from "@mui/material";
 import Tabs from "../components/Tabs";
 import PopupModal from "../components/alerts/PopupModal";
+import { getProvider } from "../utils/getProvider";
+import { getEthLogs } from "../utils/get_ethLogs";
+import { _placeLongTermOrders } from "../utils/placeLongTermOrder";
+import { WebContext } from "../providers/context/WebProvider";
+import { connectWallet } from "../utils/connetWallet";
 
 const LongSwap = (props) => {
   const {
     tokenSymbol,
     tokenImage,
-    connectWallet,
     buttonText,
     cancelPool,
     withdrawPool,
     isPlacedLongTermOrder,
     setIsPlacedLongTermOrder,
     spotPriceLoading,
-    loading,
   } = props;
 
   const [showSettings, setShowSettings] = useState(false);
-  const { orderLogsDecoded, message, setMessage } = useContext(LongSwapContext);
-  const { transactionHash } = useContext(ShortSwapContext);
+
+  const { provider } = useContext(WebContext);
+  const {
+    orderLogsDecoded,
+    message,
+    setMessage,
+    numberOfBlockIntervals,
+    setOrderLogsDecoded,
+  } = useContext(LongSwapContext);
+
+  const {
+    isWalletConnected,
+    setweb3provider,
+    setCurrentBlock,
+    setBalance,
+    setAccount,
+    setWalletConnected,
+    swapAmount,
+    srcAddress,
+    destAddress,
+    account,
+    setTransactionHash,
+    setLoading,
+    setError,
+  } = useContext(ShortSwapContext);
+
   const ethLogsCount = orderLogsDecoded
     ? Object.keys(orderLogsDecoded).length
     : 0;
+
   const cardListCount = ethLogsCount;
+
   console.log("Logs Count", ethLogsCount, cardListCount);
 
   console.log("Is long term order placed", isPlacedLongTermOrder);
+
+  async function LongSwapButtonClick() {
+    console.log("Wallet", isWalletConnected);
+    if (!isWalletConnected) {
+      await connectWallet(
+        setweb3provider,
+        setCurrentBlock,
+        setBalance,
+        setAccount,
+        setWalletConnected
+      );
+      const signer = await getProvider(
+        true,
+        setweb3provider,
+        setCurrentBlock,
+        setBalance,
+        setAccount,
+        setWalletConnected
+      );
+      await getEthLogs(signer);
+    } else {
+      await _placeLongTermOrders(
+        swapAmount,
+        srcAddress,
+        destAddress,
+        numberOfBlockIntervals,
+        setweb3provider,
+        setCurrentBlock,
+        setBalance,
+        setAccount,
+        setWalletConnected,
+        account,
+        setTransactionHash,
+        setLoading,
+        setIsPlacedLongTermOrder,
+        setOrderLogsDecoded,
+        setError,
+        provider
+      );
+    }
+  }
 
   return (
     <>
@@ -61,7 +129,7 @@ const LongSwap = (props) => {
             swapType="long"
             tokenSymbol={tokenSymbol}
             tokenImage={tokenImage}
-            connectWallet={connectWallet}
+            connectWallet={LongSwapButtonClick}
             buttonText={buttonText}
             spotPriceLoading={spotPriceLoading}
             setIsPlacedLongTermOrder={setIsPlacedLongTermOrder}

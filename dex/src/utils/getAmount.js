@@ -11,8 +11,10 @@ import { POOLS, POOL_ID } from "./pool";
 // To Retrieve Token Balances
 export const getTokensBalance = async (provider, walletAddress) => {
   var tokenAddress = [
-    POOLS[POOL_ID]?.TOKEN_TWO_ADDRESS,
-    POOLS[POOL_ID]?.TOKEN_ONE_ADDRESS,
+    Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
+      ?.TOKEN_TWO_ADDRESS,
+    Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
+      ?.TOKEN_ONE_ADDRESS,
   ];
   const newBalance = [];
   for (let index = 0; index < tokenAddress.length; index++) {
@@ -38,7 +40,7 @@ export const getTokensBalance = async (provider, walletAddress) => {
 
 export const getLPTokensBalance = async (provider, walletAddress) => {
   const poolContract = new Contract(
-    POOLS[POOL_ID].address,
+    Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0].address,
     TWAMM_POOL_ABI,
     provider
   );

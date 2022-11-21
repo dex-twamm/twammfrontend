@@ -10,13 +10,27 @@ import { bigToFloat, bigToStr } from "../utils";
 import { POOLS, POOL_ID } from "../utils/pool";
 import LongTermSwapCardDropdown from "../components/LongTermSwapCardDropdown";
 import CircularProgressBar from "./alerts/CircularProgressBar";
+import { _cancelLTO } from "../utils/_cancelLto";
+import { WebContext } from "../providers/context/WebProvider";
+import { _withdrawLTO } from "../utils/_withdrawLto";
 
 const LongTermOrderCard = (props) => {
-  const { cancelPool, withdrawPool } = props;
+  // const { cancelPool, withdrawPool } = props;
   const remainingTimeRef = useRef();
 
-  const { swapAmount, currentBlock, isWalletConnected, loading } =
-    useContext(ShortSwapContext);
+  const {
+    swapAmount,
+    currentBlock,
+    isWalletConnected,
+    setLoading,
+    account,
+    setweb3provider,
+    setCurrentBlock,
+    setBalance,
+    setAccount,
+    setWalletConnected,
+    setTransactionHash,
+  } = useContext(ShortSwapContext);
 
   const {
     sliderValueInSec,
@@ -26,7 +40,12 @@ const LongTermOrderCard = (props) => {
     latestBlock,
     disableActionBtn,
     orderLogsLoading,
+    setDisableActionBtn,
+    setOrderLogsDecoded,
+    setMessage,
   } = useContext(LongSwapContext);
+
+  const { provider } = useContext(WebContext);
 
   const initialValue = Math.ceil(sliderValueInSec);
 
@@ -112,6 +131,47 @@ const LongTermOrderCard = (props) => {
 
   // Mapping Data from EthLogs
   console.log("orderLogsDecoded", orderLogsLoading);
+
+  const handleCancel = (orderId, orderHash) => {
+    _cancelLTO(
+      orderId,
+      orderHash,
+      setLoading,
+      setDisableActionBtn,
+      account,
+      setweb3provider,
+      setCurrentBlock,
+      setBalance,
+      setAccount,
+      setWalletConnected,
+      isWalletConnected,
+      setOrderLogsDecoded,
+      setMessage,
+      provider,
+      setTransactionHash
+    );
+  };
+
+  const handleWithDraw = (orderId, orderHash) => {
+    console.log("Order hash", orderHash);
+    _withdrawLTO(
+      orderId,
+      orderHash,
+      setLoading,
+      setDisableActionBtn,
+      account,
+      setweb3provider,
+      setCurrentBlock,
+      setBalance,
+      setAccount,
+      setWalletConnected,
+      isWalletConnected,
+      setOrderLogsDecoded,
+      setMessage,
+      provider,
+      setTransactionHash
+    );
+  };
 
   return !isWalletConnected ? (
     <>
@@ -209,7 +269,11 @@ const LongTermOrderCard = (props) => {
                     className={styles.iconExternalLink}
                     onClick={() =>
                       window.open(
-                        `${POOLS[POOL_ID]?.transactionUrl}${it.transactionHash}`,
+                        `${
+                          Object.values(
+                            POOLS[localStorage.getItem("coin_name")]
+                          )[0]?.transactionUrl
+                        }${it.transactionHash}`,
                         "_blank"
                       )
                     }
@@ -220,13 +284,26 @@ const LongTermOrderCard = (props) => {
                     <div className={styles.tokenWrapper}>
                       <img
                         className={styles.tokenIcon}
-                        src={POOLS[POOL_ID].tokens[it.sellTokenIndex].image}
-                        alt={POOLS[POOL_ID].tokens[it.sellTokenIndex].symbol}
+                        src={
+                          Object.values(
+                            POOLS[localStorage.getItem("coin_name")]
+                          )[0].tokens[it.sellTokenIndex].logo
+                        }
+                        alt={
+                          Object.values(
+                            POOLS[localStorage.getItem("coin_name")]
+                          )[0].tokens[it.sellTokenIndex].symbol
+                        }
                       />
                       <p className={styles.tokenText}>
                         <span>
                           {bigToStr(soldToken, 18)}{" "}
-                          {POOLS[POOL_ID].tokens[it.sellTokenIndex].symbol} of
+                          {
+                            Object.values(
+                              POOLS[localStorage.getItem("coin_name")]
+                            )[0].tokens[it.sellTokenIndex].symbol
+                          }{" "}
+                          of
                         </span>
                         <span> {bigToStr(amountOf, 18)}</span>
                       </p>
@@ -254,8 +331,16 @@ const LongTermOrderCard = (props) => {
                     >
                       <img
                         className={styles.tokenIcon}
-                        src={POOLS[POOL_ID].tokens[it.buyTokenIndex].image}
-                        alt={POOLS[POOL_ID].tokens[it.buyTokenIndex].symbol}
+                        src={
+                          Object.values(
+                            POOLS[localStorage.getItem("coin_name")]
+                          )[0].tokens[it.buyTokenIndex].logo
+                        }
+                        alt={
+                          Object.values(
+                            POOLS[localStorage.getItem("coin_name")]
+                          )[0].tokens[it.buyTokenIndex].symbol
+                        }
                       />
                       <p
                         className={classNames(
@@ -264,7 +349,11 @@ const LongTermOrderCard = (props) => {
                         )}
                       >
                         {bigToStr(convertedAmount, 18)}{" "}
-                        {POOLS[POOL_ID].tokens[it.buyTokenIndex].symbol}
+                        {
+                          Object.values(
+                            POOLS[localStorage.getItem("coin_name")]
+                          )[0].tokens[it.buyTokenIndex].symbol
+                        }
                       </p>
                     </div>
                   </div>
@@ -293,7 +382,12 @@ const LongTermOrderCard = (props) => {
 
                   <div className={styles.extrasContainer}>
                     <div className={styles.fees}>
-                      {POOLS[POOL_ID]?.fees} fees
+                      {
+                        Object.values(
+                          POOLS[localStorage.getItem("coin_name")]
+                        )[0]?.fees
+                      }{" "}
+                      fees
                     </div>
                     {soldToken != 0 && (
                       <div className={styles.averagePrice}>
@@ -321,7 +415,11 @@ const LongTermOrderCard = (props) => {
                         disableActionBtn
                       }
                       onClick={() => {
-                        cancelPool(it?.orderId?.toNumber());
+                        handleCancel(
+                          it?.orderId?.toNumber(),
+                          it?.transactionHash
+                        );
+                        // cancelPool(it?.orderId?.toNumber());
                       }}
                     >
                       {orderStatus.status !== "Completed"
@@ -336,7 +434,10 @@ const LongTermOrderCard = (props) => {
                             styles.withdrawButton
                           )}
                           onClick={() => {
-                            withdrawPool(it?.orderId?.toNumber());
+                            handleWithDraw(
+                              it?.orderId?.toNumber(),
+                              it?.transactionHash
+                            );
                           }}
                           disabled={disableActionBtn}
                         >
