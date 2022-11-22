@@ -14,10 +14,10 @@ export const swapTokens = async (
   walletAddress,
   expectedSwapOut,
   tolerance,
-  deadline,
-  currentNetwork = "Goerli"
+  deadline
+  // currentNetwork
 ) => {
-  // const currentNetwork = "Goerli";
+  const currentNetwork = "Goerli";
   let txHash;
   // Create a new instance of the exchange contract
   const exchangeContract = new Contract(
@@ -40,6 +40,11 @@ export const swapTokens = async (
     deadline,
     swapAmountWei,
     expectedSwapOutAfterTolerance
+  );
+
+  console.log(
+    "Object.keys(POOLS[currentNetwork])[0]",
+    Object.keys(POOLS[currentNetwork])[0]
   );
 
   const gasEstimate = await exchangeContract.estimateGas.swap(
@@ -87,7 +92,8 @@ export const swapTokens = async (
 
     BigNumber.from(Math.floor(deadlineTimestamp / 1000)), // Deadline // Minutes Into Seconds Then Type BigNumber
     {
-      gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
+      // gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
+      gasLimit: 50000,
     }
   );
   txHash = swapTx.hash;

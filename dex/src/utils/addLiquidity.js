@@ -145,9 +145,10 @@ export async function withdrawLTO(
   setTransactionHash,
   setOrderLogsDecoded,
   setMessage,
-  provider,
-  currentNetwork = "Goerli"
+  provider
+  // currentNetwork = "Goerli"
 ) {
+  const currentNetwork = "Goerli";
   const poolContract = new Contract(
     Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,

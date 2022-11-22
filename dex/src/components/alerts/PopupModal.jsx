@@ -90,7 +90,13 @@ const PopupModal = ({
         )} */}
         {success && (
           <Backdrop open={success ? true : false} onClose={handleClose}>
-            <Alert severity="success" onClose={handleClose}>
+            <Alert
+              severity="success"
+              onClose={() => {
+                handleClose();
+                // window.location.reload();
+              }}
+            >
               {success}
             </Alert>
           </Backdrop>
@@ -135,7 +141,12 @@ const PopupModal = ({
                   ? "error"
                   : "success"
               }
-              onClose={handleClose}
+              onClose={() =>
+                handleClose()(
+                  message !== POPUP_MESSAGE.ltoCancelFailed ||
+                    message !== POPUP_MESSAGE.ltoWithdrawFailed
+                ) && window.location.reload()
+              }
             >
               {message}
             </Alert>
