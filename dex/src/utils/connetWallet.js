@@ -16,7 +16,7 @@ export const connectWallet = async (
       setAccount,
       setWalletConnected
     );
-    window.location.reload();
+    // window.location.reload();
     // console.log("Wallet Connected Info", isWalletConnected);
 
     // setSuccess("Wallet Connected");

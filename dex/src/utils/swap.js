@@ -15,13 +15,13 @@ export const swapTokens = async (
   expectedSwapOut,
   tolerance,
   deadline,
-  currentNetwork
+  currentNetwork = "Goerli"
 ) => {
   // const currentNetwork = "Goerli";
   let txHash;
   // Create a new instance of the exchange contract
   const exchangeContract = new Contract(
-    Object.values(POOLS[currentNetwork ?? "Goerli"])[0].VAULT_CONTRACT_ADDRESS,
+    Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -44,7 +44,7 @@ export const swapTokens = async (
 
   const gasEstimate = await exchangeContract.estimateGas.swap(
     {
-      poolId: Object.keys(POOLS[currentNetwork ?? "Goerli"])[0],
+      poolId: Object.keys(POOLS[currentNetwork])[0],
       kind: kind,
       assetIn: assetIn,
       assetOut: assetOut,
@@ -68,7 +68,7 @@ export const swapTokens = async (
 
   const swapTx = await exchangeContract.swap(
     {
-      poolId: Object.keys(POOLS[currentNetwork ?? "Goerli"])[0],
+      poolId: Object.keys(POOLS[currentNetwork])[0],
       kind: kind,
       assetIn: assetIn,
       assetOut: assetOut,

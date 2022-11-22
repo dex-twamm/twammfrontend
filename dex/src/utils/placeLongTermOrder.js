@@ -22,7 +22,7 @@ export const _placeLongTermOrders = async (
   setOrderLogsDecoded,
   setError,
   provider,
-  currentNetwork
+  currentNetwork = "Goerli"
 ) => {
   const swapAmountWei = ethers.utils.parseUnits(swapAmount, "ether");
   // console.log('swapAmountWei', swapAmountWei);

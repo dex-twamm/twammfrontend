@@ -55,7 +55,7 @@ export const spotPrice = async (
         expectedSwapOut,
         tolerance,
         deadline,
-        currentNetwork
+        (currentNetwork = "Goerli")
       ).then((res) => {
         console.log("Response From Query Batch Swap", res);
         errors.balError = undefined;

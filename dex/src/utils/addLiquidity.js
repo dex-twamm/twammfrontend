@@ -15,7 +15,11 @@ import {
 import { getEthLogs } from "./get_ethLogs";
 import { POOLS } from "./pool";
 
-export async function joinPool(walletAddress, signer, currentNetwork) {
+export async function joinPool(
+  walletAddress,
+  signer,
+  currentNetwork = "Goerli"
+) {
   const encodedRequest = defaultAbiCoder.encode(
     ["uint256", "uint256[]", "uint256"],
     // JoinKind, User Input AmountIn, MinimumBpt Out
@@ -50,7 +54,7 @@ export async function exitPool(
   walletAdress,
   signer,
   bptAmountIn,
-  currentNetwork
+  currentNetwork = "Goerli"
 ) {
   const poolContract = new Contract(
     Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
@@ -93,7 +97,7 @@ export async function cancelLTO(
   setOrderLogsDecoded,
   setMessage,
   provider,
-  currentNetwork
+  currentNetwork = "Goerli"
 ) {
   const poolContract = new Contract(
     Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
@@ -142,7 +146,7 @@ export async function withdrawLTO(
   setOrderLogsDecoded,
   setMessage,
   provider,
-  currentNetwork
+  currentNetwork = "Goerli"
 ) {
   const poolContract = new Contract(
     Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
@@ -181,7 +185,11 @@ export async function withdrawLTO(
   setMessage(POPUP_MESSAGE.ltoWithdrawn);
 }
 
-export async function getPoolBalance(signer, tokenAddress, currentNetwork) {
+export async function getPoolBalance(
+  signer,
+  tokenAddress,
+  currentNetwork = "Goerli"
+) {
   const vaultContract = new Contract(
     Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,

@@ -12,8 +12,8 @@ import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS, toHex } from "../utils";
 import { connectWallet } from "../utils/connetWallet";
 import { DisconnectWalletOption } from "./DisconnectWalletOption";
 import NavOptionDropdwon from "./navbarDropdown/NavOptionDropdwon";
-import goerliLogo from "../images/Testv4.jpeg";
-import ethLogo from "../images/ethereum.png";
+import goerliLogo from "../images/Testv4.svg";
+import ethLogo from "../images/ethereum.svg";
 
 const Navbar = (props) => {
   const {
@@ -67,6 +67,7 @@ const Navbar = (props) => {
   if (!localStorage.getItem("network_name")) {
     localStorage.setItem("network_name", initialNetwork[0]?.name);
     localStorage.setItem("network_logo", initialNetwork[0]?.logo);
+    localStorage.setItem("chainId", initialNetwork[0]?.chainId);
   }
 
   // const [selectedNetwork, setSelectedNetwork] = useState({
@@ -77,13 +78,14 @@ const Navbar = (props) => {
 
   const network_name = localStorage.getItem("network_name");
   const network_logo = localStorage.getItem("network_logo");
+  const network_id = localStorage.getItem("chainId");
 
   useEffect(() => {
-    setSelectedNetwork((prevState) => ({
-      ...prevState,
+    setSelectedNetwork({
       network: network_name ? network_name : initialNetwork[0]?.name,
       logo: network_logo ? network_logo : initialNetwork[0]?.logo,
-    }));
+      chainId: network_id ? network_id : initialNetwork[0]?.chainId,
+    });
   }, [network_name]);
 
   const handleSelect = async (networkName, logo, chainId) => {
@@ -188,11 +190,11 @@ const Navbar = (props) => {
               <div className={styles.container}>
                 <div id="networkType" className={styles.dropdownContainer}>
                   <img
-                    src={selectedNetwork.logo}
+                    src={selectedNetwork?.logo}
                     className={styles.networkIcon}
                     alt=""
                   />
-                  <span>{selectedNetwork.network}</span>
+                  <span>{selectedNetwork?.network}</span>
                   <RiArrowDropDownLine className={styles.dropdownIcon} />
                 </div>
 

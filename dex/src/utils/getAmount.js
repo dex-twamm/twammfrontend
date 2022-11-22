@@ -12,7 +12,7 @@ import { POOLS } from "./pool";
 export const getTokensBalance = async (
   provider,
   walletAddress,
-  currentNetwork
+  currentNetwork = "Goerli"
 ) => {
   var tokenAddress = [
     Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
@@ -43,7 +43,7 @@ export const getTokensBalance = async (
 export const getLPTokensBalance = async (
   provider,
   walletAddress,
-  currentNetwork
+  currentNetwork = "Goerli"
 ) => {
   const poolContract = new Contract(
     Object.values(POOLS?.[currentNetwork])?.[0].address,

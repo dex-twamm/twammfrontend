@@ -22,7 +22,7 @@ export const _swapTokens = async (
   setMessage,
   setError,
   setLoading,
-  currentNetwork
+  currentNetwork = "Goerli"
 ) => {
   const walletBalanceWei = ethers.utils.parseUnits(ethBalance, "ether");
   const pCash = ethers.utils.parseUnits(poolCash, "ether");

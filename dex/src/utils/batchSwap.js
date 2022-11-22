@@ -15,7 +15,7 @@ export const getEstimatedConvertedToken = async (
   expectedSwapOut,
   tolerance,
   deadline,
-  currentNetwork
+  currentNetwork = "Goerli"
 ) => {
   let txHash;
   // Create a new instance of the exchange contract

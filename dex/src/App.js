@@ -99,7 +99,8 @@ function App() {
     setOrderLogsLoading,
   } = useContext(LongSwapContext);
   const { provider, setProvider } = useContext(WebContext);
-  const { setSelectedNetwork, nId, selectedNetwork } = useContext(UIContext);
+
+  const { setSelectedNetwork } = useContext(UIContext);
 
   console.log("Current Block", currentBlock);
 
@@ -109,9 +110,9 @@ function App() {
 
   // Refresh State
   const refreshState = () => {
-    setAccount("");
+    setAccount();
     setWalletConnected(false);
-    setBalance("");
+    setBalance();
     localStorage.clear();
   };
 
@@ -156,6 +157,8 @@ function App() {
   };
 
   console.log("Account--->", account);
+  console.log("selectedNjkdhksdas", currentNetwork);
+
   // Use Memo
   useMemo(() => {
     const allowance = async () => {
@@ -310,11 +313,11 @@ function App() {
     };
   });
 
-  // useEffect(() => {
-  // 	if (web3Modal.cachedProvider) {
-  // 		connectWallet();
-  // 	}
-  // }, [provider]);
+  useEffect(() => {
+    if (web3Modal.cachedProvider) {
+      connectWallet();
+    }
+  }, []);
 
   useEffect(() => {
     if (provider?.on) {

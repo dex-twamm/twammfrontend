@@ -14,7 +14,7 @@ const UIProvider = ({ children }) => {
 
   const [selectedNetwork, setSelectedNetwork] = useState({
     network: "Goerli",
-    logo: "",
+    logo: "/Testv4.svg",
     chainId: nId,
   });
   return (

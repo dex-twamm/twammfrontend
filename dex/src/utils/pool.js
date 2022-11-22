@@ -1,5 +1,5 @@
-import ethLogo from "../images/ethereum.png";
-import maticLogo from "../images/Testv4.jpeg";
+import ethLogo from "../images/ethereum.svg";
+import maticLogo from "../images/Testv4.svg";
 
 export const POOLS = {
   Goerli: {
@@ -20,7 +20,7 @@ export const POOLS = {
           name: "Matic",
           decimals: 18,
           address: "0x499d11E0b6eAC7c0593d8Fb292DCBbF815Fb29Ae",
-          image: "Testv4.jpeg",
+          image: "Testv4.svg",
           logo: maticLogo,
         },
         {
@@ -28,7 +28,7 @@ export const POOLS = {
           name: "Faucet",
           decimals: 18,
           address: "0xBA62BCfcAaFc6622853cca2BE6Ac7d845BC0f2Dc",
-          image: "ethereum.png",
+          image: "ethereum.svg",
           logo: ethLogo,
         },
       ],
