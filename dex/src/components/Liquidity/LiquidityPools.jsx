@@ -90,7 +90,7 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
             Connect your wallet to view your Pools.
           </Typography>
         </Box>
-      ) : loading ? (
+      ) : !loading ? (
         <>
           {" "}
           <Box
