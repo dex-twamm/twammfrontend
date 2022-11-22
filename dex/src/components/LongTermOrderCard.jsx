@@ -152,8 +152,7 @@ const LongTermOrderCard = (props) => {
       setMessage,
       provider,
       setTransactionHash,
-      currentNetwork?.network,
-      setProvider
+      currentNetwork?.network
     );
   };
 
@@ -175,8 +174,7 @@ const LongTermOrderCard = (props) => {
       setMessage,
       provider,
       setTransactionHash,
-      currentNetwork?.network,
-      setProvider
+      currentNetwork?.network
     );
   };
 

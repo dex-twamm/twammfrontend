@@ -73,6 +73,8 @@ const PopupModal = ({
     margin: "5px",
     background: "rgba(255, 255, 255, 0.5)",
   };
+
+  console.log("hajsdhkajsdhkajsd", error);
   return (
     <>
       <div style={AlertStyle}>

@@ -12,8 +12,7 @@ export const _exitPool = async (
   setAccount,
   setWalletConnected,
   isWalletConnected,
-  currentNetwork,
-  setProvider
+  currentNetwork
 ) => {
   setLoading(true);
   try {
@@ -25,8 +24,7 @@ export const _exitPool = async (
       setCurrentBlock,
       setBalance,
       setAccount,
-      setWalletConnected,
-      setProvider
+      setWalletConnected
     );
     if (!isWalletConnected) {
       await connectWallet(
@@ -34,8 +32,7 @@ export const _exitPool = async (
         setCurrentBlock,
         setBalance,
         setAccount,
-        setWalletConnected,
-        setProvider
+        setWalletConnected
       );
     }
     await exitPool(walletAddress, signer, bptAmountIn, currentNetwork);

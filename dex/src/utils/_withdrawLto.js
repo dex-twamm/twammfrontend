@@ -19,8 +19,7 @@ export const _withdrawLTO = async (
   setMessage,
   provider,
   setTransactionHash,
-  currentNetwork,
-  setProvider
+  currentNetwork
 ) => {
   console.log("Order Id", orderId);
   setDisableActionBtn(true);
@@ -33,8 +32,7 @@ export const _withdrawLTO = async (
       setCurrentBlock,
       setBalance,
       setAccount,
-      setWalletConnected,
-      setProvider
+      setWalletConnected
     );
     if (!isWalletConnected) {
       await connectWallet(
@@ -42,8 +40,7 @@ export const _withdrawLTO = async (
         setCurrentBlock,
         setBalance,
         setAccount,
-        setWalletConnected,
-        setProvider
+        setWalletConnected
       );
     }
 

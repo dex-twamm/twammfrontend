@@ -68,8 +68,7 @@ const ShortSwap = ({
           setCurrentBlock,
           setBalance,
           setAccount,
-          setWalletConnected,
-          setProvider
+          setWalletConnected
         );
         const signer = await getProvider(
           true,
@@ -77,8 +76,7 @@ const ShortSwap = ({
           setCurrentBlock,
           setBalance,
           setAccount,
-          setWalletConnected,
-          setProvider
+          setWalletConnected
         );
         await getEthLogs(signer);
       } else {
@@ -100,8 +98,7 @@ const ShortSwap = ({
           setTransactionHash,
           setError,
           setLoading,
-          currentNetwork?.network,
-          setProvider
+          currentNetwork?.network
         );
       }
     } catch (err) {

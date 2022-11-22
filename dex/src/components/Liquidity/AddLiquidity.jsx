@@ -114,8 +114,7 @@ const AddLiquidity = (props) => {
       setAccount,
       setWalletConnected,
       isWalletConnected,
-      currentNetwork?.network,
-      setProvider
+      currentNetwork?.network
     );
   };
 

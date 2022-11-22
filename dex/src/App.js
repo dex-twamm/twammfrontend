@@ -176,8 +176,7 @@ function App() {
         setCurrentBlock,
         setBalance,
         setAccount,
-        setWalletConnected,
-        setProvider
+        setWalletConnected
       );
       const tokenAddress = srcAddress;
       const walletAddress = account;
@@ -233,8 +232,7 @@ function App() {
         setFormErrors,
         setSpotPrice,
         setExpectedSwapOut,
-        currentNetwork?.network,
-        setProvider
+        currentNetwork?.network
       );
     }, 1000);
     return () => {
@@ -255,8 +253,7 @@ function App() {
         setCurrentBlock,
         setBalance,
         setAccount,
-        setWalletConnected,
-        setProvider
+        setWalletConnected
       );
       setProvider(provider);
 

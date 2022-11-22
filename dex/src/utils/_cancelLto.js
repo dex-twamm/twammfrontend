@@ -20,8 +20,7 @@ export const _cancelLTO = async (
   setMessage,
   provider,
   setTransactionHash,
-  currentNetwork,
-  setProvider
+  currentNetwork
 ) => {
   setLoading(true);
   setDisableActionBtn(true);
@@ -33,8 +32,7 @@ export const _cancelLTO = async (
       setCurrentBlock,
       setBalance,
       setAccount,
-      setWalletConnected,
-      setProvider
+      setWalletConnected
     );
     if (!isWalletConnected) {
       await connectWallet(
@@ -42,8 +40,7 @@ export const _cancelLTO = async (
         setCurrentBlock,
         setBalance,
         setAccount,
-        setWalletConnected,
-        setProvider
+        setWalletConnected
       );
     }
     await cancelLTO(

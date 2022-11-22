@@ -148,8 +148,7 @@ const Navbar = (props) => {
       setCurrentBlock,
       setBalance,
       setAccount,
-      setWalletConnected,
-      setProvider
+      setWalletConnected
     );
   };
 

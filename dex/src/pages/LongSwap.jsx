@@ -77,8 +77,7 @@ const LongSwap = (props) => {
         setCurrentBlock,
         setBalance,
         setAccount,
-        setWalletConnected,
-        setProvider
+        setWalletConnected
       );
       const signer = await getProvider(
         true,
@@ -86,8 +85,7 @@ const LongSwap = (props) => {
         setCurrentBlock,
         setBalance,
         setAccount,
-        setWalletConnected,
-        setProvider
+        setWalletConnected
       );
       await getEthLogs(signer);
     } else {
@@ -108,8 +106,7 @@ const LongSwap = (props) => {
         setOrderLogsDecoded,
         setError,
         provider,
-        currentNetwork?.network,
-        setProvider
+        currentNetwork?.network
       );
     }
   }

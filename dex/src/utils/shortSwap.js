@@ -23,7 +23,6 @@ export const _swapTokens = async (
   setError,
   setLoading,
   currentNetwork = "Goerli"
-  // setProvider
 ) => {
   const walletBalanceWei = ethers.utils.parseUnits(ethBalance, "ether");
   const pCash = ethers.utils.parseUnits(poolCash, "ether");
@@ -49,7 +48,6 @@ export const _swapTokens = async (
         setBalance,
         setAccount,
         setWalletConnected
-        // setProvider
       );
       // console.log(signer);
       const assetIn = srcAddress;
@@ -83,12 +81,12 @@ export const _swapTokens = async (
           });
         })
         .catch((err) => {
-          console.error(err);
-          setError(POPUP_MESSAGE.error);
+          console.error("error on swap", err);
+          setError(POPUP_MESSAGE.shortSwapFailed);
         });
       setLoading(false);
     } catch (err) {
-      console.error("errrrrrr", err);
+      console.error("errorr on swap", err);
       setLoading(false);
       setError(POPUP_MESSAGE.transactionCancelled);
     }
