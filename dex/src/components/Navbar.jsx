@@ -65,9 +65,9 @@ const Navbar = (props) => {
   console.log("initialNetwork", initialNetwork);
 
   if (!localStorage.getItem("network_name")) {
-    localStorage.setItem("network_name", initialNetwork[0]?.name);
-    localStorage.setItem("network_logo", initialNetwork[0]?.logo);
-    localStorage.setItem("chainId", initialNetwork[0]?.chainId);
+    localStorage.setItem("network_name", initialNetwork[1]?.name);
+    localStorage.setItem("network_logo", initialNetwork[1]?.logo);
+    localStorage.setItem("chainId", initialNetwork[1]?.chainId);
   }
 
   // const [selectedNetwork, setSelectedNetwork] = useState({
