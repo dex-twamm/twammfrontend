@@ -14,6 +14,7 @@ import { DisconnectWalletOption } from "./DisconnectWalletOption";
 import NavOptionDropdwon from "./navbarDropdown/NavOptionDropdwon";
 import goerliLogo from "../images/Testv4.svg";
 import ethLogo from "../images/ethereum.svg";
+import { WebContext } from "../providers/context/WebProvider";
 
 const Navbar = (props) => {
   const {
@@ -49,6 +50,8 @@ const Navbar = (props) => {
     setAccount,
     setWalletConnected,
   } = useContext(ShortSwapContext);
+  const { provider, setProvider } = useContext(WebContext);
+
   // const [netId, setNetId] = useState("");
   // const [isOpen, setOpen] = useState(false);
   console.log("Wallet Status", isWalletConnected);
@@ -145,7 +148,8 @@ const Navbar = (props) => {
       setCurrentBlock,
       setBalance,
       setAccount,
-      setWalletConnected
+      setWalletConnected,
+      setProvider
     );
   };
 

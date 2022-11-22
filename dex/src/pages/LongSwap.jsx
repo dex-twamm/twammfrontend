@@ -31,7 +31,6 @@ const LongSwap = (props) => {
 
   const [showSettings, setShowSettings] = useState(false);
 
-  const { provider } = useContext(WebContext);
   const {
     orderLogsDecoded,
     message,
@@ -55,6 +54,9 @@ const LongSwap = (props) => {
     setLoading,
     setError,
   } = useContext(ShortSwapContext);
+
+  const { provider, setProvider } = useContext(WebContext);
+
   const currentNetwork = useNetwork();
 
   const ethLogsCount = orderLogsDecoded
@@ -75,7 +77,8 @@ const LongSwap = (props) => {
         setCurrentBlock,
         setBalance,
         setAccount,
-        setWalletConnected
+        setWalletConnected,
+        setProvider
       );
       const signer = await getProvider(
         true,
@@ -83,7 +86,8 @@ const LongSwap = (props) => {
         setCurrentBlock,
         setBalance,
         setAccount,
-        setWalletConnected
+        setWalletConnected,
+        setProvider
       );
       await getEthLogs(signer);
     } else {
@@ -104,7 +108,8 @@ const LongSwap = (props) => {
         setOrderLogsDecoded,
         setError,
         provider,
-        currentNetwork?.network
+        currentNetwork?.network,
+        setProvider
       );
     }
   }

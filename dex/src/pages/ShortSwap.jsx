@@ -8,6 +8,7 @@ import Tabs from "../components/Tabs";
 import styles from "../css/ShortSwap.module.css";
 import { ShortSwapContext } from "../providers";
 import { useNetwork } from "../providers/context/UIProvider";
+import { WebContext } from "../providers/context/WebProvider";
 import { connectWallet } from "../utils/connetWallet";
 import { getProvider } from "../utils/getProvider";
 import { getEthLogs } from "../utils/get_ethLogs";
@@ -48,6 +49,8 @@ const ShortSwap = ({
     poolCash,
   } = useContext(ShortSwapContext);
 
+  const { provider, setProvider } = useContext(WebContext);
+
   const currentNetwork = useNetwork();
 
   // console.log(
@@ -65,7 +68,8 @@ const ShortSwap = ({
           setCurrentBlock,
           setBalance,
           setAccount,
-          setWalletConnected
+          setWalletConnected,
+          setProvider
         );
         const signer = await getProvider(
           true,
@@ -73,7 +77,8 @@ const ShortSwap = ({
           setCurrentBlock,
           setBalance,
           setAccount,
-          setWalletConnected
+          setWalletConnected,
+          setProvider
         );
         await getEthLogs(signer);
       } else {
@@ -95,7 +100,8 @@ const ShortSwap = ({
           setTransactionHash,
           setError,
           setLoading,
-          currentNetwork?.network
+          currentNetwork?.network,
+          setProvider
         );
       }
     } catch (err) {

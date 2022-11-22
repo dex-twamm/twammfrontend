@@ -22,7 +22,8 @@ export const _placeLongTermOrders = async (
   setOrderLogsDecoded,
   setError,
   provider,
-  currentNetwork = "Goerli"
+  currentNetwork = "Goerli",
+  setProvider
 ) => {
   const swapAmountWei = ethers.utils.parseUnits(swapAmount, "ether");
   // console.log('swapAmountWei', swapAmountWei);
@@ -43,7 +44,8 @@ export const _placeLongTermOrders = async (
       setCurrentBlock,
       setBalance,
       setAccount,
-      setWalletConnected
+      setWalletConnected,
+      setProvider
     );
 
     const walletAddress = account;

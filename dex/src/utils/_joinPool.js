@@ -10,7 +10,8 @@ export const _joinPool = async (
   setAccount,
   setWalletConnected,
   isWalletConnected,
-  currentNetwork
+  currentNetwork,
+  setProvider
 ) => {
   try {
     const walletAddress = account;
@@ -20,7 +21,8 @@ export const _joinPool = async (
       setCurrentBlock,
       setBalance,
       setAccount,
-      setWalletConnected
+      setWalletConnected,
+      setProvider
     );
     if (!isWalletConnected) {
       await connectWallet(
@@ -28,7 +30,8 @@ export const _joinPool = async (
         setCurrentBlock,
         setBalance,
         setAccount,
-        setWalletConnected
+        setWalletConnected,
+        setProvider
       );
     }
     await joinPool(walletAddress, signer, currentNetwork);

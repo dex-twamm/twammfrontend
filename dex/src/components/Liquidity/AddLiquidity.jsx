@@ -7,6 +7,7 @@ import { FiChevronDown } from "react-icons/fi";
 import styles from "../../css/AddLiquidity.module.css";
 import { LongSwapContext, ShortSwapContext } from "../../providers";
 import { useNetwork } from "../../providers/context/UIProvider";
+import { WebContext } from "../../providers/context/WebProvider";
 import { POOLS, POOL_ID } from "../../utils/pool";
 import { _joinPool } from "../../utils/_joinPool";
 import { DisconnectWalletOption } from "../DisconnectWalletOption";
@@ -41,6 +42,8 @@ const AddLiquidity = (props) => {
     isWalletConnected,
   } = useContext(ShortSwapContext);
   const currentNetwork = useNetwork();
+
+  const { provider, setProvider } = useContext(WebContext);
 
   const handleToggle = () => setDisplay(!display);
 
@@ -111,7 +114,8 @@ const AddLiquidity = (props) => {
       setAccount,
       setWalletConnected,
       isWalletConnected,
-      currentNetwork?.network
+      currentNetwork?.network,
+      setProvider
     );
   };
 

@@ -46,7 +46,7 @@ const LongTermOrderCard = (props) => {
     setMessage,
   } = useContext(LongSwapContext);
 
-  const { provider } = useContext(WebContext);
+  const { provider, setProvider } = useContext(WebContext);
   const currentNetwork = useNetwork();
 
   const initialValue = Math.ceil(sliderValueInSec);
@@ -152,7 +152,8 @@ const LongTermOrderCard = (props) => {
       setMessage,
       provider,
       setTransactionHash,
-      currentNetwork?.network
+      currentNetwork?.network,
+      setProvider
     );
   };
 
@@ -174,7 +175,8 @@ const LongTermOrderCard = (props) => {
       setMessage,
       provider,
       setTransactionHash,
-      currentNetwork?.network
+      currentNetwork?.network,
+      setProvider
     );
   };
 

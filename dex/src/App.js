@@ -123,6 +123,14 @@ function App() {
     setShowDisconnect(false);
   };
 
+  useEffect(() => {
+    if (web3Modal.cachedProvider) {
+      connectWallet();
+    }
+  }, []);
+
+  console.log("web3Modal.cachedProvider", web3Modal.cachedProvider);
+
   console.log("webashasdweb3provider", account);
 
   console.log("networkkkkk", currentNetwork);
@@ -168,7 +176,8 @@ function App() {
         setCurrentBlock,
         setBalance,
         setAccount,
-        setWalletConnected
+        setWalletConnected,
+        setProvider
       );
       const tokenAddress = srcAddress;
       const walletAddress = account;
@@ -224,7 +233,8 @@ function App() {
         setFormErrors,
         setSpotPrice,
         setExpectedSwapOut,
-        currentNetwork?.network
+        currentNetwork?.network,
+        setProvider
       );
     }, 1000);
     return () => {
@@ -232,62 +242,68 @@ function App() {
     };
   }, [swapAmount, destAddress, srcAddress]);
 
+  console.log("accountskdjlad", account);
+
   // Getting Each Token Balances
   const tokenBalance = useCallback(async () => {
     setLoading(true);
     setOrderLogsLoading(true);
-    const provider = await getProvider(
-      true,
-      setweb3provider,
-      setCurrentBlock,
-      setBalance,
-      setAccount,
-      setWalletConnected
-    );
-    setProvider(provider);
-    // const tokenAddress = srcAddress;
-    const walletAddress = account;
-    if (!walletAddress) {
-      return null;
-    }
-    try {
-      await getLastVirtualOrderBlock(provider, currentNetwork?.network).then(
-        (res) => {
-          console.log("Latest Block", res);
-          setLatestBlock(res);
-        }
+    if (typeof account !== "undefined") {
+      const provider = await getProvider(
+        true,
+        setweb3provider,
+        setCurrentBlock,
+        setBalance,
+        setAccount,
+        setWalletConnected,
+        setProvider
       );
-      await getEthLogs(provider, walletAddress, currentNetwork?.network).then(
-        (res) => {
-          // console.log("=== Order Keys === ", res.keys())
-          // console.log("=== Order Values === ", res.values())
-          const resArray = Array.from(res.values());
-          console.log("=== Order Logs === ", resArray);
-          setOrderLogsDecoded(resArray);
-        }
-      );
+      setProvider(provider);
 
-      await getTokensBalance(provider, account, currentNetwork?.network).then(
-        (res) => {
-          setTokenBalances(res);
-          console.log("Response From Token Balance Then Block", res);
-        }
-      );
-      // Pool Token's Balance
-      await getLPTokensBalance(
-        provider,
-        walletAddress,
-        currentNetwork?.network
-      ).then((res) => {
-        setLPTokenBalance(res);
-        console.log("===Balance Of Pool ====", res);
-      });
-      setLoading(false);
-      setOrderLogsLoading(false);
-    } catch (e) {
-      console.log(e);
-      setLoading(false);
-      setOrderLogsLoading(false);
+      // const tokenAddress = srcAddress;
+      const walletAddress = account;
+      if (!walletAddress) {
+        return null;
+      }
+      try {
+        await getLastVirtualOrderBlock(provider, currentNetwork?.network).then(
+          (res) => {
+            console.log("Latest Block", res);
+            setLatestBlock(res);
+          }
+        );
+        await getEthLogs(provider, walletAddress, currentNetwork?.network).then(
+          (res) => {
+            // console.log("=== Order Keys === ", res.keys())
+            // console.log("=== Order Values === ", res.values())
+            const resArray = Array.from(res.values());
+            console.log("=== Order Logs === ", resArray);
+            setOrderLogsDecoded(resArray);
+          }
+        );
+
+        await getTokensBalance(provider, account, currentNetwork?.network).then(
+          (res) => {
+            setTokenBalances(res);
+            console.log("Response From Token Balance Then Block", res);
+          }
+        );
+        // Pool Token's Balance
+        await getLPTokensBalance(
+          provider,
+          walletAddress,
+          currentNetwork?.network
+        ).then((res) => {
+          setLPTokenBalance(res);
+          console.log("===Balance Of Pool ====", res);
+        });
+        setLoading(false);
+        setOrderLogsLoading(false);
+      } catch (e) {
+        console.log(e);
+        setLoading(false);
+        setOrderLogsLoading(false);
+      }
     }
   }, [account]);
 
@@ -312,12 +328,6 @@ function App() {
       setShowSettings(false);
     };
   });
-
-  useEffect(() => {
-    if (web3Modal.cachedProvider) {
-      connectWallet();
-    }
-  }, []);
 
   useEffect(() => {
     if (provider?.on) {

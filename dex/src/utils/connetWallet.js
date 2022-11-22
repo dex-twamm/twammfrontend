@@ -5,7 +5,8 @@ export const connectWallet = async (
   setCurrentBlock,
   setBalance,
   setAccount,
-  setWalletConnected
+  setWalletConnected,
+  setProvider
 ) => {
   try {
     await getProvider(
@@ -14,7 +15,8 @@ export const connectWallet = async (
       setCurrentBlock,
       setBalance,
       setAccount,
-      setWalletConnected
+      setWalletConnected,
+      setProvider
     );
     // window.location.reload();
     // console.log("Wallet Connected Info", isWalletConnected);

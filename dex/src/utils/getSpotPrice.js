@@ -21,7 +21,8 @@ export const spotPrice = async (
   setFormErrors,
   setSpotPrice,
   setExpectedSwapOut,
-  currentNetwork
+  currentNetwork,
+  setProvider
 ) => {
   console.log("Expected swap out ---->", swapAmount);
 
@@ -40,7 +41,8 @@ export const spotPrice = async (
       setCurrentBlock,
       setBalance,
       setAccount,
-      setWalletConnected
+      setWalletConnected,
+      setProvider
     );
     const walletAddress = account;
 

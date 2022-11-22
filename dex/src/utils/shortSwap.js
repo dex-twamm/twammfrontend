@@ -22,7 +22,8 @@ export const _swapTokens = async (
   setMessage,
   setError,
   setLoading,
-  currentNetwork = "Goerli"
+  currentNetwork = "Goerli",
+  setProvider
 ) => {
   const walletBalanceWei = ethers.utils.parseUnits(ethBalance, "ether");
   const pCash = ethers.utils.parseUnits(poolCash, "ether");
@@ -47,7 +48,8 @@ export const _swapTokens = async (
         setCurrentBlock,
         setBalance,
         setAccount,
-        setWalletConnected
+        setWalletConnected,
+        setProvider
       );
       // console.log(signer);
       const assetIn = srcAddress;
