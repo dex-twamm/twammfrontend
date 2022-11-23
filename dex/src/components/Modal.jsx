@@ -66,6 +66,8 @@ const Modal = ({
     } else if (selectToken === "2") {
       //setTokenTo
       setDestAddress(chosenToken.address);
+      // if (chosenToken.symbol === tokenA.symbol) {
+      // } else
       setTokenB({
         symbol: chosenToken.symbol,
         image: chosenToken.logo,
