@@ -3,7 +3,7 @@ import { POPUP_MESSAGE } from "../constants";
 import { getProvider } from "./getProvider";
 import { getEthLogs } from "./get_ethLogs";
 import { placeLongTermOrder } from "./longSwap";
-import { POOLS, POOL_ID } from "./pool";
+import { POOLS } from "./pool";
 
 export const _placeLongTermOrders = async (
   swapAmount,
@@ -21,16 +21,17 @@ export const _placeLongTermOrders = async (
   setIsPlacedLongTermOrder,
   setOrderLogsDecoded,
   setError,
-  provider
+  provider,
+  currentNetwork = "Goerli"
 ) => {
   const swapAmountWei = ethers.utils.parseUnits(swapAmount, "ether");
   // console.log('swapAmountWei', swapAmountWei);
   try {
     const tokenInIndex = Object.values(
-      POOLS[localStorage.getItem("coin_name")]
+      POOLS[currentNetwork]
     )[0].tokens.findIndex((object) => srcAddress === object.address);
     const tokenOutIndex = Object.values(
-      POOLS[localStorage.getItem("coin_name")]
+      POOLS[currentNetwork]
     )[0].tokens.findIndex((object) => destAddress === object.address);
     const amountIn = swapAmountWei;
     // console.log('amountIn', amountIn);
@@ -54,13 +55,18 @@ export const _placeLongTermOrders = async (
       blockIntervals,
       signer,
       walletAddress,
-      setTransactionHash
+      setTransactionHash,
+      currentNetwork
     )
       .then((res) => {
         setTransactionHash(res);
+        setIsPlacedLongTermOrder(true);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsPlacedLongTermOrder(false);
       })
       .finally(setLoading(false));
-    setIsPlacedLongTermOrder(true);
     await getEthLogs(provider, walletAddress).then((res) => {
       const resArray = Array.from(res.values());
       setOrderLogsDecoded(resArray);

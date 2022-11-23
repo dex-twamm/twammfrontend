@@ -13,6 +13,7 @@ import CircularProgressBar from "./alerts/CircularProgressBar";
 import { _cancelLTO } from "../utils/_cancelLto";
 import { WebContext } from "../providers/context/WebProvider";
 import { _withdrawLTO } from "../utils/_withdrawLto";
+import { useNetwork } from "../providers/context/UIProvider";
 
 const LongTermOrderCard = (props) => {
   // const { cancelPool, withdrawPool } = props;
@@ -45,7 +46,8 @@ const LongTermOrderCard = (props) => {
     setMessage,
   } = useContext(LongSwapContext);
 
-  const { provider } = useContext(WebContext);
+  const { provider, setProvider } = useContext(WebContext);
+  const currentNetwork = useNetwork();
 
   const initialValue = Math.ceil(sliderValueInSec);
 
@@ -119,7 +121,8 @@ const LongTermOrderCard = (props) => {
 
         return {
           status: `Time Remaining: ${timeString}`,
-          progress: (latestBlock - startBlock) * 100 / (expiryBlock - startBlock),
+          progress:
+            ((latestBlock - startBlock) * 100) / (expiryBlock - startBlock),
         };
       } else {
         return { status: "Execution Completed", progress: 100 };
@@ -148,7 +151,8 @@ const LongTermOrderCard = (props) => {
       setOrderLogsDecoded,
       setMessage,
       provider,
-      setTransactionHash
+      setTransactionHash,
+      currentNetwork?.network
     );
   };
 
@@ -169,7 +173,8 @@ const LongTermOrderCard = (props) => {
       setOrderLogsDecoded,
       setMessage,
       provider,
-      setTransactionHash
+      setTransactionHash,
+      currentNetwork?.network
     );
   };
 
@@ -229,7 +234,11 @@ const LongTermOrderCard = (props) => {
               let withdrawals = it.withdrawals.reduce((total, withdrawal) => {
                 return total.add(withdrawal.proceeds);
               }, ethers.constants.Zero);
-              console.log("InProgress", withdrawals.toString(), it.convertedValue.toString());
+              console.log(
+                "InProgress",
+                withdrawals.toString(),
+                it.convertedValue.toString()
+              );
               convertedAmount = it.convertedValue.add(withdrawals);
             }
             //console.log("Converted Amount", convertedAmount?.toString());
@@ -270,9 +279,8 @@ const LongTermOrderCard = (props) => {
                     onClick={() =>
                       window.open(
                         `${
-                          Object.values(
-                            POOLS[localStorage.getItem("coin_name")]
-                          )[0]?.transactionUrl
+                          Object.values(POOLS[currentNetwork?.network])[0]
+                            ?.transactionUrl
                         }${it.transactionHash}`,
                         "_blank"
                       )
@@ -285,23 +293,20 @@ const LongTermOrderCard = (props) => {
                       <img
                         className={styles.tokenIcon}
                         src={
-                          Object.values(
-                            POOLS[localStorage.getItem("coin_name")]
-                          )[0].tokens[it.sellTokenIndex].logo
+                          Object.values(POOLS[currentNetwork?.network])[0]
+                            .tokens[it.sellTokenIndex].logo
                         }
                         alt={
-                          Object.values(
-                            POOLS[localStorage.getItem("coin_name")]
-                          )[0].tokens[it.sellTokenIndex].symbol
+                          Object.values(POOLS[currentNetwork?.network])[0]
+                            .tokens[it.sellTokenIndex].symbol
                         }
                       />
                       <p className={styles.tokenText}>
                         <span>
                           {bigToStr(soldToken, 18)}{" "}
                           {
-                            Object.values(
-                              POOLS[localStorage.getItem("coin_name")]
-                            )[0].tokens[it.sellTokenIndex].symbol
+                            Object.values(POOLS[currentNetwork?.network])[0]
+                              .tokens[it.sellTokenIndex].symbol
                           }{" "}
                           of
                         </span>
@@ -332,14 +337,12 @@ const LongTermOrderCard = (props) => {
                       <img
                         className={styles.tokenIcon}
                         src={
-                          Object.values(
-                            POOLS[localStorage.getItem("coin_name")]
-                          )[0].tokens[it.buyTokenIndex].logo
+                          Object.values(POOLS[currentNetwork?.network])[0]
+                            .tokens[it.buyTokenIndex].logo
                         }
                         alt={
-                          Object.values(
-                            POOLS[localStorage.getItem("coin_name")]
-                          )[0].tokens[it.buyTokenIndex].symbol
+                          Object.values(POOLS[currentNetwork?.network])[0]
+                            .tokens[it.buyTokenIndex].symbol
                         }
                       />
                       <p
@@ -350,9 +353,8 @@ const LongTermOrderCard = (props) => {
                       >
                         {bigToStr(convertedAmount, 18)}{" "}
                         {
-                          Object.values(
-                            POOLS[localStorage.getItem("coin_name")]
-                          )[0].tokens[it.buyTokenIndex].symbol
+                          Object.values(POOLS[currentNetwork?.network])[0]
+                            .tokens[it.buyTokenIndex].symbol
                         }
                       </p>
                     </div>
@@ -382,11 +384,7 @@ const LongTermOrderCard = (props) => {
 
                   <div className={styles.extrasContainer}>
                     <div className={styles.fees}>
-                      {
-                        Object.values(
-                          POOLS[localStorage.getItem("coin_name")]
-                        )[0]?.fees
-                      }{" "}
+                      {Object.values(POOLS[currentNetwork?.network])[0]?.fees}{" "}
                       fees
                     </div>
                     {soldToken != 0 && (

@@ -6,12 +6,13 @@ import { useNavigate } from "react-router-dom";
 import "../../css/LiquidityPools.css";
 
 // import { POOL_ID } from "../../utils";
-import { POOLS, POOL_ID } from "../../utils/pool";
+import { POOLS } from "../../utils/pool";
 import { useContext } from "react";
 import { ShortSwapContext } from "../../providers";
 
 import CircularProgressBar from "../alerts/CircularProgressBar";
 import Tabs from "../Tabs";
+import { useNetwork } from "../../providers/context/UIProvider";
 
 const style = {
   position: "absolute",
@@ -35,7 +36,8 @@ const style = {
 //   const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
 const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
-  const { LPTokenBalance, loading } = useContext(ShortSwapContext);
+  const { LPTokenBalance, loading, isWalletConnected } =
+    useContext(ShortSwapContext);
   //   const [open, setOpen] = useState(false);
 
   const navigate = useNavigate();
@@ -49,8 +51,10 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
     navigate("/");
   };
 
+  const currentNetwork = useNetwork();
+
   console.log("LP Token balance", LPTokenBalance, POOLS);
-  return !loading ? (
+  return (
     <Box
       sx={{
         // width: { sm: "100%", xs: "100%", md: "800px" },
@@ -66,48 +70,69 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
       }}
     >
       <Tabs />
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: {
-            xs: "flex-start",
-            sm: "center",
-            md: "center",
-            lg: "center",
-          },
-          justifyContent: {
-            xs: "center",
-            sm: "space-between",
-            md: "space-between",
-          },
-          flexDirection: { xs: "column", sm: "row", md: "row" },
-          padding: "24px 0",
-        }}
-      >
-        <Typography
+      {!isWalletConnected ? (
+        <Box
           sx={{
-            fontSize: "22px",
-            fontFamily: "Open Sans",
-            color: "#333333",
-            fontWeight: "600",
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
           }}
         >
-          Pools
-        </Typography>
-      </Box>
-      {/* {LPTokenBalance.map((items, index) => {
-        return ( */}
-      <Box
-        // key={index}
-        sx={{
-          //   width: { sm: "100%", xs: "50%", md: "60%" },
-          display: "flex",
-          flexDirection: { xs: "row-reverse", sm: "row" },
-          justifyContent: { xs: "flex-end", sm: "flex-end" },
-          alignItems: "center",
-        }}
-      >
-        {/* <Button
+          <Typography
+            sx={{
+              fontSize: "22px",
+              fontFamily: "Open Sans",
+              color: "#333333",
+              fontWeight: "600",
+            }}
+          >
+            Connect your wallet to view your Pools.
+          </Typography>
+        </Box>
+      ) : !loading ? (
+        <>
+          {" "}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: {
+                xs: "flex-start",
+                sm: "center",
+                md: "center",
+                lg: "center",
+              },
+              justifyContent: {
+                xs: "center",
+                sm: "space-between",
+                md: "space-between",
+              },
+              flexDirection: { xs: "column", sm: "row", md: "row" },
+              padding: "24px 0",
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: "22px",
+                fontFamily: "Open Sans",
+                color: "#333333",
+                fontWeight: "600",
+              }}
+            >
+              Pools
+            </Typography>
+          </Box>
+          <Box
+            // key={index}
+            sx={{
+              //   width: { sm: "100%", xs: "50%", md: "60%" },
+              display: "flex",
+              flexDirection: { xs: "row-reverse", sm: "row" },
+              justifyContent: { xs: "flex-end", sm: "flex-end" },
+              alignItems: "center",
+            }}
+          >
+            {/* <Button
 							  onClick={handleOpen}
 							  sx={{
 								  // backgroundColor:'#e94393',
@@ -135,7 +160,7 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 							  More  <KeyboardArrowDownIcon size='large' sx={{ml:"1px",}}/>
 						  </Button> */}
 
-        {/* <Button
+            {/* <Button
 							  onClick={() => showAddLiquidity(true)}
 							  sx={{
 								  backgroundColor:'#d50066',
@@ -244,21 +269,21 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 							  </Box>
 						  </Modal> */}
 
-        <Box
-          sx={{
-            bgcolor: " white",
-            // opacity: items == 0 && 0.5,
-            width: "100%",
-            p: "8px",
-            borderRadius: "20px",
-            background:
-              "linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%), rgba(255, 255, 255, 0.3)",
-            backdropFilter: "blur(2px)",
+            <Box
+              sx={{
+                bgcolor: " white",
+                // opacity: items == 0 && 0.5,
+                width: "100%",
+                p: "8px",
+                borderRadius: "20px",
+                background:
+                  "linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%), rgba(255, 255, 255, 0.3)",
+                backdropFilter: "blur(2px)",
 
-            border: "1px solid white",
-          }}
-        >
-          {/* <Box
+                border: "1px solid white",
+              }}
+            >
+              {/* <Box
                 sx={{
                   display: "flex",
                   justifyContent: "space-between",
@@ -267,7 +292,7 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                   pl: "10px",
                 }}
               > */}
-          {/* <Typography
+              {/* <Typography
                   style={{
                     fontWeight: 400,
                     color: "#333333",
@@ -277,8 +302,8 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                 >
                   Your positions (1)
                 </Typography> */}
-          {/* <Box sx={{ display: "flex", alignItems: "center", pl: "10px" }}> */}
-          {/* <Typography
+              {/* <Box sx={{ display: "flex", alignItems: "center", pl: "10px" }}> */}
+              {/* <Typography
 					style={{
 					  fontWeight: 400,
 					  color: "#333333",
@@ -289,9 +314,9 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 				  >
 					Show closed positions
 				  </Typography> */}
-          {/* <Switch size='large' defaultChecked />
-           */}
-          {/* <button
+              {/* <Switch size='large' defaultChecked />
+               */}
+              {/* <button
 					onClick={() => setButtonEnabled((state) => !state)}
 					className={styles.collectBtn}
 					style={{ height: "5%" }}
@@ -303,115 +328,112 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 					  )}
 					></div>
 				  </button> */}
-          {/* </Box> */}
-          {/* </Box> */}
-          <Box
-            style={{
-              marginTop: "5px",
-              // border: "2px solid #f0f0f0",
-              // borderRadius: "15px",
-              width: { sm: "60%", xs: "100%", md: "70%" },
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                flexDirection: "column",
-                boxSizing: "border-box",
-                p: 1,
-                minWidth: "100%",
-                height: "auto",
-              }}
-            >
+              {/* </Box> */}
+              {/* </Box> */}
               <Box
-                sx={{
-                  display: "flex",
-                  width: "100%",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  height: "2%",
-                  // background: "white",
-                  paddingBottom: "20px",
+                style={{
+                  marginTop: "5px",
+                  // border: "2px solid #f0f0f0",
+                  // borderRadius: "15px",
+                  width: { sm: "60%", xs: "100%", md: "70%" },
                 }}
               >
                 <Box
                   sx={{
                     display: "flex",
-                    columnGap: "20px",
-                    alignItems: "center",
-
-                    m: 1,
+                    justifyContent: "space-between",
+                    flexDirection: "column",
+                    boxSizing: "border-box",
+                    p: 1,
+                    minWidth: "100%",
+                    height: "auto",
                   }}
                 >
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Avatar
-                      sx={{
-                        background: "blue",
-                        height: "40px",
-                        width: "40px",
-                      }}
-                      alt="Testv4"
-                      src="Testv4.jpeg"
-                    />
-                    <Avatar
-                      sizes="small"
-                      sx={{
-                        left: "-10px",
-                        // top: 4,
-                        background: "green",
-                        height: "40px",
-                        width: "40px",
-                      }}
-                      alt="Faucet"
-                      src="ethereum.png"
-                    />
-                  </Box>
-                  <Typography
+                  <Box
                     sx={{
-                      mr: 1,
-                      fontWeight: 500,
-                      color: "#333333",
-                      fontSize: { xs: 16 },
-                      fontFamily: "Open Sans",
+                      display: "flex",
+                      width: "100%",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      height: "2%",
+                      // background: "white",
+                      paddingBottom: "20px",
                     }}
                   >
-                    {`${
-                      Object.values(
-                        POOLS?.[localStorage.getItem("coin_name")]
-                      )?.[0].tokens[0].symbol
-                    } / ${
-                      Object.values(
-                        POOLS?.[localStorage.getItem("coin_name")]
-                      )?.[0].tokens[1].symbol
-                    }`}
-                  </Typography>
-                  <span
-                    style={{
-                      padding: "8px 24px",
-                      // width: '45px',
-                      border: "1px solid #fdeaf1",
-                      // borderRadius: "7px",
-                      // background: "#fdeaf1",
-                      color: "red",
-                      fontFamily: "Open Sans",
-                      fontWeight: 500,
+                    <Box
+                      sx={{
+                        display: "flex",
+                        columnGap: "20px",
+                        alignItems: "center",
 
-                      background: "#EE4D3745",
-                      // opacity: "0.2",
-                      borderRadius: "17px",
-                    }}
-                  >
-                    {
-                      Object.values(
-                        POOLS?.[localStorage.getItem("coin_name")]
-                      )?.[0]?.fees
-                    }
-                    %
-                  </span>
-                </Box>
+                        m: 1,
+                      }}
+                    >
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <Avatar
+                          sx={{
+                            background: "blue",
+                            height: "40px",
+                            width: "40px",
+                          }}
+                          alt="Testv4"
+                          src="Testv4.jpeg"
+                        />
+                        <Avatar
+                          sizes="small"
+                          sx={{
+                            left: "-10px",
+                            // top: 4,
+                            background: "green",
+                            height: "40px",
+                            width: "40px",
+                          }}
+                          alt="Faucet"
+                          src="ethereum.png"
+                        />
+                      </Box>
+                      <Typography
+                        sx={{
+                          mr: 1,
+                          fontWeight: 500,
+                          color: "#333333",
+                          fontSize: { xs: 16 },
+                          fontFamily: "Open Sans",
+                        }}
+                      >
+                        {`${
+                          Object.values(POOLS?.[currentNetwork?.network])?.[0]
+                            .tokens[0].symbol
+                        } / ${
+                          Object.values(POOLS?.[currentNetwork?.network])?.[0]
+                            .tokens[1].symbol
+                        }`}
+                      </Typography>
+                      <span
+                        style={{
+                          padding: "8px 24px",
+                          // width: '45px',
+                          border: "1px solid #fdeaf1",
+                          // borderRadius: "7px",
+                          // background: "#fdeaf1",
+                          color: "red",
+                          fontFamily: "Open Sans",
+                          fontWeight: 500,
 
-                {/* <Box
+                          background: "#EE4D3745",
+                          // opacity: "0.2",
+                          borderRadius: "17px",
+                        }}
+                      >
+                        {
+                          Object.values(POOLS?.[currentNetwork?.network])?.[0]
+                            ?.fees
+                        }
+                        %
+                      </span>
+                    </Box>
+
+                    {/* <Box
 					  sx={{
 						display: "flex",
 						alignItems: "center",
@@ -446,37 +468,37 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 						In range{" "}
 					  </p>
 					</Box> */}
-              </Box>
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                m: 1,
-                width: "fit-content",
-                paddingBottom: "20px",
-              }}
-            >
-              <Typography
-                style={{
-                  fontWeight: 500,
-                  color: "grey",
-                  fontFamily: "Open Sans",
-                }}
-              >
-                Your LP Token Balance:{" "}
-                <span
-                  style={{
-                    fontWeight: 400,
-                    color: "#333333",
-                    fontFamily: "Open Sans",
+                  </Box>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    m: 1,
+                    width: "fit-content",
+                    paddingBottom: "20px",
                   }}
                 >
-                  {LPTokenBalance}
-                </span>
-              </Typography>
+                  <Typography
+                    style={{
+                      fontWeight: 500,
+                      color: "grey",
+                      fontFamily: "Open Sans",
+                    }}
+                  >
+                    Your LP Token Balance:{" "}
+                    <span
+                      style={{
+                        fontWeight: 400,
+                        color: "#333333",
+                        fontFamily: "Open Sans",
+                      }}
+                    >
+                      {LPTokenBalance}
+                    </span>
+                  </Typography>
 
-              {/* <Box
+                  {/* <Box
 					sx={{
 					  display: "flex",
 					  alignItems: "center",
@@ -495,7 +517,7 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 					/>
 				  </Box> */}
 
-              {/* <Typography
+                  {/* <Typography
 					style={{
 					  fontWeight: 500,
 					  color: "grey",
@@ -513,82 +535,82 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
 					  ∞ UNI per ETH
 					</span>
 				  </Typography> */}
-            </Box>
+                </Box>
 
-            <Box
-              sx={{
-                m: 1,
-                paddingRight: { xs: "10px", sm: "10px" },
-                display: "flex",
-                flexDirection: "column-reverse",
-                rowGap: "10px",
-                justifyContent: {
-                  xs: "space-between",
-                  sm: "flex-end",
-                  md: "flex-end",
-                },
-                // width: { xs: "100%", sm: "100%" },
-                // height: "40px",
-                alignItems: "center",
-              }}
-            >
-              {LPTokenBalance != 0 && (
-                <button
-                  style={{
-                    fontFamily: "Open Sans",
-                    padding: "15px 100px",
-                    outline: "none",
-                    color: "white",
-                    fontWeight: "100",
-                    border: "none",
-                    fontSize: "18px",
-                    cursor: "pointer",
-                    backgroundColor: "#FF6969",
-                    borderRadius: "17px",
-                    width: "100%",
+                <Box
+                  sx={{
+                    m: 1,
+                    paddingRight: { xs: "10px", sm: "10px" },
+                    display: "flex",
+                    flexDirection: "column-reverse",
+                    rowGap: "10px",
+                    justifyContent: {
+                      xs: "space-between",
+                      sm: "flex-end",
+                      md: "flex-end",
+                    },
+                    // width: { xs: "100%", sm: "100%" },
+                    // height: "40px",
+                    alignItems: "center",
                   }}
                 >
-                  Remove Liquidity
-                </button>
-              )}
-              <button
-                onClick={() =>
-                  window.open(
-                    `${
-                      Object.values(
-                        POOLS?.[localStorage.getItem("coin_name")]
-                      )?.[0]?.balancerPoolUrl
-                    }`,
-                    "_blank"
-                  )
-                }
-                style={{
-                  fontFamily: "Open Sans",
-                  padding: "15px 100px",
-                  outline: "none",
-                  color: "white",
-                  fontWeight: "100",
-                  border: "none",
-                  fontSize: "18px",
-                  cursor: "pointer",
-                  backgroundColor: "#554994",
-                  borderRadius: "17px",
-                  width: "100%",
-                }}
-              >
-                Add Liquidity
-              </button>
+                  {LPTokenBalance != 0 && (
+                    <button
+                      style={{
+                        fontFamily: "Open Sans",
+                        padding: "15px 100px",
+                        outline: "none",
+                        color: "white",
+                        fontWeight: "100",
+                        border: "none",
+                        fontSize: "18px",
+                        cursor: "pointer",
+                        backgroundColor: "#FF6969",
+                        borderRadius: "17px",
+                        width: "100%",
+                      }}
+                    >
+                      Remove Liquidity
+                    </button>
+                  )}
+                  <button
+                    onClick={() =>
+                      window.open(
+                        `${
+                          Object.values(POOLS?.[currentNetwork?.network])?.[0]
+                            ?.balancerPoolUrl
+                        }`,
+                        "_blank"
+                      )
+                    }
+                    style={{
+                      fontFamily: "Open Sans",
+                      padding: "15px 100px",
+                      outline: "none",
+                      color: "white",
+                      fontWeight: "100",
+                      border: "none",
+                      fontSize: "18px",
+                      cursor: "pointer",
+                      backgroundColor: "#554994",
+                      borderRadius: "17px",
+                      width: "100%",
+                    }}
+                  >
+                    Add Liquidity
+                  </button>
+                </Box>
+              </Box>
             </Box>
-          </Box>
-        </Box>
-      </Box>
-      {/* ); })} */}
+          </Box>{" "}
+        </>
+      ) : (
+        <CircularProgressBar
+          margin={"20%"}
+          label={"Please Wait"}
+        ></CircularProgressBar>
+      )}
     </Box>
-  ) : (
-    <CircularProgressBar
-      margin={"20%"}
-      label={"Please Wait"}
-    ></CircularProgressBar>
   );
 };
 export { LiquidityPools };

@@ -15,6 +15,7 @@ import { getEthLogs } from "../utils/get_ethLogs";
 import { _placeLongTermOrders } from "../utils/placeLongTermOrder";
 import { WebContext } from "../providers/context/WebProvider";
 import { connectWallet } from "../utils/connetWallet";
+import { useNetwork } from "../providers/context/UIProvider";
 
 const LongSwap = (props) => {
   const {
@@ -30,7 +31,6 @@ const LongSwap = (props) => {
 
   const [showSettings, setShowSettings] = useState(false);
 
-  const { provider } = useContext(WebContext);
   const {
     orderLogsDecoded,
     message,
@@ -54,6 +54,10 @@ const LongSwap = (props) => {
     setLoading,
     setError,
   } = useContext(ShortSwapContext);
+
+  const { provider, setProvider } = useContext(WebContext);
+
+  const currentNetwork = useNetwork();
 
   const ethLogsCount = orderLogsDecoded
     ? Object.keys(orderLogsDecoded).length
@@ -101,7 +105,8 @@ const LongSwap = (props) => {
         setIsPlacedLongTermOrder,
         setOrderLogsDecoded,
         setError,
-        provider
+        provider,
+        currentNetwork?.network
       );
     }
   }

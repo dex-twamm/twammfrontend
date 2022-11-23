@@ -14,6 +14,7 @@ const Modal = ({
 }) => {
   // useContext To Retrieve The Source and Destination Address of The Token
   const {
+    isWalletConnected,
     srcAddress,
     destAddress,
     setSrcAddress,
@@ -65,6 +66,8 @@ const Modal = ({
     } else if (selectToken === "2") {
       //setTokenTo
       setDestAddress(chosenToken.address);
+      // if (chosenToken.symbol === tokenA.symbol) {
+      // } else
       setTokenB({
         symbol: chosenToken.symbol,
         image: chosenToken.logo,
@@ -96,11 +99,14 @@ const Modal = ({
           {token.address}
         </p>
         <p className={styles.comingSoon}>
-          {balance ? (
+          {!isWalletConnected ? (
+            "N/A"
+          ) : balance ? (
             parseFloat(balance?.[0]?.[token?.address]).toFixed(2)
           ) : (
             <Skeleton width={100} />
           )}
+
           {/* {parseFloat(token.balance).toFixed(2)} */}
         </p>
         {token.type === "coming_soon" && (

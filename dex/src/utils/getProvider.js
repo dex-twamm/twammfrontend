@@ -17,7 +17,6 @@ export const getProvider = async (
     const accounts = await web3Provider.listAccounts();
     console.log("accounts", accounts);
     localStorage.setItem("account", accounts);
-
     setweb3provider(web3Provider);
     console.log("WEb 3 Provider", await web3Provider.getBlock("latest"));
     // TODO - Update Every Transaction After 12 Seconds

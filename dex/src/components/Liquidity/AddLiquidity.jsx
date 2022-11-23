@@ -6,6 +6,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { FiChevronDown } from "react-icons/fi";
 import styles from "../../css/AddLiquidity.module.css";
 import { LongSwapContext, ShortSwapContext } from "../../providers";
+import { useNetwork } from "../../providers/context/UIProvider";
+import { WebContext } from "../../providers/context/WebProvider";
 import { POOLS, POOL_ID } from "../../utils/pool";
 import { _joinPool } from "../../utils/_joinPool";
 import { DisconnectWalletOption } from "../DisconnectWalletOption";
@@ -39,6 +41,9 @@ const AddLiquidity = (props) => {
     setWalletConnected,
     isWalletConnected,
   } = useContext(ShortSwapContext);
+  const currentNetwork = useNetwork();
+
+  const { provider, setProvider } = useContext(WebContext);
 
   const handleToggle = () => setDisplay(!display);
 
@@ -90,9 +95,7 @@ const AddLiquidity = (props) => {
   //     image: "/Testv4.jpeg",
   //   },
   // ];
-  const tokenDetails = Object.values(
-    POOLS[localStorage.getItem("coin_name")]
-  )[0]?.tokens;
+  const tokenDetails = Object.values(POOLS[currentNetwork?.network])[0]?.tokens;
 
   console.log("Prabin", tokenA, tokenB);
 
@@ -110,7 +113,8 @@ const AddLiquidity = (props) => {
       setBalance,
       setAccount,
       setWalletConnected,
-      isWalletConnected
+      isWalletConnected,
+      currentNetwork?.network
     );
   };
 

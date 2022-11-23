@@ -2,11 +2,15 @@ import { Contract, ethers } from "ethers";
 // import { POOL_ID } from ".";
 import { TWAMM_POOL_ABI } from "../constants";
 import { getLongTermOrder } from "./longSwap";
-import { POOLS, POOL_ID } from "./pool";
+import { POOLS } from "./pool";
 
-export async function getEthLogs(signer, walletAddress) {
+export async function getEthLogs(
+  signer,
+  walletAddress,
+  currentNetwork = "Goerli"
+) {
   const exchangeContract = new Contract(
-    Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]?.address,
+    Object.values(POOLS?.[currentNetwork])?.[0]?.address,
     TWAMM_POOL_ABI,
     signer
   );
@@ -54,7 +58,7 @@ export async function getEthLogs(signer, walletAddress) {
       eventsPlaced[i].data
     );
     console.log("Log 0", log[0]);
-    const orderDetails = await getLongTermOrder(signer, log[0]);
+    const orderDetails = await getLongTermOrder(signer, log[0], currentNetwork);
     placedEventsDecoded.set(log[0].toNumber(), {
       orderId: log[0],
       salesRate: log[1],

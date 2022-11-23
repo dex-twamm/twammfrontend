@@ -19,9 +19,10 @@ export const _swapTokens = async (
   tolerance,
   deadline,
   setTransactionHash,
-  setMessage,
+  setSuccess,
   setError,
-  setLoading
+  setLoading,
+  currentNetwork = "Goerli"
 ) => {
   const walletBalanceWei = ethers.utils.parseUnits(ethBalance, "ether");
   const pCash = ethers.utils.parseUnits(poolCash, "ether");
@@ -31,7 +32,14 @@ export const _swapTokens = async (
   // swapAmountWei.lte(walletBalanceWei && poolCash)
   // 	? console.log('True')
   // 	: console.log('False');
-  if (swapAmountWei.lte(walletBalanceWei && pCash)) {
+
+  console.log(
+    "walletBalanceWeisdasd",
+    walletBalanceWei.toString(),
+    pCash.toString(),
+    swapAmountWei.toString()
+  );
+  if (swapAmountWei.lte(walletBalanceWei)) {
     try {
       const signer = await getProvider(
         true,
@@ -45,6 +53,8 @@ export const _swapTokens = async (
       const assetIn = srcAddress;
       const assetOut = destAddress;
       const walletAddress = account;
+
+      console.log("hkhaskhaskjdasd", currentNetwork);
       // Call the swapTokens function from the `utils` folder
       await swapTokens(
         signer,
@@ -54,7 +64,8 @@ export const _swapTokens = async (
         walletAddress,
         expectedSwapOut,
         tolerance,
-        deadline
+        deadline,
+        currentNetwork
       )
         .then((res) => {
           console.log("Responseeeee----->", res);
@@ -66,16 +77,16 @@ export const _swapTokens = async (
           swapResult(res).then((response) => {
             console.log("Responseeeeeee", response);
             if (response.status === 1)
-              setMessage(POPUP_MESSAGE.shortSwapSuccess);
+              setSuccess(POPUP_MESSAGE.shortSwapSuccess);
           });
         })
         .catch((err) => {
-          console.error(err);
-          setError(POPUP_MESSAGE.error);
+          console.error("error on swap", err);
+          setError(POPUP_MESSAGE.shortSwapFailed);
         });
       setLoading(false);
     } catch (err) {
-      console.error("errrrrrr", err);
+      console.error("errorr on swap", err);
       setLoading(false);
       setError(POPUP_MESSAGE.transactionCancelled);
     }

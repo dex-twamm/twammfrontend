@@ -12,8 +12,9 @@ import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS, toHex } from "../utils";
 import { connectWallet } from "../utils/connetWallet";
 import { DisconnectWalletOption } from "./DisconnectWalletOption";
 import NavOptionDropdwon from "./navbarDropdown/NavOptionDropdwon";
-import goerliLogo from "../images/Testv4.jpeg";
-import ethLogo from "../images/ethereum.png";
+import goerliLogo from "../images/Testv4.svg";
+import ethLogo from "../images/ethereum.svg";
+import { WebContext } from "../providers/context/WebProvider";
 
 const Navbar = (props) => {
   const {
@@ -49,6 +50,8 @@ const Navbar = (props) => {
     setAccount,
     setWalletConnected,
   } = useContext(ShortSwapContext);
+  const { provider, setProvider } = useContext(WebContext);
+
   // const [netId, setNetId] = useState("");
   // const [isOpen, setOpen] = useState(false);
   console.log("Wallet Status", isWalletConnected);
@@ -64,11 +67,11 @@ const Navbar = (props) => {
   const initialNetwork = networks.filter((id) => id.chainId === nId);
   console.log("initialNetwork", initialNetwork);
 
-  if(!localStorage.getItem("coin_name")) {
-    localStorage.setItem("coin_name", initialNetwork[0]?.name);
-    localStorage.setItem("coin_logo", initialNetwork[0]?.logo);
+  if (!localStorage.getItem("network_name")) {
+    localStorage.setItem("network_name", initialNetwork[1]?.name);
+    localStorage.setItem("network_logo", initialNetwork[1]?.logo);
+    localStorage.setItem("chainId", initialNetwork[1]?.chainId);
   }
-
 
   // const [selectedNetwork, setSelectedNetwork] = useState({
   //   network: "Select a Network",
@@ -76,20 +79,21 @@ const Navbar = (props) => {
   //   chainId: nId,
   // });
 
-  const coin_name = localStorage.getItem("coin_name");
-  const coin_logo = localStorage.getItem("coin_logo");
+  const network_name = localStorage.getItem("network_name");
+  const network_logo = localStorage.getItem("network_logo");
+  const network_id = localStorage.getItem("chainId");
 
   useEffect(() => {
-    setSelectedNetwork((prevState) => ({
-      ...prevState,
-      network: coin_name ? coin_name : initialNetwork[0]?.name,
-      logo: coin_logo ? coin_logo : initialNetwork[0]?.logo,
-    }));
-  }, [coin_name]);
+    setSelectedNetwork({
+      network: network_name ? network_name : initialNetwork[0]?.name,
+      logo: network_logo ? network_logo : initialNetwork[0]?.logo,
+      chainId: network_id ? network_id : initialNetwork[0]?.chainId,
+    });
+  }, [network_name]);
 
   const handleSelect = async (networkName, logo, chainId) => {
-    // localStorage.setItem("coin_name", networkName);
-    // localStorage.setItem("coin_logo", logo);
+    // localStorage.setItem("network_name", networkName);
+    // localStorage.setItem("network_logo", logo);
     // console.log(chainId);
 
     console.log("chainId", chainId);
@@ -106,8 +110,8 @@ const Navbar = (props) => {
           chainId: chainId,
         });
 
-        localStorage.setItem("coin_name", networkName);
-        localStorage.setItem("coin_logo", logo);
+        localStorage.setItem("network_name", networkName);
+        localStorage.setItem("network_logo", logo);
 
         window.location.reload();
       } catch (err) {
@@ -184,26 +188,28 @@ const Navbar = (props) => {
           </p>
         </div>
         <div className={styles.tabContainerRight}>
-          <div className={styles.dropdown}>
-            <div className={styles.container}>
-              <div id="networkType" className={styles.dropdownContainer}>
-                <img
-                  src={selectedNetwork.logo}
-                  className={styles.networkIcon}
-                  alt=""
-                />
-                <span>{selectedNetwork.network}</span>
-                <RiArrowDropDownLine className={styles.dropdownIcon} />
-              </div>
+          {isWalletConnected && (
+            <div className={styles.dropdown}>
+              <div className={styles.container}>
+                <div id="networkType" className={styles.dropdownContainer}>
+                  <img
+                    src={selectedNetwork?.logo}
+                    className={styles.networkIcon}
+                    alt=""
+                  />
+                  <span>{selectedNetwork?.network}</span>
+                  <RiArrowDropDownLine className={styles.dropdownIcon} />
+                </div>
 
-              <div className={styles.currency}>
-                <div className={styles.list}>
-                  <p>Select a network</p>
-                  <div className={styles.networkList}>{networkList}</div>
+                <div className={styles.currency}>
+                  <div className={styles.list}>
+                    <p>Select a network</p>
+                    <div className={styles.networkList}>{networkList}</div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
 
           <div className={styles.walletBalance}>
             {accountStatus ? (

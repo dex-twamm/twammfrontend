@@ -6,9 +6,12 @@ import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutl
 import { FiChevronDown } from "react-icons/fi";
 import { bigToStr } from "../utils";
 import { POOLS, POOL_ID } from "../utils/pool";
+import { useNetwork } from "../providers/context/UIProvider";
 
 const LongTermSwapCardDropdown = (props) => {
   const [open, setOpen] = useState(false);
+
+  const currentNetwork = useNetwork();
 
   // const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen((state) => !state);
@@ -111,9 +114,8 @@ const LongTermSwapCardDropdown = (props) => {
                     const handleClick = () => {
                       window.open(
                         `${
-                          Object.values(
-                            POOLS[localStorage.getItem("coin_name")]
-                          )[0]?.transactionUrl
+                          Object.values(POOLS[currentNetwork?.network])[0]
+                            ?.transactionUrl
                         }${transactionHash}`
                       );
                     };

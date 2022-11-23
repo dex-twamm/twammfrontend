@@ -1,4 +1,5 @@
 import { ethers } from "ethers";
+import { useNetwork } from "../providers/context/UIProvider";
 import { getEstimatedConvertedToken } from "./batchSwap";
 import { getProvider } from "./getProvider";
 
@@ -19,7 +20,8 @@ export const spotPrice = async (
   deadline,
   setFormErrors,
   setSpotPrice,
-  setExpectedSwapOut
+  setExpectedSwapOut,
+  currentNetwork
 ) => {
   console.log("Expected swap out ---->", swapAmount);
 
@@ -52,7 +54,8 @@ export const spotPrice = async (
         walletAddress,
         expectedSwapOut,
         tolerance,
-        deadline
+        deadline,
+        (currentNetwork = "Goerli")
       ).then((res) => {
         console.log("Response From Query Batch Swap", res);
         errors.balError = undefined;

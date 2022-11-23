@@ -3,8 +3,8 @@ import { useEffect } from "react";
 import { useContext } from "react";
 import { POPUP_MESSAGE } from "../../constants";
 import { ShortSwapContext } from "../../providers";
-// import { POOL_ID } from "../../utils";
-import { POOLS, POOL_ID } from "../../utils/pool";
+import { useNetwork } from "../../providers/context/UIProvider";
+import { POOLS } from "../../utils/pool";
 
 const PopupModal = ({
   isPlacedLongTermOrder,
@@ -20,6 +20,8 @@ const PopupModal = ({
     transactionHash,
     setTransactionHash,
   } = useContext(ShortSwapContext);
+
+  const currentNetwork = useNetwork();
 
   // Timeout For Backdrop
   useEffect(() => {
@@ -38,7 +40,7 @@ const PopupModal = ({
     setError("");
     setSuccess("");
     // setTransactionHash("");
-    setIsPlacedLongTermOrder && setIsPlacedLongTermOrder(false);
+    setIsPlacedLongTermOrder && setIsPlacedLongTermOrder();
     setMessage("");
   };
 
@@ -49,17 +51,14 @@ const PopupModal = ({
   const handleButtonClick = () => {
     console.log(
       "links",
-      Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
-        .transactionUrl,
+      Object.values(POOLS?.[currentNetwork?.network])?.[0].transactionUrl,
       `${
-        Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
-          ?.transactonUrl
+        Object.values(POOLS?.[currentNetwork?.network])?.[0]?.transactonUrl
       }${transactionHash}`
     );
     window.open(
       `${
-        Object.values(POOLS?.[localStorage.getItem("coin_name")])?.[0]
-          .transactionUrl
+        Object.values(POOLS?.[currentNetwork?.network])?.[0].transactionUrl
       }${transactionHash}`
     );
   };
@@ -74,6 +73,8 @@ const PopupModal = ({
     margin: "5px",
     background: "rgba(255, 255, 255, 0.5)",
   };
+
+  console.log("hajsdhkajsdhkajsd", error);
   return (
     <>
       <div style={AlertStyle}>
@@ -91,7 +92,12 @@ const PopupModal = ({
         )} */}
         {success && (
           <Backdrop open={success ? true : false} onClose={handleClose}>
-            <Alert severity="success" onClose={handleClose}>
+            <Alert
+              severity="success"
+              onClose={() => {
+                handleClose();
+              }}
+            >
               {success}
             </Alert>
           </Backdrop>
@@ -108,17 +114,19 @@ const PopupModal = ({
         )}
         {isPlacedLongTermOrder && (
           <Backdrop
-            open={isPlacedLongTermOrder ? true : false}
+            open={isPlacedLongTermOrder ? true || false : undefined}
             onClose={handleClose}
           >
             <Alert
-              severity="success"
+              severity={isPlacedLongTermOrder === true ? "success" : "error"}
               onClose={() => {
                 handleClose();
-                window.location.reload();
+                isPlacedLongTermOrder === true && window.location.reload();
               }}
             >
-              {POPUP_MESSAGE.ltoPlaced}
+              {isPlacedLongTermOrder === true
+                ? POPUP_MESSAGE.ltoPlaced
+                : POPUP_MESSAGE.ltoPlaceFailed}
             </Alert>
           </Backdrop>
         )}
@@ -136,7 +144,17 @@ const PopupModal = ({
                   ? "error"
                   : "success"
               }
-              onClose={handleClose}
+              onClose={() => {
+                if (
+                  message === POPUP_MESSAGE.ltoCancelSuccess ||
+                  message === POPUP_MESSAGE.ltoWithdrawn
+                ) {
+                  handleClose();
+                  window.location.reload();
+                } else {
+                  handleClose();
+                }
+              }}
             >
               {message}
             </Alert>

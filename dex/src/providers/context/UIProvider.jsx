@@ -1,6 +1,11 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 const UIContext = createContext(null);
+
+export const useNetwork = () => {
+  const { selectedNetwork } = useContext(UIContext);
+  return selectedNetwork;
+};
 
 const UIProvider = ({ children }) => {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -8,8 +13,8 @@ const UIProvider = ({ children }) => {
   const nId = window.ethereum?.networkVersion;
 
   const [selectedNetwork, setSelectedNetwork] = useState({
-    network: "Select a Network",
-    logo: "",
+    network: "Goerli",
+    logo: "/Testv4.svg",
     chainId: nId,
   });
   return (
