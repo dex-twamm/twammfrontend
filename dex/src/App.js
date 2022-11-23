@@ -264,6 +264,11 @@ function App() {
         return null;
       }
       try {
+        await getTokensBalance(provider, account).then((res) => {
+          setTokenBalances(res);
+          console.log("Response From Token Balance Then Block", res);
+        });
+      
         await getLastVirtualOrderBlock(provider, currentNetwork?.network).then(
           (res) => {
             console.log("Latest Block", res);
@@ -280,12 +285,6 @@ function App() {
           }
         );
 
-        await getTokensBalance(provider, account, currentNetwork?.network).then(
-          (res) => {
-            setTokenBalances(res);
-            console.log("Response From Token Balance Then Block", res);
-          }
-        );
         // Pool Token's Balance
         await getLPTokensBalance(
           provider,
