@@ -221,7 +221,7 @@ const Swap = (props) => {
       setTargetDate("");
       setExecutionTIme("");
       setTransactionHash(undefined);
-      setIsPlacedLongTermOrder && setIsPlacedLongTermOrder(false);
+      setIsPlacedLongTermOrder && setIsPlacedLongTermOrder();
       setSwitchInput(false);
     };
   }, []);

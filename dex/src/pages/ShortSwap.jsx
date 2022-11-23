@@ -47,6 +47,7 @@ const ShortSwap = ({
     deadline,
     ethBalance,
     poolCash,
+    setSuccess,
   } = useContext(ShortSwapContext);
 
   const { provider, setProvider } = useContext(WebContext);
@@ -96,6 +97,7 @@ const ShortSwap = ({
           tolerance,
           deadline,
           setTransactionHash,
+          setSuccess,
           setError,
           setLoading,
           currentNetwork?.network

@@ -60,9 +60,13 @@ export const _placeLongTermOrders = async (
     )
       .then((res) => {
         setTransactionHash(res);
+        setIsPlacedLongTermOrder(true);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsPlacedLongTermOrder(false);
       })
       .finally(setLoading(false));
-    setIsPlacedLongTermOrder(true);
     await getEthLogs(provider, walletAddress).then((res) => {
       const resArray = Array.from(res.values());
       setOrderLogsDecoded(resArray);

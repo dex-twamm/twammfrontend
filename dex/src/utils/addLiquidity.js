@@ -145,10 +145,10 @@ export async function withdrawLTO(
   setTransactionHash,
   setOrderLogsDecoded,
   setMessage,
-  provider
-  // currentNetwork = "Goerli"
+  provider,
+  currentNetwork = "Goerli"
 ) {
-  const currentNetwork = "Goerli";
+  // const currentNetwork = "Goerli";
   const poolContract = new Contract(
     Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
@@ -160,7 +160,7 @@ export async function withdrawLTO(
     [5, orderId]
   );
   const withdrawLTOTx = await poolContract.exitPool(
-    Object.keys,
+    Object.keys(POOLS[currentNetwork])[0],
     walletAdress,
     walletAdress,
     {
@@ -194,6 +194,13 @@ export async function getPoolBalance(
   const vaultContract = new Contract(
     Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
+    signer
+  );
+  console.log(
+    "pool id-->",
+    Object.keys(POOLS[currentNetwork])[0],
+    tokenAddress,
+    currentNetwork,
     signer
   );
   const poolBalance = await vaultContract.getPoolTokenInfo(

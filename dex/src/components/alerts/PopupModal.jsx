@@ -40,7 +40,7 @@ const PopupModal = ({
     setError("");
     setSuccess("");
     // setTransactionHash("");
-    setIsPlacedLongTermOrder && setIsPlacedLongTermOrder(false);
+    setIsPlacedLongTermOrder && setIsPlacedLongTermOrder();
     setMessage("");
   };
 
@@ -96,7 +96,6 @@ const PopupModal = ({
               severity="success"
               onClose={() => {
                 handleClose();
-                // window.location.reload();
               }}
             >
               {success}
@@ -115,17 +114,19 @@ const PopupModal = ({
         )}
         {isPlacedLongTermOrder && (
           <Backdrop
-            open={isPlacedLongTermOrder ? true : false}
+            open={isPlacedLongTermOrder ? true || false : undefined}
             onClose={handleClose}
           >
             <Alert
-              severity="success"
+              severity={isPlacedLongTermOrder === true ? "success" : "error"}
               onClose={() => {
                 handleClose();
-                window.location.reload();
+                isPlacedLongTermOrder === true && window.location.reload();
               }}
             >
-              {POPUP_MESSAGE.ltoPlaced}
+              {isPlacedLongTermOrder === true
+                ? POPUP_MESSAGE.ltoPlaced
+                : POPUP_MESSAGE.ltoPlaceFailed}
             </Alert>
           </Backdrop>
         )}
@@ -143,12 +144,17 @@ const PopupModal = ({
                   ? "error"
                   : "success"
               }
-              onClose={() =>
-                handleClose()(
-                  message !== POPUP_MESSAGE.ltoCancelFailed ||
-                    message !== POPUP_MESSAGE.ltoWithdrawFailed
-                ) && window.location.reload()
-              }
+              onClose={() => {
+                if (
+                  message === POPUP_MESSAGE.ltoCancelSuccess ||
+                  message === POPUP_MESSAGE.ltoWithdrawn
+                ) {
+                  handleClose();
+                  window.location.reload();
+                } else {
+                  handleClose();
+                }
+              }}
             >
               {message}
             </Alert>

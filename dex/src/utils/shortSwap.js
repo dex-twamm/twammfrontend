@@ -19,7 +19,7 @@ export const _swapTokens = async (
   tolerance,
   deadline,
   setTransactionHash,
-  setMessage,
+  setSuccess,
   setError,
   setLoading,
   currentNetwork = "Goerli"
@@ -77,7 +77,7 @@ export const _swapTokens = async (
           swapResult(res).then((response) => {
             console.log("Responseeeeeee", response);
             if (response.status === 1)
-              setMessage(POPUP_MESSAGE.shortSwapSuccess);
+              setSuccess(POPUP_MESSAGE.shortSwapSuccess);
           });
         })
         .catch((err) => {

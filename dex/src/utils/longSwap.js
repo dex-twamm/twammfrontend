@@ -74,7 +74,7 @@ export async function getLongTermOrder(
   currentNetwork = "Goerli"
 ) {
   const contract = new Contract(
-    Object.values(POOLS?.[currentNetwork])?.[0].LTOContract,
+    Object.values(POOLS?.[currentNetwork])?.[0].address,
     LONGTERM_ABI,
     signer
   );

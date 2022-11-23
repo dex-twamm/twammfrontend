@@ -40,7 +40,7 @@ import { useNetwork } from "./providers/context/UIProvider";
 
 function App() {
   const location = useLocation();
-  const [isPlacedLongTermOrder, setIsPlacedLongTermOrder] = useState(false);
+  const [isPlacedLongTermOrder, setIsPlacedLongTermOrder] = useState();
   const [showRemoveLiquidity, setShowRemoveLiquidity] = useState(false);
   const [showAddLiquidity, setShowAddLiquidity] = useState(false);
   const { setShowDropdown } = useContext(UIContext);
@@ -194,6 +194,7 @@ function App() {
           console.log("===Allowance Response ====", bigToStr(res));
         });
         // Pool Balance
+        console.log("Token addresssss", tokenAddress);
         await getPoolBalance(
           provider,
           tokenAddress,
