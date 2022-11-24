@@ -23,7 +23,6 @@ export const LongSwapProvider = ({ children }) => {
   const { tokenBalances } = useContext(ShortSwapContext);
   const currentNetwork = useNetwork();
 
-  console.log("currentNetworkcurrentNetwork ", currentNetwork);
   let networkName = currentNetwork?.network;
   if (
     !networkName ||

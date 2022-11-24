@@ -32,7 +32,7 @@ import { getProvider } from "./utils/getProvider";
 import { spotPrice } from "./utils/getSpotPrice";
 import { getEthLogs } from "./utils/get_ethLogs";
 import { getLastVirtualOrderBlock, placeLongTermOrder } from "./utils/longSwap";
-import { POOLS, POOL_ID } from "./utils/pool";
+import { POOLS } from "./utils/pool";
 import { web3Modal } from "./utils/providerOptions";
 import { _swapTokens } from "./utils/shortSwap";
 import { swapTokens } from "./utils/swap";

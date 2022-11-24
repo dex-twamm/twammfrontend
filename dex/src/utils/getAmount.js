@@ -35,7 +35,7 @@ export const getTokensBalance = async (
       provider
     );
     const balanceOfTokens = await ERC20Contract.balanceOf(walletAddress);
-    // console.log("Balance of_" + element + "_is=" + ethers.utils.formatEther(balanceOfLPTokens));
+    console.log("Balance of_" + address + "_is=" + ethers.utils.formatEther(balanceOfTokens));
     return balanceOfTokens;
   }
   console.log("newBalance", newBalance);

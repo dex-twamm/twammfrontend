@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 import { useNetwork } from "../providers/context/UIProvider";
 import { getEstimatedConvertedToken } from "./batchSwap";
 import { getProvider } from "./getProvider";
-import { POOLS, POOL_ID } from "./pool";
+import { POOLS } from "./pool";
 
 //Spot Prices
 export const spotPrice = async (
@@ -60,7 +60,7 @@ export const spotPrice = async (
         deadline,
         currentNetwork
       ).then((res) => {
-        console.log("Response From Query Batch Swap", res);
+        console.log("Response From Query Batch Swap", res.toString());
         errors.balError = undefined;
         setFormErrors(errors ?? "");
         setSpotPrice((parseFloat(res) * (10**tokenIn.decimals)) / (parseFloat(swapAmountWei) * (10**tokenOut.decimals)));

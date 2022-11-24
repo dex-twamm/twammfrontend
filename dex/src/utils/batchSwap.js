@@ -17,7 +17,6 @@ export const getEstimatedConvertedToken = async (
   deadline,
   currentNetwork = "Goerli"
 ) => {
-  let txHash;
   // Create a new instance of the exchange contract
   const exchangeContract = new Contract(
     Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
@@ -61,10 +60,10 @@ export const getEstimatedConvertedToken = async (
 
     BigNumber.from(Math.floor(deadlineTimestamp / 1000)), // Deadline // Minutes Into Seconds Then Type BigNumber
     {
-      gasLimit: 500000,
+      gasLimit: 5000000,
     }
   );
-  txHash = swapTx;
+  let txHash = swapTx;
   // console.log("swapTxxxx", txHash.toNumber());
   // const txResult = await swapTx.wait();
   // console.log("Swap Results After Placed", txResult)
