@@ -18,11 +18,16 @@ export const getTokensBalance = async (
     Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
     Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
   ];
+
   const newBalance = [];
   for (let index = 0; index < tokenAddress.length; index++) {
     const address = tokenAddress[index];
     const balances = await balanceContract(address);
-    const readableBalance = ethers.utils.formatEther(balances);
+    const readableBalance = ethers.utils.formatUnits(
+      balances,
+      Object.values(POOLS?.[currentNetwork])?.[0]?.tokens[index].decimals
+    );
+
     // console.log("Balances", readableBalance);
     newBalance.push({ [address]: readableBalance });
   }

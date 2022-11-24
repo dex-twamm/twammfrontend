@@ -191,6 +191,11 @@ export async function getPoolBalance(
   tokenAddress,
   currentNetwork = "Goerli"
 ) {
+  const tokenIndex = Object.values(POOLS[currentNetwork])[0]?.tokens.filter(
+    (item) => item.address === tokenAddress
+  );
+
+  console.log("TokenIndex--->", tokenIndex);
   const vaultContract = new Contract(
     Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
@@ -208,7 +213,11 @@ export async function getPoolBalance(
     tokenAddress
   );
   const cash = poolBalance.cash._hex;
-  const readableCash = ethers.utils.formatEther(cash);
-  console.log("====Pool Cash====", ethers.utils.formatEther(cash));
+
+  const readableCash = ethers.utils.formatUnits(cash, tokenIndex?.[0].decimals);
+  console.log(
+    "====Pool Cash====",
+    ethers.utils.formatUnits(poolBalance.cash._hex, tokenIndex?.[0].decimals)
+  );
   return readableCash.toString();
 }

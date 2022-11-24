@@ -2,11 +2,10 @@ import { Backdrop, Skeleton } from "@mui/material";
 import classnames from "classnames";
 import { useContext, useEffect } from "react";
 import styles from "../css/Input.module.css";
-import ethLogo from "../images/ethereum.png";
 import { LongSwapContext, ShortSwapContext } from "../providers";
 import { useNetwork } from "../providers/context/UIProvider";
 // import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS, POOL_ID } from "../utils";
-import { POOLS, POOL_ID } from "../utils/pool";
+import { POOLS } from "../utils/pool";
 import Modal from "./Modal";
 
 const Input = (props) => {
@@ -72,7 +71,7 @@ const Input = (props) => {
   const tokenDetails = Object.values(POOLS?.[networkName])?.[0].tokens;
 
   useEffect(() => {
-    const address = tokenA?.address;
+    const address = tokenDetails[0]?.address;
     console.log("tokenA", tokenA);
 
     const balance =
@@ -80,8 +79,8 @@ const Input = (props) => {
 
     setTokenA({
       ...tokenA,
-      symbol: "Faucet",
-      image: ethLogo,
+      symbol: tokenDetails[0]?.symbol,
+      image: tokenDetails[0]?.logo,
       balance: balance?.[0]?.[address],
       tokenIsSet: true,
     });
