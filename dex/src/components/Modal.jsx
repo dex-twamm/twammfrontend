@@ -1,4 +1,4 @@
-import { Backdrop, Skeleton } from "@mui/material";
+import { Alert, Backdrop, Skeleton } from "@mui/material";
 import classNames from "classnames";
 import React, { useContext, useEffect, useState } from "react";
 import styles from "../css/Modal.module.css";
@@ -66,14 +66,15 @@ const Modal = ({
     } else if (selectToken === "2") {
       //setTokenTo
       setDestAddress(chosenToken.address);
-      // if (chosenToken.symbol === tokenA.symbol) {
-      // } else
-      setTokenB({
-        symbol: chosenToken.symbol,
-        image: chosenToken.logo,
-        balance: chosenTokenBalance,
-        tokenIsSet: true,
-      });
+      if (chosenToken.symbol === tokenA.symbol) {
+        return <></>;
+      } else
+        setTokenB({
+          symbol: chosenToken.symbol,
+          image: chosenToken.logo,
+          balance: chosenTokenBalance,
+          tokenIsSet: true,
+        });
     }
     handleModalClose();
   };

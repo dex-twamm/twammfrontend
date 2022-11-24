@@ -33,7 +33,7 @@ const Tabs = () => {
     const poolConfig = Object.values(POOLS?.[currentNetwork?.network])?.[0];
     setSwapAmount("");
     setTokenA({
-      symbol: "Faucet",
+      symbol: "FAU",
       image: poolConfig?.tokens[1].logo,
       address: poolConfig?.tokens[1].address,
       balance: 0,
