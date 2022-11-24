@@ -116,7 +116,7 @@ const LongTermOrderCard = (props) => {
         // setProgress((latestBlock - startBlock) / (expiryBlock - startBlock));
         let date = new Date(0);
         date.setSeconds(timeRemaining); // specify value for SECONDS here
-        const timeString = date.toISOString().substring(11, 19);
+        const timeString = date.toISOString().substring(11, 16);
         console.log(timeString);
 
         return {

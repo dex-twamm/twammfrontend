@@ -213,11 +213,7 @@ export async function getPoolBalance(
     tokenAddress
   );
   const cash = poolBalance.cash._hex;
-  // const readableCash = ethers.utils.formatEther(cash);
-  // const readableBalance = ethers.utils.formatUnits(
-  //   balances,
-  //   poolConfig?.tokens[index].decimals
-  // );
+
   const readableCash = ethers.utils.formatUnits(cash, tokenIndex?.[0].decimals);
   console.log(
     "====Pool Cash====",
