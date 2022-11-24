@@ -23,7 +23,6 @@ export const getTokensBalance = async (
   for (let index = 0; index < tokenAddress.length; index++) {
     const address = tokenAddress[index];
     const balances = await balanceContract(address);
-    // const readableBalance = ethers.utils.formatEther(balances);
     const readableBalance = ethers.utils.formatUnits(
       balances,
       Object.values(POOLS?.[currentNetwork])?.[0]?.tokens[index].decimals
