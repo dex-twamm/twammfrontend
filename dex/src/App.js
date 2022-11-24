@@ -264,7 +264,7 @@ function App() {
         return null;
       }
       try {
-        await getTokensBalance(provider, account).then((res) => {
+        await getTokensBalance(provider, account, currentNetwork?.network).then((res) => {
           setTokenBalances(res);
           console.log("Response From Token Balance Then Block", res);
         });

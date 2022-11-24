@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from "react";
+import ethLogo from "../../images/ethereum.svg";
 
 const UIContext = createContext(null);
 
@@ -13,8 +14,8 @@ const UIProvider = ({ children }) => {
   const nId = window.ethereum?.networkVersion;
 
   const [selectedNetwork, setSelectedNetwork] = useState({
-    network: "Goerli",
-    logo: "/Testv4.svg",
+    network: "Ethereum",
+    logo: ethLogo,
     chainId: nId,
   });
   return (

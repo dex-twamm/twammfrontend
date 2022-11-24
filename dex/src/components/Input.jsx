@@ -2,9 +2,8 @@ import { Backdrop, Skeleton } from "@mui/material";
 import classnames from "classnames";
 import { useContext, useEffect } from "react";
 import styles from "../css/Input.module.css";
-import { LongSwapContext, ShortSwapContext } from "../providers";
+import { LongSwapContext, ShortSwapContext, UIContext } from "../providers";
 import { useNetwork } from "../providers/context/UIProvider";
-// import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS, POOL_ID } from "../utils";
 import { POOLS } from "../utils/pool";
 import Modal from "./Modal";
 
@@ -32,6 +31,11 @@ const Input = (props) => {
   } = useContext(ShortSwapContext);
   const { tokenA, tokenB } = useContext(LongSwapContext);
   const currentNetwork = useNetwork();
+
+  const {
+    selectedNetwork,
+    setSelectedNetwork,
+  } = useContext(UIContext);
 
   console.log("swap token", tokenA, tokenB);
   // console.log("Select Token Input.js", selectToken);
@@ -86,7 +90,7 @@ const Input = (props) => {
     });
     setEthBalance(balance?.[0]?.[address]);
     setSrcAddress(address);
-  }, [setTokenA, tokenBalances, setEthBalance, setSrcAddress]);
+  }, [setTokenA, tokenBalances, setEthBalance, setSrcAddress, setSelectedNetwork]);
 
   return (
     <>
