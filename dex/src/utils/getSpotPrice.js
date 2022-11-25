@@ -24,18 +24,19 @@ export const spotPrice = async (
   setExpectedSwapOut,
   currentNetwork
 ) => {
-  console.log("Expected swap out ---->", swapAmount);
+  console.log("swapAmount ---->", swapAmount, srcAddress, destAddress);
 
   if (swapAmount) {
     setSpotPriceLoading(true);
-    //todo : Change this to use token decimal places
-    const swapAmountWei = ethers.utils.parseUnits(swapAmount, "ether");
-
-    const errors = {};
 
     const poolConfig = Object.values(POOLS[currentNetwork])[0];
     const tokenIn = poolConfig.tokens.find((token) => token.address === srcAddress);
     const tokenOut = poolConfig.tokens.find((token) => token.address === destAddress);
+
+    //todo : Change this to use token decimal places
+    const swapAmountWei = ethers.utils.parseUnits(swapAmount, tokenIn.decimals);
+
+    const errors = {};
 
     const signer = await getProvider(
       true,
@@ -69,15 +70,21 @@ export const spotPrice = async (
       });
     } catch (e) {
       console.log("erroror", typeof e, { ...e });
-      if (e.reason.match("BAL#304")) {
+      if (e.reason) {
+        if (e.reason.match("BAL#304")) {
+          setFormErrors({
+            balError: "Try Giving Lesser Amount",
+          });
+        }
+  
+        if (e.reason.match("BAL#510")) {
+          setFormErrors({
+            balError: "Invalid Amount!",
+          });
+        }
+      } else {
         setFormErrors({
-          balError: "Try Giving Lesser Amount",
-        });
-      }
-
-      if (e.reason.match("BAL#510")) {
-        setFormErrors({
-          balError: "Invalid Amount!",
+          balError: "Unknown error!",
         });
       }
       setSpotPriceLoading(false);

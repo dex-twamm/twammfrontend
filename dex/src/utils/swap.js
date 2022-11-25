@@ -17,6 +17,8 @@ export const swapTokens = async (
   deadline,
   currentNetwork
 ) => {
+  const poolConfig = Object.values(POOLS[currentNetwork])[0];
+
   // Create a new instance of the exchange contract
   const exchangeContract = new Contract(
     Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,

@@ -51,7 +51,7 @@ const AddLiquidity = (props) => {
     if (tokenA.symbol === tokenB.symbol)
       setTokenB({
         symbol: "Select Token",
-        image: "",
+        logo: "",
         balance: "",
         tokenIsSet: false,
       });
@@ -73,28 +73,6 @@ const AddLiquidity = (props) => {
     }
   }, [tokenB, buttonText, setButtonText, swapAmount]);
 
-  // const tokenDetails = [
-  //   {
-  //     name: "Faucet",
-  //     symbol: "ETH",
-  //     image: "ethereum.png",
-  //     address: "",
-  //     balance: tokenBalances[0],
-  //   },
-  //   {
-  //     name: "Matic",
-  //     symbol: "DAI",
-  //     image: "/Testv4.jpeg",
-  //     address: "",
-  //     balance: tokenBalances[1],
-  //   },
-  //   {
-  //     type: "coming_soon",
-  //     name: "Test Token",
-  //     symbol: "CST",
-  //     image: "/Testv4.jpeg",
-  //   },
-  // ];
   const tokenDetails = Object.values(POOLS[currentNetwork?.network])[0]?.tokens;
 
   console.log("Prabin", tokenA, tokenB);
@@ -161,7 +139,7 @@ const AddLiquidity = (props) => {
                 <div className={styles.currencyWrap}>
                   <img
                     className={styles.cryptoImage}
-                    src={tokenA.image}
+                    src={tokenA.logo}
                     alt="Ethereum"
                   />
                   <p className={styles.tokenSymbol}>{tokenA.symbol}</p>
@@ -219,7 +197,7 @@ const AddLiquidity = (props) => {
                 onChange={(e) => {
                   setSwapAmount(e.target.value);
                 }}
-                imgSrc={tokenA.image}
+                imgSrc={tokenA.logo}
                 symbol={tokenA.symbol}
                 handleDisplay={handleDisplay}
                 selectToken={selectToken}

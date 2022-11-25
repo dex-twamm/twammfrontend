@@ -24,16 +24,12 @@ export const _placeLongTermOrders = async (
   provider,
   currentNetwork = "Goerli"
 ) => {
-  const swapAmountWei = ethers.utils.parseUnits(swapAmount, "ether");
-  // console.log('swapAmountWei', swapAmountWei);
+  const poolConfig = Object.values(POOLS[currentNetwork])[0];
+
   try {
-    const tokenInIndex = Object.values(
-      POOLS[currentNetwork]
-    )[0].tokens.findIndex((object) => srcAddress === object.address);
-    const tokenOutIndex = Object.values(
-      POOLS[currentNetwork]
-    )[0].tokens.findIndex((object) => destAddress === object.address);
-    const amountIn = swapAmountWei;
+    const tokenInIndex = poolConfig.tokens.findIndex((object) => srcAddress === object.address);
+    const tokenOutIndex = poolConfig.tokens.findIndex((object) => destAddress === object.address);
+    const amountIn = ethers.utils.parseUnits(swapAmount, poolConfig.tokens[tokenInIndex].decimals);
     // console.log('amountIn', amountIn);
     const blockIntervals = Math.ceil(numberOfBlockIntervals);
     console.log("Intervals", numberOfBlockIntervals);

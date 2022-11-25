@@ -140,23 +140,15 @@ function App() {
   useEffect(() => {
     if (transactionHash) {
       setSwapAmount(0);
-      const poolConfig = Object.values(POOLS?.[currentNetwork?.network])?.[0];
-      setTokenB({
-        symbol: "Select Token",
-        image: poolConfig?.tokens[0].logo,
-        address: poolConfig?.TOKEN_TWO_ADDRESS,
-        balance: 0,
-        tokenIsSet: false,
-      });
       setExpectedSwapOut(0);
     }
-  }, [setSwapAmount, setTokenB, setExpectedSwapOut, transactionHash]);
+  }, [transactionHash]);
 
   const data = {
     token: {
       name: "Ethereum",
       symbol: "ETH",
-      image: ethLogo,
+      logo: ethLogo,
     },
     wallet: {
       address: account === null ? "Wallet Address" : truncateAddress(account),

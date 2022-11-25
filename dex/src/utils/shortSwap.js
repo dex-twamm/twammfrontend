@@ -1,6 +1,7 @@
 import { ethers } from "ethers";
 import { POPUP_MESSAGE } from "../constants";
 import { getProvider } from "./getProvider";
+import { POOLS } from "./pool";
 import { swapTokens } from "./swap";
 
 export const _swapTokens = async (
@@ -24,14 +25,13 @@ export const _swapTokens = async (
   setLoading,
   currentNetwork = "Goerli"
 ) => {
-  const walletBalanceWei = ethers.utils.parseUnits(ethBalance, "ether");
-  const pCash = ethers.utils.parseUnits(poolCash, "ether");
-  const swapAmountWei = ethers.utils.parseUnits(swapAmount, "ether");
-  // console.log("Deadline", deadline);
+  const poolConfig = Object.values(POOLS[currentNetwork])[0];
+  const tokenIn = poolConfig.tokens.find((token) => token.address === srcAddress);
+  const tokenOut = poolConfig.tokens.find((token) => token.address === destAddress);
 
-  // swapAmountWei.lte(walletBalanceWei && poolCash)
-  // 	? console.log('True')
-  // 	: console.log('False');
+  const swapAmountWei = ethers.utils.parseUnits(swapAmount, tokenIn.decimals);
+  const walletBalanceWei = ethers.utils.parseUnits(ethBalance, tokenIn.decimals);
+  const pCash = ethers.utils.parseUnits(poolCash, tokenIn.decimals);
 
   console.log(
     "walletBalanceWeisdasd",

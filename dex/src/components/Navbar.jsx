@@ -24,7 +24,6 @@ const Navbar = (props) => {
     setSelectedNetwork,
     nId,
   } = useContext(UIContext);
-  const { setTokenA, setTokenB } = useContext(LongSwapContext);
 
   const location = useLocation();
 
