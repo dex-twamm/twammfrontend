@@ -1,20 +1,15 @@
 import { useEffect } from "react";
-import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Alert,
   Box,
   Slider,
   Typography,
-  Button,
-  Chip,
   CircularProgress,
   Skeleton,
 } from "@mui/material";
 import classNames from "classnames";
 import React, { useContext, useState } from "react";
 import lsStyles from "../css/LongSwap.module.css";
-import style from "../css/Swap.module.css";
 import styles from "../css/AddLiquidity.module.css";
 
 import {
@@ -23,12 +18,10 @@ import {
 } from "../methods/longSwapMethod";
 import { LongSwapContext } from "../providers";
 import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
-import PopupModal from "./alerts/PopupModal";
 import Input from "./Input";
 import { FiChevronDown } from "react-icons/fi";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
-import { BigNumber, ethers } from "ethers";
+import { BigNumber } from "ethers";
 import { bigToStr } from "../utils";
 import { getApproval } from "../utils/getApproval";
 import { WebContext } from "../providers/context/WebProvider";
@@ -46,7 +39,6 @@ const Swap = (props) => {
   const [display, setDisplay] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
   const [value, setValue] = useState(0.0);
-  const [showModal, setShowModal] = useState(false);
   const [open, setOpen] = useState(false);
   const [executionTime, setExecutionTIme] = useState("");
   const [disableAllowBtn, setDisableAllowBtn] = useState(true);
@@ -69,7 +61,6 @@ const Swap = (props) => {
     spotPrice,
     srcAddress,
     setTransactionHash,
-    transactionHash,
     isWalletConnected,
   } = useContext(ShortSwapContext);
 
@@ -521,40 +512,38 @@ const Swap = (props) => {
                   >
                     {spotPriceLoading ? (
                       <Skeleton width={"100px"} />
+                    ) : spotPrice == 0 ? (
+                      <p></p>
                     ) : (
-                      spotPrice == 0 ? (
-                        <p></p>
-                      )
-                      : (
-                        <p
-                          style={{
-                            cursor: "pointer",
-                            boxSizing: "border-box",
-                            padding: { xs: "0px", sm: "8px 0px" },
-                            color: "black",
-                            fontFamily: "Open Sans",
-                            fontSize: "16px",
-                            fontWeight: 500,
-                            display: "flex",
-                          }}
-                          onClick={handleClose}
-                        >
+                      <p
+                        style={{
+                          cursor: "pointer",
+                          boxSizing: "border-box",
+                          padding: { xs: "0px", sm: "8px 0px" },
+                          color: "black",
+                          fontFamily: "Open Sans",
+                          fontSize: "16px",
+                          fontWeight: 500,
+                          display: "flex",
+                        }}
+                        onClick={handleClose}
+                      >
+                        {" "}
+                        {` 1 ${tokenA.symbol} = ${" "}`}
+                        {"  "}
+                        <label>
                           {" "}
-                          {` 1 ${tokenA.symbol} = ${" "}`}
-                          {"  "}
-                          <label>
-                            {" "}
-                            {spotPriceLoading ? (
-                              <Skeleton width={"100px"} />
-                            ) : (
-                              ` ${spotPrice?.toFixed(4)} ${tokenB.symbol}`
-                            )}
-                          </label>
-                          {/* <span style={{ color: "#333333", opacity: 0.7 }}>
+                          {spotPriceLoading ? (
+                            <Skeleton width={"100px"} />
+                          ) : (
+                            ` ${spotPrice?.toFixed(4)} ${tokenB.symbol}`
+                          )}
+                        </label>
+                        {/* <span style={{ color: "#333333", opacity: 0.7 }}>
                           {" "}
                           ($123)
                         </span> */}
-                        </p>)
+                      </p>
                     )}
                   </Box>
                 ) : null}
