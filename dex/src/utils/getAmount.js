@@ -14,20 +14,17 @@ export const getTokensBalance = async (
   walletAddress,
   currentNetwork = "Goerli"
 ) => {
+  const poolConfig = Object.values(POOLS?.[currentNetwork])?.[0];
   var tokenAddress = [
-    Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
-    Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
+    poolConfig?.TOKEN_ONE_ADDRESS,
+    poolConfig?.TOKEN_TWO_ADDRESS,
   ];
 
   const newBalance = [];
   for (let index = 0; index < tokenAddress.length; index++) {
     const address = tokenAddress[index];
     const balances = await balanceContract(address);
-    const readableBalance = ethers.utils.formatUnits(
-      balances,
-      Object.values(POOLS?.[currentNetwork])?.[0]?.tokens[index].decimals
-    );
-
+    const readableBalance = ethers.utils.formatUnits(balances, poolConfig?.tokens[index].decimals);
     // console.log("Balances", readableBalance);
     newBalance.push({ [address]: readableBalance });
   }
@@ -38,7 +35,7 @@ export const getTokensBalance = async (
       provider
     );
     const balanceOfTokens = await ERC20Contract.balanceOf(walletAddress);
-    // console.log("Balance of_" + element + "_is=" + ethers.utils.formatEther(balanceOfLPTokens));
+    console.log("Balance of_" + address + "_is=" + ethers.utils.formatEther(balanceOfTokens));
     return balanceOfTokens;
   }
   console.log("newBalance", newBalance);

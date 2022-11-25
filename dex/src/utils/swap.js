@@ -14,11 +14,11 @@ export const swapTokens = async (
   walletAddress,
   expectedSwapOut,
   tolerance,
-  deadline
-  // currentNetwork
+  deadline,
+  currentNetwork
 ) => {
-  const currentNetwork = "Goerli";
-  let txHash;
+  const poolConfig = Object.values(POOLS[currentNetwork])[0];
+
   // Create a new instance of the exchange contract
   const exchangeContract = new Contract(
     Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
@@ -35,6 +35,8 @@ export const swapTokens = async (
   const deadlineTimestamp = targetDate.getTime();
   console.log(
     "Inputs",
+    assetIn,
+    assetOut,
     expectedSwapOut,
     tolerance,
     deadline,
@@ -115,7 +117,7 @@ export const swapTokens = async (
       // gasLimit: 50000,
     }
   );
-  txHash = swapTx.hash;
+  let txHash = swapTx.hash;
   console.log("swapTxxxx", swapTx.hash);
   // const txResult = await swapTx.wait();
   // console.log("Swap Results After Placed", txResult)

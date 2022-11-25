@@ -50,16 +50,13 @@ const Modal = ({
       setSrcAddress(chosenToken.address);
       if (chosenToken.symbol === tokenB.symbol) {
         setTokenB({
-          symbol: tokenA.symbol,
-          image: tokenA.image,
-          balance: tokenA.balance,
+          ...tokenA,
           tokenIsSet: true,
         });
         setDestAddress(tokenA.address);
       }
       setTokenA({
-        symbol: chosenToken.symbol,
-        image: chosenToken.logo,
+        ...chosenToken,
         balance: chosenTokenBalance,
         tokenIsSet: true,
       });
@@ -70,8 +67,7 @@ const Modal = ({
         return <></>;
       } else
         setTokenB({
-          symbol: chosenToken.symbol,
-          image: chosenToken.logo,
+          ...chosenToken,
           balance: chosenTokenBalance,
           tokenIsSet: true,
         });

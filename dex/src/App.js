@@ -32,7 +32,7 @@ import { getProvider } from "./utils/getProvider";
 import { spotPrice } from "./utils/getSpotPrice";
 import { getEthLogs } from "./utils/get_ethLogs";
 import { getLastVirtualOrderBlock, placeLongTermOrder } from "./utils/longSwap";
-import { POOLS, POOL_ID } from "./utils/pool";
+import { POOLS } from "./utils/pool";
 import { web3Modal } from "./utils/providerOptions";
 import { _swapTokens } from "./utils/shortSwap";
 import { swapTokens } from "./utils/swap";
@@ -140,23 +140,15 @@ function App() {
   useEffect(() => {
     if (transactionHash) {
       setSwapAmount(0);
-      const poolConfig = Object.values(POOLS?.[currentNetwork?.network])?.[0];
-      setTokenB({
-        symbol: "Select Token",
-        image: poolConfig?.tokens[0].logo,
-        address: poolConfig?.TOKEN_TWO_ADDRESS,
-        balance: 0,
-        tokenIsSet: false,
-      });
       setExpectedSwapOut(0);
     }
-  }, [setSwapAmount, setTokenB, setExpectedSwapOut, transactionHash]);
+  }, [transactionHash]);
 
   const data = {
     token: {
       name: "Ethereum",
       symbol: "ETH",
-      image: ethLogo,
+      logo: ethLogo,
     },
     wallet: {
       address: account === null ? "Wallet Address" : truncateAddress(account),
@@ -264,6 +256,11 @@ function App() {
         return null;
       }
       try {
+        await getTokensBalance(provider, account, currentNetwork?.network).then((res) => {
+          setTokenBalances(res);
+          console.log("Response From Token Balance Then Block", res);
+        });
+      
         await getLastVirtualOrderBlock(provider, currentNetwork?.network).then(
           (res) => {
             console.log("Latest Block", res);
@@ -280,12 +277,6 @@ function App() {
           }
         );
 
-        await getTokensBalance(provider, account, currentNetwork?.network).then(
-          (res) => {
-            setTokenBalances(res);
-            console.log("Response From Token Balance Then Block", res);
-          }
-        );
         // Pool Token's Balance
         await getLPTokensBalance(
           provider,

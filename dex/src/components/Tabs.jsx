@@ -27,25 +27,25 @@ const Tabs = () => {
   const currentPath = location.pathname;
   const currentNetwork = useNetwork();
 
-  const { setTokenA, setTokenB } = useContext(LongSwapContext);
+  const { tokenA, setTokenA, tokenB, setTokenB } = useContext(LongSwapContext);
   const { setSwapAmount } = useContext(ShortSwapContext);
   const onNavLinkClick = () => {
     const poolConfig = Object.values(POOLS?.[currentNetwork?.network])?.[0];
     setSwapAmount("");
-    setTokenA({
-      symbol: poolConfig?.tokens[1].symbol,
-      image: poolConfig?.tokens[1].logo,
-      address: poolConfig?.tokens[1].address,
-      balance: 0,
-      tokenIsSet: true,
-    });
-    setTokenB({
-      symbol: "Select Token",
-      image: poolConfig?.tokens[0].logo,
-      address: poolConfig?.tokens[0].address,
-      balance: 0,
-      tokenIsSet: false,
-    });
+    if(!tokenA.tokenIsSet) {
+      setTokenA({
+        ...poolConfig?.tokens[0],
+        balance: 0,
+        tokenIsSet: true,
+      });
+    }
+    if(!tokenB.tokenIsSet) {
+      setTokenB({
+        ...poolConfig?.tokens[1],
+        balance: 0,
+        tokenIsSet: true,
+      });
+    }
   };
   const tabList = tabOptions.map((option, index) => (
     <Link to={option.path} key={index}>

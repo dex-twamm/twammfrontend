@@ -2,6 +2,7 @@ import { ethers } from "ethers";
 import { useNetwork } from "../providers/context/UIProvider";
 import { getEstimatedConvertedToken } from "./batchSwap";
 import { getProvider } from "./getProvider";
+import { POOLS } from "./pool";
 
 //Spot Prices
 export const spotPrice = async (
@@ -23,17 +24,20 @@ export const spotPrice = async (
   setExpectedSwapOut,
   currentNetwork
 ) => {
-  console.log("Expected swap out ---->", swapAmount);
+  console.log("swapAmount ---->", swapAmount, srcAddress, destAddress);
 
   if (swapAmount) {
     setSpotPriceLoading(true);
-    //todo : Change this to use token decimal places
-    const swapAmountWei = ethers.utils.parseUnits(swapAmount, "ether");
 
-    const assetIn = srcAddress;
-    const assetOut = destAddress;
+    const poolConfig = Object.values(POOLS[currentNetwork])[0];
+    const tokenIn = poolConfig.tokens.find((token) => token.address === srcAddress);
+    const tokenOut = poolConfig.tokens.find((token) => token.address === destAddress);
+
+    //todo : Change this to use token decimal places
+    const swapAmountWei = ethers.utils.parseUnits(swapAmount, tokenIn.decimals);
+
     const errors = {};
-    // const signer = a
+
     const signer = await getProvider(
       true,
       setweb3provider,
@@ -46,37 +50,41 @@ export const spotPrice = async (
 
     console.log("Expected swap out ---->", expectedSwapOut);
     try {
-      const batchPrice = await getEstimatedConvertedToken(
+      await getEstimatedConvertedToken(
         signer,
         swapAmountWei,
-        assetIn,
-        assetOut,
+        tokenIn.address,
+        tokenOut.address,
         walletAddress,
         expectedSwapOut,
         tolerance,
         deadline,
-        (currentNetwork = "Goerli")
+        currentNetwork
       ).then((res) => {
-        console.log("Response From Query Batch Swap", res);
+        console.log("Response From Query Batch Swap", res.toString());
         errors.balError = undefined;
         setFormErrors(errors ?? "");
-        console.log("Response of spot price");
-        setSpotPrice(parseFloat(res) / parseFloat(swapAmountWei));
+        setSpotPrice((parseFloat(res) * (10**tokenIn.decimals)) / (parseFloat(swapAmountWei) * (10**tokenOut.decimals)));
         setSpotPriceLoading(false);
         setExpectedSwapOut(res);
       });
-      return batchPrice;
     } catch (e) {
       console.log("erroror", typeof e, { ...e });
-      if (e.reason.match("BAL#304")) {
+      if (e.reason) {
+        if (e.reason.match("BAL#304")) {
+          setFormErrors({
+            balError: "Try Giving Lesser Amount",
+          });
+        }
+  
+        if (e.reason.match("BAL#510")) {
+          setFormErrors({
+            balError: "Invalid Amount!",
+          });
+        }
+      } else {
         setFormErrors({
-          balError: "Try Giving Lesser Amount",
-        });
-      }
-
-      if (e.reason.match("BAL#510")) {
-        setFormErrors({
-          balError: "Invalid Amount!",
+          balError: "Unknown error!",
         });
       }
       setSpotPriceLoading(false);

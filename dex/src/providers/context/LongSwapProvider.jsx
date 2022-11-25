@@ -23,7 +23,6 @@ export const LongSwapProvider = ({ children }) => {
   const { tokenBalances } = useContext(ShortSwapContext);
   const currentNetwork = useNetwork();
 
-  console.log("currentNetworkcurrentNetwork ", currentNetwork);
   let networkName = currentNetwork?.network;
   if (
     !networkName ||
@@ -35,20 +34,15 @@ export const LongSwapProvider = ({ children }) => {
   console.log("networkName", networkName);
   const poolConfig = Object.values(POOLS?.[networkName])?.[0];
   const [tokenA, setTokenA] = useState({
-    symbol: "Faucet",
-    image: poolConfig?.tokens[1].logo,
-    address: poolConfig.tokens[1].address,
+    ...poolConfig?.tokens[0],
     balance: 0,
-    tokenIsSet: false,
+    tokenIsSet: (poolConfig?.tokens[0].address ? true : false),
   });
 
   const [tokenB, setTokenB] = useState({
-    symbol: "Select Token",
-    image: ethLogo,
-    address: Object?.values(POOLS?.[networkName ?? "Goerli"])?.[0].tokens[0]
-      .address,
+    ...poolConfig?.tokens[1],
     balance: 0,
-    tokenIsSet: false,
+    tokenIsSet: (poolConfig?.tokens[1].address ? true : false),
   });
 
   return (

@@ -43,6 +43,10 @@ const LongTermOrderSingleCard = ({ it }) => {
   );
 
   const currentNetwork = useNetwork();
+  const poolConfig = Object.values(POOLS[currentNetwork?.network])[0];
+  const tokenIn = poolConfig.tokens[it.sellTokenIndex];
+  const tokenOut = poolConfig.tokens[it.buyTokenIndex];
+
   const remainingTimeRef = useRef();
   let convertedAmount = ethers.constants.Zero;
   if (it.state === "completed" || it.state === "cancelled") {
@@ -74,7 +78,7 @@ const LongTermOrderSingleCard = ({ it }) => {
   }
 
   const averagePrice =
-    bigToFloat(convertedAmount, 18) / bigToFloat(soldToken, 18);
+    bigToFloat(convertedAmount, tokenOut.decimals) / bigToFloat(soldToken, tokenIn.decimals);
 
   const handleCancel = (orderId, orderHash) => {
     _cancelLTO(
@@ -130,7 +134,7 @@ const LongTermOrderSingleCard = ({ it }) => {
         // const timeRemaining = (it.expirationBlock - currentBlock.number) * 12;
         let date = new Date(0);
         date.setSeconds(newTime); // specify value for SECONDS here
-        const timeString = date.toISOString().substring(11, 19);
+        const timeString = date.toISOString().substring(11, 16);
         setOrderStatus({
           status: `Time Remaining: ${timeString}`,
           progress:
@@ -164,10 +168,7 @@ const LongTermOrderSingleCard = ({ it }) => {
             className={styles.iconExternalLink}
             onClick={() =>
               window.open(
-                `${
-                  Object.values(POOLS[currentNetwork?.network])[0]
-                    ?.transactionUrl
-                }${it.transactionHash}`,
+                `${poolConfig?.transactionUrl}${it.transactionHash}`,
                 "_blank"
               )
             }
@@ -178,28 +179,16 @@ const LongTermOrderSingleCard = ({ it }) => {
             <div className={styles.tokenWrapper}>
               <img
                 className={styles.tokenIcon}
-                src={
-                  Object.values(POOLS[currentNetwork?.network])[0].tokens[
-                    it.sellTokenIndex
-                  ].logo
-                }
-                alt={
-                  Object.values(POOLS[currentNetwork?.network])[0].tokens[
-                    it.sellTokenIndex
-                  ].symbol
-                }
+                src={tokenIn.logo}
+                alt={tokenIn.symbol}
               />
               <p className={styles.tokenText}>
                 <span>
-                  {bigToStr(soldToken, 18)}{" "}
-                  {
-                    Object.values(POOLS[currentNetwork?.network])[0].tokens[
-                      it.sellTokenIndex
-                    ].symbol
-                  }{" "}
+                  {bigToStr(soldToken, tokenIn.decimals)}{" "}
+                  {tokenIn.symbol}{" "}
                   of
                 </span>
-                <span> {bigToStr(amountOf, 18)}</span>
+                <span> {bigToStr(amountOf, tokenIn.decimals)}</span>
               </p>
             </div>
             <div className={styles.arrow}>
@@ -225,24 +214,12 @@ const LongTermOrderSingleCard = ({ it }) => {
             >
               <img
                 className={styles.tokenIcon}
-                src={
-                  Object.values(POOLS[currentNetwork?.network])[0].tokens[
-                    it.buyTokenIndex
-                  ].logo
-                }
-                alt={
-                  Object.values(POOLS[currentNetwork?.network])[0].tokens[
-                    it.buyTokenIndex
-                  ].symbol
-                }
+                src={tokenOut.logo}
+                alt={tokenOut.symbol}
               />
               <p className={classNames(styles.tokenText, styles.greenText)}>
-                {bigToStr(convertedAmount, 18)}{" "}
-                {
-                  Object.values(POOLS[currentNetwork?.network])[0].tokens[
-                    it.buyTokenIndex
-                  ].symbol
-                }
+                {bigToStr(convertedAmount, tokenOut.decimals)}{" "}
+                {tokenOut.symbol}
               </p>
             </div>
           </div>
@@ -260,10 +237,10 @@ const LongTermOrderSingleCard = ({ it }) => {
                   orderStatus?.status === "Completed"
                     ? styles.greenProgress
                     : orderStatus?.status === "Execution Completed"
-                    ? styles.greenProgress
-                    : orderStatus?.status === "Cancelled"
-                    ? styles.redProgress
-                    : styles.activeProgress
+                      ? styles.greenProgress
+                      : orderStatus?.status === "Cancelled"
+                        ? styles.redProgress
+                        : styles.activeProgress
                 )}
               ></div>
             </div>
@@ -271,7 +248,7 @@ const LongTermOrderSingleCard = ({ it }) => {
 
           <div className={styles.extrasContainer}>
             <div className={styles.fees}>
-              {Object.values(POOLS[currentNetwork?.network])[0]?.fees} fees
+              {poolConfig?.fees} fees
             </div>
             {soldToken != 0 && (
               <div className={styles.averagePrice}>
