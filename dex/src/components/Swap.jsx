@@ -152,12 +152,6 @@ const Swap = (props) => {
     }
   };
 
-  console.log(
-    "Allowance detail for wallet change--->",
-    typeof allowance,
-    allowance
-  );
-
   const validate = (values) => {
     const valueInt = parseFloat(values);
     const errors = {};
