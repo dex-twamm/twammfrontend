@@ -72,22 +72,25 @@ const Navbar = (props) => {
     localStorage.setItem("chainId", initialNetwork[1]?.chainId);
   }
 
-  // const [selectedNetwork, setSelectedNetwork] = useState({
-  //   network: "Select a Network",
-  //   logo: "",
-  //   chainId: nId,
-  // });
-
   const network_name = localStorage.getItem("network_name");
   const network_logo = localStorage.getItem("network_logo");
   const network_id = localStorage.getItem("chainId");
 
   useEffect(() => {
-    setSelectedNetwork({
-      network: network_name ? network_name : initialNetwork[0]?.name,
-      logo: network_logo ? network_logo : initialNetwork[0]?.logo,
-      chainId: network_id ? network_id : initialNetwork[0]?.chainId,
-    });
+    if(typeof network_name !== 'undefined' && network_name !== 'undefined') {
+      setSelectedNetwork({
+        network: network_name,
+        logo: network_logo,
+        chainId: network_id,
+      });
+    } else {
+      setSelectedNetwork({
+        network: initialNetwork[0]?.name,
+        logo: initialNetwork[0]?.logo,
+        chainId:initialNetwork[0]?.chainId,
+      });
+    }
+    console.log(selectedNetwork);
   }, [network_name]);
 
   const handleSelect = async (networkName, logo, chainId) => {

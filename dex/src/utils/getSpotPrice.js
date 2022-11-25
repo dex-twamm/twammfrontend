@@ -82,6 +82,13 @@ export const spotPrice = async (
             balError: "Invalid Amount!",
           });
         }
+        if (e.reason.match("ERC20: transfer amount exceeds allowance")) {
+          setSpotPriceLoading(false);
+          setSpotPrice(0);
+          errors.balError = undefined;
+          setFormErrors(errors ?? "");
+          setExpectedSwapOut(0);
+        }
       } else {
         setFormErrors({
           balError: "Unknown error!",

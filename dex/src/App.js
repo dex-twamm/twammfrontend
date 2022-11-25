@@ -207,6 +207,25 @@ function App() {
 
   useEffect(() => {
     console.log("ajsdhkasd----", swapAmount, destAddress, srcAddress);
+    spotPrice(
+      swapAmount,
+      setSpotPriceLoading,
+      srcAddress,
+      destAddress,
+      setweb3provider,
+      setCurrentBlock,
+      setBalance,
+      setAccount,
+      setWalletConnected,
+      account,
+      expectedSwapOut,
+      tolerance,
+      deadline,
+      setFormErrors,
+      setSpotPrice,
+      setExpectedSwapOut,
+      currentNetwork?.network
+    );
     const interval = setTimeout(() => {
       spotPrice(
         swapAmount,
@@ -227,7 +246,7 @@ function App() {
         setExpectedSwapOut,
         currentNetwork?.network
       );
-    }, 1000);
+    }, 12000);
     return () => {
       clearTimeout(interval);
     };

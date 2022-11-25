@@ -519,44 +519,43 @@ const Swap = (props) => {
                       gap: { xs: "2px", sm: "4px" },
                     }}
                   >
-                    <InfoOutlinedIcon
-                      sx={{
-                        color: "#808080",
-                        cursor: "pointer",
-                        fontSize: "20px",
-                        display: { xs: "none", sm: "block" },
-                      }}
-                    />
-
-                    <p
-                      style={{
-                        cursor: "pointer",
-                        boxSizing: "border-box",
-                        padding: { xs: "0px", sm: "8px 0px" },
-                        color: "black",
-                        fontFamily: "Open Sans",
-                        fontSize: "16px",
-                        fontWeight: 500,
-                        display: "flex",
-                      }}
-                      onClick={handleClose}
-                    >
-                      {" "}
-                      {` 1 ${tokenA.symbol} = ${" "}`}
-                      {"  "}
-                      <label>
-                        {" "}
-                        {spotPriceLoading ? (
-                          <Skeleton width={"100px"} />
-                        ) : (
-                          ` ${spotPrice?.toFixed(4)} ${tokenB.symbol}`
-                        )}
-                      </label>
-                      {/* <span style={{ color: "#333333", opacity: 0.7 }}>
-                      {" "}
-                      ($123)
-                    </span> */}
-                    </p>
+                    {spotPriceLoading ? (
+                      <Skeleton width={"100px"} />
+                    ) : (
+                      spotPrice == 0 ? (
+                        <p></p>
+                      )
+                      : (
+                        <p
+                          style={{
+                            cursor: "pointer",
+                            boxSizing: "border-box",
+                            padding: { xs: "0px", sm: "8px 0px" },
+                            color: "black",
+                            fontFamily: "Open Sans",
+                            fontSize: "16px",
+                            fontWeight: 500,
+                            display: "flex",
+                          }}
+                          onClick={handleClose}
+                        >
+                          {" "}
+                          {` 1 ${tokenA.symbol} = ${" "}`}
+                          {"  "}
+                          <label>
+                            {" "}
+                            {spotPriceLoading ? (
+                              <Skeleton width={"100px"} />
+                            ) : (
+                              ` ${spotPrice?.toFixed(4)} ${tokenB.symbol}`
+                            )}
+                          </label>
+                          {/* <span style={{ color: "#333333", opacity: 0.7 }}>
+                          {" "}
+                          ($123)
+                        </span> */}
+                        </p>)
+                    )}
                   </Box>
                 ) : null}
 
