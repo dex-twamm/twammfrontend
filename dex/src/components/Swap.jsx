@@ -152,6 +152,12 @@ const Swap = (props) => {
     }
   };
 
+  console.log(
+    "Allowance detail for wallet change--->",
+    typeof allowance,
+    allowance
+  );
+
   const validate = (values) => {
     const valueInt = parseFloat(values);
     const errors = {};
@@ -509,69 +515,71 @@ const Swap = (props) => {
 
                 // onClick={handleClose}
               >
-                {!formErrors.balError ? (
-                  <Box
-                    sx={{
-                      display: "flex",
-                      // flexDirection:{xs:'column',sm:'row'},
-                      alignItems: {
-                        xs: "flex-start ",
-                        sm: "center",
-                        md: "center",
-                      },
-                      // justifyContent:{xs:'center',sm:'space-between'},
-                      // width:'fit-content',
-                      width: {
-                        xs: "70%",
-                        sm: "fit-content",
-                        md: "fit-content",
-                      },
+                {!formErrors.balError
+                  ? allowance !== "0.0000" && (
+                      <Box
+                        sx={{
+                          display: "flex",
+                          // flexDirection:{xs:'column',sm:'row'},
+                          alignItems: {
+                            xs: "flex-start ",
+                            sm: "center",
+                            md: "center",
+                          },
+                          // justifyContent:{xs:'center',sm:'space-between'},
+                          // width:'fit-content',
+                          width: {
+                            xs: "70%",
+                            sm: "fit-content",
+                            md: "fit-content",
+                          },
 
-                      boxSizing: "border-box",
-                      fontFamily: "Open Sans",
-                      gap: { xs: "2px", sm: "4px" },
-                    }}
-                  >
-                    <InfoOutlinedIcon
-                      sx={{
-                        color: "#808080",
-                        cursor: "pointer",
-                        fontSize: "20px",
-                        display: { xs: "none", sm: "block" },
-                      }}
-                    />
+                          boxSizing: "border-box",
+                          fontFamily: "Open Sans",
+                          gap: { xs: "2px", sm: "4px" },
+                        }}
+                      >
+                        <InfoOutlinedIcon
+                          sx={{
+                            color: "#808080",
+                            cursor: "pointer",
+                            fontSize: "20px",
+                            display: { xs: "none", sm: "block" },
+                          }}
+                        />
 
-                    <p
-                      style={{
-                        cursor: "pointer",
-                        boxSizing: "border-box",
-                        padding: { xs: "0px", sm: "8px 0px" },
-                        color: "black",
-                        fontFamily: "Open Sans",
-                        fontSize: "16px",
-                        fontWeight: 500,
-                        display: "flex",
-                      }}
-                      onClick={handleClose}
-                    >
-                      {" "}
-                      {` 1 ${tokenA.symbol} = ${" "}`}
-                      {"  "}
-                      <label>
-                        {" "}
-                        {spotPriceLoading ? (
-                          <Skeleton width={"100px"} />
-                        ) : (
-                          ` ${spotPrice?.toFixed(4)} ${tokenB.symbol}`
-                        )}
-                      </label>
-                      {/* <span style={{ color: "#333333", opacity: 0.7 }}>
+                        <p
+                          style={{
+                            cursor: "pointer",
+                            boxSizing: "border-box",
+                            padding: { xs: "0px", sm: "8px 0px" },
+                            color: "black",
+                            fontFamily: "Open Sans",
+                            fontSize: "16px",
+                            fontWeight: 500,
+                            display: "flex",
+                          }}
+                          onClick={handleClose}
+                        >
+                          {" "}
+                          {` 1 ${tokenA.symbol} = ${" "}`}
+                          {"  "}
+                          <label>
+                            {" "}
+                            {spotPriceLoading ? (
+                              <Skeleton width={"100px"} />
+                            ) : (
+                              ` ${spotPrice?.toFixed(4)} ${tokenB.symbol}`
+                            )}
+                          </label>
+                          {/* <span style={{ color: "#333333", opacity: 0.7 }}>
                       {" "}
                       ($123)
                     </span> */}
-                    </p>
-                  </Box>
-                ) : null}
+                        </p>
+                      </Box>
+                    )
+                  : null}
 
                 <Box
                   sx={{
