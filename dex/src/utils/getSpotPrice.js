@@ -35,6 +35,7 @@ export const spotPrice = async (
 
     //todo : Change this to use token decimal places
     const swapAmountWei = ethers.utils.parseUnits(swapAmount, tokenIn.decimals);
+    console.log("swapAmountWei", swapAmountWei);
 
     const errors = {};
 
@@ -69,6 +70,7 @@ export const spotPrice = async (
         setExpectedSwapOut(res);
       });
     } catch (e) {
+      setSpotPriceLoading(false);
       console.log("erroror", typeof e, { ...e });
       if (e.reason) {
         if (e.reason.match("BAL#304")) {
@@ -76,13 +78,12 @@ export const spotPrice = async (
             balError: "Try Giving Lesser Amount",
           });
         }
-  
         if (e.reason.match("BAL#510")) {
           setFormErrors({
             balError: "Invalid Amount!",
           });
         }
-        if (e.reason.match("ERC20: transfer amount exceeds allowance")) {
+        if (e.reason.match("ERC20: transfer amount exceeds allowance") || e.reason.match("allowance") ) {
           setSpotPriceLoading(false);
           setSpotPrice(0);
           errors.balError = undefined;
