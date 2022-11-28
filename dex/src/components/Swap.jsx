@@ -496,39 +496,36 @@ const Swap = (props) => {
 
                 // onClick={handleClose}
               >
-                {!formErrors.balError
-                  ? allowance !== "0.0000" && (
-                      <Box
-                        sx={{
-                          display: "flex",
-                          // flexDirection:{xs:'column',sm:'row'},
-                          alignItems: {
-                            xs: "flex-start ",
-                            sm: "center",
-                            md: "center",
-                          },
-                          // justifyContent:{xs:'center',sm:'space-between'},
-                          // width:'fit-content',
-                          width: {
-                            xs: "70%",
-                            sm: "fit-content",
-                            md: "fit-content",
-                          },
+                {!formErrors.balError ? (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      // flexDirection:{xs:'column',sm:'row'},
+                      alignItems: {
+                        xs: "flex-start ",
+                        sm: "center",
+                        md: "center",
+                      },
+                      // justifyContent:{xs:'center',sm:'space-between'},
+                      // width:'fit-content',
+                      width: {
+                        xs: "70%",
+                        sm: "fit-content",
+                        md: "fit-content",
+                      },
 
-                          boxSizing: "border-box",
-                          fontFamily: "Open Sans",
-                          gap: { xs: "2px", sm: "4px" },
-                        }}
-                      >
-                        <InfoOutlinedIcon
-                          sx={{
-                            color: "#808080",
-                            cursor: "pointer",
-                            fontSize: "20px",
-                            display: { xs: "none", sm: "block" },
-                          }}
-                        />
-
+                      boxSizing: "border-box",
+                      fontFamily: "Open Sans",
+                      gap: { xs: "2px", sm: "4px" },
+                    }}
+                  >
+                    {spotPriceLoading ? (
+                      <Skeleton width={"100px"} />
+                    ) : (
+                      spotPrice == 0 ? (
+                        <p></p>
+                      )
+                      : (
                         <p
                           style={{
                             cursor: "pointer",
@@ -554,13 +551,13 @@ const Swap = (props) => {
                             )}
                           </label>
                           {/* <span style={{ color: "#333333", opacity: 0.7 }}>
-                      {" "}
-                      ($123)
-                    </span> */}
-                        </p>
-                      </Box>
-                    )
-                  : null}
+                          {" "}
+                          ($123)
+                        </span> */}
+                        </p>)
+                    )}
+                  </Box>
+                ) : null}
 
                 <Box
                   sx={{
