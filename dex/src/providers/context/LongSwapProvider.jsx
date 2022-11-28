@@ -37,7 +37,7 @@ export const LongSwapProvider = ({ children }) => {
   const [tokenA, setTokenA] = useState({
     ...poolConfig?.tokens[0],
     balance: 0,
-    tokenIsSet: poolConfig?.tokens[0].address ? true : false,
+    tokenIsSet: poolConfig?.tokens[0]?.address ? true : false,
   });
 
   const [tokenB, setTokenB] = useState({
@@ -45,6 +45,8 @@ export const LongSwapProvider = ({ children }) => {
     balance: 0,
     tokenIsSet: poolConfig?.tokens[1].address ? true : false,
   });
+
+  console.log("TokennnnnAAAAA->", tokenA, networkName);
 
   return (
     <LongSwapContext.Provider

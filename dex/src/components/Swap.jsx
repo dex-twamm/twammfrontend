@@ -78,6 +78,7 @@ const Swap = (props) => {
   const { provider } = useContext(WebContext);
   const currentNetwork = useNetwork();
 
+  console.log("Token Aaaaaaa", tokenA);
   // console.log("Provider", provider);
   // console.log("SC", srcAddress);
   // console.log("Form Errors", formErrors);

@@ -16,6 +16,7 @@ export const getTokensBalance = async (
   currentNetwork = "Goerli"
 ) => {
   const poolConfig = getPoolNetworkValues(currentNetwork);
+  console.log("pool consjskdjksd", poolConfig);
   var tokenAddress = [
     poolConfig?.TOKEN_ONE_ADDRESS,
     poolConfig?.TOKEN_TWO_ADDRESS,
@@ -29,7 +30,7 @@ export const getTokensBalance = async (
       balances,
       poolConfig?.tokens[index].decimals
     );
-    // console.log("Balances", readableBalance);
+    console.log("Balances", readableBalance);
     newBalance.push({ [address]: readableBalance });
   }
   async function balanceContract(address) {

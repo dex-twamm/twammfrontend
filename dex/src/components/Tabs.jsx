@@ -30,8 +30,9 @@ const Tabs = () => {
 
   const { tokenA, setTokenA, tokenB, setTokenB } = useContext(LongSwapContext);
   const { setSwapAmount } = useContext(ShortSwapContext);
+  const poolConfig = getPoolNetworkValues(currentNetwork?.network);
+
   const onNavLinkClick = () => {
-    const poolConfig = getPoolNetworkValues(currentNetwork?.network);
     setSwapAmount("");
     if (!tokenA.tokenIsSet) {
       setTokenA({
@@ -48,6 +49,7 @@ const Tabs = () => {
       });
     }
   };
+  console.log("Token AAAAAAA", tokenA, poolConfig?.tokens[0]);
   const tabList = tabOptions.map((option, index) => (
     <Link to={option.path} key={index}>
       <div

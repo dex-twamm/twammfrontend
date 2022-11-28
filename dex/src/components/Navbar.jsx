@@ -77,7 +77,7 @@ const Navbar = (props) => {
   const network_id = localStorage.getItem("chainId");
 
   useEffect(() => {
-    if(typeof network_name !== 'undefined' && network_name !== 'undefined') {
+    if (typeof network_name !== "undefined" && network_name !== "undefined") {
       setSelectedNetwork({
         network: network_name,
         logo: network_logo,
@@ -87,7 +87,7 @@ const Navbar = (props) => {
       setSelectedNetwork({
         network: initialNetwork[0]?.name,
         logo: initialNetwork[0]?.logo,
-        chainId:initialNetwork[0]?.chainId,
+        chainId: initialNetwork[0]?.chainId,
       });
     }
     console.log(selectedNetwork);

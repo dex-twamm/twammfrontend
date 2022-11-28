@@ -68,6 +68,8 @@ const Input = (props) => {
     setDestAddress(tokenB.address);
   }, [setTokenA, setTokenB, tokenBalances, setSelectedNetwork]);
 
+  console.log("token balances", tokenBalances);
+
   return (
     <>
       <div className={styles.textInput}>

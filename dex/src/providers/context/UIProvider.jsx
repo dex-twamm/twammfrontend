@@ -14,7 +14,7 @@ const UIProvider = ({ children }) => {
   const nId = window.ethereum?.networkVersion;
 
   const [selectedNetwork, setSelectedNetwork] = useState({
-    network: "Ethereum",
+    network: localStorage.getItem("network_name") ?? "Goerli",
     logo: ethLogo,
     chainId: nId,
   });
