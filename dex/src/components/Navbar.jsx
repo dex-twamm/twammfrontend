@@ -1,20 +1,18 @@
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Typography } from "@mui/material";
 import classNames from "classnames";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { RiArrowDropDownLine } from "react-icons/ri";
-import { Link, Navigate, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { POPUP_MESSAGE } from "../constants";
 import styles from "../css/Navbar.module.css";
-import { LongSwapContext, ShortSwapContext, UIContext } from "../providers";
-import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS, toHex } from "../utils";
+import { ShortSwapContext, UIContext } from "../providers";
+import { toHex } from "../utils";
 import { connectWallet } from "../utils/connetWallet";
 import { DisconnectWalletOption } from "./DisconnectWalletOption";
 import NavOptionDropdwon from "./navbarDropdown/NavOptionDropdwon";
-import goerliLogo from "../images/Testv4.svg";
-import ethLogo from "../images/ethereum.svg";
 import { WebContext } from "../providers/context/WebProvider";
+import { NETWORKS } from "../utils/networks";
 
 const Navbar = (props) => {
   const {
@@ -24,8 +22,6 @@ const Navbar = (props) => {
     setSelectedNetwork,
     nId,
   } = useContext(UIContext);
-
-  const location = useLocation();
 
   const {
     walletBalance,
@@ -55,21 +51,25 @@ const Navbar = (props) => {
   // const [isOpen, setOpen] = useState(false);
   console.log("Wallet Status", isWalletConnected);
   // const [showDisconnect, setShowDisconnect] = useState(false);
-  const networks = [
-    { name: "Ethereum", chainId: "1", logo: ethLogo },
-    { name: "Goerli", chainId: "5", logo: goerliLogo },
-    { name: "Coming Soon", chainId: "0", logo: ethLogo },
-  ];
 
   // const nId = window.ethereum?.networkVersion;
   console.log("nId--->", nId);
-  const initialNetwork = networks.filter((id) => id.chainId === nId);
+  const initialNetwork = NETWORKS.find((id) => id.chainId === nId);
   console.log("initialNetwork", initialNetwork);
 
+  console.log("network from storage", localStorage.getItem("network_name"), localStorage.getItem("chainId"));
+
   if (!localStorage.getItem("network_name")) {
-    localStorage.setItem("network_name", initialNetwork[1]?.name);
-    localStorage.setItem("network_logo", initialNetwork[1]?.logo);
-    localStorage.setItem("chainId", initialNetwork[1]?.chainId);
+    console.log("localStorage", "network_name", initialNetwork.name);
+    localStorage.setItem("network_name", initialNetwork.name);
+    localStorage.setItem("network_logo", initialNetwork.logo);
+    localStorage.setItem("chainId", initialNetwork.chainId);
+  } else if (localStorage.getItem("chainId") === nId) {
+    const network = NETWORKS.find((nw) => nw.chainId === nId);
+    console.log("localStorage", "network_name", network);
+    localStorage.setItem("network_name", network.name);
+    localStorage.setItem("network_logo", network.logo);
+    localStorage.setItem("chainId", network.chainId);
   }
 
   const network_name = localStorage.getItem("network_name");
@@ -98,7 +98,7 @@ const Navbar = (props) => {
     // localStorage.setItem("network_logo", logo);
     // console.log(chainId);
 
-    console.log("chainId", chainId);
+    console.log("handleSelect chainId", networkName, logo, chainId);
     const id = chainId;
     if (isWalletConnected) {
       try {
@@ -111,9 +111,10 @@ const Navbar = (props) => {
           logo: logo,
           chainId: chainId,
         });
-
+        console.log("localStorage", "network_name", networkName);
         localStorage.setItem("network_name", networkName);
         localStorage.setItem("network_logo", logo);
+        localStorage.setItem("chainId", id);
 
         window.location.reload();
       } catch (err) {
@@ -125,7 +126,7 @@ const Navbar = (props) => {
 
   console.log("Selected network-->", selectedNetwork);
 
-  const networkList = networks.map((network, index) => {
+  const networkList = NETWORKS.map((network, index) => {
     return (
       <p
         key={index}

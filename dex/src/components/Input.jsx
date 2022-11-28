@@ -124,7 +124,7 @@ const Input = (props) => {
             "N/A"
           ) : tokenBalances ? (
             id === 1 ? (
-              parseFloat(tokenA?.balance)?.toFixed(4)
+              parseFloat(tokenA?.balance)?.toFixed(2)
             ) : (
               parseFloat(tokenB?.balance)?.toFixed(2)
             )
