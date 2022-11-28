@@ -12,6 +12,7 @@ import {
   MAX_UINT256,
 } from ".";
 import { POOLS } from "./pool";
+import { getNetworkPoolId, getPoolNetworkValues } from "./poolUtils";
 
 export async function placeLongTermOrder(
   tokenInIndex,
@@ -26,7 +27,7 @@ export async function placeLongTermOrder(
   let txHash;
 
   const exchangeContract = new Contract(
-    Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
+    getPoolNetworkValues(currentNetwork)?.VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -43,13 +44,13 @@ export async function placeLongTermOrder(
   );
 
   const placeLtoTx = await exchangeContract.joinPool(
-    Object.keys(POOLS[currentNetwork])[0],
+    getNetworkPoolId(currentNetwork),
     walletAddress,
     walletAddress,
     {
       assets: [
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
+        getPoolNetworkValues(currentNetwork)?.TOKEN_ONE_ADDRESS,
+        getPoolNetworkValues(currentNetwork)?.TOKEN_TWO_ADDRESS,
       ],
       maxAmountsIn: [MAX_UINT256, MAX_UINT256],
       fromInternalBalance: false,
@@ -74,7 +75,7 @@ export async function getLongTermOrder(
   currentNetwork = "Goerli"
 ) {
   const contract = new Contract(
-    Object.values(POOLS?.[currentNetwork])?.[0].address,
+    getPoolNetworkValues(currentNetwork)?.address,
     LONGTERM_ABI,
     signer
   );
@@ -89,7 +90,7 @@ export async function getLastVirtualOrderBlock(
   currentNetwork = "Goerli"
 ) {
   const contract = new Contract(
-    Object.values(POOLS?.[currentNetwork])?.[0].LTOContract,
+    getPoolNetworkValues(currentNetwork)?.LTOContract,
     LONGTERM_ABI,
     signer
   );

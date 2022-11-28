@@ -5,6 +5,7 @@ import { POPUP_MESSAGE } from "../../constants";
 import { ShortSwapContext } from "../../providers";
 import { useNetwork } from "../../providers/context/UIProvider";
 import { POOLS } from "../../utils/pool";
+import { getPoolNetworkValues } from "../../utils/poolUtils";
 
 const PopupModal = ({
   isPlacedLongTermOrder,
@@ -51,14 +52,14 @@ const PopupModal = ({
   const handleButtonClick = () => {
     console.log(
       "links",
-      Object.values(POOLS?.[currentNetwork?.network])?.[0].transactionUrl,
+      getPoolNetworkValues(currentNetwork?.network)?.transactionUrl,
       `${
-        Object.values(POOLS?.[currentNetwork?.network])?.[0]?.transactonUrl
+        getPoolNetworkValues(currentNetwork?.network)?.transactonUrl
       }${transactionHash}`
     );
     window.open(
       `${
-        Object.values(POOLS?.[currentNetwork?.network])?.[0].transactionUrl
+        getPoolNetworkValues(currentNetwork?.network)?.transactionUrl
       }${transactionHash}`
     );
   };

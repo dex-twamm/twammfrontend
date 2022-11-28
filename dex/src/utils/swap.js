@@ -2,6 +2,7 @@ import { BigNumber, Contract } from "ethers";
 import { VAULT_CONTRACT_ABI } from "../constants";
 import { MAX_UINT256 } from ".";
 import { POOLS } from "./pool";
+import { getNetworkPoolId, getPoolNetworkValues } from "./poolUtils";
 
 /*
   swapTokens: Swaps `swapAmountWei` of Eth/Crypto Dev tokens with `tokenToBeReceivedAfterSwap` amount of Eth/Crypto Dev tokens.
@@ -17,11 +18,11 @@ export const swapTokens = async (
   deadline,
   currentNetwork
 ) => {
-  const poolConfig = Object.values(POOLS[currentNetwork])[0];
+  const poolConfig = getPoolNetworkValues(currentNetwork);
 
   // Create a new instance of the exchange contract
   const exchangeContract = new Contract(
-    Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
+    poolConfig?.VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -45,13 +46,13 @@ export const swapTokens = async (
   );
 
   console.log(
-    "Object.keys(POOLS[currentNetwork])[0]",
-    Object.keys(POOLS[currentNetwork])[0]
+    "getNetworkPoolId(currentNetwork)",
+    getNetworkPoolId(currentNetwork)
   );
 
   const gasEstimate = await exchangeContract.estimateGas.swap(
     {
-      poolId: Object.keys(POOLS[currentNetwork])[0],
+      poolId: getNetworkPoolId(currentNetwork),
       kind: kind,
       assetIn: assetIn,
       assetOut: assetOut,
@@ -76,7 +77,7 @@ export const swapTokens = async (
   console.log(
     "Swap value passd",
     {
-      poolId: Object.keys(POOLS[currentNetwork])[0],
+      poolId: getNetworkPoolId(currentNetwork),
       kind: kind,
       assetIn: assetIn,
       assetOut: assetOut,
@@ -94,7 +95,7 @@ export const swapTokens = async (
 
   const swapTx = await exchangeContract.swap(
     {
-      poolId: Object.keys(POOLS[currentNetwork])[0],
+      poolId: getNetworkPoolId(currentNetwork),
       kind: kind,
       assetIn: assetIn,
       assetOut: assetOut,

@@ -5,6 +5,7 @@ import styles from "../css/Input.module.css";
 import { LongSwapContext, ShortSwapContext, UIContext } from "../providers";
 import { useNetwork } from "../providers/context/UIProvider";
 import { POOLS } from "../utils/pool";
+import { getPoolNetworkValues } from "../utils/poolUtils";
 import Modal from "./Modal";
 
 const Input = (props) => {
@@ -33,10 +34,7 @@ const Input = (props) => {
   const { tokenA, tokenB } = useContext(LongSwapContext);
   const currentNetwork = useNetwork();
 
-  const {
-    selectedNetwork,
-    setSelectedNetwork,
-  } = useContext(UIContext);
+  const { selectedNetwork, setSelectedNetwork } = useContext(UIContext);
 
   console.log("swap token", tokenA, tokenB);
 
@@ -48,7 +46,7 @@ const Input = (props) => {
   ) {
     networkName = "Ethereum";
   }
-  const tokenDetails = Object.values(POOLS?.[networkName])?.[0].tokens;
+  const tokenDetails = getPoolNetworkValues(networkName)?.tokens;
 
   useEffect(() => {
     const balanceA =

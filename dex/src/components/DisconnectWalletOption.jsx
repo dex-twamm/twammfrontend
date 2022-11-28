@@ -18,6 +18,7 @@ import { HiExternalLink } from "react-icons/hi";
 import styles from "../css/LongTermOrderCard.module.css";
 import { POOLS, POOL_ID } from "../utils/pool";
 import { useNetwork } from "../providers/context/UIProvider";
+import { getPoolNetworkValues } from "../utils/poolUtils";
 
 const style = {
   position: "absolute",
@@ -237,7 +238,7 @@ const DisconnectWalletOption = ({
                 onClick={() =>
                   window.open(
                     `${
-                      Object.values(POOLS?.[currentNetwork?.network])?.[0]
+                      getPoolNetworkValues(currentNetwork?.network)
                         ?.ethersScanUrl
                     }${account}`,
                     "_blank"

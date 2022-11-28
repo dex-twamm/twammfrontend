@@ -14,6 +14,7 @@ import {
 } from "../constants";
 import { getEthLogs } from "./get_ethLogs";
 import { POOLS } from "./pool";
+import { getNetworkPoolId, getPoolNetworkValues } from "./poolUtils";
 
 export async function joinPool(
   walletAddress,
@@ -27,18 +28,18 @@ export async function joinPool(
     [1, [fp(1e-12), fp(1.0)], 0]
   );
   const poolContract = new Contract(
-    Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
+    getPoolNetworkValues(currentNetwork)?.VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );
   const joinPool = await poolContract.joinPool(
-    Object.keys(POOLS[currentNetwork])[0],
+    getNetworkPoolId(currentNetwork),
     walletAddress,
     walletAddress,
     {
       assets: [
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
+        getPoolNetworkValues(currentNetwork)?.TOKEN_ONE_ADDRESS,
+        getPoolNetworkValues(currentNetwork)?.TOKEN_TWO_ADDRESS,
       ],
       // Could Be User Input Same as Encoded Above -- Left to Figure It Out
       maxAmountsIn: [MAX_UINT256, MAX_UINT256],
@@ -57,7 +58,7 @@ export async function exitPool(
   currentNetwork = "Goerli"
 ) {
   const poolContract = new Contract(
-    Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
+    getPoolNetworkValues(currentNetwork)?.VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -67,13 +68,13 @@ export async function exitPool(
     [4, bptAmountIn]
   );
   const exitPoolTx = await poolContract.exitPool(
-    Object.keys(POOLS[currentNetwork])[0],
+    getNetworkPoolId(currentNetwork),
     walletAdress,
     walletAdress,
     {
       assets: [
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
+        getPoolNetworkValues(currentNetwork)?.TOKEN_ONE_ADDRESS,
+        getPoolNetworkValues(currentNetwork)?.TOKEN_TWO_ADDRESS,
       ],
       minAmountsOut: [0, 0],
       userData: encodedRequest,
@@ -100,7 +101,7 @@ export async function cancelLTO(
   currentNetwork = "Goerli"
 ) {
   const poolContract = new Contract(
-    Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
+    getPoolNetworkValues(currentNetwork)?.VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -110,13 +111,13 @@ export async function cancelLTO(
     [4, orderId]
   );
   const exitPoolTx = await poolContract.exitPool(
-    Object.keys(POOLS[currentNetwork])[0],
+    getNetworkPoolId(currentNetwork),
     walletAdress,
     walletAdress,
     {
       assets: [
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
+        getPoolNetworkValues(currentNetwork)?.TOKEN_ONE_ADDRESS,
+        getPoolNetworkValues(currentNetwork)?.TOKEN_TWO_ADDRESS,
       ],
       minAmountsOut: [0, 0],
       userData: encodedRequest,
@@ -150,7 +151,7 @@ export async function withdrawLTO(
 ) {
   // const currentNetwork = "Goerli";
   const poolContract = new Contract(
-    Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
+    getPoolNetworkValues(currentNetwork)?.VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -160,13 +161,13 @@ export async function withdrawLTO(
     [5, orderId]
   );
   const withdrawLTOTx = await poolContract.exitPool(
-    Object.keys(POOLS[currentNetwork])[0],
+    getNetworkPoolId(currentNetwork),
     walletAdress,
     walletAdress,
     {
       assets: [
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
+        getPoolNetworkValues(currentNetwork)?.TOKEN_ONE_ADDRESS,
+        getPoolNetworkValues(currentNetwork)?.TOKEN_TWO_ADDRESS,
       ],
       minAmountsOut: [0, 0],
       userData: encodedRequest,
@@ -191,25 +192,25 @@ export async function getPoolBalance(
   tokenAddress,
   currentNetwork = "Goerli"
 ) {
-  const tokenIndex = Object.values(POOLS[currentNetwork])[0]?.tokens.filter(
+  const tokenIndex = getPoolNetworkValues(currentNetwork)?.tokens.filter(
     (item) => item.address === tokenAddress
   );
 
   console.log("TokenIndex--->", tokenIndex);
   const vaultContract = new Contract(
-    Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
+    getPoolNetworkValues(currentNetwork)?.VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
     signer
   );
   console.log(
     "pool id-->",
-    Object.keys(POOLS[currentNetwork])[0],
+    getNetworkPoolId(currentNetwork),
     tokenAddress,
     currentNetwork,
     signer
   );
   const poolBalance = await vaultContract.getPoolTokenInfo(
-    Object.keys(POOLS[currentNetwork])[0],
+    getNetworkPoolId(currentNetwork),
     tokenAddress
   );
   const cash = poolBalance.cash._hex;

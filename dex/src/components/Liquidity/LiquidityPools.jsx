@@ -13,6 +13,7 @@ import { ShortSwapContext } from "../../providers";
 import CircularProgressBar from "../alerts/CircularProgressBar";
 import Tabs from "../Tabs";
 import { useNetwork } from "../../providers/context/UIProvider";
+import { getPoolNetworkValues } from "../../utils/poolUtils";
 
 const style = {
   position: "absolute",
@@ -402,10 +403,10 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                         }}
                       >
                         {`${
-                          Object.values(POOLS?.[currentNetwork?.network])?.[0]
+                          getPoolNetworkValues(currentNetwork?.network)
                             .tokens[0].symbol
                         } / ${
-                          Object.values(POOLS?.[currentNetwork?.network])?.[0]
+                          getPoolNetworkValues(currentNetwork?.network)
                             .tokens[1].symbol
                         }`}
                       </Typography>
@@ -425,11 +426,7 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                           borderRadius: "17px",
                         }}
                       >
-                        {
-                          Object.values(POOLS?.[currentNetwork?.network])?.[0]
-                            ?.fees
-                        }
-                        %
+                        {getPoolNetworkValues(currentNetwork?.network)?.fees}%
                       </span>
                     </Box>
 
@@ -577,7 +574,7 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                     onClick={() =>
                       window.open(
                         `${
-                          Object.values(POOLS?.[currentNetwork?.network])?.[0]
+                          getPoolNetworkValues(currentNetwork?.network)
                             ?.balancerPoolUrl
                         }`,
                         "_blank"
