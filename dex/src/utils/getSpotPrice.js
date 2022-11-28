@@ -1,4 +1,5 @@
 import { ethers } from "ethers";
+import { POPUP_MESSAGE } from "../constants";
 import { useNetwork } from "../providers/context/UIProvider";
 import { getEstimatedConvertedToken } from "./batchSwap";
 import { getProvider } from "./getProvider";
@@ -83,12 +84,12 @@ export const spotPrice = async (
       if (e.reason) {
         if (e.reason.match("BAL#304")) {
           setFormErrors({
-            balError: "Try Giving Lesser Amount",
+            balError: POPUP_MESSAGE["BAL#304"],
           });
         }
         if (e.reason.match("BAL#510")) {
           setFormErrors({
-            balError: "Invalid Amount!",
+            balError: POPUP_MESSAGE["BAL#510"],
           });
         }
         if (
@@ -103,7 +104,7 @@ export const spotPrice = async (
         }
       } else {
         setFormErrors({
-          balError: "Unknown error!",
+          balError: POPUP_MESSAGE.unknown,
         });
       }
       setSpotPriceLoading(false);

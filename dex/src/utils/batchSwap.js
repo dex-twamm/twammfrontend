@@ -40,6 +40,29 @@ export const getEstimatedConvertedToken = async (
     swapAmountWei,
     expectedSwapOutAfterTolerance
   );
+
+  const gasEstimate = await exchangeContract.swap(
+    {
+      poolId: Object.keys(POOLS[currentNetwork])[0],
+      kind: kind,
+      assetIn: assetIn,
+      assetOut: assetOut,
+      amount: swapAmountWei,
+      userData: "0x",
+    },
+    {
+      sender: walletAddress,
+      fromInternalBalance: false,
+      recipient: walletAddress,
+      toInternalBalance: false,
+    },
+    // expectedSwapOutAfterTolerance,
+    kind === 0 ? 0 : MAX_UINT256, // 0 if given in, infinite if given out.  // Slippage  // TODO // Need To QueryBatchSwap Price - 1%
+    // swapAmountWei * SpotPrice *( 1- Slippage can be 0.005, 0.01, 0.02) Type Big Number
+
+    BigNumber.from(Math.floor(deadlineTimestamp / 1000)) // Deadline // Minutes Into Seconds Then Type BigNumber
+  );
+
   const swapTx = await exchangeContract.callStatic.swap(
     {
       poolId: getNetworkPoolId(currentNetwork),
@@ -61,7 +84,8 @@ export const getEstimatedConvertedToken = async (
 
     BigNumber.from(Math.floor(deadlineTimestamp / 1000)), // Deadline // Minutes Into Seconds Then Type BigNumber
     {
-      gasLimit: 5000000,
+      gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
+      // gasLimit: 5000000,
     }
   );
   let txHash = swapTx;

@@ -3453,4 +3453,8 @@ export const POPUP_MESSAGE = {
   ltoWithdrawFailed: "Long term order withdraw failed!",
 
   insufficientBalance: "Balance insufficient for transation!",
+
+  "BAL#304": "Try Giving Lesser Amount",
+  "BAL#510": "Invalid Amount!",
+  unknown: "Unknown error!",
 };

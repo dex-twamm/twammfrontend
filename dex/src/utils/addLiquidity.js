@@ -67,6 +67,22 @@ export async function exitPool(
     ["uint256", "uint256"],
     [4, bptAmountIn]
   );
+
+  const gasEstimate = await poolContract.estimateGas.exitPool(
+    Object.keys(POOLS[currentNetwork])[0],
+    walletAdress,
+    walletAdress,
+    {
+      assets: [
+        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
+        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
+      ],
+      minAmountsOut: [0, 0],
+      userData: encodedRequest,
+      toInternalBalance: false,
+    }
+  );
+
   const exitPoolTx = await poolContract.exitPool(
     getNetworkPoolId(currentNetwork),
     walletAdress,
@@ -81,7 +97,8 @@ export async function exitPool(
       toInternalBalance: false,
     },
     {
-      gasLimit: 500000,
+      // gasLimit: 500000,
+      gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
     }
   );
   const exitPoolResult = await exitPoolTx.wait();
@@ -110,6 +127,21 @@ export async function cancelLTO(
     ["uint256", "uint256"],
     [4, orderId]
   );
+
+  const gasEstimate = await poolContract.estimateGas.exitPool(
+    Object.keys(POOLS[currentNetwork])[0],
+    walletAdress,
+    walletAdress,
+    {
+      assets: [
+        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
+        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
+      ],
+      minAmountsOut: [0, 0],
+      userData: encodedRequest,
+      toInternalBalance: false,
+    }
+  );
   const exitPoolTx = await poolContract.exitPool(
     getNetworkPoolId(currentNetwork),
     walletAdress,
@@ -124,7 +156,8 @@ export async function cancelLTO(
       toInternalBalance: false,
     },
     {
-      gasLimit: 500000,
+      // gasLimit: 500000,
+      gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
     }
   );
   setTransactionHash(orderHash);
@@ -160,6 +193,21 @@ export async function withdrawLTO(
     ["uint256", "uint256"],
     [5, orderId]
   );
+
+  const gasEstimate = await poolContract.estimateGas.exitPool(
+    Object.keys(POOLS[currentNetwork])[0],
+    walletAdress,
+    walletAdress,
+    {
+      assets: [
+        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
+        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
+      ],
+      minAmountsOut: [0, 0],
+      userData: encodedRequest,
+      toInternalBalance: false,
+    }
+  );
   const withdrawLTOTx = await poolContract.exitPool(
     getNetworkPoolId(currentNetwork),
     walletAdress,
@@ -174,7 +222,8 @@ export async function withdrawLTO(
       toInternalBalance: false,
     },
     {
-      gasLimit: 500000,
+      // gasLimit: 500000,
+      gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
     }
   );
   setTransactionHash(orderHash);
