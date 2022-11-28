@@ -175,27 +175,31 @@ function App() {
   }, [srcAddress, transactionHash]);
 
   useEffect(() => {
-    console.log("ajsdhkasd----", swapAmount, destAddress, srcAddress);
-    spotPrice(
-      swapAmount,
-      setSpotPriceLoading,
-      srcAddress,
-      destAddress,
-      setweb3provider,
-      setCurrentBlock,
-      setBalance,
-      setAccount,
-      setWalletConnected,
-      account,
-      expectedSwapOut,
-      tolerance,
-      deadline,
-      setFormErrors,
-      setSpotPrice,
-      setExpectedSwapOut,
-      currentNetwork?.network
-    );
-    const interval = setTimeout(() => {
+    // console.log("ajsdhkasd----", swapAmount, destAddress, srcAddress);
+    // Wait for 0.5 second before fetching price.
+    const interval1 = setTimeout(() => {
+      spotPrice(
+        swapAmount,
+        setSpotPriceLoading,
+        srcAddress,
+        destAddress,
+        setweb3provider,
+        setCurrentBlock,
+        setBalance,
+        setAccount,
+        setWalletConnected,
+        account,
+        expectedSwapOut,
+        tolerance,
+        deadline,
+        setFormErrors,
+        setSpotPrice,
+        setExpectedSwapOut,
+        currentNetwork?.network
+      );
+    }, 500);
+    // Update price every 12 seconds.
+    const interval2 = setTimeout(() => {
       spotPrice(
         swapAmount,
         setSpotPriceLoading,
@@ -217,7 +221,8 @@ function App() {
       );
     }, 12000);
     return () => {
-      clearTimeout(interval);
+      clearTimeout(interval1);
+      clearTimeout(interval2);
     };
   }, [swapAmount, destAddress, srcAddress]);
 
