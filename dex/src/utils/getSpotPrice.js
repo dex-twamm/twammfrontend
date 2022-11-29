@@ -4,6 +4,7 @@ import { useNetwork } from "../providers/context/UIProvider";
 import { getEstimatedConvertedToken } from "./batchSwap";
 import { getProvider } from "./getProvider";
 import { POOLS } from "./pool";
+import { getPoolNetworkValues } from "./poolUtils";
 
 //Spot Prices
 export const spotPrice = async (
@@ -30,7 +31,7 @@ export const spotPrice = async (
   if (swapAmount) {
     setSpotPriceLoading(true);
 
-    const poolConfig = Object.values(POOLS[currentNetwork])[0];
+    const poolConfig = getPoolNetworkValues(currentNetwork);
     const tokenIn = poolConfig.tokens.find(
       (token) => token.address === srcAddress
     );
@@ -91,7 +92,10 @@ export const spotPrice = async (
             balError: POPUP_MESSAGE["BAL#510"],
           });
         }
-        if (e.reason.match("ERC20: transfer amount exceeds allowance") || e.reason.match("allowance") ) {
+        if (
+          e.reason.match("ERC20: transfer amount exceeds allowance") ||
+          e.reason.match("allowance")
+        ) {
           setSpotPriceLoading(false);
           setSpotPrice(0);
           errors.balError = undefined;

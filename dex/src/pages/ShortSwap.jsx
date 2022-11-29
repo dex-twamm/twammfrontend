@@ -56,7 +56,7 @@ const ShortSwap = ({
 
   // console.log(
   //   "Current network currentNetwork",
-  //   Object.values(POOLS[currentNetwork.network])[0]
+  //   getPoolNetworkValues(currentNetwork?.network)
   // );
 
   console.log("iswalletashkasjdhsakd", isWalletConnected);

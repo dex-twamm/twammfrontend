@@ -9,6 +9,7 @@ import { LongSwapContext, ShortSwapContext } from "../../providers";
 import { useNetwork } from "../../providers/context/UIProvider";
 import { WebContext } from "../../providers/context/WebProvider";
 import { POOLS, POOL_ID } from "../../utils/pool";
+import { getPoolNetworkValues } from "../../utils/poolUtils";
 import { _joinPool } from "../../utils/_joinPool";
 import { DisconnectWalletOption } from "../DisconnectWalletOption";
 import FeeTierOptions from "../FeeTierOptions";
@@ -73,7 +74,7 @@ const AddLiquidity = (props) => {
     }
   }, [tokenB, buttonText, setButtonText, swapAmount]);
 
-  const tokenDetails = Object.values(POOLS[currentNetwork?.network])[0]?.tokens;
+  const tokenDetails = getPoolNetworkValues(currentNetwork?.network, "tokens");
 
   console.log("Prabin", tokenA, tokenB);
 

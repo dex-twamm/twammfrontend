@@ -4,6 +4,7 @@ import { getProvider } from "./getProvider";
 import { getEthLogs } from "./get_ethLogs";
 import { placeLongTermOrder } from "./longSwap";
 import { POOLS } from "./pool";
+import { getPoolNetworkValues } from "./poolUtils";
 
 export const _placeLongTermOrders = async (
   swapAmount,
@@ -24,12 +25,19 @@ export const _placeLongTermOrders = async (
   provider,
   currentNetwork = "Goerli"
 ) => {
-  const poolConfig = Object.values(POOLS[currentNetwork])[0];
+  const poolConfig = getPoolNetworkValues(currentNetwork);
 
   try {
-    const tokenInIndex = poolConfig.tokens.findIndex((object) => srcAddress === object.address);
-    const tokenOutIndex = poolConfig.tokens.findIndex((object) => destAddress === object.address);
-    const amountIn = ethers.utils.parseUnits(swapAmount, poolConfig.tokens[tokenInIndex].decimals);
+    const tokenInIndex = poolConfig.tokens.findIndex(
+      (object) => srcAddress === object.address
+    );
+    const tokenOutIndex = poolConfig.tokens.findIndex(
+      (object) => destAddress === object.address
+    );
+    const amountIn = ethers.utils.parseUnits(
+      swapAmount,
+      poolConfig.tokens[tokenInIndex].decimals
+    );
     // console.log('amountIn', amountIn);
     const blockIntervals = Math.ceil(numberOfBlockIntervals);
     console.log("Intervals", numberOfBlockIntervals);
