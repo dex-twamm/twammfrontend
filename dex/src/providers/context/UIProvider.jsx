@@ -19,9 +19,9 @@ const UIProvider = ({ children }) => {
   const initialNetwork = NETWORKS.find((nw) => nw.chainId === nId);
 
   const [selectedNetwork, setSelectedNetwork] = useState({
-    network: initialNetwork.name,
-    logo: initialNetwork.logo,
-    chainId: initialNetwork.chainId,
+    network: initialNetwork?.name,
+    logo: initialNetwork?.logo,
+    chainId: initialNetwork?.chainId,
   });
   return (
     <UIContext.Provider

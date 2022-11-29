@@ -40,7 +40,7 @@ export const getEstimatedConvertedToken = async (
     expectedSwapOutAfterTolerance
   );
 
-  const gasEstimate = await exchangeContract.swap(
+  const gasEstimate = await exchangeContract.estimateGas.swap(
     {
       poolId: Object.keys(POOLS[currentNetwork])[0],
       kind: kind,
