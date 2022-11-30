@@ -23,11 +23,6 @@ import { FiChevronDown } from "react-icons/fi";
 import { getApproval } from "../utils/getApproval";
 import { WebContext } from "../providers/context/WebProvider";
 import { useNetwork } from "../providers/context/UIProvider";
-import { POOLS } from "../utils/pool";
-import { ethers } from "ethers";
-import { getProvider } from "../utils/getProvider";
-import { getEstimatedConvertedToken } from "../utils/batchSwap";
-import { POPUP_MESSAGE } from "../constants";
 
 const LongSwap = (props) => {
   const {
@@ -141,6 +136,7 @@ const LongSwap = (props) => {
           .executionTime
       );
     }
+    console.log("Number of block value", newValue);
   };
 
   useEffect(() => {
@@ -169,6 +165,8 @@ const LongSwap = (props) => {
       setIsPlacedLongTermOrder && setIsPlacedLongTermOrder();
     };
   }, []);
+
+  console.log("Form errororororor", formErrors);
 
   return (
     <>
@@ -412,11 +410,15 @@ const LongSwap = (props) => {
                   : false
               }
             >
-              {!tokenA.tokenIsSet || !tokenB.tokenIsSet
-                ? "Select a Token"
-                : !swapAmount
-                ? "Enter an Amount"
-                : buttonText}
+              {!tokenA.tokenIsSet || !tokenB.tokenIsSet ? (
+                "Select a Token"
+              ) : !swapAmount ? (
+                "Enter an Amount"
+              ) : spotPriceLoading ? (
+                <CircularProgress sx={{ color: "white" }} />
+              ) : (
+                buttonText
+              )}
             </button>
           ) : (
             <button

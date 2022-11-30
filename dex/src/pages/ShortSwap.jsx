@@ -116,8 +116,6 @@ const ShortSwap = ({
     };
   }, [swapAmount, destAddress, srcAddress]);
 
-  console.log("iswalletashkasjdhsakd", isWalletConnected);
-
   async function ShortSwapButtonClick() {
     try {
       if (!isWalletConnected) {

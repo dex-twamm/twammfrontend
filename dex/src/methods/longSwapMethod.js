@@ -1,9 +1,16 @@
 import { timeDeltaString } from "../utils";
 
 const valueLabel = (value, currentBlock) => {
-  const numBlocks = Math.ceil(value) * 150 + (currentBlock.number % 150 ? (150 - (currentBlock.number % 150)) : 0);
+  const numBlocks =
+    Math.ceil(value) * 150 +
+    (currentBlock.number % 150 ? 150 - (currentBlock.number % 150) : 0);
 
-  console.log("numBlocks", numBlocks, currentBlock, (150 - (currentBlock.number % 150)));
+  console.log(
+    "numBlocks",
+    numBlocks,
+    currentBlock,
+    150 - (currentBlock.number % 150)
+  );
 
   const targetDate = new Date(currentBlock.timestamp * 1000);
   targetDate.setSeconds(targetDate.getSeconds() + numBlocks * 12);
@@ -12,15 +19,14 @@ const valueLabel = (value, currentBlock) => {
 
   const values = {
     executionTime: timeString,
-    targetDate: `${targetDate.toLocaleDateString()} ${targetDate.toLocaleTimeString()}`
+    targetDate: `${targetDate.toLocaleDateString()} ${targetDate.toLocaleTimeString()}`,
   };
-  console.log("targetDate", targetDate, timeString)
+  console.log("targetDate", targetDate, timeString);
   return values;
-
 };
 
 const calculateNumBlockIntervals = (sliderValue) => {
-  return Math.pow(2, sliderValue);
+  return Math.floor(Math.pow(2, sliderValue));
 };
 
 export { valueLabel, calculateNumBlockIntervals };

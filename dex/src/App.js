@@ -205,59 +205,9 @@ function App() {
     allowance();
   }, [srcAddress, transactionHash]);
 
-  // useEffect(() => {
-  //   // console.log("ajsdhkasd----", swapAmount, destAddress, srcAddress);
-  //   // Wait for 0.5 second before fetching price.
-  //   const interval1 = setTimeout(() => {
-  //     spotPrice(
-  //       swapAmount,
-  //       setSpotPriceLoading,
-  //       srcAddress,
-  //       destAddress,
-  //       setweb3provider,
-  //       setCurrentBlock,
-  //       setBalance,
-  //       setAccount,
-  //       setWalletConnected,
-  //       account,
-  //       expectedSwapOut,
-  //       tolerance,
-  //       deadline,
-  //       setFormErrors,
-  //       setSpotPrice,
-  //       setExpectedSwapOut,
-  //       currentNetwork?.network
-  //     );
-  //   }, 500);
-  //   // Update price every 12 seconds.
-  //   const interval2 = setTimeout(() => {
-  //     spotPrice(
-  //       swapAmount,
-  //       setSpotPriceLoading,
-  //       srcAddress,
-  //       destAddress,
-  //       setweb3provider,
-  //       setCurrentBlock,
-  //       setBalance,
-  //       setAccount,
-  //       setWalletConnected,
-  //       account,
-  //       expectedSwapOut,
-  //       tolerance,
-  //       deadline,
-  //       setFormErrors,
-  //       setSpotPrice,
-  //       setExpectedSwapOut,
-  //       currentNetwork?.network
-  //     );
-  //   }, 12000);
-  //   return () => {
-  //     clearTimeout(interval1);
-  //     clearTimeout(interval2);
-  //   };
-  // }, [swapAmount, destAddress, srcAddress]);
-
   console.log("accountskdjlad", account);
+
+  console.log("Locationnnnnnnnnn", location);
 
   // Getting Each Token Balances
   const tokenBalance = useCallback(async () => {
@@ -447,6 +397,7 @@ function App() {
                 message={message}
                 setMessage={setMessage}
                 loading={loading}
+                setSpotPriceLoading={setSpotPriceLoading}
               />
             }
           />

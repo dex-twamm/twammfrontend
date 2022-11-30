@@ -16,6 +16,7 @@ import { WebContext } from "../providers/context/WebProvider";
 import { connectWallet } from "../utils/connetWallet";
 import { useNetwork } from "../providers/context/UIProvider";
 import LongSwap from "../components/LongSwap";
+import { verifyLongSwap } from "../utils/verifyLongSwap";
 
 const LongSwapPage = (props) => {
   const {
@@ -27,6 +28,7 @@ const LongSwapPage = (props) => {
     isPlacedLongTermOrder,
     setIsPlacedLongTermOrder,
     spotPriceLoading,
+    setSpotPriceLoading,
   } = props;
 
   const [showSettings, setShowSettings] = useState(false);
@@ -70,6 +72,50 @@ const LongSwapPage = (props) => {
   console.log("Logs Count", ethLogsCount, cardListCount);
 
   console.log("Is long term order placed", isPlacedLongTermOrder);
+
+  useEffect(() => {
+    // console.log("ajsdhkasd----", swapAmount, destAddress, srcAddress);
+    // Wait for 0.5 second before fetching price.
+    const interval1 = setTimeout(() => {
+      verifyLongSwap(
+        swapAmount,
+        setSpotPriceLoading,
+        srcAddress,
+        destAddress,
+        setweb3provider,
+        setCurrentBlock,
+        setBalance,
+        setAccount,
+        setWalletConnected,
+        account,
+        setFormErrors,
+        currentNetwork?.network,
+        numberOfBlockIntervals
+      );
+    }, 500);
+    // Update price every 12 seconds.
+    const interval2 = setTimeout(() => {
+      verifyLongSwap(
+        swapAmount,
+        setSpotPriceLoading,
+        srcAddress,
+        destAddress,
+        setweb3provider,
+        setCurrentBlock,
+        setBalance,
+        setAccount,
+        setWalletConnected,
+        account,
+        setFormErrors,
+        currentNetwork?.network,
+        numberOfBlockIntervals
+      );
+    }, 12000);
+    return () => {
+      clearTimeout(interval1);
+      clearTimeout(interval2);
+    };
+  }, [swapAmount, destAddress, srcAddress, numberOfBlockIntervals]);
 
   async function LongSwapButtonClick() {
     console.log("Wallet", isWalletConnected);

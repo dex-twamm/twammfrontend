@@ -1,15 +1,11 @@
 import { ethers } from "ethers";
 import { POPUP_MESSAGE } from "../constants";
-import { useNetwork } from "../providers/context/UIProvider";
-import {
-  getEstimatedConvertedToken,
-  getLongSwapEstimatedConvertedToken,
-} from "./batchSwap";
+import { getLongSwapEstimatedConvertedToken } from "./batchSwap";
 import { getProvider } from "./getProvider";
 import { POOLS } from "./pool";
 
 //Spot Prices
-export const spotPrice = async (
+export const verifyLongSwap = async (
   swapAmount,
   setSpotPriceLoading,
   srcAddress,
@@ -20,30 +16,14 @@ export const spotPrice = async (
   setAccount,
   setWalletConnected,
   account,
-  expectedSwapOut,
-  tolerance,
-  deadline,
   setFormErrors,
-  setSpotPrice,
-  setExpectedSwapOut,
-  currentNetwork
+  currentNetwork,
+  numberOfBlockIntervals
 ) => {
-  console.log("swapAmount ---->", swapAmount, srcAddress, destAddress);
-
   if (swapAmount) {
     setSpotPriceLoading(true);
 
     const poolConfig = Object.values(POOLS[currentNetwork])[0];
-    const tokenIn = poolConfig.tokens.find(
-      (token) => token.address === srcAddress
-    );
-    const tokenOut = poolConfig.tokens.find(
-      (token) => token.address === destAddress
-    );
-
-    //todo : Change this to use token decimal places
-    const swapAmountWei = ethers.utils.parseUnits(swapAmount, tokenIn.decimals);
-    console.log("swapAmountWei", swapAmountWei);
 
     const errors = {};
 
@@ -57,38 +37,48 @@ export const spotPrice = async (
     );
     const walletAddress = account;
 
-    console.log("Expected swap out ---->", expectedSwapOut);
-
-    //for shortswap
     try {
-      await getEstimatedConvertedToken(
+      const tokenInIndex = poolConfig.tokens.findIndex(
+        (object) => srcAddress === object.address
+      );
+      const tokenOutIndex = poolConfig.tokens.findIndex(
+        (object) => destAddress === object.address
+      );
+      const amountIn = ethers.utils.parseUnits(
+        swapAmount,
+        poolConfig.tokens[tokenInIndex].decimals
+      );
+      await getLongSwapEstimatedConvertedToken(
+        tokenInIndex,
+        tokenOutIndex,
+        amountIn,
+        numberOfBlockIntervals,
         signer,
-        swapAmountWei,
-        tokenIn.address,
-        tokenOut.address,
         walletAddress,
-        expectedSwapOut,
-        tolerance,
-        deadline,
-        currentNetwork
+        (currentNetwork = "Goerli")
       ).then((res) => {
-        console.log("Response From Query Batch Swap", res.toString());
+        console.log("Response From Query Batch Swap", res);
         errors.balError = undefined;
         setFormErrors(errors ?? "");
-        setSpotPrice(
-          (parseFloat(res) * 10 ** tokenIn.decimals) /
-            (parseFloat(swapAmountWei) * 10 ** tokenOut.decimals)
-        );
         setSpotPriceLoading(false);
-        setExpectedSwapOut(res);
       });
     } catch (e) {
       setSpotPriceLoading(false);
-      console.log("erroror", typeof e, { ...e });
+      console.log("errororrrrrrrr", typeof e, { ...e });
       if (e.reason) {
         if (e.reason.match("BAL#304")) {
           setFormErrors({
             balError: POPUP_MESSAGE["BAL#304"],
+          });
+        }
+        if (e.reason.match("BAL#347")) {
+          setFormErrors({
+            balError: POPUP_MESSAGE["BAL#347"],
+          });
+        }
+        if (e.reason.match("BAL#346")) {
+          setFormErrors({
+            balError: POPUP_MESSAGE["BAL#346"],
           });
         }
         if (e.reason.match("BAL#510")) {
@@ -96,15 +86,16 @@ export const spotPrice = async (
             balError: POPUP_MESSAGE["BAL#510"],
           });
         }
+        if (e.reason === "underflow") {
+          setFormErrors({ balError: "Underflow" });
+        }
         if (
           e.reason.match("ERC20: transfer amount exceeds allowance") ||
           e.reason.match("allowance")
         ) {
           setSpotPriceLoading(false);
-          setSpotPrice(0);
           errors.balError = undefined;
           setFormErrors(errors ?? "");
-          setExpectedSwapOut(0);
         }
       } else {
         setFormErrors({

@@ -3456,5 +3456,7 @@ export const POPUP_MESSAGE = {
 
   "BAL#304": "Try Giving Lesser Amount",
   "BAL#510": "Invalid Amount!",
+  "BAL#347": "Try Giving Lesser Amount",
+  "BAL#346": "Try Giving Smaller Duration or Higher Amount",
   unknown: "Unknown error!",
 };
