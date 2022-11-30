@@ -1,10 +1,9 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import LongTermOrderCard from "../components/LongTermOrderCard";
 import PopupSettings from "../components/PopupSettings";
-import Swap from "../components/Swap";
 import lsStyles from "../css/LongSwap.module.css";
 import styles from "../css/ShortSwap.module.css";
 import { LongSwapContext, ShortSwapContext } from "../providers";
@@ -16,8 +15,9 @@ import { _placeLongTermOrders } from "../utils/placeLongTermOrder";
 import { WebContext } from "../providers/context/WebProvider";
 import { connectWallet } from "../utils/connetWallet";
 import { useNetwork } from "../providers/context/UIProvider";
+import LongSwap from "../components/LongSwap";
 
-const LongSwap = (props) => {
+const LongSwapPage = (props) => {
   const {
     tokenSymbol,
     tokenImage,
@@ -32,6 +32,7 @@ const LongSwap = (props) => {
   const [showSettings, setShowSettings] = useState(false);
 
   const {
+    tokenA,
     orderLogsDecoded,
     message,
     setMessage,
@@ -53,6 +54,7 @@ const LongSwap = (props) => {
     setTransactionHash,
     setLoading,
     setError,
+    setFormErrors,
   } = useContext(ShortSwapContext);
 
   const { provider, setProvider } = useContext(WebContext);
@@ -111,6 +113,15 @@ const LongSwap = (props) => {
     }
   }
 
+  // useEffect(() => {
+  //   if (swapAmount && swapAmount > tokenA.balance) {
+  //     setFormErrors({ balError: "Invalid AMt" });
+  //   }
+  //   return () => {
+  //     setFormErrors("");
+  //   };
+  // }, [swapAmount, tokenA, setFormErrors]);
+
   return (
     <>
       <div className={styles.container}>
@@ -130,7 +141,7 @@ const LongSwap = (props) => {
 
             {showSettings && <PopupSettings swapType="long" />}
           </div>
-          <Swap
+          <LongSwap
             swapType="long"
             tokenSymbol={tokenSymbol}
             tokenImage={tokenImage}
@@ -172,4 +183,4 @@ const LongSwap = (props) => {
   );
 };
 
-export default LongSwap;
+export default LongSwapPage;
