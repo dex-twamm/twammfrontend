@@ -111,7 +111,7 @@ export const getLongSwapEstimatedConvertedToken = async (
 
   console.log("Amount in value", amountIn, numberOfBlockIntervals);
   const exchangeContract = new Contract(
-    Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
+    getPoolNetworkValues(currentNetwork, "VAULT_CONTRACT_ADDRESS"),
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -129,13 +129,13 @@ export const getLongSwapEstimatedConvertedToken = async (
 
   console.log(
     "aksldalsjdlsjdieuhalsdlas",
-    Object.keys(POOLS[currentNetwork])[0],
+    getNetworkPoolId(currentNetwork),
     walletAddress,
     walletAddress,
     {
       assets: [
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
+        getPoolNetworkValues(currentNetwork, "TOKEN_ONE_ADDRESS"),
+        getPoolNetworkValues(currentNetwork, "TOKEN_TWO_ADDRESS"),
       ],
       maxAmountsIn: [MAX_UINT256, MAX_UINT256],
       fromInternalBalance: false,
@@ -144,13 +144,13 @@ export const getLongSwapEstimatedConvertedToken = async (
   );
 
   const gasEstimate = await exchangeContract.estimateGas.joinPool(
-    Object.keys(POOLS[currentNetwork])[0],
+    getNetworkPoolId(currentNetwork),
     walletAddress,
     walletAddress,
     {
       assets: [
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
+        getPoolNetworkValues(currentNetwork, "TOKEN_ONE_ADDRESS"),
+        getPoolNetworkValues(currentNetwork, "TOKEN_TWO_ADDRESS"),
       ],
       maxAmountsIn: [MAX_UINT256, MAX_UINT256],
       fromInternalBalance: false,
@@ -161,13 +161,13 @@ export const getLongSwapEstimatedConvertedToken = async (
   console.log("gas estimate price", gasEstimate);
 
   const placeLtoTx = await exchangeContract.callStatic.joinPool(
-    Object.keys(POOLS[currentNetwork])[0],
+    getNetworkPoolId(currentNetwork),
     walletAddress,
     walletAddress,
     {
       assets: [
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
+        getPoolNetworkValues(currentNetwork, "TOKEN_ONE_ADDRESS"),
+        getPoolNetworkValues(currentNetwork, "TOKEN_TWO_ADDRESS"),
       ],
       maxAmountsIn: [MAX_UINT256, MAX_UINT256],
       fromInternalBalance: false,
