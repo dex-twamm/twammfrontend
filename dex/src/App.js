@@ -12,7 +12,7 @@ import {
 import Navbar from "./components/Navbar";
 import { POPUP_MESSAGE } from "./constants";
 import Home from "./pages/Home";
-import LongSwap from "./pages/LongSwap";
+import LongSwapPage from "./pages/LongSwapPage";
 import ShortSwap from "./pages/ShortSwap";
 import { LongSwapContext, ShortSwapContext, UIContext } from "./providers";
 import { WebContext } from "./providers/context/WebProvider";
@@ -46,7 +46,6 @@ function App() {
   const { setShowDropdown } = useContext(UIContext);
   const [showSettings, setShowSettings] = useState(false);
   const [showDisconnect, setShowDisconnect] = useState(false);
-  const [spotPriceLoading, setSpotPriceLoading] = useState(false);
 
   const currentNetwork = useNetwork();
 
@@ -205,59 +204,9 @@ function App() {
     allowance();
   }, [srcAddress, transactionHash]);
 
-  useEffect(() => {
-    // console.log("ajsdhkasd----", swapAmount, destAddress, srcAddress);
-    // Wait for 0.5 second before fetching price.
-    const interval1 = setTimeout(() => {
-      spotPrice(
-        swapAmount,
-        setSpotPriceLoading,
-        srcAddress,
-        destAddress,
-        setweb3provider,
-        setCurrentBlock,
-        setBalance,
-        setAccount,
-        setWalletConnected,
-        account,
-        expectedSwapOut,
-        tolerance,
-        deadline,
-        setFormErrors,
-        setSpotPrice,
-        setExpectedSwapOut,
-        currentNetwork?.network
-      );
-    }, 500);
-    // Update price every 12 seconds.
-    const interval2 = setTimeout(() => {
-      spotPrice(
-        swapAmount,
-        setSpotPriceLoading,
-        srcAddress,
-        destAddress,
-        setweb3provider,
-        setCurrentBlock,
-        setBalance,
-        setAccount,
-        setWalletConnected,
-        account,
-        expectedSwapOut,
-        tolerance,
-        deadline,
-        setFormErrors,
-        setSpotPrice,
-        setExpectedSwapOut,
-        currentNetwork?.network
-      );
-    }, 12000);
-    return () => {
-      clearTimeout(interval1);
-      clearTimeout(interval2);
-    };
-  }, [swapAmount, destAddress, srcAddress]);
-
   console.log("accountskdjlad", account);
+
+  console.log("Locationnnnnnnnnn", location);
 
   // Getting Each Token Balances
   const tokenBalance = useCallback(async () => {
@@ -421,9 +370,10 @@ function App() {
                 buttonText={!isWalletConnected ? "Connect Wallet" : "Swap"}
                 showSettings={showSettings}
                 setShowSettings={setShowSettings}
-                spotPriceLoading={spotPriceLoading}
+                // spotPriceLoading={spotPriceLoading}
                 message={message}
                 setMessage={setMessage}
+                // setSpotPriceLoading={setSpotPriceLoading}
               />
             }
           />
@@ -431,7 +381,7 @@ function App() {
           <Route
             path="/"
             element={
-              <LongSwap
+              <LongSwapPage
                 tokenSymbol={data.token.symbol}
                 tokenImage={data.token.logo}
                 buttonText={!isWalletConnected ? "Connect Wallet" : "Swap"}
@@ -442,7 +392,7 @@ function App() {
                 setShowSettings={setShowSettings}
                 // cancelPool={_cancelLTO}
                 // withdrawPool={_withdrawLTO}
-                spotPriceLoading={spotPriceLoading}
+                // spotPriceLoading={spotPriceLoading}
                 message={message}
                 setMessage={setMessage}
                 loading={loading}

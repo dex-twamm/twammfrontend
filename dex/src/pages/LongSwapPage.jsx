@@ -1,10 +1,9 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import LongTermOrderCard from "../components/LongTermOrderCard";
 import PopupSettings from "../components/PopupSettings";
-import Swap from "../components/Swap";
 import lsStyles from "../css/LongSwap.module.css";
 import styles from "../css/ShortSwap.module.css";
 import { LongSwapContext, ShortSwapContext } from "../providers";
@@ -16,8 +15,10 @@ import { _placeLongTermOrders } from "../utils/placeLongTermOrder";
 import { WebContext } from "../providers/context/WebProvider";
 import { connectWallet } from "../utils/connetWallet";
 import { useNetwork } from "../providers/context/UIProvider";
+import LongSwap from "../components/LongSwap";
+import { verifyLongSwap } from "../utils/verifyLongSwap";
 
-const LongSwap = (props) => {
+const LongSwapPage = (props) => {
   const {
     tokenSymbol,
     tokenImage,
@@ -26,17 +27,21 @@ const LongSwap = (props) => {
     withdrawPool,
     isPlacedLongTermOrder,
     setIsPlacedLongTermOrder,
-    spotPriceLoading,
   } = props;
 
   const [showSettings, setShowSettings] = useState(false);
 
   const {
+    tokenA,
     orderLogsDecoded,
     message,
     setMessage,
     numberOfBlockIntervals,
     setOrderLogsDecoded,
+    longSwapFormErrors,
+    setLongSwapFormErrors,
+    longSwapVerifyLoading,
+    setLongSwapVerifyLoading,
   } = useContext(LongSwapContext);
 
   const {
@@ -53,6 +58,7 @@ const LongSwap = (props) => {
     setTransactionHash,
     setLoading,
     setError,
+    setFormErrors,
   } = useContext(ShortSwapContext);
 
   const { provider, setProvider } = useContext(WebContext);
@@ -68,6 +74,50 @@ const LongSwap = (props) => {
   console.log("Logs Count", ethLogsCount, cardListCount);
 
   console.log("Is long term order placed", isPlacedLongTermOrder);
+
+  useEffect(() => {
+    // console.log("ajsdhkasd----", swapAmount, destAddress, srcAddress);
+    // Wait for 0.5 second before fetching price.
+    const interval1 = setTimeout(() => {
+      verifyLongSwap(
+        swapAmount,
+        setLongSwapVerifyLoading,
+        srcAddress,
+        destAddress,
+        setweb3provider,
+        setCurrentBlock,
+        setBalance,
+        setAccount,
+        setWalletConnected,
+        account,
+        setLongSwapFormErrors,
+        currentNetwork?.network,
+        numberOfBlockIntervals
+      );
+    }, 500);
+    // Update price every 12 seconds.
+    const interval2 = setTimeout(() => {
+      verifyLongSwap(
+        swapAmount,
+        setLongSwapVerifyLoading,
+        srcAddress,
+        destAddress,
+        setweb3provider,
+        setCurrentBlock,
+        setBalance,
+        setAccount,
+        setWalletConnected,
+        account,
+        setLongSwapFormErrors,
+        currentNetwork?.network,
+        numberOfBlockIntervals
+      );
+    }, 12000);
+    return () => {
+      clearTimeout(interval1);
+      clearTimeout(interval2);
+    };
+  }, [swapAmount, destAddress, srcAddress, numberOfBlockIntervals]);
 
   async function LongSwapButtonClick() {
     console.log("Wallet", isWalletConnected);
@@ -111,6 +161,15 @@ const LongSwap = (props) => {
     }
   }
 
+  // useEffect(() => {
+  //   if (swapAmount && swapAmount > tokenA.balance) {
+  //     setFormErrors({ balError: "Invalid AMt" });
+  //   }
+  //   return () => {
+  //     setFormErrors("");
+  //   };
+  // }, [swapAmount, tokenA, setFormErrors]);
+
   return (
     <>
       <div className={styles.container}>
@@ -130,13 +189,13 @@ const LongSwap = (props) => {
 
             {showSettings && <PopupSettings swapType="long" />}
           </div>
-          <Swap
+          <LongSwap
             swapType="long"
             tokenSymbol={tokenSymbol}
             tokenImage={tokenImage}
             connectWallet={LongSwapButtonClick}
             buttonText={buttonText}
-            spotPriceLoading={spotPriceLoading}
+            longSwapVerifyLoading={longSwapVerifyLoading}
             setIsPlacedLongTermOrder={setIsPlacedLongTermOrder}
           />
         </div>
@@ -172,4 +231,4 @@ const LongSwap = (props) => {
   );
 };
 
-export default LongSwap;
+export default LongSwapPage;

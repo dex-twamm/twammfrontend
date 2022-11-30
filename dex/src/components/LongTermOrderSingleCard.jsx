@@ -277,7 +277,11 @@ const LongTermOrderSingleCard = ({ it }) => {
                 handleCancel(it?.orderId?.toNumber(), it?.transactionHash);
               }}
             >
-              {orderStatus?.status !== "Completed" ? "Cancel" : "Completed"}
+              {orderStatus?.status === "Completed"
+                ? "Completed"
+                : orderStatus?.status === "Cancelled"
+                ? "Cancelled"
+                : "Cancel"}
             </button>
             {orderStatus?.status !== "Cancelled" &&
               orderStatus?.status !== "Completed" && (

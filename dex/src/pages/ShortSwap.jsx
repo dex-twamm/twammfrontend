@@ -1,6 +1,6 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import PopupModal from "../components/alerts/PopupModal";
 import PopupSettings from "../components/PopupSettings";
 import Swap from "../components/Swap";
@@ -11,6 +11,7 @@ import { useNetwork } from "../providers/context/UIProvider";
 import { WebContext } from "../providers/context/WebProvider";
 import { connectWallet } from "../utils/connetWallet";
 import { getProvider } from "../utils/getProvider";
+import { spotPrice } from "../utils/getSpotPrice";
 import { getEthLogs } from "../utils/get_ethLogs";
 import { POOLS } from "../utils/pool";
 import { _swapTokens } from "../utils/shortSwap";
@@ -22,7 +23,6 @@ const ShortSwap = ({
   buttonText,
   showSettings,
   setShowSettings,
-  spotPriceLoading,
   message,
   setMessage,
 }) => {
@@ -48,6 +48,11 @@ const ShortSwap = ({
     ethBalance,
     poolCash,
     setSuccess,
+    setFormErrors,
+    setSpotPrice,
+    setExpectedSwapOut,
+    spotPriceLoading,
+    setSpotPriceLoading,
   } = useContext(ShortSwapContext);
 
   const { provider, setProvider } = useContext(WebContext);
@@ -59,7 +64,57 @@ const ShortSwap = ({
   //   getPoolNetworkValues(currentNetwork?.network)
   // );
 
-  console.log("iswalletashkasjdhsakd", isWalletConnected);
+  useEffect(() => {
+    // console.log("ajsdhkasd----", swapAmount, destAddress, srcAddress);
+    // Wait for 0.5 second before fetching price.
+    const interval1 = setTimeout(() => {
+      spotPrice(
+        swapAmount,
+        setSpotPriceLoading,
+        srcAddress,
+        destAddress,
+        setweb3provider,
+        setCurrentBlock,
+        setBalance,
+        setAccount,
+        setWalletConnected,
+        account,
+        expectedSwapOut,
+        tolerance,
+        deadline,
+        setFormErrors,
+        setSpotPrice,
+        setExpectedSwapOut,
+        currentNetwork?.network
+      );
+    }, 500);
+    // Update price every 12 seconds.
+    const interval2 = setTimeout(() => {
+      spotPrice(
+        swapAmount,
+        setSpotPriceLoading,
+        srcAddress,
+        destAddress,
+        setweb3provider,
+        setCurrentBlock,
+        setBalance,
+        setAccount,
+        setWalletConnected,
+        account,
+        expectedSwapOut,
+        tolerance,
+        deadline,
+        setFormErrors,
+        setSpotPrice,
+        setExpectedSwapOut,
+        currentNetwork?.network
+      );
+    }, 12000);
+    return () => {
+      clearTimeout(interval1);
+      clearTimeout(interval2);
+    };
+  }, [swapAmount, destAddress, srcAddress]);
 
   async function ShortSwapButtonClick() {
     try {

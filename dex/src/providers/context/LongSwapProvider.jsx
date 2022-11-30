@@ -21,6 +21,8 @@ export const LongSwapProvider = ({ children }) => {
   const [message, setMessage] = useState("");
   const [disableActionBtn, setDisableActionBtn] = useState(false);
   const [orderLogsLoading, setOrderLogsLoading] = useState(false);
+  const [longSwapFormErrors, setLongSwapFormErrors] = useState();
+  const [longSwapVerifyLoading, setLongSwapVerifyLoading] = useState(false);
   const { tokenBalances } = useContext(ShortSwapContext);
   const currentNetwork = useNetwork();
 
@@ -71,6 +73,10 @@ export const LongSwapProvider = ({ children }) => {
         setDisableActionBtn,
         orderLogsLoading,
         setOrderLogsLoading,
+        longSwapFormErrors,
+        setLongSwapFormErrors,
+        longSwapVerifyLoading,
+        setLongSwapVerifyLoading,
       }}
     >
       {children}

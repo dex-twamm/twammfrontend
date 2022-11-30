@@ -1,13 +1,11 @@
 import { ethers } from "ethers";
 import { POPUP_MESSAGE } from "../constants";
-import { useNetwork } from "../providers/context/UIProvider";
 import { getEstimatedConvertedToken } from "./batchSwap";
 import { getProvider } from "./getProvider";
 import { POOLS } from "./pool";
-import { getPoolNetworkValues } from "./poolUtils";
 
 //Spot Prices
-export const spotPrice = async (
+export const longSwapStatus = async (
   swapAmount,
   setSpotPriceLoading,
   srcAddress,
@@ -29,9 +27,7 @@ export const spotPrice = async (
   console.log("swapAmount ---->", swapAmount, srcAddress, destAddress);
 
   if (swapAmount) {
-    setSpotPriceLoading(true);
-
-    const poolConfig = getPoolNetworkValues(currentNetwork);
+    const poolConfig = Object.values(POOLS[currentNetwork])[0];
     const tokenIn = poolConfig.tokens.find(
       (token) => token.address === srcAddress
     );
@@ -56,8 +52,6 @@ export const spotPrice = async (
     const walletAddress = account;
 
     console.log("Expected swap out ---->", expectedSwapOut);
-
-    //for shortswap
     try {
       await getEstimatedConvertedToken(
         signer,

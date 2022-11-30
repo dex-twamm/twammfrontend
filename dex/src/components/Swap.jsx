@@ -1,20 +1,7 @@
 import { useEffect } from "react";
-import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  Alert,
-  Box,
-  Slider,
-  Typography,
-  Button,
-  Chip,
-  CircularProgress,
-  Skeleton,
-} from "@mui/material";
+import { Alert, Box, CircularProgress, Skeleton } from "@mui/material";
 import classNames from "classnames";
 import React, { useContext, useState } from "react";
-import lsStyles from "../css/LongSwap.module.css";
-import style from "../css/Swap.module.css";
 import styles from "../css/AddLiquidity.module.css";
 
 import {
@@ -23,12 +10,9 @@ import {
 } from "../methods/longSwapMethod";
 import { LongSwapContext } from "../providers";
 import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
-import PopupModal from "./alerts/PopupModal";
 import Input from "./Input";
-import { FiChevronDown } from "react-icons/fi";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
-import { BigNumber, ethers } from "ethers";
+import { BigNumber } from "ethers";
 import { bigToStr } from "../utils";
 import { getApproval } from "../utils/getApproval";
 import { WebContext } from "../providers/context/WebProvider";
@@ -46,9 +30,7 @@ const Swap = (props) => {
   const [display, setDisplay] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
   const [value, setValue] = useState(0.0);
-  const [showModal, setShowModal] = useState(false);
   const [open, setOpen] = useState(false);
-  const [executionTime, setExecutionTIme] = useState("");
   const [disableAllowBtn, setDisableAllowBtn] = useState(true);
   const [switchInput, setSwitchInput] = useState();
 
@@ -64,25 +46,15 @@ const Swap = (props) => {
     formErrors,
     setFormErrors,
     error,
-    currentBlock,
     setSpotPrice,
     spotPrice,
     srcAddress,
     setTransactionHash,
-    transactionHash,
     isWalletConnected,
   } = useContext(ShortSwapContext);
 
-  const {
-    tokenA,
-    tokenB,
-    setTokenA,
-    setTokenB,
-    setTargetDate,
-    targetDate,
-    setNumberOfBlockIntervals,
-    allowance,
-  } = useContext(LongSwapContext);
+  const { tokenA, tokenB, setTokenA, setTokenB, setTargetDate, allowance } =
+    useContext(LongSwapContext);
 
   const { provider } = useContext(WebContext);
   const currentNetwork = useNetwork();
@@ -149,21 +121,6 @@ const Swap = (props) => {
     return errors;
   };
 
-  const handleChange = (e, newValue) => {
-    if (typeof newValue === "number") {
-      setValue(newValue);
-      setNumberOfBlockIntervals(calculateNumBlockIntervals(newValue));
-      setTargetDate(
-        valueLabel(calculateNumBlockIntervals(newValue), currentBlock)
-          .targetDate
-      );
-      setExecutionTIme(
-        valueLabel(calculateNumBlockIntervals(newValue), currentBlock)
-          .executionTime
-      );
-    }
-  };
-
   console.log("Allowance Swap-->", allowance, swapAmount);
   // console.log(first);
 
@@ -206,7 +163,6 @@ const Swap = (props) => {
   useEffect(() => {
     return () => {
       setTargetDate("");
-      setExecutionTIme("");
       setTransactionHash(undefined);
       setIsPlacedLongTermOrder && setIsPlacedLongTermOrder();
       setSwitchInput(false);
@@ -259,74 +215,6 @@ const Swap = (props) => {
             boxSizing: "border-box",
           }}
         >
-          {swapType === "long" && (
-            <>
-              <Box
-                className={styles.mainContent}
-                style={{ marginTop: "0px", paddingTop: "0px" }}
-              >
-                <div
-                  className={`unselectable ${styles.selectPairContainer}`}
-                  style={{ marginTop: "6px" }}
-                >
-                  <p className={styles.mainHeader} style={{ color: "#333333" }}>
-                    Select Pair
-                  </p>
-                  <div className={styles.pairContainer}>
-                    <div
-                      onClick={() => {
-                        // setShowModal(true);
-                        setDisplay(true);
-                        setSelectToken("1");
-                      }}
-                      className={styles.select}
-                    >
-                      <div className={styles.currencyWrap}>
-                        <img
-                          className={styles.cryptoImage}
-                          src={tokenA.logo}
-                          alt="Ethereum"
-                        />
-                        <p className={styles.tokenSymbol}>{tokenA.symbol}</p>
-                      </div>
-                      <FiChevronDown className={styles.dropDownIcon} />
-                    </div>
-
-                    <div
-                      onClick={() => {
-                        setDisplay(true);
-                        setSelectToken("2");
-                      }}
-                      className={styles.select}
-                    >
-                      <div className={styles.currencyWrap}>
-                        {tokenB.logo !== "" && (
-                          <img
-                            className={styles.cryptoImage}
-                            src={tokenB.logo}
-                            alt="Ethereum"
-                          />
-                        )}
-                        <p className={styles.tokenSymbol}>
-                          <span
-                            style={{
-                              paddingLeft: `${
-                                tokenB.tokenIsSet ? "0px" : "10px"
-                              }`,
-                            }}
-                          >
-                            {tokenB.symbol}
-                          </span>
-                        </p>
-                      </div>
-                      <FiChevronDown className={styles.dropDownIcon} />
-                    </div>
-                  </div>
-                </div>
-              </Box>
-            </>
-          )}
-
           <Input
             id={1}
             input={swapAmount ? swapAmount : ""}
@@ -356,34 +244,32 @@ const Swap = (props) => {
               </Alert>
             </div>
           )} */}
-          {swapType !== "long" && (
-            <>
-              {/* <FontAwesomeIcon
+
+          {/* <FontAwesomeIcon
                 style={{ zIndex: "1", cursor: "pointer" }}
                 className={style.iconDown}
                 icon={faArrowDown}
                 onClick={handleInputSwitch}
               /> */}
-              <Input
-                id={2}
-                input={
-                  expectedSwapOut
-                    ? bigToStr(BigNumber.from(expectedSwapOut), tokenB.decimals)
-                    : ""
-                }
-                placeholder=""
-                imgSrc={tokenB.logo}
-                symbol={tokenB.symbol}
-                onChange={(e) => e.target.value}
-                handleDisplay={handleDisplay}
-                selectToken={selectToken}
-                display={display}
-                setDisplay={setDisplay}
-                setTokenA={setTokenA}
-                setTokenB={setTokenB}
-              />
-            </>
-          )}
+          <Input
+            id={2}
+            input={
+              expectedSwapOut
+                ? bigToStr(BigNumber.from(expectedSwapOut), tokenB.decimals)
+                : ""
+            }
+            placeholder=""
+            imgSrc={tokenB.logo}
+            symbol={tokenB.symbol}
+            onChange={(e) => e.target.value}
+            handleDisplay={handleDisplay}
+            selectToken={selectToken}
+            display={display}
+            setDisplay={setDisplay}
+            setTokenA={setTokenA}
+            setTokenB={setTokenB}
+          />
+
           {formErrors.balError && (
             <div className={styles.errorAlert}>
               <Alert severity="error" sx={{ borderRadius: "16px" }}>
@@ -392,96 +278,8 @@ const Swap = (props) => {
             </div>
           )}
 
-          {swapType === "long" && (
-            <div className={lsStyles.rangeSelect}>
-              <Box
-                sx={{
-                  margin: "0 auto",
-                }}
-              >
-                <Typography
-                  component={"span"}
-                  fontWeight={600}
-                  id="non-linear-slider"
-                  gutterBottom
-                >
-                  <Box
-                    sx={{
-                      float: "right",
-                      display: "flex",
-                      fontSize: "15px",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      fontFamily: "Open Sans",
-                    }}
-                  >
-                    {`${targetDate} `.substring(0, 16)}
-                  </Box>
-
-                  <Box
-                    sx={{
-                      fontSize: "15px",
-                      paddingLeft: "10px",
-                      fontFamily: "Open Sans",
-                    }}
-                  >
-                    {executionTime}
-                  </Box>
-                  <Box
-                    sx={{
-                      float: "left",
-                      display: "flex",
-                      fontFamily: "Open Sans",
-                      fontWeight: "600",
-                      fontSize: "16px",
-                      lineHeight: "22px",
-                      color: "#000000",
-                    }}
-                  >
-                    Execution Time
-                  </Box>
-                  <Box
-                    sx={{
-                      float: "right",
-                      display: "flex",
-                      fontFamily: "Open Sans",
-                      fontWeight: "600",
-                      fontSize: "16px",
-                      lineHeight: "22px",
-                      color: "#000000",
-                      paddingRight: "2px",
-                    }}
-                  >
-                    Order Completetion Date
-                  </Box>
-                </Typography>
-                <Slider
-                  value={value}
-                  min={0}
-                  step={0.1}
-                  max={13}
-                  sx={{
-                    height: 15,
-                    width: 1,
-                    color: "#6D64A5",
-                  }}
-                  onChange={handleChange}
-                  aria-labelledby="non-linear-slider"
-                />
-                {swapAmount &&
-                tokenA.tokenIsSet &&
-                tokenB.tokenIsSet &&
-                !executionTime ? (
-                  <p style={{ fontSize: "12px", marginBottom: "0px" }}>
-                    execution time is required.
-                  </p>
-                ) : null}
-              </Box>
-            </div>
-          )}
-
           {/* swapAmount !== 0 && tokenB.tokenIsSet &&  */}
-          {swapAmount !== 0 && tokenB.tokenIsSet && swapType !== "long" && (
+          {swapAmount !== 0 && tokenB.tokenIsSet && (
             <>
               <Box
                 sx={{
@@ -521,40 +319,38 @@ const Swap = (props) => {
                   >
                     {spotPriceLoading ? (
                       <Skeleton width={"100px"} />
+                    ) : spotPrice == 0 ? (
+                      <p></p>
                     ) : (
-                      spotPrice == 0 ? (
-                        <p></p>
-                      )
-                      : (
-                        <p
-                          style={{
-                            cursor: "pointer",
-                            boxSizing: "border-box",
-                            padding: { xs: "0px", sm: "8px 0px" },
-                            color: "black",
-                            fontFamily: "Open Sans",
-                            fontSize: "16px",
-                            fontWeight: 500,
-                            display: "flex",
-                          }}
-                          onClick={handleClose}
-                        >
+                      <p
+                        style={{
+                          cursor: "pointer",
+                          boxSizing: "border-box",
+                          padding: { xs: "0px", sm: "8px 0px" },
+                          color: "black",
+                          fontFamily: "Open Sans",
+                          fontSize: "16px",
+                          fontWeight: 500,
+                          display: "flex",
+                        }}
+                        onClick={handleClose}
+                      >
+                        {" "}
+                        {` 1 ${tokenA.symbol} = ${" "}`}
+                        {"  "}
+                        <label>
                           {" "}
-                          {` 1 ${tokenA.symbol} = ${" "}`}
-                          {"  "}
-                          <label>
-                            {" "}
-                            {spotPriceLoading ? (
-                              <Skeleton width={"100px"} />
-                            ) : (
-                              ` ${spotPrice?.toFixed(4)} ${tokenB.symbol}`
-                            )}
-                          </label>
-                          {/* <span style={{ color: "#333333", opacity: 0.7 }}>
+                          {spotPriceLoading ? (
+                            <Skeleton width={"100px"} />
+                          ) : (
+                            ` ${spotPrice?.toFixed(4)} ${tokenB.symbol}`
+                          )}
+                        </label>
+                        {/* <span style={{ color: "#333333", opacity: 0.7 }}>
                           {" "}
                           ($123)
                         </span> */}
-                        </p>)
+                      </p>
                     )}
                   </Box>
                 ) : null}
@@ -620,9 +416,7 @@ const Swap = (props) => {
               onClick={() => {
                 handleApproveButton();
               }}
-              disabled={
-                disableAllowBtn || (swapType === "long" && executionTime === "")
-              }
+              disabled={disableAllowBtn}
             >
               {`Allow TWAMM Protocol to use your ${
                 tokenA.symbol ?? tokenB.symbol
@@ -644,7 +438,6 @@ const Swap = (props) => {
                 !tokenA.tokenIsSet ||
                 !tokenB.tokenIsSet ||
                 !swapAmount ||
-                (swapType === "long" && executionTime === "") ||
                 disableAllowBtn ||
                 spotPriceLoading ||
                 parseFloat(allowance) <= swapAmount
