@@ -23,10 +23,8 @@ const ShortSwap = ({
   buttonText,
   showSettings,
   setShowSettings,
-  spotPriceLoading,
   message,
   setMessage,
-  setSpotPriceLoading,
 }) => {
   //   const [showSettings, setShowSettings] = useState(false);
 
@@ -53,6 +51,8 @@ const ShortSwap = ({
     setFormErrors,
     setSpotPrice,
     setExpectedSwapOut,
+    spotPriceLoading,
+    setSpotPriceLoading,
   } = useContext(ShortSwapContext);
 
   const { provider, setProvider } = useContext(WebContext);

@@ -29,7 +29,7 @@ const LongSwap = (props) => {
     connectWallet,
     buttonText,
     swapType,
-    spotPriceLoading,
+    longSwapVerifyLoading,
     setIsPlacedLongTermOrder,
   } = props;
 
@@ -44,11 +44,8 @@ const LongSwap = (props) => {
     selectToken,
     setSelectToken,
     setExpectedSwapOut,
-    formErrors,
-    setFormErrors,
     error,
     currentBlock,
-    setSpotPrice,
     srcAddress,
     setTransactionHash,
     isWalletConnected,
@@ -63,6 +60,8 @@ const LongSwap = (props) => {
     targetDate,
     setNumberOfBlockIntervals,
     allowance,
+    setLongSwapFormErrors,
+    longSwapFormErrors,
   } = useContext(LongSwapContext);
 
   const { provider } = useContext(WebContext);
@@ -96,7 +95,7 @@ const LongSwap = (props) => {
   };
 
   const handleClick = () => {
-    buttonText === "Swap" && setFormErrors(validate(swapAmount));
+    buttonText === "Swap" && setLongSwapFormErrors(validate(swapAmount));
     connectWallet();
   };
 
@@ -140,10 +139,10 @@ const LongSwap = (props) => {
   };
 
   useEffect(() => {
-    formErrors.balError !== undefined
+    longSwapFormErrors?.balError !== undefined
       ? setDisableAllowBtn(true)
       : setDisableAllowBtn(false);
-  }, [formErrors]);
+  }, [longSwapFormErrors]);
 
   useEffect(() => {
     if (error === "Transaction Error" || error === "Transaction Cancelled") {
@@ -153,9 +152,9 @@ const LongSwap = (props) => {
 
   useEffect(() => {
     return () => {
-      setFormErrors({ balError: undefined });
+      setLongSwapFormErrors({ balError: undefined });
     };
-  }, [setFormErrors]);
+  }, [setLongSwapFormErrors]);
 
   useEffect(() => {
     return () => {
@@ -166,7 +165,7 @@ const LongSwap = (props) => {
     };
   }, []);
 
-  console.log("Form errororororor", formErrors);
+  console.log("Form errororororor", longSwapFormErrors);
 
   return (
     <>
@@ -272,10 +271,10 @@ const LongSwap = (props) => {
             swapType={swapType}
           />
 
-          {formErrors.balError && (
+          {longSwapFormErrors?.balError && (
             <div className={styles.errorAlert}>
               <Alert severity="error" sx={{ borderRadius: "16px" }}>
-                {formErrors.balError}
+                {longSwapFormErrors?.balError}
               </Alert>
             </div>
           )}
@@ -404,7 +403,7 @@ const LongSwap = (props) => {
                 !swapAmount ||
                 executionTime === "" ||
                 disableAllowBtn ||
-                spotPriceLoading ||
+                longSwapVerifyLoading ||
                 parseFloat(allowance) <= swapAmount
                   ? true
                   : false
@@ -414,7 +413,7 @@ const LongSwap = (props) => {
                 "Select a Token"
               ) : !swapAmount ? (
                 "Enter an Amount"
-              ) : spotPriceLoading ? (
+              ) : longSwapVerifyLoading ? (
                 <CircularProgress sx={{ color: "white" }} />
               ) : (
                 buttonText

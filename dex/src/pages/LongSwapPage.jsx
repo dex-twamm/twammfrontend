@@ -27,8 +27,6 @@ const LongSwapPage = (props) => {
     withdrawPool,
     isPlacedLongTermOrder,
     setIsPlacedLongTermOrder,
-    spotPriceLoading,
-    setSpotPriceLoading,
   } = props;
 
   const [showSettings, setShowSettings] = useState(false);
@@ -40,6 +38,10 @@ const LongSwapPage = (props) => {
     setMessage,
     numberOfBlockIntervals,
     setOrderLogsDecoded,
+    longSwapFormErrors,
+    setLongSwapFormErrors,
+    longSwapVerifyLoading,
+    setLongSwapVerifyLoading,
   } = useContext(LongSwapContext);
 
   const {
@@ -79,7 +81,7 @@ const LongSwapPage = (props) => {
     const interval1 = setTimeout(() => {
       verifyLongSwap(
         swapAmount,
-        setSpotPriceLoading,
+        setLongSwapVerifyLoading,
         srcAddress,
         destAddress,
         setweb3provider,
@@ -88,7 +90,7 @@ const LongSwapPage = (props) => {
         setAccount,
         setWalletConnected,
         account,
-        setFormErrors,
+        setLongSwapFormErrors,
         currentNetwork?.network,
         numberOfBlockIntervals
       );
@@ -97,7 +99,7 @@ const LongSwapPage = (props) => {
     const interval2 = setTimeout(() => {
       verifyLongSwap(
         swapAmount,
-        setSpotPriceLoading,
+        setLongSwapVerifyLoading,
         srcAddress,
         destAddress,
         setweb3provider,
@@ -106,7 +108,7 @@ const LongSwapPage = (props) => {
         setAccount,
         setWalletConnected,
         account,
-        setFormErrors,
+        setLongSwapFormErrors,
         currentNetwork?.network,
         numberOfBlockIntervals
       );
@@ -193,7 +195,7 @@ const LongSwapPage = (props) => {
             tokenImage={tokenImage}
             connectWallet={LongSwapButtonClick}
             buttonText={buttonText}
-            spotPriceLoading={spotPriceLoading}
+            longSwapVerifyLoading={longSwapVerifyLoading}
             setIsPlacedLongTermOrder={setIsPlacedLongTermOrder}
           />
         </div>

@@ -4,10 +4,9 @@ import { getLongSwapEstimatedConvertedToken } from "./batchSwap";
 import { getProvider } from "./getProvider";
 import { POOLS } from "./pool";
 
-//Spot Prices
 export const verifyLongSwap = async (
   swapAmount,
-  setSpotPriceLoading,
+  setLongSwapVerifyLoading,
   srcAddress,
   destAddress,
   setweb3provider,
@@ -16,12 +15,12 @@ export const verifyLongSwap = async (
   setAccount,
   setWalletConnected,
   account,
-  setFormErrors,
+  setLongSwapFormErrors,
   currentNetwork,
   numberOfBlockIntervals
 ) => {
   if (swapAmount) {
-    setSpotPriceLoading(true);
+    setLongSwapVerifyLoading(true);
 
     const poolConfig = Object.values(POOLS[currentNetwork])[0];
 
@@ -59,50 +58,50 @@ export const verifyLongSwap = async (
       ).then((res) => {
         console.log("Response From Query Batch Swap", res);
         errors.balError = undefined;
-        setFormErrors(errors ?? "");
-        setSpotPriceLoading(false);
+        setLongSwapFormErrors(errors ?? "");
+        setLongSwapVerifyLoading(false);
       });
     } catch (e) {
-      setSpotPriceLoading(false);
+      setLongSwapVerifyLoading(false);
       console.log("errororrrrrrrr", typeof e, { ...e });
       if (e.reason) {
         if (e.reason.match("BAL#304")) {
-          setFormErrors({
+          setLongSwapFormErrors({
             balError: POPUP_MESSAGE["BAL#304"],
           });
         }
         if (e.reason.match("BAL#347")) {
-          setFormErrors({
+          setLongSwapFormErrors({
             balError: POPUP_MESSAGE["BAL#347"],
           });
         }
         if (e.reason.match("BAL#346")) {
-          setFormErrors({
+          setLongSwapFormErrors({
             balError: POPUP_MESSAGE["BAL#346"],
           });
         }
         if (e.reason.match("BAL#510")) {
-          setFormErrors({
+          setLongSwapFormErrors({
             balError: POPUP_MESSAGE["BAL#510"],
           });
         }
         if (e.reason === "underflow") {
-          setFormErrors({ balError: "Underflow" });
+          setLongSwapFormErrors({ balError: "Underflow" });
         }
         if (
           e.reason.match("ERC20: transfer amount exceeds allowance") ||
           e.reason.match("allowance")
         ) {
-          setSpotPriceLoading(false);
+          setLongSwapVerifyLoading(false);
           errors.balError = undefined;
-          setFormErrors(errors ?? "");
+          setLongSwapFormErrors(errors ?? "");
         }
       } else {
-        setFormErrors({
+        setLongSwapFormErrors({
           balError: POPUP_MESSAGE.unknown,
         });
       }
-      setSpotPriceLoading(false);
+      setLongSwapVerifyLoading(false);
     }
   }
 };

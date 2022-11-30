@@ -1,10 +1,7 @@
 import { ethers } from "ethers";
 import { POPUP_MESSAGE } from "../constants";
 import { useNetwork } from "../providers/context/UIProvider";
-import {
-  getEstimatedConvertedToken,
-  getLongSwapEstimatedConvertedToken,
-} from "./batchSwap";
+import { getEstimatedConvertedToken } from "./batchSwap";
 import { getProvider } from "./getProvider";
 import { POOLS } from "./pool";
 

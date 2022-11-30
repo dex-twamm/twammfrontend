@@ -46,7 +46,6 @@ function App() {
   const { setShowDropdown } = useContext(UIContext);
   const [showSettings, setShowSettings] = useState(false);
   const [showDisconnect, setShowDisconnect] = useState(false);
-  const [spotPriceLoading, setSpotPriceLoading] = useState(false);
 
   const currentNetwork = useNetwork();
 
@@ -371,10 +370,10 @@ function App() {
                 buttonText={!isWalletConnected ? "Connect Wallet" : "Swap"}
                 showSettings={showSettings}
                 setShowSettings={setShowSettings}
-                spotPriceLoading={spotPriceLoading}
+                // spotPriceLoading={spotPriceLoading}
                 message={message}
                 setMessage={setMessage}
-                setSpotPriceLoading={setSpotPriceLoading}
+                // setSpotPriceLoading={setSpotPriceLoading}
               />
             }
           />
@@ -393,11 +392,10 @@ function App() {
                 setShowSettings={setShowSettings}
                 // cancelPool={_cancelLTO}
                 // withdrawPool={_withdrawLTO}
-                spotPriceLoading={spotPriceLoading}
+                // spotPriceLoading={spotPriceLoading}
                 message={message}
                 setMessage={setMessage}
                 loading={loading}
-                setSpotPriceLoading={setSpotPriceLoading}
               />
             }
           />
