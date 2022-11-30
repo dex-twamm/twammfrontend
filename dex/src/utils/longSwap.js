@@ -49,19 +49,7 @@ export async function placeLongTermOrder(
     ]
   );
 
-  const gasEstimate = await exchangeContract.estimateGas.joinPool(
-    getNetworkPoolId(currentNetwork),
-    walletAddress,
-    walletAddress,
-    {
-      assets: getPoolTokenAddresses(currentNetwork),
-      maxAmountsIn: [MAX_UINT256, MAX_UINT256],
-      fromInternalBalance: false,
-      userData: encodedRequest,
-    }
-  );
-
-  const placeLtoTx = await exchangeContract.joinPool(
+  const swapData = [
     getNetworkPoolId(currentNetwork),
     walletAddress,
     walletAddress,
@@ -71,10 +59,13 @@ export async function placeLongTermOrder(
       fromInternalBalance: false,
       userData: encodedRequest,
     },
-    {
-      gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
-    }
-  );
+  ];
+
+  const gasEstimate = await exchangeContract.estimateGas.joinPool(...swapData);
+
+  const placeLtoTx = await exchangeContract.joinPool(...swapData, {
+    gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
+  });
   console.log("===LongTerm Placed====", placeLtoTx);
   txHash = placeLtoTx.hash;
   setTransactionHash(placeLtoTx.hash);

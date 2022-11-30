@@ -2,7 +2,6 @@ import { ethers } from "ethers";
 import { POPUP_MESSAGE } from "../constants";
 import { getLongSwapEstimatedConvertedToken } from "./batchSwap";
 import { getProvider } from "./getProvider";
-import { POOLS } from "./pool";
 import { getPoolConfig } from "./poolUtils";
 
 export const verifyLongSwap = async (

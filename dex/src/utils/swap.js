@@ -54,50 +54,7 @@ export const swapTokens = async (
     getNetworkPoolId(currentNetwork)
   );
 
-  const gasEstimate = await exchangeContract.estimateGas.swap(
-    {
-      poolId: getNetworkPoolId(currentNetwork),
-      kind: kind,
-      assetIn: assetIn,
-      assetOut: assetOut,
-      amount: swapAmountWei,
-      userData: "0x",
-    },
-    {
-      sender: walletAddress,
-      fromInternalBalance: false,
-      recipient: walletAddress,
-      toInternalBalance: false,
-    },
-    // expectedSwapOutAfterTolerance,
-    kind === 0 ? 0 : MAX_UINT256, // 0 if given in, infinite if given out.  // Slippage  // TODO // Need To QueryBatchSwap Price - 1%
-    // swapAmountWei * SpotPrice *( 1- Slippage can be 0.005, 0.01, 0.02) Type Big Number
-
-    BigNumber.from(Math.floor(deadlineTimestamp / 1000)) // Deadline // Minutes Into Seconds Then Type BigNumber
-  );
-
-  console.log("Gas Estimage,", gasEstimate.toNumber() * 1.2);
-
-  console.log(
-    "Swap value passd",
-    {
-      poolId: getNetworkPoolId(currentNetwork),
-      kind: kind,
-      assetIn: assetIn,
-      assetOut: assetOut,
-      amount: swapAmountWei,
-      userData: "0x",
-    },
-    {
-      sender: walletAddress,
-      fromInternalBalance: false,
-      recipient: walletAddress,
-      toInternalBalance: false,
-    },
-    Math.floor(gasEstimate.toNumber() * 1.2)
-  );
-
-  const swapTx = await exchangeContract.swap(
+  const swapData = [
     {
       poolId: getNetworkPoolId(currentNetwork),
       kind: kind,
@@ -117,11 +74,20 @@ export const swapTokens = async (
     // swapAmountWei * SpotPrice *( 1- Slippage can be 0.005, 0.01, 0.02) Type Big Number
 
     BigNumber.from(Math.floor(deadlineTimestamp / 1000)), // Deadline // Minutes Into Seconds Then Type BigNumber
-    {
-      gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
-      // gasLimit: 50000,
-    }
+  ];
+
+  const gasEstimate = await exchangeContract.estimateGas.swap(...swapData);
+
+  console.log(
+    "Swap value passdddd",
+    ...swapData,
+    Math.floor(gasEstimate.toNumber() * 1.2)
   );
+
+  const swapTx = await exchangeContract.swap(...swapData, {
+    gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
+  });
+
   let txHash = swapTx.hash;
   console.log("swapTxxxx", swapTx.hash);
   // const txResult = await swapTx.wait();

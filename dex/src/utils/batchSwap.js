@@ -45,29 +45,7 @@ export const getEstimatedConvertedToken = async (
     expectedSwapOutAfterTolerance
   );
 
-  const gasEstimate = await exchangeContract.estimateGas.swap(
-    {
-      poolId: getNetworkPoolId(currentNetwork),
-      kind: kind,
-      assetIn: assetIn,
-      assetOut: assetOut,
-      amount: swapAmountWei,
-      userData: "0x",
-    },
-    {
-      sender: walletAddress,
-      fromInternalBalance: false,
-      recipient: walletAddress,
-      toInternalBalance: false,
-    },
-    // expectedSwapOutAfterTolerance,
-    kind === 0 ? 0 : MAX_UINT256, // 0 if given in, infinite if given out.  // Slippage  // TODO // Need To QueryBatchSwap Price - 1%
-    // swapAmountWei * SpotPrice *( 1- Slippage can be 0.005, 0.01, 0.02) Type Big Number
-
-    BigNumber.from(Math.floor(deadlineTimestamp / 1000)) // Deadline // Minutes Into Seconds Then Type BigNumber
-  );
-
-  const swapTx = await exchangeContract.callStatic.swap(
+  const swapData = [
     {
       poolId: getNetworkPoolId(currentNetwork),
       kind: kind,
@@ -87,11 +65,13 @@ export const getEstimatedConvertedToken = async (
     // swapAmountWei * SpotPrice *( 1- Slippage can be 0.005, 0.01, 0.02) Type Big Number
 
     BigNumber.from(Math.floor(deadlineTimestamp / 1000)), // Deadline // Minutes Into Seconds Then Type BigNumber
-    {
-      gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
-      // gasLimit: 5000000,
-    }
-  );
+  ];
+
+  const gasEstimate = await exchangeContract.estimateGas.swap(...swapData);
+
+  const swapTx = await exchangeContract.callStatic.swap(...swapData, {
+    gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
+  });
   let txHash = swapTx;
   // console.log("swapTxxxx", txHash.toNumber());
   // const txResult = await swapTx.wait();
@@ -131,34 +111,7 @@ export const getLongSwapEstimatedConvertedToken = async (
     ]
   );
 
-  console.log(
-    "aksldalsjdlsjdieuhalsdlas",
-    getNetworkPoolId(currentNetwork),
-    walletAddress,
-    walletAddress,
-    {
-      assets: getPoolTokenAddresses(currentNetwork),
-      maxAmountsIn: [MAX_UINT256, MAX_UINT256],
-      fromInternalBalance: false,
-      userData: encodedRequest,
-    }
-  );
-
-  const gasEstimate = await exchangeContract.estimateGas.joinPool(
-    getNetworkPoolId(currentNetwork),
-    walletAddress,
-    walletAddress,
-    {
-      assets: getPoolTokenAddresses(currentNetwork),
-      maxAmountsIn: [MAX_UINT256, MAX_UINT256],
-      fromInternalBalance: false,
-      userData: encodedRequest,
-    }
-  );
-
-  console.log("gas estimate price", gasEstimate);
-
-  const placeLtoTx = await exchangeContract.callStatic.joinPool(
+  const swapData = [
     getNetworkPoolId(currentNetwork),
     walletAddress,
     walletAddress,
@@ -168,10 +121,15 @@ export const getLongSwapEstimatedConvertedToken = async (
       fromInternalBalance: false,
       userData: encodedRequest,
     },
-    {
-      gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
-    }
-  );
+  ];
+
+  const gasEstimate = await exchangeContract.estimateGas.joinPool(...swapData);
+
+  console.log("gas estimate price", gasEstimate);
+
+  const placeLtoTx = await exchangeContract.callStatic.joinPool(...swapData, {
+    gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
+  });
   console.log("===LongTerm Placed====", placeLtoTx);
   txHash = placeLtoTx;
   // setTransactionHash(placeLtoTx.hash);

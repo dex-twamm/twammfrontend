@@ -4,10 +4,6 @@ import classNames from "classnames";
 import React, { useContext, useState } from "react";
 import styles from "../css/AddLiquidity.module.css";
 
-import {
-  calculateNumBlockIntervals,
-  valueLabel,
-} from "../methods/longSwapMethod";
 import { LongSwapContext } from "../providers";
 import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
 import Input from "./Input";
