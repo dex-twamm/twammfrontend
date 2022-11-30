@@ -3,7 +3,7 @@ import { POPUP_MESSAGE } from "../constants";
 import { getLongSwapEstimatedConvertedToken } from "./batchSwap";
 import { getProvider } from "./getProvider";
 import { POOLS } from "./pool";
-import { getPoolNetworkValues } from "./poolUtils";
+import { getPoolConfig } from "./poolUtils";
 
 export const verifyLongSwap = async (
   swapAmount,
@@ -23,7 +23,7 @@ export const verifyLongSwap = async (
   if (swapAmount) {
     setLongSwapVerifyLoading(true);
 
-    const poolConfig = getPoolNetworkValues(currentNetwork);
+    const poolConfig = getPoolConfig(currentNetwork);
 
     const errors = {};
 

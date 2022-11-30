@@ -4,7 +4,7 @@ import { useNetwork } from "../providers/context/UIProvider";
 import { getEstimatedConvertedToken } from "./batchSwap";
 import { getProvider } from "./getProvider";
 import { POOLS } from "./pool";
-import { getPoolNetworkValues } from "./poolUtils";
+import { getPoolConfig } from "./poolUtils";
 
 //Spot Prices
 export const spotPrice = async (
@@ -31,7 +31,7 @@ export const spotPrice = async (
   if (swapAmount) {
     setSpotPriceLoading(true);
 
-    const poolConfig = getPoolNetworkValues(currentNetwork);
+    const poolConfig = getPoolConfig(currentNetwork);
     const tokenIn = poolConfig.tokens.find(
       (token) => token.address === srcAddress
     );

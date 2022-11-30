@@ -6,7 +6,7 @@ import { LongSwapContext, ShortSwapContext } from "../providers";
 import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from "../utils";
 import { POOLS, POOL_ID } from "../utils/pool";
 import { useNetwork } from "../providers/context/UIProvider";
-import { getPoolNetworkValues } from "../utils/poolUtils";
+import { getPoolConfig } from "../utils/poolUtils";
 
 const tabOptions = [
   {
@@ -31,7 +31,7 @@ const Tabs = () => {
   const { tokenA, setTokenA, tokenB, setTokenB } = useContext(LongSwapContext);
   const { setSwapAmount } = useContext(ShortSwapContext);
   const onNavLinkClick = () => {
-    const poolConfig = getPoolNetworkValues(currentNetwork?.network);
+    const poolConfig = getPoolConfig(currentNetwork?.network);
     setSwapAmount("");
     if (!tokenA.tokenIsSet) {
       setTokenA({

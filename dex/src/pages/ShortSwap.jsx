@@ -61,7 +61,7 @@ const ShortSwap = ({
 
   // console.log(
   //   "Current network currentNetwork",
-  //   getPoolNetworkValues(currentNetwork?.network)
+  //   getPoolConfig(currentNetwork?.network)
   // );
 
   useEffect(() => {

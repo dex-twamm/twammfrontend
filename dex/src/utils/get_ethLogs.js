@@ -3,7 +3,7 @@ import { Contract, ethers } from "ethers";
 import { TWAMM_POOL_ABI } from "../constants";
 import { getLongTermOrder } from "./longSwap";
 import { POOLS } from "./pool";
-import { getPoolNetworkValues } from "./poolUtils";
+import { getpoolAddress } from "./poolUtils";
 
 export async function getEthLogs(
   signer,
@@ -11,7 +11,7 @@ export async function getEthLogs(
   currentNetwork = "Goerli"
 ) {
   const exchangeContract = new Contract(
-    getPoolNetworkValues(currentNetwork, "address"),
+    getpoolAddress(currentNetwork),
     TWAMM_POOL_ABI,
     signer
   );

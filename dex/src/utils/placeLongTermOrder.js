@@ -4,7 +4,7 @@ import { getProvider } from "./getProvider";
 import { getEthLogs } from "./get_ethLogs";
 import { placeLongTermOrder } from "./longSwap";
 import { POOLS } from "./pool";
-import { getPoolNetworkValues } from "./poolUtils";
+import { getPoolConfig } from "./poolUtils";
 
 export const _placeLongTermOrders = async (
   swapAmount,
@@ -25,7 +25,7 @@ export const _placeLongTermOrders = async (
   provider,
   currentNetwork = "Goerli"
 ) => {
-  const poolConfig = getPoolNetworkValues(currentNetwork);
+  const poolConfig = getPoolConfig(currentNetwork);
 
   try {
     const tokenInIndex = poolConfig.tokens.findIndex(

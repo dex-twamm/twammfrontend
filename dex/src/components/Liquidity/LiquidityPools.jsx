@@ -13,7 +13,11 @@ import { ShortSwapContext } from "../../providers";
 import CircularProgressBar from "../alerts/CircularProgressBar";
 import Tabs from "../Tabs";
 import { useNetwork } from "../../providers/context/UIProvider";
-import { getPoolNetworkValues } from "../../utils/poolUtils";
+import {
+  getpoolBalancerUrl,
+  getPoolFees,
+  getPoolTokens,
+} from "../../utils/poolUtils";
 
 const style = {
   position: "absolute",
@@ -53,6 +57,7 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
   };
 
   const currentNetwork = useNetwork();
+  const poolTokens = getPoolTokens(currentNetwork?.network);
 
   console.log("LP Token balance", LPTokenBalance, POOLS);
   return (
@@ -402,17 +407,7 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                           fontFamily: "Open Sans",
                         }}
                       >
-                        {`${
-                          getPoolNetworkValues(
-                            currentNetwork?.network,
-                            "tokens"
-                          )[0].symbol
-                        } / ${
-                          getPoolNetworkValues(
-                            currentNetwork?.network,
-                            "tokens"
-                          )[1].symbol
-                        }`}
+                        {`${poolTokens[0].symbol} / ${poolTokens[1].symbol}`}
                       </Typography>
                       <span
                         style={{
@@ -430,7 +425,7 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                           borderRadius: "17px",
                         }}
                       >
-                        {getPoolNetworkValues(currentNetwork?.network, "fees")}%
+                        {getPoolFees(currentNetwork?.network)}%
                       </span>
                     </Box>
 
@@ -577,10 +572,7 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                   <button
                     onClick={() =>
                       window.open(
-                        `${getPoolNetworkValues(
-                          currentNetwork?.network,
-                          "balancerPoolUrl"
-                        )}`,
+                        `${getpoolBalancerUrl(currentNetwork?.network)}`,
                         "_blank"
                       )
                     }

@@ -7,7 +7,7 @@ import { FiChevronDown } from "react-icons/fi";
 import { bigToStr } from "../utils";
 import { POOLS, POOL_ID } from "../utils/pool";
 import { useNetwork } from "../providers/context/UIProvider";
-import { getPoolNetworkValues } from "../utils/poolUtils";
+import { getPoolTransactionUrl } from "../utils/poolUtils";
 
 const LongTermSwapCardDropdown = (props) => {
   const [open, setOpen] = useState(false);
@@ -114,9 +114,8 @@ const LongTermSwapCardDropdown = (props) => {
                     const transactionHash = items.transactionHash;
                     const handleClick = () => {
                       window.open(
-                        `${getPoolNetworkValues(
-                          currentNetwork?.network,
-                          "transactionUrl"
+                        `${getPoolTransactionUrl(
+                          currentNetwork?.network
                         )}${transactionHash}`
                       );
                     };

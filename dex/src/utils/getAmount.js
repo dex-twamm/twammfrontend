@@ -8,14 +8,14 @@ import {
 
 import { ERC20_TOKEN_CONTRACT_ABI, TWAMM_POOL_ABI } from "../constants";
 import { POOLS } from "./pool";
-import { getPoolNetworkValues } from "./poolUtils";
+import { getpoolAddress, getPoolConfig } from "./poolUtils";
 // To Retrieve Token Balances
 export const getTokensBalance = async (
   provider,
   walletAddress,
   currentNetwork = "Goerli"
 ) => {
-  const poolConfig = getPoolNetworkValues(currentNetwork);
+  const poolConfig = getPoolConfig(currentNetwork);
   var tokenAddress = [
     poolConfig?.TOKEN_ONE_ADDRESS,
     poolConfig?.TOKEN_TWO_ADDRESS,
@@ -57,7 +57,7 @@ export const getLPTokensBalance = async (
   currentNetwork = "Goerli"
 ) => {
   const poolContract = new Contract(
-    getPoolNetworkValues(currentNetwork, "address"),
+    getpoolAddress(currentNetwork),
     TWAMM_POOL_ABI,
     provider
   );

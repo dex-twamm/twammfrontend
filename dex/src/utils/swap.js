@@ -2,7 +2,11 @@ import { BigNumber, Contract } from "ethers";
 import { VAULT_CONTRACT_ABI } from "../constants";
 import { MAX_UINT256 } from ".";
 import { POOLS } from "./pool";
-import { getNetworkPoolId, getPoolNetworkValues } from "./poolUtils";
+import {
+  getNetworkPoolId,
+  getPoolConfig,
+  getpoolVaultContractAddress,
+} from "./poolUtils";
 
 /*
   swapTokens: Swaps `swapAmountWei` of Eth/Crypto Dev tokens with `tokenToBeReceivedAfterSwap` amount of Eth/Crypto Dev tokens.
@@ -18,11 +22,11 @@ export const swapTokens = async (
   deadline,
   currentNetwork
 ) => {
-  const poolConfig = getPoolNetworkValues(currentNetwork);
+  const poolConfig = getPoolConfig(currentNetwork);
 
   // Create a new instance of the exchange contract
   const exchangeContract = new Contract(
-    getPoolNetworkValues(currentNetwork, "VAULT_CONTRACT_ADDRESS"),
+    getpoolVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );

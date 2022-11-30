@@ -12,7 +12,7 @@ import { _cancelLTO } from "../utils/_cancelLto";
 import { LongSwapContext, ShortSwapContext } from "../providers";
 import { WebContext } from "../providers/context/WebProvider";
 import { ethers } from "ethers";
-import { getPoolNetworkValues } from "../utils/poolUtils";
+import { getPoolConfig } from "../utils/poolUtils";
 
 const LongTermOrderSingleCard = ({ it }) => {
   const {
@@ -44,7 +44,7 @@ const LongTermOrderSingleCard = ({ it }) => {
   );
 
   const currentNetwork = useNetwork();
-  const poolConfig = getPoolNetworkValues(currentNetwork?.network);
+  const poolConfig = getPoolConfig(currentNetwork?.network);
   console.log("Pool configggg", poolConfig);
   const tokenIn = poolConfig.tokens[it.sellTokenIndex];
   const tokenOut = poolConfig.tokens[it.buyTokenIndex];

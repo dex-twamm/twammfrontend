@@ -14,7 +14,12 @@ import {
 } from "../constants";
 import { getEthLogs } from "./get_ethLogs";
 import { POOLS } from "./pool";
-import { getNetworkPoolId, getPoolNetworkValues } from "./poolUtils";
+import {
+  getNetworkPoolId,
+  getPoolTokenAddresses,
+  getPoolTokens,
+  getpoolVaultContractAddress,
+} from "./poolUtils";
 
 export async function joinPool(
   walletAddress,
@@ -28,7 +33,7 @@ export async function joinPool(
     [1, [fp(1e-12), fp(1.0)], 0]
   );
   const poolContract = new Contract(
-    getPoolNetworkValues(currentNetwork, "VAULT_CONTRACT_ADDRESS"),
+    getpoolVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -37,10 +42,7 @@ export async function joinPool(
     walletAddress,
     walletAddress,
     {
-      assets: [
-        getPoolNetworkValues(currentNetwork, "TOKEN_ONE_ADDRESS"),
-        getPoolNetworkValues(currentNetwork, "TOKEN_TWO_ADDRESS"),
-      ],
+      assets: getPoolTokenAddresses(currentNetwork),
       // Could Be User Input Same as Encoded Above -- Left to Figure It Out
       maxAmountsIn: [MAX_UINT256, MAX_UINT256],
       fromInternalBalance: false,
@@ -58,7 +60,7 @@ export async function exitPool(
   currentNetwork = "Goerli"
 ) {
   const poolContract = new Contract(
-    getPoolNetworkValues(currentNetwork, "VAULT_CONTRACT_ADDRESS"),
+    getpoolVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -73,10 +75,7 @@ export async function exitPool(
     walletAdress,
     walletAdress,
     {
-      assets: [
-        getPoolNetworkValues(currentNetwork, "TOKEN_ONE_ADDRESS"),
-        getPoolNetworkValues(currentNetwork, "TOKEN_TWO_ADDRESS"),
-      ],
+      assets: getPoolTokenAddresses(currentNetwork),
       minAmountsOut: [0, 0],
       userData: encodedRequest,
       toInternalBalance: false,
@@ -88,10 +87,7 @@ export async function exitPool(
     walletAdress,
     walletAdress,
     {
-      assets: [
-        getPoolNetworkValues(currentNetwork, "TOKEN_ONE_ADDRESS"),
-        getPoolNetworkValues(currentNetwork, "TOKEN_TWO_ADDRESS"),
-      ],
+      assets: getPoolTokenAddresses(currentNetwork),
       minAmountsOut: [0, 0],
       userData: encodedRequest,
       toInternalBalance: false,
@@ -118,7 +114,7 @@ export async function cancelLTO(
   currentNetwork = "Goerli"
 ) {
   const poolContract = new Contract(
-    getPoolNetworkValues(currentNetwork, "VAULT_CONTRACT_ADDRESS"),
+    getpoolVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -133,10 +129,7 @@ export async function cancelLTO(
     walletAdress,
     walletAdress,
     {
-      assets: [
-        getPoolNetworkValues(currentNetwork, "TOKEN_ONE_ADDRESS"),
-        getPoolNetworkValues(currentNetwork, "TOKEN_TWO_ADDRESS"),
-      ],
+      assets: getPoolTokenAddresses(currentNetwork),
       minAmountsOut: [0, 0],
       userData: encodedRequest,
       toInternalBalance: false,
@@ -147,10 +140,7 @@ export async function cancelLTO(
     walletAdress,
     walletAdress,
     {
-      assets: [
-        getPoolNetworkValues(currentNetwork, "TOKEN_ONE_ADDRESS"),
-        getPoolNetworkValues(currentNetwork, "TOKEN_TWO_ADDRESS"),
-      ],
+      assets: getPoolTokenAddresses(currentNetwork),
       minAmountsOut: [0, 0],
       userData: encodedRequest,
       toInternalBalance: false,
@@ -184,7 +174,7 @@ export async function withdrawLTO(
 ) {
   // const currentNetwork = "Goerli";
   const poolContract = new Contract(
-    getPoolNetworkValues(currentNetwork, "VAULT_CONTRACT_ADDRESS"),
+    getpoolVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -199,10 +189,7 @@ export async function withdrawLTO(
     walletAdress,
     walletAdress,
     {
-      assets: [
-        getPoolNetworkValues(currentNetwork, "TOKEN_ONE_ADDRESS"),
-        getPoolNetworkValues(currentNetwork, "TOKEN_TWO_ADDRESS"),
-      ],
+      assets: getPoolTokenAddresses(currentNetwork),
       minAmountsOut: [0, 0],
       userData: encodedRequest,
       toInternalBalance: false,
@@ -213,10 +200,7 @@ export async function withdrawLTO(
     walletAdress,
     walletAdress,
     {
-      assets: [
-        getPoolNetworkValues(currentNetwork, "TOKEN_ONE_ADDRESS"),
-        getPoolNetworkValues(currentNetwork, "TOKEN_TWO_ADDRESS"),
-      ],
+      assets: getPoolTokenAddresses(currentNetwork),
       minAmountsOut: [0, 0],
       userData: encodedRequest,
       toInternalBalance: false,
@@ -241,13 +225,13 @@ export async function getPoolBalance(
   tokenAddress,
   currentNetwork = "Goerli"
 ) {
-  const tokenIndex = getPoolNetworkValues(currentNetwork, "tokens").filter(
+  const tokenIndex = getPoolTokens(currentNetwork).filter(
     (item) => item.address === tokenAddress
   );
 
   console.log("TokenIndex--->", tokenIndex);
   const vaultContract = new Contract(
-    getPoolNetworkValues(currentNetwork, "VAULT_CONTRACT_ADDRESS"),
+    getpoolVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );

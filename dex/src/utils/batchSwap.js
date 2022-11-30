@@ -2,7 +2,11 @@ import { BigNumber, Contract, ethers } from "ethers";
 import { VAULT_CONTRACT_ABI } from "../constants";
 import { MAX_UINT256 } from ".";
 import { POOLS } from "./pool";
-import { getNetworkPoolId, getPoolNetworkValues } from "./poolUtils";
+import {
+  getNetworkPoolId,
+  getPoolTokenAddresses,
+  getpoolVaultContractAddress,
+} from "./poolUtils";
 
 /*
   swapTokens: Swaps `swapAmountWei` of Eth/Crypto Dev tokens with `tokenToBeReceivedAfterSwap` amount of Eth/Crypto Dev tokens.
@@ -20,7 +24,7 @@ export const getEstimatedConvertedToken = async (
 ) => {
   // Create a new instance of the exchange contract
   const exchangeContract = new Contract(
-    getPoolNetworkValues(currentNetwork, "VAULT_CONTRACT_ADDRESS"),
+    getpoolVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -111,7 +115,7 @@ export const getLongSwapEstimatedConvertedToken = async (
 
   console.log("Amount in value", amountIn, numberOfBlockIntervals);
   const exchangeContract = new Contract(
-    getPoolNetworkValues(currentNetwork, "VAULT_CONTRACT_ADDRESS"),
+    getpoolVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -133,10 +137,7 @@ export const getLongSwapEstimatedConvertedToken = async (
     walletAddress,
     walletAddress,
     {
-      assets: [
-        getPoolNetworkValues(currentNetwork, "TOKEN_ONE_ADDRESS"),
-        getPoolNetworkValues(currentNetwork, "TOKEN_TWO_ADDRESS"),
-      ],
+      assets: getPoolTokenAddresses(currentNetwork),
       maxAmountsIn: [MAX_UINT256, MAX_UINT256],
       fromInternalBalance: false,
       userData: encodedRequest,
@@ -148,10 +149,7 @@ export const getLongSwapEstimatedConvertedToken = async (
     walletAddress,
     walletAddress,
     {
-      assets: [
-        getPoolNetworkValues(currentNetwork, "TOKEN_ONE_ADDRESS"),
-        getPoolNetworkValues(currentNetwork, "TOKEN_TWO_ADDRESS"),
-      ],
+      assets: getPoolTokenAddresses(currentNetwork),
       maxAmountsIn: [MAX_UINT256, MAX_UINT256],
       fromInternalBalance: false,
       userData: encodedRequest,
@@ -165,10 +163,7 @@ export const getLongSwapEstimatedConvertedToken = async (
     walletAddress,
     walletAddress,
     {
-      assets: [
-        getPoolNetworkValues(currentNetwork, "TOKEN_ONE_ADDRESS"),
-        getPoolNetworkValues(currentNetwork, "TOKEN_TWO_ADDRESS"),
-      ],
+      assets: getPoolTokenAddresses(currentNetwork),
       maxAmountsIn: [MAX_UINT256, MAX_UINT256],
       fromInternalBalance: false,
       userData: encodedRequest,

@@ -8,7 +8,7 @@ import { POOLS } from "../../utils/pool";
 import { ShortSwapContext } from "./ShortSwapProvider";
 import ethLogo from "../../images/ethereum.png";
 import { useNetwork } from "./UIProvider";
-import { getPoolNetworkValues } from "../../utils/poolUtils";
+import { getPoolConfig } from "../../utils/poolUtils";
 
 export const LongSwapProvider = ({ children }) => {
   const [sliderValue, setSliderValue] = useState(1);
@@ -35,7 +35,7 @@ export const LongSwapProvider = ({ children }) => {
     networkName = "Ethereum";
   }
   console.log("networkName", networkName);
-  const poolConfig = getPoolNetworkValues(networkName);
+  const poolConfig = getPoolConfig(networkName);
   const [tokenA, setTokenA] = useState({
     ...poolConfig?.tokens[0],
     balance: 0,

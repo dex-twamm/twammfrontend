@@ -12,7 +12,13 @@ import {
   MAX_UINT256,
 } from ".";
 import { POOLS } from "./pool";
-import { getNetworkPoolId, getPoolNetworkValues } from "./poolUtils";
+import {
+  getNetworkPoolId,
+  getpoolAddress,
+  getpoolLtoContract,
+  getPoolTokenAddresses,
+  getpoolVaultContractAddress,
+} from "./poolUtils";
 
 export async function placeLongTermOrder(
   tokenInIndex,
@@ -27,7 +33,7 @@ export async function placeLongTermOrder(
   let txHash;
 
   const exchangeContract = new Contract(
-    getPoolNetworkValues(currentNetwork, "VAULT_CONTRACT_ADDRESS"),
+    getpoolVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -48,10 +54,7 @@ export async function placeLongTermOrder(
     walletAddress,
     walletAddress,
     {
-      assets: [
-        getPoolNetworkValues(currentNetwork, "TOKEN_ONE_ADDRESS"),
-        getPoolNetworkValues(currentNetwork, "TOKEN_TWO_ADDRESS"),
-      ],
+      assets: getPoolTokenAddresses(currentNetwork),
       maxAmountsIn: [MAX_UINT256, MAX_UINT256],
       fromInternalBalance: false,
       userData: encodedRequest,
@@ -63,10 +66,7 @@ export async function placeLongTermOrder(
     walletAddress,
     walletAddress,
     {
-      assets: [
-        getPoolNetworkValues(currentNetwork, "TOKEN_ONE_ADDRESS"),
-        getPoolNetworkValues(currentNetwork, "TOKEN_TWO_ADDRESS"),
-      ],
+      assets: getPoolTokenAddresses(currentNetwork),
       maxAmountsIn: [MAX_UINT256, MAX_UINT256],
       fromInternalBalance: false,
       userData: encodedRequest,
@@ -90,7 +90,7 @@ export async function getLongTermOrder(
   currentNetwork = "Goerli"
 ) {
   const contract = new Contract(
-    getPoolNetworkValues(currentNetwork, "address"),
+    getpoolAddress(currentNetwork),
     LONGTERM_ABI,
     signer
   );
@@ -105,7 +105,7 @@ export async function getLastVirtualOrderBlock(
   currentNetwork = "Goerli"
 ) {
   const contract = new Contract(
-    getPoolNetworkValues(currentNetwork, "LTOContract"),
+    getpoolLtoContract(currentNetwork),
     LONGTERM_ABI,
     signer
   );
