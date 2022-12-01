@@ -1,11 +1,7 @@
-import { BigNumber, Contract, ethers } from "ethers";
+import { BigNumber, Contract } from "ethers";
 import { VAULT_CONTRACT_ABI } from "../constants";
 import { MAX_UINT256 } from ".";
-import {
-  getNetworkPoolId,
-  getPoolTokenAddresses,
-  getpoolVaultContractAddress,
-} from "./poolUtils";
+import { getNetworkPoolId, getpoolVaultContractAddress } from "./poolUtils";
 
 /*
   swapTokens: Swaps `swapAmountWei` of Eth/Crypto Dev tokens with `tokenToBeReceivedAfterSwap` amount of Eth/Crypto Dev tokens.
@@ -71,69 +67,11 @@ export const getEstimatedConvertedToken = async (
   const swapTx = await exchangeContract.callStatic.swap(...swapData, {
     gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
   });
-  let txHash = swapTx;
   // console.log("swapTxxxx", txHash.toNumber());
   // const txResult = await swapTx.wait();
   // console.log("Swap Results After Placed", txResult)
-  return txHash;
+  return swapTx;
 
   // const swapResult = await swapTx.wait();
   // console.log(swapResult.transactionHash);
-};
-
-export const getLongSwapEstimatedConvertedToken = async (
-  tokenInIndex,
-  tokenOutIndex,
-  amountIn,
-  numberOfBlockIntervals,
-  signer,
-  walletAddress,
-  currentNetwork
-) => {
-  let txHash;
-
-  console.log("Amount in value", amountIn, numberOfBlockIntervals);
-  const exchangeContract = new Contract(
-    getpoolVaultContractAddress(currentNetwork),
-    VAULT_CONTRACT_ABI,
-    signer
-  );
-  const abiCoder = ethers.utils.defaultAbiCoder;
-  const encodedRequest = abiCoder.encode(
-    ["uint256", "uint256", "uint256", "uint256", "uint256"],
-    [
-      4,
-      tokenInIndex,
-      tokenOutIndex,
-      amountIn,
-      BigNumber.from(numberOfBlockIntervals),
-    ]
-  );
-
-  const swapData = [
-    getNetworkPoolId(currentNetwork),
-    walletAddress,
-    walletAddress,
-    {
-      assets: getPoolTokenAddresses(currentNetwork),
-      maxAmountsIn: [MAX_UINT256, MAX_UINT256],
-      fromInternalBalance: false,
-      userData: encodedRequest,
-    },
-  ];
-
-  const gasEstimate = await exchangeContract.estimateGas.joinPool(...swapData);
-
-  console.log("gas estimate price", gasEstimate);
-
-  const placeLtoTx = await exchangeContract.callStatic.joinPool(...swapData, {
-    gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
-  });
-  console.log("===LongTerm Placed====", placeLtoTx);
-  txHash = placeLtoTx;
-  // setTransactionHash(placeLtoTx.hash);
-
-  // console.log("====Swap Results After Placed=====", await placeLtoTx.wait());
-  // console.log(txHash);
-  return txHash;
 };

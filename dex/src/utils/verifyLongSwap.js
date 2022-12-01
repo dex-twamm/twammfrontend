@@ -1,8 +1,69 @@
-import { ethers } from "ethers";
-import { POPUP_MESSAGE } from "../constants";
-import { getLongSwapEstimatedConvertedToken } from "./batchSwap";
+import { BigNumber, Contract, ethers } from "ethers";
+import { MAX_UINT256 } from ".";
+import { POPUP_MESSAGE, VAULT_CONTRACT_ABI } from "../constants";
 import { getProvider } from "./getProvider";
-import { getPoolConfig } from "./poolUtils";
+import {
+  getNetworkPoolId,
+  getPoolConfig,
+  getPoolTokenAddresses,
+  getpoolVaultContractAddress,
+} from "./poolUtils";
+
+export const getLongSwapEstimatedConvertedToken = async (
+  tokenInIndex,
+  tokenOutIndex,
+  amountIn,
+  numberOfBlockIntervals,
+  signer,
+  walletAddress,
+  currentNetwork
+) => {
+  let txHash;
+
+  console.log("Amount in value", amountIn, numberOfBlockIntervals);
+  const exchangeContract = new Contract(
+    getpoolVaultContractAddress(currentNetwork),
+    VAULT_CONTRACT_ABI,
+    signer
+  );
+  const abiCoder = ethers.utils.defaultAbiCoder;
+  const encodedRequest = abiCoder.encode(
+    ["uint256", "uint256", "uint256", "uint256", "uint256"],
+    [
+      4,
+      tokenInIndex,
+      tokenOutIndex,
+      amountIn,
+      BigNumber.from(numberOfBlockIntervals),
+    ]
+  );
+
+  const swapData = [
+    getNetworkPoolId(currentNetwork),
+    walletAddress,
+    walletAddress,
+    {
+      assets: getPoolTokenAddresses(currentNetwork),
+      maxAmountsIn: [MAX_UINT256, MAX_UINT256],
+      fromInternalBalance: false,
+      userData: encodedRequest,
+    },
+  ];
+
+  const gasEstimate = await exchangeContract.estimateGas.joinPool(...swapData);
+
+  console.log("gas estimate price", gasEstimate);
+
+  const placeLtoTx = await exchangeContract.callStatic.joinPool(...swapData, {
+    gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
+  });
+  console.log("===LongTerm Placed====", placeLtoTx);
+  // setTransactionHash(placeLtoTx.hash);
+
+  // console.log("====Swap Results After Placed=====", await placeLtoTx.wait());
+  // console.log(txHash);
+  return placeLtoTx;
+};
 
 export const verifyLongSwap = async (
   swapAmount,
@@ -19,7 +80,7 @@ export const verifyLongSwap = async (
   currentNetwork,
   numberOfBlockIntervals
 ) => {
-  if (swapAmount) {
+  if (swapAmount && numberOfBlockIntervals) {
     setLongSwapVerifyLoading(true);
 
     const poolConfig = getPoolConfig(currentNetwork);
@@ -84,9 +145,6 @@ export const verifyLongSwap = async (
           setLongSwapFormErrors({
             balError: POPUP_MESSAGE["BAL#510"],
           });
-        }
-        if (e.reason === "underflow") {
-          setLongSwapFormErrors({ balError: "Underflow" });
         }
         if (
           e.reason.match("ERC20: transfer amount exceeds allowance") ||

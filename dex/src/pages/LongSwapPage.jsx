@@ -95,27 +95,9 @@ const LongSwapPage = (props) => {
         numberOfBlockIntervals
       );
     }, 500);
-    // Update price every 12 seconds.
-    const interval2 = setTimeout(() => {
-      verifyLongSwap(
-        swapAmount,
-        setLongSwapVerifyLoading,
-        srcAddress,
-        destAddress,
-        setweb3provider,
-        setCurrentBlock,
-        setBalance,
-        setAccount,
-        setWalletConnected,
-        account,
-        setLongSwapFormErrors,
-        currentNetwork?.network,
-        numberOfBlockIntervals
-      );
-    }, 12000);
+
     return () => {
       clearTimeout(interval1);
-      clearTimeout(interval2);
     };
   }, [swapAmount, destAddress, srcAddress, numberOfBlockIntervals]);
 
