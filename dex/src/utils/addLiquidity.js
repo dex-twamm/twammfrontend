@@ -1,19 +1,14 @@
 import { Contract, ethers } from "ethers";
 import { defaultAbiCoder } from "ethers/lib/utils";
-import {
-  // FAUCET_TOKEN_ADDRESS,
-  fp,
-  // MATIC_TOKEN_ADDRESS,
-  MAX_UINT256,
-  // POOL_ID,
-} from ".";
-import {
-  POPUP_MESSAGE,
-  TWAMM_POOL_ABI,
-  VAULT_CONTRACT_ABI,
-} from "../constants";
+import { fp, MAX_UINT256 } from ".";
+import { POPUP_MESSAGE, VAULT_CONTRACT_ABI } from "../constants";
 import { getEthLogs } from "./get_ethLogs";
-import { POOLS } from "./pool";
+import {
+  getNetworkPoolId,
+  getPoolTokenAddresses,
+  getPoolTokens,
+  getpoolVaultContractAddress,
+} from "./poolUtils";
 
 export async function joinPool(
   walletAddress,
@@ -27,19 +22,16 @@ export async function joinPool(
     [1, [fp(1e-12), fp(1.0)], 0]
   );
   const poolContract = new Contract(
-    Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
+    getpoolVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );
   const joinPool = await poolContract.joinPool(
-    Object.keys(POOLS[currentNetwork])[0],
+    getNetworkPoolId(currentNetwork),
     walletAddress,
     walletAddress,
     {
-      assets: [
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
-      ],
+      assets: getPoolTokenAddresses(currentNetwork),
       // Could Be User Input Same as Encoded Above -- Left to Figure It Out
       maxAmountsIn: [MAX_UINT256, MAX_UINT256],
       fromInternalBalance: false,
@@ -57,7 +49,7 @@ export async function exitPool(
   currentNetwork = "Goerli"
 ) {
   const poolContract = new Contract(
-    Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
+    getpoolVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -67,39 +59,23 @@ export async function exitPool(
     [4, bptAmountIn]
   );
 
-  const gasEstimate = await poolContract.estimateGas.exitPool(
-    Object.keys(POOLS[currentNetwork])[0],
+  const data = [
+    getNetworkPoolId(currentNetwork),
     walletAdress,
     walletAdress,
     {
-      assets: [
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
-      ],
-      minAmountsOut: [0, 0],
-      userData: encodedRequest,
-      toInternalBalance: false,
-    }
-  );
-
-  const exitPoolTx = await poolContract.exitPool(
-    Object.keys(POOLS[currentNetwork])[0],
-    walletAdress,
-    walletAdress,
-    {
-      assets: [
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
-      ],
+      assets: getPoolTokenAddresses(currentNetwork),
       minAmountsOut: [0, 0],
       userData: encodedRequest,
       toInternalBalance: false,
     },
-    {
-      // gasLimit: 500000,
-      gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
-    }
-  );
+  ];
+
+  const gasEstimate = await poolContract.estimateGas.exitPool(...data);
+
+  const exitPoolTx = await poolContract.exitPool(...data, {
+    gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
+  });
   const exitPoolResult = await exitPoolTx.wait();
 
   console.log(exitPoolResult);
@@ -117,7 +93,7 @@ export async function cancelLTO(
   currentNetwork = "Goerli"
 ) {
   const poolContract = new Contract(
-    Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
+    getpoolVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -127,38 +103,23 @@ export async function cancelLTO(
     [4, orderId]
   );
 
-  const gasEstimate = await poolContract.estimateGas.exitPool(
-    Object.keys(POOLS[currentNetwork])[0],
+  const data = [
+    getNetworkPoolId(currentNetwork),
     walletAdress,
     walletAdress,
     {
-      assets: [
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
-      ],
-      minAmountsOut: [0, 0],
-      userData: encodedRequest,
-      toInternalBalance: false,
-    }
-  );
-  const exitPoolTx = await poolContract.exitPool(
-    Object.keys(POOLS[currentNetwork])[0],
-    walletAdress,
-    walletAdress,
-    {
-      assets: [
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
-      ],
+      assets: getPoolTokenAddresses(currentNetwork),
       minAmountsOut: [0, 0],
       userData: encodedRequest,
       toInternalBalance: false,
     },
-    {
-      // gasLimit: 500000,
-      gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
-    }
-  );
+  ];
+
+  const gasEstimate = await poolContract.estimateGas.exitPool(...data);
+
+  const exitPoolTx = await poolContract.exitPool(...data, {
+    gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
+  });
   setTransactionHash(orderHash);
   const exitPoolResult = await exitPoolTx.wait();
   setMessage(POPUP_MESSAGE.ltoCancelSuccess);
@@ -181,9 +142,8 @@ export async function withdrawLTO(
   provider,
   currentNetwork = "Goerli"
 ) {
-  // const currentNetwork = "Goerli";
   const poolContract = new Contract(
-    Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
+    getpoolVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -193,38 +153,22 @@ export async function withdrawLTO(
     [5, orderId]
   );
 
-  const gasEstimate = await poolContract.estimateGas.exitPool(
-    Object.keys(POOLS[currentNetwork])[0],
+  const data = [
+    getNetworkPoolId(currentNetwork),
     walletAdress,
     walletAdress,
     {
-      assets: [
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
-      ],
-      minAmountsOut: [0, 0],
-      userData: encodedRequest,
-      toInternalBalance: false,
-    }
-  );
-  const withdrawLTOTx = await poolContract.exitPool(
-    Object.keys(POOLS[currentNetwork])[0],
-    walletAdress,
-    walletAdress,
-    {
-      assets: [
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
-      ],
+      assets: getPoolTokenAddresses(currentNetwork),
       minAmountsOut: [0, 0],
       userData: encodedRequest,
       toInternalBalance: false,
     },
-    {
-      // gasLimit: 500000,
-      gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
-    }
-  );
+  ];
+
+  const gasEstimate = await poolContract.estimateGas.exitPool(...data);
+  const withdrawLTOTx = await poolContract.exitPool(...data, {
+    gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
+  });
   setTransactionHash(orderHash);
   const withdrawLTOResult = await withdrawLTOTx.wait();
   await getEthLogs(provider, walletAdress).then((res) => {
@@ -240,25 +184,25 @@ export async function getPoolBalance(
   tokenAddress,
   currentNetwork = "Goerli"
 ) {
-  const tokenIndex = Object.values(POOLS[currentNetwork])[0]?.tokens.filter(
+  const tokenIndex = getPoolTokens(currentNetwork).filter(
     (item) => item.address === tokenAddress
   );
 
   console.log("TokenIndex--->", tokenIndex);
   const vaultContract = new Contract(
-    Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
+    getpoolVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );
   console.log(
     "pool id-->",
-    Object.keys(POOLS[currentNetwork])[0],
+    getNetworkPoolId(currentNetwork),
     tokenAddress,
     currentNetwork,
     signer
   );
   const poolBalance = await vaultContract.getPoolTokenInfo(
-    Object.keys(POOLS[currentNetwork])[0],
+    getNetworkPoolId(currentNetwork),
     tokenAddress
   );
   const cash = poolBalance.cash._hex;

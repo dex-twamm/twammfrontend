@@ -1,20 +1,15 @@
 import { Contract, ethers } from "ethers";
-import {
-  bigToStr,
-  // FAUCET_TOKEN_ADDRESS,
-  // MATIC_TOKEN_ADDRESS,
-  // POOL_ID,
-} from ".";
+import { bigToStr } from ".";
 
 import { ERC20_TOKEN_CONTRACT_ABI, TWAMM_POOL_ABI } from "../constants";
-import { POOLS } from "./pool";
+import { getpoolAddress, getPoolConfig } from "./poolUtils";
 // To Retrieve Token Balances
 export const getTokensBalance = async (
   provider,
   walletAddress,
   currentNetwork = "Goerli"
 ) => {
-  const poolConfig = Object.values(POOLS?.[currentNetwork])?.[0];
+  const poolConfig = getPoolConfig(currentNetwork);
   var tokenAddress = [
     poolConfig?.TOKEN_ONE_ADDRESS,
     poolConfig?.TOKEN_TWO_ADDRESS,
@@ -24,7 +19,10 @@ export const getTokensBalance = async (
   for (let index = 0; index < tokenAddress.length; index++) {
     const address = tokenAddress[index];
     const balances = await balanceContract(address);
-    const readableBalance = ethers.utils.formatUnits(balances, poolConfig?.tokens[index].decimals);
+    const readableBalance = ethers.utils.formatUnits(
+      balances,
+      poolConfig?.tokens[index].decimals
+    );
     // console.log("Balances", readableBalance);
     newBalance.push({ [address]: readableBalance });
   }
@@ -35,7 +33,12 @@ export const getTokensBalance = async (
       provider
     );
     const balanceOfTokens = await ERC20Contract.balanceOf(walletAddress);
-    console.log("Balance of_" + address + "_is=" + ethers.utils.formatEther(balanceOfTokens));
+    console.log(
+      "Balance of_" +
+        address +
+        "_is=" +
+        ethers.utils.formatEther(balanceOfTokens)
+    );
     return balanceOfTokens;
   }
   console.log("newBalance", newBalance);
@@ -48,7 +51,7 @@ export const getLPTokensBalance = async (
   currentNetwork = "Goerli"
 ) => {
   const poolContract = new Contract(
-    Object.values(POOLS?.[currentNetwork])?.[0].address,
+    getpoolAddress(currentNetwork),
     TWAMM_POOL_ABI,
     provider
   );
