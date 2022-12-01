@@ -1,13 +1,7 @@
 import { Contract, ethers } from "ethers";
-import {
-  bigToStr,
-  // FAUCET_TOKEN_ADDRESS,
-  // MATIC_TOKEN_ADDRESS,
-  // POOL_ID,
-} from ".";
+import { bigToStr } from ".";
 
 import { ERC20_TOKEN_CONTRACT_ABI, TWAMM_POOL_ABI } from "../constants";
-import { POOLS } from "./pool";
 import { getpoolAddress, getPoolConfig } from "./poolUtils";
 // To Retrieve Token Balances
 export const getTokensBalance = async (

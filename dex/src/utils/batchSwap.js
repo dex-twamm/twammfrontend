@@ -1,7 +1,6 @@
 import { BigNumber, Contract, ethers } from "ethers";
 import { VAULT_CONTRACT_ABI } from "../constants";
 import { MAX_UINT256 } from ".";
-import { POOLS } from "./pool";
 import {
   getNetworkPoolId,
   getPoolTokenAddresses,

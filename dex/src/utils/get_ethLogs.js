@@ -1,8 +1,6 @@
 import { Contract, ethers } from "ethers";
-// import { POOL_ID } from ".";
 import { TWAMM_POOL_ABI } from "../constants";
 import { getLongTermOrder } from "./longSwap";
-import { POOLS } from "./pool";
 import { getpoolAddress } from "./poolUtils";
 
 export async function getEthLogs(

@@ -1,9 +1,7 @@
 import { ethers } from "ethers";
 import { POPUP_MESSAGE } from "../constants";
-import { useNetwork } from "../providers/context/UIProvider";
 import { getEstimatedConvertedToken } from "./batchSwap";
 import { getProvider } from "./getProvider";
-import { POOLS } from "./pool";
 import { getPoolConfig } from "./poolUtils";
 
 //Spot Prices

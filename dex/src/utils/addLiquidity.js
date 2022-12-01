@@ -1,19 +1,8 @@
 import { Contract, ethers } from "ethers";
 import { defaultAbiCoder } from "ethers/lib/utils";
-import {
-  // FAUCET_TOKEN_ADDRESS,
-  fp,
-  // MATIC_TOKEN_ADDRESS,
-  MAX_UINT256,
-  // POOL_ID,
-} from ".";
-import {
-  POPUP_MESSAGE,
-  TWAMM_POOL_ABI,
-  VAULT_CONTRACT_ABI,
-} from "../constants";
+import { fp, MAX_UINT256 } from ".";
+import { POPUP_MESSAGE, VAULT_CONTRACT_ABI } from "../constants";
 import { getEthLogs } from "./get_ethLogs";
-import { POOLS } from "./pool";
 import {
   getNetworkPoolId,
   getPoolTokenAddresses,
@@ -70,19 +59,7 @@ export async function exitPool(
     [4, bptAmountIn]
   );
 
-  const gasEstimate = await poolContract.estimateGas.exitPool(
-    getNetworkPoolId(currentNetwork),
-    walletAdress,
-    walletAdress,
-    {
-      assets: getPoolTokenAddresses(currentNetwork),
-      minAmountsOut: [0, 0],
-      userData: encodedRequest,
-      toInternalBalance: false,
-    }
-  );
-
-  const exitPoolTx = await poolContract.exitPool(
+  const data = [
     getNetworkPoolId(currentNetwork),
     walletAdress,
     walletAdress,
@@ -92,11 +69,13 @@ export async function exitPool(
       userData: encodedRequest,
       toInternalBalance: false,
     },
-    {
-      // gasLimit: 500000,
-      gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
-    }
-  );
+  ];
+
+  const gasEstimate = await poolContract.estimateGas.exitPool(...data);
+
+  const exitPoolTx = await poolContract.exitPool(...data, {
+    gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
+  });
   const exitPoolResult = await exitPoolTx.wait();
 
   console.log(exitPoolResult);
@@ -124,18 +103,7 @@ export async function cancelLTO(
     [4, orderId]
   );
 
-  const gasEstimate = await poolContract.estimateGas.exitPool(
-    getNetworkPoolId(currentNetwork),
-    walletAdress,
-    walletAdress,
-    {
-      assets: getPoolTokenAddresses(currentNetwork),
-      minAmountsOut: [0, 0],
-      userData: encodedRequest,
-      toInternalBalance: false,
-    }
-  );
-  const exitPoolTx = await poolContract.exitPool(
+  const data = [
     getNetworkPoolId(currentNetwork),
     walletAdress,
     walletAdress,
@@ -145,11 +113,13 @@ export async function cancelLTO(
       userData: encodedRequest,
       toInternalBalance: false,
     },
-    {
-      // gasLimit: 500000,
-      gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
-    }
-  );
+  ];
+
+  const gasEstimate = await poolContract.estimateGas.exitPool(...data);
+
+  const exitPoolTx = await poolContract.exitPool(...data, {
+    gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
+  });
   setTransactionHash(orderHash);
   const exitPoolResult = await exitPoolTx.wait();
   setMessage(POPUP_MESSAGE.ltoCancelSuccess);
@@ -172,7 +142,6 @@ export async function withdrawLTO(
   provider,
   currentNetwork = "Goerli"
 ) {
-  // const currentNetwork = "Goerli";
   const poolContract = new Contract(
     getpoolVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
@@ -184,18 +153,7 @@ export async function withdrawLTO(
     [5, orderId]
   );
 
-  const gasEstimate = await poolContract.estimateGas.exitPool(
-    getNetworkPoolId(currentNetwork),
-    walletAdress,
-    walletAdress,
-    {
-      assets: getPoolTokenAddresses(currentNetwork),
-      minAmountsOut: [0, 0],
-      userData: encodedRequest,
-      toInternalBalance: false,
-    }
-  );
-  const withdrawLTOTx = await poolContract.exitPool(
+  const data = [
     getNetworkPoolId(currentNetwork),
     walletAdress,
     walletAdress,
@@ -205,11 +163,12 @@ export async function withdrawLTO(
       userData: encodedRequest,
       toInternalBalance: false,
     },
-    {
-      // gasLimit: 500000,
-      gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
-    }
-  );
+  ];
+
+  const gasEstimate = await poolContract.estimateGas.exitPool(...data);
+  const withdrawLTOTx = await poolContract.exitPool(...data, {
+    gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
+  });
   setTransactionHash(orderHash);
   const withdrawLTOResult = await withdrawLTOTx.wait();
   await getEthLogs(provider, walletAdress).then((res) => {

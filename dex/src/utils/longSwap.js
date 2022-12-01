@@ -1,17 +1,6 @@
-import { BigNumber, Contract, ethers, utils } from "ethers";
-import {
-  LONGTERM_ABI,
-  VAULT_CONTRACT_ABI,
-  VAULT_CONTRACT_ADDRESS,
-  TWAMM_POOL_ABI,
-} from "../constants";
-import {
-  // POOL_ID,
-  // FAUCET_TOKEN_ADDRESS,
-  // MATIC_TOKEN_ADDRESS,
-  MAX_UINT256,
-} from ".";
-import { POOLS } from "./pool";
+import { BigNumber, Contract, ethers } from "ethers";
+import { LONGTERM_ABI, VAULT_CONTRACT_ABI } from "../constants";
+import { MAX_UINT256 } from ".";
 import {
   getNetworkPoolId,
   getpoolAddress,

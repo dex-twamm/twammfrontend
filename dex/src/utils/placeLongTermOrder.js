@@ -3,7 +3,6 @@ import { POPUP_MESSAGE } from "../constants";
 import { getProvider } from "./getProvider";
 import { getEthLogs } from "./get_ethLogs";
 import { placeLongTermOrder } from "./longSwap";
-import { POOLS } from "./pool";
 import { getPoolConfig } from "./poolUtils";
 
 export const _placeLongTermOrders = async (

@@ -1,7 +1,6 @@
 import { ethers } from "ethers";
 import { POPUP_MESSAGE } from "../constants";
 import { getProvider } from "./getProvider";
-import { POOLS } from "./pool";
 import { getPoolConfig } from "./poolUtils";
 import { swapTokens } from "./swap";
 
