@@ -1,5 +1,5 @@
+import { useEffect } from "react";
 import { createContext, useContext, useState } from "react";
-import ethLogo from "../../images/ethereum.svg";
 import { NETWORKS } from "../../utils/networks";
 
 const UIContext = createContext(null);
@@ -11,18 +11,21 @@ export const useNetwork = () => {
 
 const UIProvider = ({ children }) => {
   const [showDropdown, setShowDropdown] = useState(false);
+  const [selectedNetwork, setSelectedNetwork] = useState();
 
-  window.ethereum?.enable();
-  const nId = window.ethereum?.networkVersion;
-  console.log("window.ethereum", nId, window.ethereum);
+  useEffect(() => {
+    window.ethereum.request({ method: "net_version" }).then((net_version) => {
+      const initialNetwork = NETWORKS.find((nw) => nw.chainId === net_version);
 
-  const initialNetwork = NETWORKS.find((nw) => nw.chainId === nId);
+      setSelectedNetwork({
+        network: initialNetwork?.name,
+        logo: initialNetwork?.logo,
+        chainId: initialNetwork?.chainId,
+      });
+    });
+  }, []);
 
-  const [selectedNetwork, setSelectedNetwork] = useState({
-    network: initialNetwork?.name,
-    logo: initialNetwork?.logo,
-    chainId: initialNetwork?.chainId,
-  });
+  if (!selectedNetwork) return null;
   return (
     <UIContext.Provider
       value={{
@@ -30,7 +33,7 @@ const UIProvider = ({ children }) => {
         setShowDropdown,
         selectedNetwork,
         setSelectedNetwork,
-        nId,
+        // nId,
       }}
     >
       {children}
@@ -39,3 +42,5 @@ const UIProvider = ({ children }) => {
 };
 
 export { UIProvider, UIContext };
+
+//how to get promise result from a constant having value of promises?
