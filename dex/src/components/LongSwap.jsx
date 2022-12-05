@@ -59,6 +59,7 @@ const LongSwap = (props) => {
     setTargetDate,
     targetDate,
     setNumberOfBlockIntervals,
+    numberOfBlockIntervals,
     allowance,
     setLongSwapFormErrors,
     longSwapFormErrors,
@@ -365,8 +366,8 @@ const LongSwap = (props) => {
             </Box>
           </div>
 
-          {parseFloat(allowance) <= swapAmount &&
-          swapAmount &&
+          {swapAmount &&
+          parseFloat(allowance) <= swapAmount &&
           tokenA.tokenIsSet &&
           tokenB.tokenIsSet ? (
             <button
@@ -401,7 +402,7 @@ const LongSwap = (props) => {
                 !tokenA.tokenIsSet ||
                 !tokenB.tokenIsSet ||
                 !swapAmount ||
-                executionTime === "" ||
+                numberOfBlockIntervals > 0 ||
                 disableAllowBtn ||
                 longSwapVerifyLoading ||
                 parseFloat(allowance) <= swapAmount
