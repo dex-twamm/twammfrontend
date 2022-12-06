@@ -3,6 +3,7 @@ import { Alert, Box, CircularProgress, Skeleton } from "@mui/material";
 import classNames from "classnames";
 import React, { useContext, useState } from "react";
 import styles from "../css/AddLiquidity.module.css";
+// import style from "../css/Swap.module.css";
 
 import { LongSwapContext } from "../providers";
 import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
@@ -24,8 +25,7 @@ const Swap = (props) => {
   } = props;
 
   const [display, setDisplay] = useState(false);
-  const [isSubmit, setIsSubmit] = useState(false);
-  const [value, setValue] = useState(0.0);
+
   const [open, setOpen] = useState(false);
   const [disableAllowBtn, setDisableAllowBtn] = useState(true);
   const [switchInput, setSwitchInput] = useState();
@@ -85,7 +85,6 @@ const Swap = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsSubmit(true);
   };
 
   const handleClick = () => {
@@ -242,11 +241,11 @@ const Swap = (props) => {
           )} */}
 
           {/* <FontAwesomeIcon
-                style={{ zIndex: "1", cursor: "pointer" }}
-                className={style.iconDown}
-                icon={faArrowDown}
-                onClick={handleInputSwitch}
-              /> */}
+            style={{ zIndex: "1", cursor: "pointer" }}
+            className={style.iconDown}
+            icon={faArrowDown}
+            onClick={handleInputSwitch}
+          /> */}
           <Input
             id={2}
             input={

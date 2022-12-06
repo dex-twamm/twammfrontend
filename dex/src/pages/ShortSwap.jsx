@@ -13,13 +13,11 @@ import { connectWallet } from "../utils/connetWallet";
 import { getProvider } from "../utils/getProvider";
 import { spotPrice } from "../utils/getSpotPrice";
 import { getEthLogs } from "../utils/get_ethLogs";
-import { POOLS } from "../utils/pool";
 import { _swapTokens } from "../utils/shortSwap";
 
 const ShortSwap = ({
   tokenSymbol,
   tokenImage,
-  // connectWallet,
   buttonText,
   showSettings,
   setShowSettings,
