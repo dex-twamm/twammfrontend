@@ -28,6 +28,7 @@ export const ShortSwapProvider = ({ children }) => {
   const [LPTokenBalance, setLPTokenBalance] = useState([]);
   // const [provider, setProvider] = useState("");
   const [balance, setBalance] = useState();
+  const [spotPriceLoading, setSpotPriceLoading] = useState(false);
 
   return (
     <ShortSwapContext.Provider
@@ -82,6 +83,8 @@ export const ShortSwapProvider = ({ children }) => {
         setLPTokenBalance,
         balance,
         setBalance,
+        spotPriceLoading,
+        setSpotPriceLoading,
       }}
     >
       {children}

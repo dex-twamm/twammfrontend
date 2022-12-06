@@ -55,6 +55,8 @@ export const spotPrice = async (
     const walletAddress = account;
 
     console.log("Expected swap out ---->", expectedSwapOut);
+
+    //for shortswap
     try {
       await getEstimatedConvertedToken(
         signer,
@@ -91,7 +93,10 @@ export const spotPrice = async (
             balError: POPUP_MESSAGE["BAL#510"],
           });
         }
-        if (e.reason.match("ERC20: transfer amount exceeds allowance") || e.reason.match("allowance") ) {
+        if (
+          e.reason.match("ERC20: transfer amount exceeds allowance") ||
+          e.reason.match("allowance")
+        ) {
           setSpotPriceLoading(false);
           setSpotPrice(0);
           errors.balError = undefined;

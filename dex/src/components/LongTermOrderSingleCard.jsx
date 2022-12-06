@@ -78,7 +78,8 @@ const LongTermOrderSingleCard = ({ it }) => {
   }
 
   const averagePrice =
-    bigToFloat(convertedAmount, tokenOut.decimals) / bigToFloat(soldToken, tokenIn.decimals);
+    bigToFloat(convertedAmount, tokenOut.decimals) /
+    bigToFloat(soldToken, tokenIn.decimals);
 
   const handleCancel = (orderId, orderHash) => {
     _cancelLTO(
@@ -184,9 +185,7 @@ const LongTermOrderSingleCard = ({ it }) => {
               />
               <p className={styles.tokenText}>
                 <span>
-                  {bigToStr(soldToken, tokenIn.decimals)}{" "}
-                  {tokenIn.symbol}{" "}
-                  of
+                  {bigToStr(soldToken, tokenIn.decimals)} {tokenIn.symbol} of
                 </span>
                 <span> {bigToStr(amountOf, tokenIn.decimals)}</span>
               </p>
@@ -218,8 +217,7 @@ const LongTermOrderSingleCard = ({ it }) => {
                 alt={tokenOut.symbol}
               />
               <p className={classNames(styles.tokenText, styles.greenText)}>
-                {bigToStr(convertedAmount, tokenOut.decimals)}{" "}
-                {tokenOut.symbol}
+                {bigToStr(convertedAmount, tokenOut.decimals)} {tokenOut.symbol}
               </p>
             </div>
           </div>
@@ -237,19 +235,17 @@ const LongTermOrderSingleCard = ({ it }) => {
                   orderStatus?.status === "Completed"
                     ? styles.greenProgress
                     : orderStatus?.status === "Execution Completed"
-                      ? styles.greenProgress
-                      : orderStatus?.status === "Cancelled"
-                        ? styles.redProgress
-                        : styles.activeProgress
+                    ? styles.greenProgress
+                    : orderStatus?.status === "Cancelled"
+                    ? styles.redProgress
+                    : styles.activeProgress
                 )}
               ></div>
             </div>
           </div>
 
           <div className={styles.extrasContainer}>
-            <div className={styles.fees}>
-              {poolConfig?.fees} fees
-            </div>
+            <div className={styles.fees}>{poolConfig?.fees} fees</div>
             {soldToken != 0 && (
               <div className={styles.averagePrice}>
                 {averagePrice.toFixed(4)} Average Price
@@ -279,7 +275,11 @@ const LongTermOrderSingleCard = ({ it }) => {
                 handleCancel(it?.orderId?.toNumber(), it?.transactionHash);
               }}
             >
-              {orderStatus?.status !== "Completed" ? "Cancel" : "Completed"}
+              {orderStatus?.status === "Completed"
+                ? "Completed"
+                : orderStatus?.status === "Cancelled"
+                ? "Cancelled"
+                : "Cancel"}
             </button>
             {orderStatus?.status !== "Cancelled" &&
               orderStatus?.status !== "Completed" && (
