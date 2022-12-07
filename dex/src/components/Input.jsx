@@ -35,7 +35,7 @@ const Input = (props) => {
   console.log("swap token", tokenA, tokenB);
 
   const tokenDetails = Object.values(
-    POOLS?.[selectedNetwork?.name ?? "Goerli"]
+    POOLS?.[selectedNetwork?.network ?? "Goerli"]
   )?.[0]?.tokens;
 
   useEffect(() => {
