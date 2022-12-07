@@ -2,14 +2,14 @@ import { Alert, Backdrop, Skeleton } from "@mui/material";
 import classNames from "classnames";
 import React, { useContext, useEffect, useState } from "react";
 import styles from "../css/Modal.module.css";
-import { LongSwapContext, ShortSwapContext } from "../providers";
+import { LongSwapContext, ShortSwapContext, UIContext } from "../providers";
+import { POOLS } from "../utils/pool";
 
 const Modal = ({
   display,
   setDisplay,
   setTokenA,
   setTokenB,
-  tokenDetails,
   tokenBalances,
 }) => {
   // useContext To Retrieve The Source and Destination Address of The Token
@@ -24,6 +24,15 @@ const Modal = ({
   } = useContext(ShortSwapContext);
 
   const { tokenA, tokenB } = useContext(LongSwapContext);
+  const [tokenDetails, setTokenDetails] = useState();
+
+  const { selectedNetwork } = useContext(UIContext);
+
+  useEffect(() => {
+    const tokenDetail = Object.values(POOLS?.[selectedNetwork?.network])?.[0]
+      ?.tokens;
+    setTokenDetails(tokenDetail);
+  }, []);
 
   // Handle Modal Close
   const handleModalClose = () => {
@@ -33,7 +42,7 @@ const Modal = ({
   // Handle Select Token Modal display
   const handleTokenSelection = (token) => {
     console.log("TokenSelected Prabin", selectToken);
-    const chosenToken = tokenDetails.find((x) => x.symbol === token.symbol);
+    const chosenToken = tokenDetails?.find((x) => x.symbol === token.symbol);
     console.log("Chosen Token", chosenToken);
 
     let balances = tokenBalances.map((obj) => ({
@@ -119,7 +128,7 @@ const Modal = ({
     //     token => token.name !== tokenA.symbol
     // );
 
-    tokensList = tokensDetail.map((token) => {
+    tokensList = tokensDetail?.map((token) => {
       if (token.name === tokenA.symbol) {
         console.log("Here");
         return (
@@ -142,7 +151,7 @@ const Modal = ({
       );
     });
   } else {
-    tokensList = tokensDetail.map((token) => {
+    tokensList = tokensDetail?.map((token) => {
       return (
         <div
           className={styles.modalToken}

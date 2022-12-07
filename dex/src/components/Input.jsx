@@ -3,7 +3,6 @@ import classnames from "classnames";
 import { useContext, useEffect } from "react";
 import styles from "../css/Input.module.css";
 import { LongSwapContext, ShortSwapContext, UIContext } from "../providers";
-import { POOLS } from "../utils/pool";
 import Modal from "./Modal";
 
 const Input = (props) => {
@@ -30,13 +29,9 @@ const Input = (props) => {
   } = useContext(ShortSwapContext);
   const { tokenA, tokenB } = useContext(LongSwapContext);
 
-  const { selectedNetwork, setSelectedNetwork } = useContext(UIContext);
+  const { setSelectedNetwork } = useContext(UIContext);
 
   console.log("swap token", tokenA, tokenB);
-
-  const tokenDetails = Object.values(
-    POOLS?.[selectedNetwork?.network ?? "Goerli"]
-  )?.[0]?.tokens;
 
   useEffect(() => {
     const balanceA =
@@ -129,7 +124,6 @@ const Input = (props) => {
           selectToken={selectToken}
           setTokenA={setTokenA}
           setTokenB={setTokenB}
-          tokenDetails={tokenDetails}
           tokenBalances={tokenBalances}
         />
       )}
