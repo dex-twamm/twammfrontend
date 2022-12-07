@@ -32,14 +32,14 @@ const Tabs = () => {
   const onNavLinkClick = () => {
     const poolConfig = Object.values(POOLS?.[currentNetwork?.network])?.[0];
     setSwapAmount("");
-    if(!tokenA.tokenIsSet) {
+    if (!tokenA.tokenIsSet) {
       setTokenA({
         ...poolConfig?.tokens[0],
         balance: 0,
         tokenIsSet: true,
       });
     }
-    if(!tokenB.tokenIsSet) {
+    if (!tokenB.tokenIsSet) {
       setTokenB({
         ...poolConfig?.tokens[1],
         balance: 0,

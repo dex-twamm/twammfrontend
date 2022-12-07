@@ -1,11 +1,14 @@
 import { getProvider } from "./getProvider";
+import { NETWORKS } from "./networks";
 
 export const connectWallet = async (
   setweb3provider,
   setCurrentBlock,
   setBalance,
   setAccount,
-  setWalletConnected
+  setWalletConnected,
+  setSelectedNetwork,
+  nId
 ) => {
   try {
     await getProvider(
@@ -16,13 +19,14 @@ export const connectWallet = async (
       setAccount,
       setWalletConnected
     );
-    // window.location.reload();
-    // console.log("Wallet Connected Info", isWalletConnected);
 
-    // setSuccess("Wallet Connected");
-    // tokenBalance(account);
+    const initialNetwork = NETWORKS.find((nw) => nw.chainId === nId);
+    setSelectedNetwork({
+      network: initialNetwork?.name,
+      logo: initialNetwork?.logo,
+      chainId: initialNetwork?.chainId,
+    });
   } catch (err) {
     console.error(err);
-    // setError('Wallet Connection Rejected');
   }
 };

@@ -14,7 +14,7 @@ import { getEthLogs } from "../utils/get_ethLogs";
 import { _placeLongTermOrders } from "../utils/placeLongTermOrder";
 import { WebContext } from "../providers/context/WebProvider";
 import { connectWallet } from "../utils/connetWallet";
-import { useNetwork } from "../providers/context/UIProvider";
+import { UIContext, useNetwork } from "../providers/context/UIProvider";
 import LongSwap from "../components/LongSwap";
 import { verifyLongSwap } from "../utils/verifyLongSwap";
 
@@ -38,7 +38,6 @@ const LongSwapPage = (props) => {
     setMessage,
     numberOfBlockIntervals,
     setOrderLogsDecoded,
-    longSwapFormErrors,
     setLongSwapFormErrors,
     longSwapVerifyLoading,
     setLongSwapVerifyLoading,
@@ -58,10 +57,11 @@ const LongSwapPage = (props) => {
     setTransactionHash,
     setLoading,
     setError,
-    setFormErrors,
   } = useContext(ShortSwapContext);
 
-  const { provider, setProvider } = useContext(WebContext);
+  const { provider } = useContext(WebContext);
+
+  const { selectedNetwork, nId } = useContext(UIContext);
 
   const currentNetwork = useNetwork();
 
@@ -109,7 +109,9 @@ const LongSwapPage = (props) => {
         setCurrentBlock,
         setBalance,
         setAccount,
-        setWalletConnected
+        setWalletConnected,
+        selectedNetwork,
+        nId
       );
       const signer = await getProvider(
         true,
