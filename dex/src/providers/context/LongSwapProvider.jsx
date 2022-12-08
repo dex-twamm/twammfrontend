@@ -1,9 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-import { POOLS } from "../../utils/pool";
-import { ShortSwapContext } from "./ShortSwapProvider";
-import ethLogo from "../../images/ethereum.png";
-import { useNetwork } from "./UIProvider";
 import { getPoolConfig } from "../../utils/poolUtils";
 
 import { UIContext } from "./UIProvider";
@@ -27,8 +23,7 @@ export const LongSwapProvider = ({ children }) => {
   const { selectedNetwork } = useContext(UIContext);
 
   useEffect(() => {
-    const poolConfig = Object.values(POOLS?.[selectedNetwork?.network])?.[0];
-
+    const poolConfig = getPoolConfig(selectedNetwork?.network);
     setTokenA({
       ...poolConfig?.tokens[0],
       balance: 0,

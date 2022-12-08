@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useState } from "react";
 import styles from "../css/Modal.module.css";
 import { LongSwapContext, ShortSwapContext, UIContext } from "../providers";
 import { POOLS } from "../utils/pool";
+import { getPoolTokens } from "../utils/poolUtils";
 
 const Modal = ({
   display,
@@ -29,8 +30,7 @@ const Modal = ({
   const { selectedNetwork } = useContext(UIContext);
 
   useEffect(() => {
-    const tokenDetail = Object.values(POOLS?.[selectedNetwork?.network])?.[0]
-      ?.tokens;
+    const tokenDetail = getPoolTokens(selectedNetwork?.network);
     setTokenDetails(tokenDetail);
   }, []);
 

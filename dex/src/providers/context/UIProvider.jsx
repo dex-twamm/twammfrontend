@@ -34,7 +34,7 @@ const UIProvider = ({ children }) => {
         setShowDropdown,
         selectedNetwork,
         setSelectedNetwork,
-        // nId,
+        nId,
       }}
     >
       {children}
@@ -43,5 +43,3 @@ const UIProvider = ({ children }) => {
 };
 
 export { UIProvider, UIContext };
-
-//how to get promise result from a constant having value of promises?
