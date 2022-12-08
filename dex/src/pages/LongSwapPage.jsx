@@ -125,7 +125,7 @@ const LongSwapPage = (props) => {
         setAccount,
         setWalletConnected
       );
-      await getEthLogs(signer);
+      await getEthLogs(signer, account, selectedNetwork?.network);
     } else {
       await _placeLongTermOrders(
         swapAmount,
