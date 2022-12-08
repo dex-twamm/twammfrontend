@@ -34,7 +34,7 @@ const LongTermOrderSingleCard = ({ it }) => {
     setOrderLogsDecoded,
     setMessage,
   } = useContext(LongSwapContext);
-  const { selectedNetwork } = useContext(UIContext);
+  const { selectedNetwork, setSelectedNetwork, nId } = useContext(UIContext);
 
   const { provider } = useContext(WebContext);
 
@@ -101,7 +101,9 @@ const LongTermOrderSingleCard = ({ it }) => {
       setMessage,
       provider,
       setTransactionHash,
-      currentNetwork?.network
+      currentNetwork?.network,
+      setSelectedNetwork,
+      nId
     );
   };
 
@@ -122,7 +124,9 @@ const LongTermOrderSingleCard = ({ it }) => {
       setMessage,
       provider,
       setTransactionHash,
-      currentNetwork?.network
+      currentNetwork?.network,
+      setSelectedNetwork,
+      nId
     );
   };
 

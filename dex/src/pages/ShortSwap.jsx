@@ -51,7 +51,7 @@ const ShortSwap = ({
     spotPriceLoading,
     setSpotPriceLoading,
   } = useContext(ShortSwapContext);
-  const { selectedNetwork, nId } = useContext(UIContext);
+  const { setSelectedNetwork, nId } = useContext(UIContext);
   const currentNetwork = useNetwork();
 
   useEffect(() => {
@@ -114,7 +114,7 @@ const ShortSwap = ({
           setBalance,
           setAccount,
           setWalletConnected,
-          selectedNetwork,
+          setSelectedNetwork,
           nId
         );
         const signer = await getProvider(

@@ -61,7 +61,7 @@ const LongSwapPage = (props) => {
 
   const { provider } = useContext(WebContext);
 
-  const { selectedNetwork, nId } = useContext(UIContext);
+  const { setSelectedNetwork, nId } = useContext(UIContext);
 
   const currentNetwork = useNetwork();
 
@@ -110,7 +110,7 @@ const LongSwapPage = (props) => {
         setBalance,
         setAccount,
         setWalletConnected,
-        selectedNetwork,
+        setSelectedNetwork,
         nId
       );
       const signer = await getProvider(

@@ -99,7 +99,7 @@ function App() {
   } = useContext(LongSwapContext);
   const { provider, setProvider } = useContext(WebContext);
 
-  const { setSelectedNetwork } = useContext(UIContext);
+  const { nId, setSelectedNetwork } = useContext(UIContext);
 
   console.log("Current Block", currentBlock);
 
@@ -124,7 +124,15 @@ function App() {
 
   useEffect(() => {
     if (web3Modal.cachedProvider) {
-      connectWallet();
+      connectWallet(
+        setweb3provider,
+        setCurrentBlock,
+        setBalance,
+        setAccount,
+        setWalletConnected,
+        setSelectedNetwork,
+        nId
+      );
     }
   }, []);
 
