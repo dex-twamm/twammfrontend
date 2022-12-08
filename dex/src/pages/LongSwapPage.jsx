@@ -76,7 +76,7 @@ const LongSwapPage = (props) => {
   console.log("Is long term order placed", isPlacedLongTermOrder);
 
   useEffect(() => {
-    // console.log("ajsdhkasd----", swapAmount, destAddress, srcAddress);
+    console.log("Long Swap ----", currentNetwork?.network, swapAmount, destAddress, srcAddress);
     // Wait for 0.5 second before fetching price.
     const interval1 = setTimeout(() => {
       verifyLongSwap(

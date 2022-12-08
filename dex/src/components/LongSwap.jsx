@@ -167,6 +167,16 @@ const LongSwap = (props) => {
   }, []);
 
   console.log("Form errororororor", longSwapFormErrors);
+  console.log("Button disabled?", 
+    !tokenA.tokenIsSet,
+    !tokenB.tokenIsSet,
+    !swapAmount,
+    numberOfBlockIntervals,
+    disableAllowBtn,
+    longSwapVerifyLoading,
+    parseFloat(allowance) <= swapAmount
+      ? true
+      : false);
 
   return (
     <>
@@ -402,7 +412,7 @@ const LongSwap = (props) => {
                 !tokenA.tokenIsSet ||
                 !tokenB.tokenIsSet ||
                 !swapAmount ||
-                numberOfBlockIntervals > 0 ||
+                numberOfBlockIntervals <= 0 ||
                 disableAllowBtn ||
                 longSwapVerifyLoading ||
                 parseFloat(allowance) <= swapAmount
