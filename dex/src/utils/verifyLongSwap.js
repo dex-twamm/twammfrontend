@@ -54,7 +54,7 @@ export const verifyLongSwap = async (
         numberOfBlockIntervals,
         signer,
         walletAddress,
-        (currentNetwork = "Goerli")
+        currentNetwork
       ).then((res) => {
         console.log("Response From Query Batch Swap", res);
         errors.balError = undefined;
