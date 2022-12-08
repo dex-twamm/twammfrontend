@@ -44,7 +44,9 @@ const LongTermOrderSingleCard = ({ it }) => {
   );
 
   const currentNetwork = useNetwork();
-  const poolConfig = Object.values(POOLS[selectedNetwork?.network])[0];
+  const poolConfig = Object.values(
+    POOLS[selectedNetwork?.network ?? "Goerli"]
+  )[0];
   const tokenIn = poolConfig.tokens[it.sellTokenIndex];
   const tokenOut = poolConfig.tokens[it.buyTokenIndex];
 
