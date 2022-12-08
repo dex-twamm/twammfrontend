@@ -163,3 +163,91 @@ export const verifyLongSwap = async (
     }
   }
 };
+
+export const getLongSwapEstimatedConvertedToken = async (
+  tokenInIndex,
+  tokenOutIndex,
+  amountIn,
+  numberOfBlockIntervals,
+  signer,
+  walletAddress,
+  currentNetwork
+) => {
+  let txHash;
+
+  console.log("Amount in value", amountIn, numberOfBlockIntervals);
+  const exchangeContract = new Contract(
+    Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
+    VAULT_CONTRACT_ABI,
+    signer
+  );
+  const abiCoder = ethers.utils.defaultAbiCoder;
+  const encodedRequest = abiCoder.encode(
+    ["uint256", "uint256", "uint256", "uint256", "uint256"],
+    [
+      4,
+      tokenInIndex,
+      tokenOutIndex,
+      amountIn,
+      BigNumber.from(numberOfBlockIntervals),
+    ]
+  );
+
+  console.log(
+    "aksldalsjdlsjdieuhalsdlas",
+    Object.keys(POOLS[currentNetwork])[0],
+    walletAddress,
+    walletAddress,
+    {
+      assets: [
+        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
+        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
+      ],
+      maxAmountsIn: [MAX_UINT256, MAX_UINT256],
+      fromInternalBalance: false,
+      userData: encodedRequest,
+    }
+  );
+
+  const gasEstimate = await exchangeContract.estimateGas.joinPool(
+    Object.keys(POOLS[currentNetwork])[0],
+    walletAddress,
+    walletAddress,
+    {
+      assets: [
+        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
+        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
+      ],
+      maxAmountsIn: [MAX_UINT256, MAX_UINT256],
+      fromInternalBalance: false,
+      userData: encodedRequest,
+    }
+  );
+
+  console.log("gas estimate price", gasEstimate);
+
+  const placeLtoTx = await exchangeContract.callStatic.joinPool(
+    Object.keys(POOLS[currentNetwork])[0],
+    walletAddress,
+    walletAddress,
+    {
+      assets: [
+        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
+        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
+      ],
+      maxAmountsIn: [MAX_UINT256, MAX_UINT256],
+      fromInternalBalance: false,
+      userData: encodedRequest,
+    },
+    {
+      gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
+    }
+  );
+  console.log("===LongTerm Placed====", placeLtoTx);
+  // txHash = placeLtoTx;
+  // setTransactionHash(placeLtoTx.hash);
+
+  // console.log("====Swap Results After Placed=====", await placeLtoTx.wait());
+  // console.log(txHash);
+  return placeLtoTx;
+};

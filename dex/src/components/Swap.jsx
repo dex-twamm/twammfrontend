@@ -74,7 +74,7 @@ const Swap = (props) => {
   }, [setExpectedSwapOut]);
 
   useEffect(() => {
-    if (tokenA.symbol === tokenB.symbol)
+    if (tokenA?.symbol === tokenB?.symbol)
       setTokenB({
         symbol: "Select Token",
         logo: "",
@@ -143,18 +143,6 @@ const Swap = (props) => {
 
   console.log("Disable Allow Button--->", disableAllowBtn, formErrors);
 
-  console.log(
-    "allowance <= swapAmount--->",
-    parseFloat(allowance),
-    "<=",
-    swapAmount,
-    allowance <= swapAmount,
-    tokenA.tokenIsSet,
-    tokenB.tokenIsSet,
-    disableAllowBtn,
-    spotPriceLoading
-  );
-
   useEffect(() => {
     return () => {
       setTargetDate("");
@@ -217,8 +205,8 @@ const Swap = (props) => {
             onChange={(e) => {
               setSwapAmount(e.target.value);
             }}
-            imgSrc={tokenA.logo}
-            symbol={tokenA.symbol}
+            imgSrc={tokenA?.logo}
+            symbol={tokenA?.symbol}
             handleDisplay={handleDisplay}
             selectToken={selectToken}
             display={display}
@@ -254,8 +242,8 @@ const Swap = (props) => {
                 : ""
             }
             placeholder=""
-            imgSrc={tokenB.logo}
-            symbol={tokenB.symbol}
+            imgSrc={tokenB?.logo}
+            symbol={tokenB?.symbol}
             onChange={(e) => e.target.value}
             handleDisplay={handleDisplay}
             selectToken={selectToken}
@@ -274,7 +262,7 @@ const Swap = (props) => {
           )}
 
           {/* swapAmount !== 0 && tokenB.tokenIsSet &&  */}
-          {swapAmount !== 0 && tokenB.tokenIsSet && (
+          {swapAmount !== 0 && tokenB?.tokenIsSet && (
             <>
               <Box
                 sx={{

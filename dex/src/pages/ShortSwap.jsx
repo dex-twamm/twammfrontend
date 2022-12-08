@@ -7,8 +7,7 @@ import Swap from "../components/Swap";
 import Tabs from "../components/Tabs";
 import styles from "../css/ShortSwap.module.css";
 import { ShortSwapContext } from "../providers";
-import { useNetwork } from "../providers/context/UIProvider";
-import { WebContext } from "../providers/context/WebProvider";
+import { UIContext, useNetwork } from "../providers/context/UIProvider";
 import { connectWallet } from "../utils/connetWallet";
 import { getProvider } from "../utils/getProvider";
 import { spotPrice } from "../utils/getSpotPrice";
@@ -52,18 +51,10 @@ const ShortSwap = ({
     spotPriceLoading,
     setSpotPriceLoading,
   } = useContext(ShortSwapContext);
-
-  const { provider, setProvider } = useContext(WebContext);
-
+  const { selectedNetwork, nId } = useContext(UIContext);
   const currentNetwork = useNetwork();
 
-  // console.log(
-  //   "Current network currentNetwork",
-  //   getPoolConfig(currentNetwork?.network)
-  // );
-
   useEffect(() => {
-    // console.log("ajsdhkasd----", swapAmount, destAddress, srcAddress);
     // Wait for 0.5 second before fetching price.
     const interval1 = setTimeout(() => {
       spotPrice(
@@ -122,7 +113,9 @@ const ShortSwap = ({
           setCurrentBlock,
           setBalance,
           setAccount,
-          setWalletConnected
+          setWalletConnected,
+          selectedNetwork,
+          nId
         );
         const signer = await getProvider(
           true,

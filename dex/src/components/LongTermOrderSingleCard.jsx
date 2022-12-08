@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { HiExternalLink } from "react-icons/hi";
 import styles from "../css/LongTermOrderCard.module.css";
-import { useNetwork } from "../providers/context/UIProvider";
+import { UIContext, useNetwork } from "../providers/context/UIProvider";
 import { bigToFloat, bigToStr } from "../utils";
 import classNames from "classnames";
 import { POOLS } from "../utils/pool";
@@ -35,6 +35,7 @@ const LongTermOrderSingleCard = ({ it }) => {
     setOrderLogsDecoded,
     setMessage,
   } = useContext(LongSwapContext);
+  const { selectedNetwork } = useContext(UIContext);
 
   const { provider } = useContext(WebContext);
 
@@ -44,8 +45,7 @@ const LongTermOrderSingleCard = ({ it }) => {
   );
 
   const currentNetwork = useNetwork();
-  const poolConfig = getPoolConfig(currentNetwork?.network);
-  console.log("Pool configggg", poolConfig);
+  const poolConfig = getPoolConfig(selectedNetwork?.network);
   const tokenIn = poolConfig.tokens[it.sellTokenIndex];
   const tokenOut = poolConfig.tokens[it.buyTokenIndex];
 
