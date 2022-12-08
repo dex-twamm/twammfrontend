@@ -72,10 +72,12 @@ const Swap = (props) => {
   };
 
   useEffect(() => {
+    setExpectedSwapOut(0);
     return () => {
-      setExpectedSwapOut(undefined);
+      setExpectedSwapOut();
+      setSpotPrice();
     };
-  }, [setExpectedSwapOut]);
+  }, []);
 
   useEffect(() => {
     if (tokenA?.symbol === tokenB?.symbol)
@@ -307,7 +309,7 @@ const Swap = (props) => {
                   >
                     {spotPriceLoading ? (
                       <Skeleton width={"100px"} />
-                    ) : spotPrice == 0 ? (
+                    ) : spotPrice == 0 || !spotPrice ? (
                       <p></p>
                     ) : (
                       <p
