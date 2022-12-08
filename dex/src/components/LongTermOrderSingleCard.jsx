@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { HiExternalLink } from "react-icons/hi";
 import styles from "../css/LongTermOrderCard.module.css";
-import { UIContext, useNetwork } from "../providers/context/UIProvider";
+import { UIContext } from "../providers/context/UIProvider";
 import { bigToFloat, bigToStr } from "../utils";
 import classNames from "classnames";
 import { POOLS } from "../utils/pool";
@@ -43,7 +43,6 @@ const LongTermOrderSingleCard = ({ it }) => {
     (it.expirationBlock - currentBlock.number) * 12
   );
 
-  const currentNetwork = useNetwork();
   const poolConfig = Object.values(
     POOLS[selectedNetwork?.network ?? "Goerli"]
   )[0];
@@ -101,7 +100,7 @@ const LongTermOrderSingleCard = ({ it }) => {
       setMessage,
       provider,
       setTransactionHash,
-      currentNetwork?.network,
+      selectedNetwork?.network,
       setSelectedNetwork,
       nId
     );
@@ -124,7 +123,7 @@ const LongTermOrderSingleCard = ({ it }) => {
       setMessage,
       provider,
       setTransactionHash,
-      currentNetwork?.network,
+      selectedNetwork?.network,
       setSelectedNetwork,
       nId
     );

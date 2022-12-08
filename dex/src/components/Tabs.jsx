@@ -5,7 +5,7 @@ import styles from "../css/Navbar.module.css";
 import { LongSwapContext, ShortSwapContext } from "../providers";
 import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from "../utils";
 import { POOLS, POOL_ID } from "../utils/pool";
-import { useNetwork } from "../providers/context/UIProvider";
+import { UIContext, useNetwork } from "../providers/context/UIProvider";
 
 const tabOptions = [
   {
@@ -25,12 +25,12 @@ const tabOptions = [
 const Tabs = () => {
   const location = useLocation();
   const currentPath = location.pathname;
-  const currentNetwork = useNetwork();
+  const { selectedNetwork } = useContext(UIContext);
 
   const { tokenA, setTokenA, tokenB, setTokenB } = useContext(LongSwapContext);
   const { setSwapAmount } = useContext(ShortSwapContext);
   const onNavLinkClick = () => {
-    const poolConfig = Object.values(POOLS?.[currentNetwork?.network])?.[0];
+    const poolConfig = Object.values(POOLS?.[selectedNetwork?.network])?.[0];
     setSwapAmount("");
     if (!tokenA.tokenIsSet) {
       setTokenA({
