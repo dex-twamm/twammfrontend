@@ -26,6 +26,8 @@ const UIProvider = ({ children }) => {
     });
   }, []);
 
+  console.log("Current selected network", selectedNetwork);
+
   if (!selectedNetwork) return null;
   return (
     <UIContext.Provider

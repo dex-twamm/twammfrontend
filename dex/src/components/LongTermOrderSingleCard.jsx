@@ -44,12 +44,15 @@ const LongTermOrderSingleCard = ({ it }) => {
     (it.expirationBlock - currentBlock.number) * 12
   );
 
+  console.log("current network", selectedNetwork);
+
   const currentNetwork = useNetwork();
   const poolConfig = getPoolConfig(selectedNetwork?.network ?? "Goerli");
   const tokenIn = poolConfig.tokens[it.sellTokenIndex];
   const tokenOut = poolConfig.tokens[it.buyTokenIndex];
 
   const remainingTimeRef = useRef();
+
   let convertedAmount = ethers.constants.Zero;
   if (it.state === "completed" || it.state === "cancelled") {
     // Order Completed and Deleted
