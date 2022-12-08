@@ -54,7 +54,17 @@ const Navbar = (props) => {
 
   // const nId = window.ethereum?.networkVersion;
   console.log("nId--->", nId);
-  const initialNetwork = NETWORKS.find((id) => id.chainId === nId);
+
+  let initialNetwork = {};
+
+  if(typeof nId === 'undefined' || nId === 'undefined') {
+    console.log("nId undefined", NETWORKS[1]);
+    initialNetwork = NETWORKS[1];
+  } else {
+    console.log("nId found", nId);
+    initialNetwork = NETWORKS.find((id) => id.chainId === nId);
+  }
+  
   console.log("initialNetwork", initialNetwork);
 
   console.log("network from storage", localStorage.getItem("network_name"), localStorage.getItem("chainId"));
