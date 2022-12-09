@@ -10,14 +10,9 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { Link } from "react-router-dom";
 import LaunchIcon from "@mui/icons-material/Launch";
 import CloseIcon from "@mui/icons-material/Close";
-import { height } from "@mui/system";
 import { useContext } from "react";
 import { ShortSwapContext } from "../providers";
 import { truncateAddress } from "../utils";
-import { HiExternalLink } from "react-icons/hi";
-import styles from "../css/LongTermOrderCard.module.css";
-import { POOLS, POOL_ID } from "../utils/pool";
-import { useNetwork } from "../providers/context/UIProvider";
 import { getPoolEthersScanUrl } from "../utils/poolUtils";
 import { UIContext } from "../providers/context/UIProvider";
 

@@ -409,11 +409,9 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                         }}
                       >
                         {`${
-                          Object.values(POOLS?.[selectedNetwork?.network])?.[0]
-                            .tokens[0].symbol
+                          getPoolTokens(selectedNetwork?.network)?.[0].symbol
                         } / ${
-                          Object.values(POOLS?.[selectedNetwork?.network])?.[0]
-                            .tokens[1].symbol
+                          getPoolTokens(selectedNetwork?.network)?.[1].symbol
                         }`}
                       </Typography>
                       <span
