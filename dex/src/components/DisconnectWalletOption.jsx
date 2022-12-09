@@ -19,6 +19,7 @@ import styles from "../css/LongTermOrderCard.module.css";
 import { POOLS, POOL_ID } from "../utils/pool";
 import { useNetwork } from "../providers/context/UIProvider";
 import { getPoolEthersScanUrl } from "../utils/poolUtils";
+import { UIContext } from "../providers/context/UIProvider";
 
 const style = {
   position: "absolute",
@@ -52,7 +53,7 @@ const DisconnectWalletOption = ({
 
   // const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const currentNetwork = useNetwork();
+  const { selectedNetwork } = useContext(UIContext);
 
   return (
     <Box
@@ -238,7 +239,7 @@ const DisconnectWalletOption = ({
                 onClick={() =>
                   window.open(
                     `${getPoolEthersScanUrl(
-                      currentNetwork?.network
+                      selectedNetwork?.network
                     )}${account}`,
                     "_blank"
                   )

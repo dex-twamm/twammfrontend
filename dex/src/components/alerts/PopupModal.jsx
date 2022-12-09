@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useContext } from "react";
 import { POPUP_MESSAGE } from "../../constants";
 import { ShortSwapContext } from "../../providers";
-import { useNetwork } from "../../providers/context/UIProvider";
+import { UIContext } from "../../providers/context/UIProvider";
 import { POOLS } from "../../utils/pool";
 import { getPoolTransactionUrl } from "../../utils/poolUtils";
 
@@ -22,7 +22,7 @@ const PopupModal = ({
     setTransactionHash,
   } = useContext(ShortSwapContext);
 
-  const currentNetwork = useNetwork();
+  const { selectedNetwork } = useContext(UIContext);
 
   // Timeout For Backdrop
   useEffect(() => {
@@ -52,11 +52,11 @@ const PopupModal = ({
   const handleButtonClick = () => {
     console.log(
       "links",
-      getPoolTransactionUrl(currentNetwork?.network),
-      `${getPoolTransactionUrl(currentNetwork?.network)}${transactionHash}`
+      getPoolTransactionUrl(selectedNetwork?.network),
+      `${getPoolTransactionUrl(selectedNetwork?.network)}${transactionHash}`
     );
     window.open(
-      `${getPoolTransactionUrl(currentNetwork?.network)}${transactionHash}`
+      `${getPoolTransactionUrl(selectedNetwork?.network)}${transactionHash}`
     );
   };
 

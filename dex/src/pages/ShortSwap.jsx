@@ -51,8 +51,7 @@ const ShortSwap = ({
     spotPriceLoading,
     setSpotPriceLoading,
   } = useContext(ShortSwapContext);
-  const { selectedNetwork, nId } = useContext(UIContext);
-  const currentNetwork = useNetwork();
+  const { selectedNetwork, setSelectedNetwork, nId } = useContext(UIContext);
 
   useEffect(() => {
     // Wait for 0.5 second before fetching price.
@@ -74,7 +73,7 @@ const ShortSwap = ({
         setFormErrors,
         setSpotPrice,
         setExpectedSwapOut,
-        currentNetwork?.network
+        selectedNetwork?.network
       );
     }, 500);
     // Update price every 12 seconds.
@@ -96,7 +95,7 @@ const ShortSwap = ({
         setFormErrors,
         setSpotPrice,
         setExpectedSwapOut,
-        currentNetwork?.network
+        selectedNetwork?.network
       );
     }, 12000);
     return () => {
@@ -114,7 +113,7 @@ const ShortSwap = ({
           setBalance,
           setAccount,
           setWalletConnected,
-          selectedNetwork,
+          setSelectedNetwork,
           nId
         );
         const signer = await getProvider(
@@ -125,7 +124,7 @@ const ShortSwap = ({
           setAccount,
           setWalletConnected
         );
-        await getEthLogs(signer);
+        await getEthLogs(signer, account, selectedNetwork?.network);
       } else {
         await _swapTokens(
           ethBalance,
@@ -146,7 +145,7 @@ const ShortSwap = ({
           setSuccess,
           setError,
           setLoading,
-          currentNetwork?.network
+          selectedNetwork?.network
         );
       }
     } catch (err) {

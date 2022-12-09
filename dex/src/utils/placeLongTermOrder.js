@@ -22,7 +22,7 @@ export const _placeLongTermOrders = async (
   setOrderLogsDecoded,
   setError,
   provider,
-  currentNetwork = "Goerli"
+  currentNetwork
 ) => {
   const poolConfig = getPoolConfig(currentNetwork);
 

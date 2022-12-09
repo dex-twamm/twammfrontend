@@ -22,7 +22,7 @@ import { FiChevronDown } from "react-icons/fi";
 
 import { getApproval } from "../utils/getApproval";
 import { WebContext } from "../providers/context/WebProvider";
-import { UIContext, useNetwork } from "../providers/context/UIProvider";
+import { UIContext } from "../providers/context/UIProvider";
 
 const LongSwap = (props) => {
   const {
@@ -66,7 +66,7 @@ const LongSwap = (props) => {
   } = useContext(LongSwapContext);
 
   const { provider } = useContext(WebContext);
-  const currentNetwork = useNetwork();
+  const { selectedNetwork } = useContext(UIContext);
 
   const handleDisplay = (event) => {
     setSelectToken(event.currentTarget.id);
@@ -105,7 +105,7 @@ const LongSwap = (props) => {
       const approval = await getApproval(
         provider,
         srcAddress,
-        currentNetwork?.network
+        selectedNetwork?.network
       );
       setTransactionHash(approval.hash);
     } catch (e) {
@@ -402,7 +402,7 @@ const LongSwap = (props) => {
                 !tokenA.tokenIsSet ||
                 !tokenB.tokenIsSet ||
                 !swapAmount ||
-                !numberOfBlockIntervals > 0 ||
+                numberOfBlockIntervals <= 0 ||
                 disableAllowBtn ||
                 longSwapVerifyLoading ||
                 parseFloat(allowance) <= swapAmount

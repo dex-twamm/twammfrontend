@@ -10,11 +10,7 @@ import {
   getpoolVaultContractAddress,
 } from "./poolUtils";
 
-export async function joinPool(
-  walletAddress,
-  signer,
-  currentNetwork = "Goerli"
-) {
+export async function joinPool(walletAddress, signer, currentNetwork) {
   const encodedRequest = defaultAbiCoder.encode(
     ["uint256", "uint256[]", "uint256"],
     // JoinKind, User Input AmountIn, MinimumBpt Out
@@ -46,7 +42,7 @@ export async function exitPool(
   walletAdress,
   signer,
   bptAmountIn,
-  currentNetwork = "Goerli"
+  currentNetwork
 ) {
   const poolContract = new Contract(
     getpoolVaultContractAddress(currentNetwork),
@@ -90,7 +86,7 @@ export async function cancelLTO(
   setOrderLogsDecoded,
   setMessage,
   provider,
-  currentNetwork = "Goerli"
+  currentNetwork
 ) {
   const poolContract = new Contract(
     getpoolVaultContractAddress(currentNetwork),
@@ -140,7 +136,7 @@ export async function withdrawLTO(
   setOrderLogsDecoded,
   setMessage,
   provider,
-  currentNetwork = "Goerli"
+  currentNetwork
 ) {
   const poolContract = new Contract(
     getpoolVaultContractAddress(currentNetwork),
@@ -179,11 +175,7 @@ export async function withdrawLTO(
   setMessage(POPUP_MESSAGE.ltoWithdrawn);
 }
 
-export async function getPoolBalance(
-  signer,
-  tokenAddress,
-  currentNetwork = "Goerli"
-) {
+export async function getPoolBalance(signer, tokenAddress, currentNetwork) {
   const tokenIndex = getPoolTokens(currentNetwork).filter(
     (item) => item.address === tokenAddress
   );

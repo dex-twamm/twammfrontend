@@ -15,7 +15,7 @@ export const getEstimatedConvertedToken = async (
   expectedSwapOut,
   tolerance,
   deadline,
-  currentNetwork = "Goerli"
+  currentNetwork
 ) => {
   // Create a new instance of the exchange contract
   const exchangeContract = new Contract(

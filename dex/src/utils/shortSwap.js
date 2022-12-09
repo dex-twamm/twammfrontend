@@ -23,7 +23,7 @@ export const _swapTokens = async (
   setSuccess,
   setError,
   setLoading,
-  currentNetwork = "Goerli"
+  currentNetwork
 ) => {
   const poolConfig = getPoolConfig(currentNetwork);
   const tokenIn = poolConfig.tokens.find(

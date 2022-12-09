@@ -17,7 +17,7 @@ export async function placeLongTermOrder(
   signer,
   walletAddress,
   setTransactionHash,
-  currentNetwork = "Goerli"
+  currentNetwork
 ) {
   let txHash;
 
@@ -64,11 +64,7 @@ export async function placeLongTermOrder(
   return txHash;
 }
 
-export async function getLongTermOrder(
-  signer,
-  orderId,
-  currentNetwork = "Goerli"
-) {
+export async function getLongTermOrder(signer, orderId, currentNetwork) {
   const contract = new Contract(
     getpoolAddress(currentNetwork),
     LONGTERM_ABI,
@@ -80,10 +76,7 @@ export async function getLongTermOrder(
   return orderDetails;
 }
 
-export async function getLastVirtualOrderBlock(
-  signer,
-  currentNetwork = "Goerli"
-) {
+export async function getLastVirtualOrderBlock(signer, currentNetwork) {
   const contract = new Contract(
     getpoolLtoContract(currentNetwork),
     LONGTERM_ABI,

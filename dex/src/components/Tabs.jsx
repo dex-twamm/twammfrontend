@@ -3,10 +3,8 @@ import { Link, useLocation } from "react-router-dom";
 import classNames from "classnames";
 import styles from "../css/Navbar.module.css";
 import { LongSwapContext, ShortSwapContext } from "../providers";
-import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from "../utils";
-import { POOLS, POOL_ID } from "../utils/pool";
-import { useNetwork } from "../providers/context/UIProvider";
 import { getPoolConfig } from "../utils/poolUtils";
+import { UIContext } from "../providers/context/UIProvider";
 
 const tabOptions = [
   {
@@ -26,12 +24,12 @@ const tabOptions = [
 const Tabs = () => {
   const location = useLocation();
   const currentPath = location.pathname;
-  const currentNetwork = useNetwork();
+  const { selectedNetwork } = useContext(UIContext);
 
   const { tokenA, setTokenA, tokenB, setTokenB } = useContext(LongSwapContext);
   const { setSwapAmount } = useContext(ShortSwapContext);
   const onNavLinkClick = () => {
-    const poolConfig = getPoolConfig(currentNetwork?.network);
+    const poolConfig = getPoolConfig(selectedNetwork?.network);
     setSwapAmount("");
     if (!tokenA.tokenIsSet) {
       setTokenA({

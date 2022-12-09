@@ -7,7 +7,7 @@ import { getpoolAddress, getPoolConfig } from "./poolUtils";
 export const getTokensBalance = async (
   provider,
   walletAddress,
-  currentNetwork = "Goerli"
+  currentNetwork
 ) => {
   const poolConfig = getPoolConfig(currentNetwork);
   var tokenAddress = [
@@ -48,7 +48,7 @@ export const getTokensBalance = async (
 export const getLPTokensBalance = async (
   provider,
   walletAddress,
-  currentNetwork = "Goerli"
+  currentNetwork
 ) => {
   const poolContract = new Contract(
     getpoolAddress(currentNetwork),

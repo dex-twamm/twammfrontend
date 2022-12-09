@@ -22,6 +22,8 @@ import { getEthLogs } from "./utils/get_ethLogs";
 import { getLastVirtualOrderBlock } from "./utils/longSwap";
 import { web3Modal } from "./utils/providerOptions";
 import { useNetwork } from "./providers/context/UIProvider";
+import { _swapTokens } from "./utils/shortSwap";
+import { swapTokens } from "./utils/swap";
 
 function App() {
   const location = useLocation();
@@ -31,8 +33,6 @@ function App() {
   const { setShowDropdown } = useContext(UIContext);
   const [showSettings, setShowSettings] = useState(false);
   const [showDisconnect, setShowDisconnect] = useState(false);
-
-  const currentNetwork = useNetwork();
 
   const {
     srcAddress,
@@ -66,6 +66,8 @@ function App() {
   } = useContext(LongSwapContext);
   const { provider, setProvider } = useContext(WebContext);
 
+  const { nId, setSelectedNetwork, selectedNetwork } = useContext(UIContext);
+
   console.log("Current Block", currentBlock);
 
   useEffect(() => {
@@ -89,15 +91,21 @@ function App() {
 
   useEffect(() => {
     if (web3Modal.cachedProvider) {
-      connectWallet();
+      connectWallet(
+        setweb3provider,
+        setCurrentBlock,
+        setBalance,
+        setAccount,
+        setWalletConnected,
+        setSelectedNetwork,
+        nId
+      );
     }
   }, []);
 
   console.log("web3Modal.cachedProvider", web3Modal.cachedProvider);
 
   console.log("webashasdweb3provider", account);
-
-  console.log("networkkkkk", currentNetwork);
 
   //  Swap Token
 
@@ -121,7 +129,6 @@ function App() {
   };
 
   console.log("Account--->", account);
-  console.log("selectedNjkdhksdas", currentNetwork);
 
   // Use Memo
   useMemo(() => {
@@ -144,7 +151,7 @@ function App() {
           provider,
           walletAddress,
           tokenAddress,
-          currentNetwork?.network
+          selectedNetwork?.network
         ).then((res) => {
           setAllowance(bigToStr(res));
           console.log("===Allowance Response ====", bigToStr(res));
@@ -154,14 +161,14 @@ function App() {
         await getPoolBalance(
           provider,
           tokenAddress,
-          currentNetwork?.network
+          selectedNetwork?.network
         ).then((res) => {
           setPoolCash(res);
           console.log(
             "===GET POOL BALANCE====",
             res,
             tokenAddress,
-            currentNetwork?.network
+            selectedNetwork?.network
           );
         });
       }
@@ -194,34 +201,38 @@ function App() {
         return null;
       }
       try {
-        await getTokensBalance(provider, account, currentNetwork?.network).then(
-          (res) => {
-            setTokenBalances(res);
-            console.log("Response From Token Balance Then Block", res);
-          }
-        );
+        await getTokensBalance(
+          provider,
+          account,
+          selectedNetwork?.network
+        ).then((res) => {
+          setTokenBalances(res);
+          console.log("Response From Token Balance Then Block", res);
+        });
 
-        await getLastVirtualOrderBlock(provider, currentNetwork?.network).then(
+        await getLastVirtualOrderBlock(provider, selectedNetwork?.network).then(
           (res) => {
             console.log("Latest Block", res);
             setLatestBlock(res);
           }
         );
-        await getEthLogs(provider, walletAddress, currentNetwork?.network).then(
-          (res) => {
-            // console.log("=== Order Keys === ", res.keys())
-            // console.log("=== Order Values === ", res.values())
-            const resArray = Array.from(res.values());
-            console.log("=== Order Logs === ", resArray);
-            setOrderLogsDecoded(resArray);
-          }
-        );
+        await getEthLogs(
+          provider,
+          walletAddress,
+          selectedNetwork?.network
+        ).then((res) => {
+          // console.log("=== Order Keys === ", res.keys())
+          // console.log("=== Order Values === ", res.values())
+          const resArray = Array.from(res.values());
+          console.log("=== Order Logs === ", resArray);
+          setOrderLogsDecoded(resArray);
+        });
 
         // Pool Token's Balance
         await getLPTokensBalance(
           provider,
           walletAddress,
-          currentNetwork?.network
+          selectedNetwork?.network
         ).then((res) => {
           setLPTokenBalance(res);
           console.log("===Balance Of Pool ====", res);

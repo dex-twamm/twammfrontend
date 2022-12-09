@@ -1,5 +1,5 @@
 // Sagar
-import { Box, Button, CircularProgress, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import React from "react";
 import { useNavigate } from "react-router-dom";
@@ -12,12 +12,12 @@ import { ShortSwapContext } from "../../providers";
 
 import CircularProgressBar from "../alerts/CircularProgressBar";
 import Tabs from "../Tabs";
-import { useNetwork } from "../../providers/context/UIProvider";
 import {
   getpoolBalancerUrl,
   getPoolFees,
   getPoolTokens,
 } from "../../utils/poolUtils";
+import { UIContext } from "../../providers/context/UIProvider";
 
 const style = {
   position: "absolute",
@@ -43,6 +43,8 @@ const style = {
 const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
   const { LPTokenBalance, loading, isWalletConnected } =
     useContext(ShortSwapContext);
+  const { selectedNetwork } = useContext(UIContext);
+
   //   const [open, setOpen] = useState(false);
 
   const navigate = useNavigate();
@@ -56,8 +58,7 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
     navigate("/");
   };
 
-  const currentNetwork = useNetwork();
-  const poolTokens = getPoolTokens(currentNetwork?.network);
+  const poolTokens = getPoolTokens(selectedNetwork?.network);
 
   console.log("LP Token balance", LPTokenBalance, POOLS);
   return (
@@ -407,7 +408,13 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                           fontFamily: "Open Sans",
                         }}
                       >
-                        {`${poolTokens[0].symbol} / ${poolTokens[1].symbol}`}
+                        {`${
+                          Object.values(POOLS?.[selectedNetwork?.network])?.[0]
+                            .tokens[0].symbol
+                        } / ${
+                          Object.values(POOLS?.[selectedNetwork?.network])?.[0]
+                            .tokens[1].symbol
+                        }`}
                       </Typography>
                       <span
                         style={{
@@ -425,7 +432,7 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                           borderRadius: "17px",
                         }}
                       >
-                        {getPoolFees(currentNetwork?.network)}%
+                        {getPoolFees(selectedNetwork?.network)}%
                       </span>
                     </Box>
 
@@ -572,7 +579,7 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                   <button
                     onClick={() =>
                       window.open(
-                        `${getpoolBalancerUrl(currentNetwork?.network)}`,
+                        `${getpoolBalancerUrl(selectedNetwork?.network)}`,
                         "_blank"
                       )
                     }

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { HiExternalLink } from "react-icons/hi";
 import styles from "../css/LongTermOrderCard.module.css";
-import { UIContext, useNetwork } from "../providers/context/UIProvider";
+import { UIContext } from "../providers/context/UIProvider";
 import { bigToFloat, bigToStr } from "../utils";
 import classNames from "classnames";
 import { POOLS } from "../utils/pool";
@@ -35,7 +35,7 @@ const LongTermOrderSingleCard = ({ it }) => {
     setOrderLogsDecoded,
     setMessage,
   } = useContext(LongSwapContext);
-  const { selectedNetwork } = useContext(UIContext);
+  const { selectedNetwork, setSelectedNetwork, nId } = useContext(UIContext);
 
   const { provider } = useContext(WebContext);
 
@@ -46,8 +46,8 @@ const LongTermOrderSingleCard = ({ it }) => {
 
   console.log("current network", selectedNetwork);
 
-  const currentNetwork = useNetwork();
   const poolConfig = getPoolConfig(selectedNetwork?.network ?? "Goerli");
+
   const tokenIn = poolConfig.tokens[it.sellTokenIndex];
   const tokenOut = poolConfig.tokens[it.buyTokenIndex];
 
@@ -103,7 +103,9 @@ const LongTermOrderSingleCard = ({ it }) => {
       setMessage,
       provider,
       setTransactionHash,
-      currentNetwork?.network
+      selectedNetwork?.network,
+      setSelectedNetwork,
+      nId
     );
   };
 
@@ -124,7 +126,9 @@ const LongTermOrderSingleCard = ({ it }) => {
       setMessage,
       provider,
       setTransactionHash,
-      currentNetwork?.network
+      selectedNetwork?.network,
+      setSelectedNetwork,
+      nId
     );
   };
 
