@@ -4,11 +4,7 @@ import { TWAMM_POOL_ABI } from "../constants";
 import { getLongTermOrder } from "./longSwap";
 import { POOLS } from "./pool";
 
-export async function getEthLogs(
-  signer,
-  walletAddress,
-  currentNetwork = "Goerli"
-) {
+export async function getEthLogs(signer, walletAddress, currentNetwork) {
   const exchangeContract = new Contract(
     Object.values(POOLS?.[currentNetwork])?.[0]?.address,
     TWAMM_POOL_ABI,

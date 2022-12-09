@@ -23,14 +23,21 @@ export const _swapTokens = async (
   setSuccess,
   setError,
   setLoading,
-  currentNetwork = "Goerli"
+  currentNetwork
 ) => {
   const poolConfig = Object.values(POOLS[currentNetwork])[0];
-  const tokenIn = poolConfig.tokens.find((token) => token.address === srcAddress);
-  const tokenOut = poolConfig.tokens.find((token) => token.address === destAddress);
+  const tokenIn = poolConfig.tokens.find(
+    (token) => token.address === srcAddress
+  );
+  const tokenOut = poolConfig.tokens.find(
+    (token) => token.address === destAddress
+  );
 
   const swapAmountWei = ethers.utils.parseUnits(swapAmount, tokenIn.decimals);
-  const walletBalanceWei = ethers.utils.parseUnits(ethBalance, tokenIn.decimals);
+  const walletBalanceWei = ethers.utils.parseUnits(
+    ethBalance,
+    tokenIn.decimals
+  );
   const pCash = ethers.utils.parseUnits(poolCash, tokenIn.decimals);
 
   console.log(

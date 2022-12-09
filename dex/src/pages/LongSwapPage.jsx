@@ -14,7 +14,7 @@ import { getEthLogs } from "../utils/get_ethLogs";
 import { _placeLongTermOrders } from "../utils/placeLongTermOrder";
 import { WebContext } from "../providers/context/WebProvider";
 import { connectWallet } from "../utils/connetWallet";
-import { useNetwork } from "../providers/context/UIProvider";
+import { UIContext, useNetwork } from "../providers/context/UIProvider";
 import LongSwap from "../components/LongSwap";
 import { verifyLongSwap } from "../utils/verifyLongSwap";
 
@@ -38,7 +38,6 @@ const LongSwapPage = (props) => {
     setMessage,
     numberOfBlockIntervals,
     setOrderLogsDecoded,
-    longSwapFormErrors,
     setLongSwapFormErrors,
     longSwapVerifyLoading,
     setLongSwapVerifyLoading,
@@ -58,12 +57,11 @@ const LongSwapPage = (props) => {
     setTransactionHash,
     setLoading,
     setError,
-    setFormErrors,
   } = useContext(ShortSwapContext);
 
-  const { provider, setProvider } = useContext(WebContext);
+  const { provider } = useContext(WebContext);
 
-  const currentNetwork = useNetwork();
+  const { selectedNetwork, setSelectedNetwork, nId } = useContext(UIContext);
 
   const ethLogsCount = orderLogsDecoded
     ? Object.keys(orderLogsDecoded).length
@@ -76,7 +74,13 @@ const LongSwapPage = (props) => {
   console.log("Is long term order placed", isPlacedLongTermOrder);
 
   useEffect(() => {
-    console.log("Long Swap ----", currentNetwork?.network, swapAmount, destAddress, srcAddress);
+    console.log(
+      "Long Swap ----",
+      selectedNetwork?.network,
+      swapAmount,
+      destAddress,
+      srcAddress
+    );
     // Wait for 0.5 second before fetching price.
     const interval1 = setTimeout(() => {
       verifyLongSwap(
@@ -91,7 +95,7 @@ const LongSwapPage = (props) => {
         setWalletConnected,
         account,
         setLongSwapFormErrors,
-        currentNetwork?.network,
+        selectedNetwork?.network,
         numberOfBlockIntervals
       );
     }, 500);
@@ -109,7 +113,9 @@ const LongSwapPage = (props) => {
         setCurrentBlock,
         setBalance,
         setAccount,
-        setWalletConnected
+        setWalletConnected,
+        setSelectedNetwork,
+        nId
       );
       const signer = await getProvider(
         true,
@@ -119,7 +125,7 @@ const LongSwapPage = (props) => {
         setAccount,
         setWalletConnected
       );
-      await getEthLogs(signer);
+      await getEthLogs(signer, account, selectedNetwork?.network);
     } else {
       await _placeLongTermOrders(
         swapAmount,
@@ -138,7 +144,7 @@ const LongSwapPage = (props) => {
         setOrderLogsDecoded,
         setError,
         provider,
-        currentNetwork?.network
+        selectedNetwork?.network
       );
     }
   }

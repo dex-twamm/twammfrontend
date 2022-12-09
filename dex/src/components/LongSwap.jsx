@@ -22,7 +22,7 @@ import { FiChevronDown } from "react-icons/fi";
 
 import { getApproval } from "../utils/getApproval";
 import { WebContext } from "../providers/context/WebProvider";
-import { useNetwork } from "../providers/context/UIProvider";
+import { UIContext } from "../providers/context/UIProvider";
 
 const LongSwap = (props) => {
   const {
@@ -66,7 +66,7 @@ const LongSwap = (props) => {
   } = useContext(LongSwapContext);
 
   const { provider } = useContext(WebContext);
-  const currentNetwork = useNetwork();
+  const { selectedNetwork } = useContext(UIContext);
 
   const handleDisplay = (event) => {
     setSelectToken(event.currentTarget.id);
@@ -82,7 +82,7 @@ const LongSwap = (props) => {
   }, [setExpectedSwapOut]);
 
   useEffect(() => {
-    if (tokenA.symbol === tokenB.symbol)
+    if (tokenA?.symbol === tokenB?.symbol)
       setTokenB({
         symbol: "Select Token",
         logo: "",
@@ -105,7 +105,7 @@ const LongSwap = (props) => {
       const approval = await getApproval(
         provider,
         srcAddress,
-        currentNetwork?.network
+        selectedNetwork?.network
       );
       setTransactionHash(approval.hash);
     } catch (e) {
@@ -215,10 +215,10 @@ const LongSwap = (props) => {
                   <div className={styles.currencyWrap}>
                     <img
                       className={styles.cryptoImage}
-                      src={tokenA.logo}
+                      src={tokenA?.logo}
                       alt="Ethereum"
                     />
-                    <p className={styles.tokenSymbol}>{tokenA.symbol}</p>
+                    <p className={styles.tokenSymbol}>{tokenA?.symbol}</p>
                   </div>
                   <FiChevronDown className={styles.dropDownIcon} />
                 </div>
@@ -231,20 +231,20 @@ const LongSwap = (props) => {
                   className={styles.select}
                 >
                   <div className={styles.currencyWrap}>
-                    {tokenB.logo !== "" && (
+                    {tokenB?.logo !== "" && (
                       <img
                         className={styles.cryptoImage}
-                        src={tokenB.logo}
+                        src={tokenB?.logo}
                         alt="Ethereum"
                       />
                     )}
                     <p className={styles.tokenSymbol}>
                       <span
                         style={{
-                          paddingLeft: `${tokenB.tokenIsSet ? "0px" : "10px"}`,
+                          paddingLeft: `${tokenB?.tokenIsSet ? "0px" : "10px"}`,
                         }}
                       >
-                        {tokenB.symbol}
+                        {tokenB?.symbol}
                       </span>
                     </p>
                   </div>
@@ -261,8 +261,8 @@ const LongSwap = (props) => {
             onChange={(e) => {
               setSwapAmount(e.target.value);
             }}
-            imgSrc={tokenA.logo}
-            symbol={tokenA.symbol}
+            imgSrc={tokenA?.logo}
+            symbol={tokenA?.symbol}
             handleDisplay={handleDisplay}
             selectToken={selectToken}
             display={display}

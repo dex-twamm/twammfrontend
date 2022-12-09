@@ -6,22 +6,26 @@ const UIContext = createContext(null);
 
 export const useNetwork = () => {
   const { selectedNetwork } = useContext(UIContext);
-  return selectedNetwork;
+  if (selectedNetwork) return selectedNetwork;
 };
 
 const UIProvider = ({ children }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedNetwork, setSelectedNetwork] = useState();
+  const [nId, setNetId] = useState();
 
   useEffect(() => {
     window.ethereum.request({ method: "net_version" }).then((net_version) => {
       const initialNetwork = NETWORKS.find((nw) => nw.chainId === net_version);
-
+      setNetId(net_version);
       setSelectedNetwork({
         network: initialNetwork?.name,
         logo: initialNetwork?.logo,
         chainId: initialNetwork?.chainId,
       });
+      localStorage.setItem("network_name", initialNetwork?.name);
+      localStorage.setItem("network_logo", initialNetwork?.logo);
+      localStorage.setItem("chainId", initialNetwork?.chainId);
     });
   }, []);
 
@@ -33,7 +37,7 @@ const UIProvider = ({ children }) => {
         setShowDropdown,
         selectedNetwork,
         setSelectedNetwork,
-        // nId,
+        nId,
       }}
     >
       {children}

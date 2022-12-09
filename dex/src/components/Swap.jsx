@@ -16,7 +16,7 @@ import { BigNumber } from "ethers";
 import { bigToStr } from "../utils";
 import { getApproval } from "../utils/getApproval";
 import { WebContext } from "../providers/context/WebProvider";
-import { useNetwork } from "../providers/context/UIProvider";
+import { UIContext } from "../providers/context/UIProvider";
 
 const Swap = (props) => {
   const {
@@ -57,7 +57,7 @@ const Swap = (props) => {
     useContext(LongSwapContext);
 
   const { provider } = useContext(WebContext);
-  const currentNetwork = useNetwork();
+  const { selectedNetwork } = useContext(UIContext);
 
   // console.log("Provider", provider);
   // console.log("SC", srcAddress);
@@ -72,13 +72,15 @@ const Swap = (props) => {
   };
 
   useEffect(() => {
+    setExpectedSwapOut(0);
     return () => {
-      setExpectedSwapOut(undefined);
+      setExpectedSwapOut();
+      setSpotPrice();
     };
-  }, [setExpectedSwapOut]);
+  }, []);
 
   useEffect(() => {
-    if (tokenA.symbol === tokenB.symbol)
+    if (tokenA?.symbol === tokenB?.symbol)
       setTokenB({
         symbol: "Select Token",
         logo: "",
@@ -102,7 +104,7 @@ const Swap = (props) => {
       const approval = await getApproval(
         provider,
         srcAddress,
-        currentNetwork?.network
+        selectedNetwork?.network
       );
       console.log("Approval---->", approval);
       setTransactionHash(approval.hash);
@@ -147,18 +149,6 @@ const Swap = (props) => {
   }, [setFormErrors]);
 
   console.log("Disable Allow Button--->", disableAllowBtn, formErrors);
-
-  console.log(
-    "allowance <= swapAmount--->",
-    parseFloat(allowance),
-    "<=",
-    swapAmount,
-    allowance <= swapAmount,
-    tokenA.tokenIsSet,
-    tokenB.tokenIsSet,
-    disableAllowBtn,
-    spotPriceLoading
-  );
 
   useEffect(() => {
     return () => {
@@ -222,8 +212,8 @@ const Swap = (props) => {
             onChange={(e) => {
               setSwapAmount(e.target.value);
             }}
-            imgSrc={tokenA.logo}
-            symbol={tokenA.symbol}
+            imgSrc={tokenA?.logo}
+            symbol={tokenA?.symbol}
             handleDisplay={handleDisplay}
             selectToken={selectToken}
             display={display}
@@ -259,8 +249,8 @@ const Swap = (props) => {
                 : ""
             }
             placeholder=""
-            imgSrc={tokenB.logo}
-            symbol={tokenB.symbol}
+            imgSrc={tokenB?.logo}
+            symbol={tokenB?.symbol}
             onChange={(e) => e.target.value}
             handleDisplay={handleDisplay}
             selectToken={selectToken}
@@ -279,7 +269,7 @@ const Swap = (props) => {
           )}
 
           {/* swapAmount !== 0 && tokenB.tokenIsSet &&  */}
-          {swapAmount !== 0 && tokenB.tokenIsSet && (
+          {swapAmount !== 0 && tokenB?.tokenIsSet && (
             <>
               <Box
                 sx={{
@@ -319,7 +309,7 @@ const Swap = (props) => {
                   >
                     {spotPriceLoading ? (
                       <Skeleton width={"100px"} />
-                    ) : spotPrice == 0 ? (
+                    ) : spotPrice == 0 || !spotPrice ? (
                       <p></p>
                     ) : (
                       <p
