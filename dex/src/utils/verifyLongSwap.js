@@ -70,31 +70,35 @@ export const verifyLongSwap = async (
             balError: POPUP_MESSAGE["BAL#304"],
           });
         }
-        if (e.reason.match("BAL#347")) {
+        else if (e.reason.match("BAL#347")) {
           setLongSwapFormErrors({
             balError: POPUP_MESSAGE["BAL#347"],
           });
         }
-        if (e.reason.match("BAL#346")) {
+        else if (e.reason.match("BAL#346")) {
           setLongSwapFormErrors({
             balError: POPUP_MESSAGE["BAL#346"],
           });
         }
-        if (e.reason.match("BAL#510")) {
+        else if (e.reason.match("BAL#510")) {
           setLongSwapFormErrors({
             balError: POPUP_MESSAGE["BAL#510"],
           });
         }
-        if (e.reason === "underflow") {
+        else if (e.reason.match("underflow")) {
           setLongSwapFormErrors({ balError: "Underflow" });
         }
-        if (
+        else if (
           e.reason.match("ERC20: transfer amount exceeds allowance") ||
           e.reason.match("allowance")
         ) {
           setLongSwapVerifyLoading(false);
           errors.balError = undefined;
           setLongSwapFormErrors(errors ?? "");
+        } else {
+          setLongSwapFormErrors({
+            balError: POPUP_MESSAGE.unknown,
+          });
         }
       } else {
         setLongSwapFormErrors({
