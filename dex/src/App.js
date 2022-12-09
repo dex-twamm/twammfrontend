@@ -24,6 +24,7 @@ import { web3Modal } from "./utils/providerOptions";
 import { useNetwork } from "./providers/context/UIProvider";
 import { _swapTokens } from "./utils/shortSwap";
 import { swapTokens } from "./utils/swap";
+import LiquidityPage from "./pages/LiquidityPage";
 
 function App() {
   const location = useLocation();
@@ -67,8 +68,6 @@ function App() {
   const { provider, setProvider } = useContext(WebContext);
 
   const { nId, setSelectedNetwork, selectedNetwork } = useContext(UIContext);
-
-  console.log("Current Block", currentBlock);
 
   useEffect(() => {
     account && setWalletConnected(true);
@@ -293,31 +292,6 @@ function App() {
     }
   }, [provider]);
 
-  let liquidityMarkup = (
-    <LiquidityPools
-      showRemoveLiquidity={setShowRemoveLiquidity}
-      showAddLiquidity={setShowAddLiquidity}
-    />
-  );
-
-  if (showAddLiquidity) {
-    liquidityMarkup = (
-      <AddLiquidity
-        // connect={_joinPool}
-        showAddLiquidity={setShowAddLiquidity}
-      />
-    );
-  } else if (showRemoveLiquidity)
-    liquidityMarkup = (
-      <RemoveLiquidity showRemoveLiquidity={setShowRemoveLiquidity} />
-    );
-
-  // Condition of Liquidity existing
-  // if(liquidityExists) liquidityMarkup = <LiquidityPools/>
-  console.log("errors", formErrors);
-
-  console.log("Loading--->", loading);
-
   return (
     <>
       <div className="main">
@@ -368,7 +342,17 @@ function App() {
               />
             }
           />
-          <Route path="/liquidity" element={liquidityMarkup} />
+          <Route
+            path="/liquidity"
+            element={
+              <LiquidityPage
+                showAddLiquidity={showAddLiquidity}
+                setShowAddLiquidity={setShowAddLiquidity}
+                showRemoveLiquidity={showRemoveLiquidity}
+                setShowRemoveLiquidity={setShowRemoveLiquidity}
+              />
+            }
+          />
         </Routes>
       </div>
     </>
