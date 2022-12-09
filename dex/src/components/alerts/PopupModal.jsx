@@ -4,7 +4,6 @@ import { useContext } from "react";
 import { POPUP_MESSAGE } from "../../constants";
 import { ShortSwapContext } from "../../providers";
 import { UIContext } from "../../providers/context/UIProvider";
-import { POOLS } from "../../utils/pool";
 import { getPoolTransactionUrl } from "../../utils/poolUtils";
 
 const PopupModal = ({
@@ -40,7 +39,6 @@ const PopupModal = ({
   const handleClose = () => {
     setError("");
     setSuccess("");
-    // setTransactionHash("");
     setIsPlacedLongTermOrder && setIsPlacedLongTermOrder();
     setMessage("");
   };
@@ -50,11 +48,6 @@ const PopupModal = ({
   };
 
   const handleButtonClick = () => {
-    console.log(
-      "links",
-      getPoolTransactionUrl(selectedNetwork?.network),
-      `${getPoolTransactionUrl(selectedNetwork?.network)}${transactionHash}`
-    );
     window.open(
       `${getPoolTransactionUrl(selectedNetwork?.network)}${transactionHash}`
     );
@@ -62,16 +55,11 @@ const PopupModal = ({
 
   const buttonAction = <Button onClick={handleButtonClick}>View</Button>;
 
-  console.log("<---Transaction hash--->", transactionHash);
-
-  console.log("successs", message ? true : false, message);
-
   const AlertStyle = {
     margin: "5px",
     background: "rgba(255, 255, 255, 0.5)",
   };
 
-  console.log("hajsdhkajsdhkajsd", error);
   return (
     <>
       <div style={AlertStyle}>

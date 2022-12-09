@@ -71,7 +71,6 @@ const LongSwap = (props) => {
   const handleDisplay = (event) => {
     setSelectToken(event.currentTarget.id);
     setDisplay(!display);
-    // setSpotPrice(0);
     setExpectedSwapOut(0.0);
   };
 
@@ -136,7 +135,6 @@ const LongSwap = (props) => {
           .executionTime
       );
     }
-    console.log("Number of block value", newValue);
   };
 
   useEffect(() => {
@@ -165,8 +163,6 @@ const LongSwap = (props) => {
       setIsPlacedLongTermOrder && setIsPlacedLongTermOrder();
     };
   }, []);
-
-  console.log("Form errororororor", longSwapFormErrors);
 
   return (
     <>
@@ -206,7 +202,6 @@ const LongSwap = (props) => {
               <div className={styles.pairContainer}>
                 <div
                   onClick={() => {
-                    // setShowModal(true);
                     setDisplay(true);
                     setSelectToken("1");
                   }}

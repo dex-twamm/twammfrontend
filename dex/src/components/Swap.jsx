@@ -3,7 +3,6 @@ import { Alert, Box, CircularProgress, Skeleton } from "@mui/material";
 import classNames from "classnames";
 import React, { useContext, useState } from "react";
 import styles from "../css/AddLiquidity.module.css";
-// import style from "../css/Swap.module.css";
 
 import { LongSwapContext } from "../providers";
 import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
@@ -55,12 +54,7 @@ const Swap = (props) => {
   const { provider } = useContext(WebContext);
   const { selectedNetwork } = useContext(UIContext);
 
-  // console.log("Provider", provider);
-  // console.log("SC", srcAddress);
-  // console.log("Form Errors", formErrors);
-  console.log("SwapAmount", swapAmount, allowance, srcAddress);
   const handleDisplay = (event) => {
-    console.log("Current Target Id", event.currentTarget.id);
     setSelectToken(event.currentTarget.id);
     setDisplay(!display);
     setSpotPrice(0);
@@ -101,7 +95,6 @@ const Swap = (props) => {
         srcAddress,
         selectedNetwork?.network
       );
-      console.log("Approval---->", approval);
       setTransactionHash(approval.hash);
     } catch (e) {
       console.log(e);
@@ -117,9 +110,6 @@ const Swap = (props) => {
 
     return errors;
   };
-
-  console.log("Allowance Swap-->", allowance, swapAmount);
-  // console.log(first);
 
   const handleInputSwitch = () => {
     setSwitchInput((prev) => !prev);
@@ -143,8 +133,6 @@ const Swap = (props) => {
     };
   }, [setFormErrors]);
 
-  console.log("Disable Allow Button--->", disableAllowBtn, formErrors);
-
   useEffect(() => {
     return () => {
       setTargetDate("");
@@ -153,8 +141,6 @@ const Swap = (props) => {
       setSwitchInput(false);
     };
   }, []);
-
-  console.log("Spot price loading", expectedSwapOut);
 
   //for switching the input sectons in short swap
 
@@ -167,14 +153,6 @@ const Swap = (props) => {
   //     setTokenB(token_a);
   //   }
   // }, [switchInput]);
-
-  console.log(
-    "Switch Input datas",
-    tokenA,
-    tokenB,
-    swapAmount,
-    expectedSwapOut
-  );
 
   return (
     <>
@@ -217,25 +195,7 @@ const Swap = (props) => {
             setTokenB={setTokenB}
             swapType={swapType}
           />
-          {/* 
-          {formErrors.swapAmount && (
-            <div className={styles.errorAlert}>
-              <Alert
-                severity="error"
-                sx={{ borderRadius: "16px" }}
-                onClose={() => setFormErrors({})}
-              >
-                {formErrors.swapAmount}
-              </Alert>
-            </div>
-          )} */}
 
-          {/* <FontAwesomeIcon
-            style={{ zIndex: "1", cursor: "pointer" }}
-            className={style.iconDown}
-            icon={faArrowDown}
-            onClick={handleInputSwitch}
-          /> */}
           <Input
             id={2}
             input={
@@ -263,7 +223,6 @@ const Swap = (props) => {
             </div>
           )}
 
-          {/* swapAmount !== 0 && tokenB.tokenIsSet &&  */}
           {swapAmount !== 0 && tokenB?.tokenIsSet && (
             <>
               <Box
@@ -276,21 +235,16 @@ const Swap = (props) => {
                   padding: { xs: "0px 4px", sm: "4px 8px" },
                 }}
                 className={open && styles.swapunit}
-
-                // onClick={handleClose}
               >
                 {!formErrors.balError ? (
                   <Box
                     sx={{
                       display: "flex",
-                      // flexDirection:{xs:'column',sm:'row'},
                       alignItems: {
                         xs: "flex-start ",
                         sm: "center",
                         md: "center",
                       },
-                      // justifyContent:{xs:'center',sm:'space-between'},
-                      // width:'fit-content',
                       width: {
                         xs: "70%",
                         sm: "fit-content",
@@ -331,10 +285,6 @@ const Swap = (props) => {
                             ` ${spotPrice?.toFixed(4)} ${tokenB.symbol}`
                           )}
                         </label>
-                        {/* <span style={{ color: "#333333", opacity: 0.7 }}>
-                          {" "}
-                          ($123)
-                        </span> */}
                       </p>
                     )}
                   </Box>
@@ -350,40 +300,8 @@ const Swap = (props) => {
                     gap: { xs: "0px", sm: "5px" },
                     padding: "4px",
                   }}
-                >
-                  {/* <span
-                    style={{
-                      color: "#333333",
-                      opacity: 0.7,
-                      background: "#f7f8fa",
-                      borderRadius: "10px",
-                      padding: "4px 6px",
-                    }}
-                  >
-                    $1.23
-                  </span> */}
-
-                  {/* {open ? (
-                    <KeyboardArrowUpOutlinedIcon
-                      sx={{
-                        fontSize: "24px",
-                        color: "#333333",
-                        cursor: "pointer",
-                      }}
-                      onClick={handleClose}
-                    />
-                  ) : (
-                    <FiChevronDown
-                      fontSize={"24px"}
-                      style={{ color: "#333333", cursor: "pointer" }}
-                      onClick={handleClose}
-                    />
-                  )} */}
-                  {/* {spotPriceLoading && <CircularProgress size={15} />} */}
-                </Box>
+                ></Box>
               </Box>
-
-              {/* <LongTermSwapCardDropdown open={open} handleClose={handleClose} tokenB={tokenB}/> */}
             </>
           )}
 

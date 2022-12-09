@@ -14,7 +14,7 @@ import { getEthLogs } from "../utils/get_ethLogs";
 import { _placeLongTermOrders } from "../utils/placeLongTermOrder";
 import { WebContext } from "../providers/context/WebProvider";
 import { connectWallet } from "../utils/connetWallet";
-import { UIContext, useNetwork } from "../providers/context/UIProvider";
+import { UIContext } from "../providers/context/UIProvider";
 import LongSwap from "../components/LongSwap";
 import { verifyLongSwap } from "../utils/verifyLongSwap";
 
@@ -32,7 +32,6 @@ const LongSwapPage = (props) => {
   const [showSettings, setShowSettings] = useState(false);
 
   const {
-    tokenA,
     orderLogsDecoded,
     message,
     setMessage,
@@ -69,18 +68,7 @@ const LongSwapPage = (props) => {
 
   const cardListCount = ethLogsCount;
 
-  console.log("Logs Count", ethLogsCount, cardListCount);
-
-  console.log("Is long term order placed", isPlacedLongTermOrder);
-
   useEffect(() => {
-    console.log(
-      "Long Swap ----",
-      selectedNetwork?.network,
-      swapAmount,
-      destAddress,
-      srcAddress
-    );
     // Wait for 0.5 second before fetching price.
     const interval1 = setTimeout(() => {
       verifyLongSwap(
@@ -106,7 +94,6 @@ const LongSwapPage = (props) => {
   }, [swapAmount, destAddress, srcAddress, numberOfBlockIntervals]);
 
   async function LongSwapButtonClick() {
-    console.log("Wallet", isWalletConnected);
     if (!isWalletConnected) {
       await connectWallet(
         setweb3provider,
@@ -148,15 +135,6 @@ const LongSwapPage = (props) => {
       );
     }
   }
-
-  // useEffect(() => {
-  //   if (swapAmount && swapAmount > tokenA.balance) {
-  //     setFormErrors({ balError: "Invalid AMt" });
-  //   }
-  //   return () => {
-  //     setFormErrors("");
-  //   };
-  // }, [swapAmount, tokenA, setFormErrors]);
 
   return (
     <>
@@ -207,10 +185,6 @@ const LongSwapPage = (props) => {
                 cancelPool={cancelPool}
                 withdrawPool={withdrawPool}
               ></LongTermOrderCard>
-
-              {/* <div style={{ with: "100%", height:"auto" }}>
-              <LongTermSwapCardDropdown tokenB={tokenB} />
-            </div> */}
             </div>
           </div>
         </div>

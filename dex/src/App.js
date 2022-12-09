@@ -2,11 +2,6 @@ import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import ethLogo from "./images/ethereum.png";
-import {
-  AddLiquidity,
-  LiquidityPools,
-  RemoveLiquidity,
-} from "./components/Liquidity";
 import Navbar from "./components/Navbar";
 import LongSwapPage from "./pages/LongSwapPage";
 import ShortSwap from "./pages/ShortSwap";
@@ -21,9 +16,6 @@ import { getProvider } from "./utils/getProvider";
 import { getEthLogs } from "./utils/get_ethLogs";
 import { getLastVirtualOrderBlock } from "./utils/longSwap";
 import { web3Modal } from "./utils/providerOptions";
-import { useNetwork } from "./providers/context/UIProvider";
-import { _swapTokens } from "./utils/shortSwap";
-import { swapTokens } from "./utils/swap";
 import LiquidityPage from "./pages/LiquidityPage";
 
 function App() {
@@ -102,10 +94,6 @@ function App() {
     }
   }, []);
 
-  console.log("web3Modal.cachedProvider", web3Modal.cachedProvider);
-
-  console.log("webashasdweb3provider", account);
-
   //  Swap Token
 
   useEffect(() => {
@@ -127,8 +115,6 @@ function App() {
     },
   };
 
-  console.log("Account--->", account);
-
   // Use Memo
   useMemo(() => {
     const allowance = async () => {
@@ -142,7 +128,6 @@ function App() {
       );
       const tokenAddress = srcAddress;
       const walletAddress = account;
-      console.log("Wallet Address--->", walletAddress);
 
       // Allowance
       if (srcAddress) {
@@ -153,31 +138,19 @@ function App() {
           selectedNetwork?.network
         ).then((res) => {
           setAllowance(bigToStr(res));
-          console.log("===Allowance Response ====", bigToStr(res));
         });
         // Pool Balance
-        console.log("Token addresssss", tokenAddress);
         await getPoolBalance(
           provider,
           tokenAddress,
           selectedNetwork?.network
         ).then((res) => {
           setPoolCash(res);
-          console.log(
-            "===GET POOL BALANCE====",
-            res,
-            tokenAddress,
-            selectedNetwork?.network
-          );
         });
       }
     };
     allowance();
   }, [srcAddress, transactionHash]);
-
-  console.log("accountskdjlad", account);
-
-  console.log("Locationnnnnnnnnn", location);
 
   // Getting Each Token Balances
   const tokenBalance = useCallback(async () => {
@@ -206,12 +179,10 @@ function App() {
           selectedNetwork?.network
         ).then((res) => {
           setTokenBalances(res);
-          console.log("Response From Token Balance Then Block", res);
         });
 
         await getLastVirtualOrderBlock(provider, selectedNetwork?.network).then(
           (res) => {
-            console.log("Latest Block", res);
             setLatestBlock(res);
           }
         );
@@ -220,10 +191,7 @@ function App() {
           walletAddress,
           selectedNetwork?.network
         ).then((res) => {
-          // console.log("=== Order Keys === ", res.keys())
-          // console.log("=== Order Values === ", res.values())
           const resArray = Array.from(res.values());
-          console.log("=== Order Logs === ", resArray);
           setOrderLogsDecoded(resArray);
         });
 
@@ -234,7 +202,6 @@ function App() {
           selectedNetwork?.network
         ).then((res) => {
           setLPTokenBalance(res);
-          console.log("===Balance Of Pool ====", res);
         });
         setLoading(false);
         setOrderLogsLoading(false);
@@ -271,11 +238,9 @@ function App() {
   useEffect(() => {
     if (provider?.on) {
       const handleAccountsChanged = (accounts) => {
-        console.log("accountsChanged", accounts);
         if (accounts) setAccount(accounts[0]);
       };
       const handleDisconnect = () => {
-        console.log("disconnect", error);
         disconnect();
       };
 

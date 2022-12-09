@@ -4,8 +4,6 @@ import styles from "../css/LongTermOrderCard.module.css";
 import { UIContext } from "../providers/context/UIProvider";
 import { bigToFloat, bigToStr } from "../utils";
 import classNames from "classnames";
-import { POOLS } from "../utils/pool";
-
 import LongTermSwapCardDropdown from "./LongTermSwapCardDropdown";
 import { _withdrawLTO } from "../utils/_withdrawLto";
 import { _cancelLTO } from "../utils/_cancelLto";
@@ -43,8 +41,6 @@ const LongTermOrderSingleCard = ({ it }) => {
   const [newTime, setNewTime] = useState(
     (it.expirationBlock - currentBlock.number) * 12
   );
-
-  console.log("current network", selectedNetwork);
 
   const poolConfig = getPoolConfig(selectedNetwork?.network ?? "Goerli");
 
@@ -141,7 +137,6 @@ const LongTermOrderSingleCard = ({ it }) => {
       setOrderStatus({ status: "Execution Completed", progress: 100 });
     } else {
       if (it.expirationBlock > currentBlock.number) {
-        // const timeRemaining = (it.expirationBlock - currentBlock.number) * 12;
         let date = new Date(0);
         date.setSeconds(newTime); // specify value for SECONDS here
         const timeString = date.toISOString().substring(11, 16);

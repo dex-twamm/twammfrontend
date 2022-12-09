@@ -7,7 +7,7 @@ import Swap from "../components/Swap";
 import Tabs from "../components/Tabs";
 import styles from "../css/ShortSwap.module.css";
 import { ShortSwapContext } from "../providers";
-import { UIContext, useNetwork } from "../providers/context/UIProvider";
+import { UIContext } from "../providers/context/UIProvider";
 import { connectWallet } from "../utils/connetWallet";
 import { getProvider } from "../utils/getProvider";
 import { spotPrice } from "../utils/getSpotPrice";
@@ -23,8 +23,6 @@ const ShortSwap = ({
   message,
   setMessage,
 }) => {
-  //   const [showSettings, setShowSettings] = useState(false);
-
   const {
     isWalletConnected,
     setweb3provider,

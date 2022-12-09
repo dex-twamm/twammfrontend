@@ -67,11 +67,8 @@ export const getEstimatedConvertedToken = async (
   const swapTx = await exchangeContract.callStatic.swap(...swapData, {
     gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
   });
-  // console.log("swapTxxxx", txHash.toNumber());
   // const txResult = await swapTx.wait();
-  // console.log("Swap Results After Placed", txResult)
   return swapTx;
 
   // const swapResult = await swapTx.wait();
-  // console.log(swapResult.transactionHash);
 };

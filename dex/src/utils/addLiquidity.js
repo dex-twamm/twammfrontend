@@ -180,19 +180,12 @@ export async function getPoolBalance(signer, tokenAddress, currentNetwork) {
     (item) => item.address === tokenAddress
   );
 
-  console.log("TokenIndex--->", tokenIndex);
   const vaultContract = new Contract(
     getpoolVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );
-  console.log(
-    "pool id-->",
-    getNetworkPoolId(currentNetwork),
-    tokenAddress,
-    currentNetwork,
-    signer
-  );
+
   const poolBalance = await vaultContract.getPoolTokenInfo(
     getNetworkPoolId(currentNetwork),
     tokenAddress

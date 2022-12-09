@@ -5,13 +5,6 @@ const valueLabel = (value, currentBlock) => {
     Math.ceil(value) * 150 +
     (currentBlock.number % 150 ? 150 - (currentBlock.number % 150) : 0);
 
-  console.log(
-    "numBlocks",
-    numBlocks,
-    currentBlock,
-    150 - (currentBlock.number % 150)
-  );
-
   const targetDate = new Date(currentBlock.timestamp * 1000);
   targetDate.setSeconds(targetDate.getSeconds() + numBlocks * 12);
 
@@ -21,7 +14,6 @@ const valueLabel = (value, currentBlock) => {
     executionTime: timeString,
     targetDate: `${targetDate.toLocaleString()}`,
   };
-  console.log("targetDate", targetDate, timeString);
   return values;
 };
 
