@@ -16,6 +16,7 @@ import { getEthLogs } from "./utils/get_ethLogs";
 import { getLastVirtualOrderBlock } from "./utils/longSwap";
 import { web3Modal } from "./utils/providerOptions";
 import LiquidityPage from "./pages/LiquidityPage";
+import { disconnect } from "./utils/disconnectWallet";
 
 function App() {
   const [showDisconnect, setShowDisconnect] = useState(false);
@@ -49,21 +50,6 @@ function App() {
   useEffect(() => {
     account && setWalletConnected(true);
   }, [account, setWalletConnected]);
-
-  // Refresh State
-  const refreshState = () => {
-    setAccount();
-    setWalletConnected(false);
-    setBalance();
-    localStorage.clear();
-  };
-
-  // Disconnect Wallet
-  const disconnect = async () => {
-    web3Modal.clearCachedProvider();
-    refreshState();
-    setShowDisconnect(false);
-  };
 
   useEffect(() => {
     if (web3Modal.cachedProvider) {
@@ -206,7 +192,12 @@ function App() {
         if (accounts) setAccount(accounts[0]);
       };
       const handleDisconnect = () => {
-        disconnect();
+        disconnect(
+          setShowDisconnect,
+          setAccount,
+          setWalletConnected,
+          setBalance
+        );
       };
 
       provider.on("accountsChanged", handleAccountsChanged);
@@ -226,8 +217,6 @@ function App() {
     <>
       <div className="main">
         <Navbar
-          disconnectWallet={disconnect}
-          change={connectWallet}
           showDisconnect={showDisconnect}
           setShowDisconnect={setShowDisconnect}
         />

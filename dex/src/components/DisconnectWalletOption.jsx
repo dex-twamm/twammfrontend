@@ -10,6 +10,7 @@ import { ShortSwapContext } from "../providers";
 import { truncateAddress } from "../utils";
 import { getPoolEthersScanUrl } from "../utils/poolUtils";
 import { UIContext } from "../providers/context/UIProvider";
+import { disconnect } from "../utils/disconnectWallet";
 
 const style = {
   position: "absolute",
@@ -29,15 +30,15 @@ const style = {
   pt: 2,
 };
 
-const DisconnectWalletOption = ({
-  setOpen,
-  open,
-  disconnectWallet,
-  change,
-}) => {
-  const { account } = useContext(ShortSwapContext);
+const DisconnectWalletOption = ({ setOpen, open, setShowDisconnect }) => {
+  const { account, setAccount, setWalletConnected, setBalance } =
+    useContext(ShortSwapContext);
   const handleClose = () => setOpen(false);
   const { selectedNetwork } = useContext(UIContext);
+
+  const handleDisconnectWallet = () => {
+    disconnect(setShowDisconnect, setAccount, setWalletConnected, setBalance);
+  };
 
   return (
     <Box
@@ -114,7 +115,7 @@ const DisconnectWalletOption = ({
               </Typography>
 
               <Button
-                onClick={disconnectWallet}
+                onClick={handleDisconnectWallet}
                 size="small"
                 disableFocusRipple
                 sx={{

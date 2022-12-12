@@ -16,7 +16,7 @@ import { NETWORKS } from "../utils/networks";
 const Navbar = (props) => {
   const { selectedNetwork, setSelectedNetwork, nId } = useContext(UIContext);
 
-  const { disconnectWallet, change, showDisconnect, setShowDisconnect } = props;
+  const { showDisconnect, setShowDisconnect } = props;
   const {
     setError,
     isWalletConnected,
@@ -141,9 +141,8 @@ const Navbar = (props) => {
     <header className={styles.header} id="header">
       {showDisconnect && (
         <DisconnectWalletOption
+          setShowDisconnect={setShowDisconnect}
           setOpen={setShowDisconnect}
-          change={change}
-          disconnectWallet={disconnectWallet}
           open={showDisconnect}
         />
       )}
