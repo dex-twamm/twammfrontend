@@ -1,6 +1,6 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import PopupModal from "../components/alerts/PopupModal";
 import PopupSettings from "../components/PopupSettings";
 import Swap from "../components/Swap";
@@ -14,15 +14,7 @@ import { spotPrice } from "../utils/getSpotPrice";
 import { getEthLogs } from "../utils/get_ethLogs";
 import { _swapTokens } from "../utils/shortSwap";
 
-const ShortSwap = ({
-  tokenSymbol,
-  tokenImage,
-  buttonText,
-  showSettings,
-  setShowSettings,
-  message,
-  setMessage,
-}) => {
+const ShortSwap = ({ buttonText }) => {
   const {
     isWalletConnected,
     setweb3provider,
@@ -102,6 +94,8 @@ const ShortSwap = ({
     };
   }, [swapAmount, destAddress, srcAddress]);
 
+  const [showSettings, setShowSettings] = useState(false);
+
   async function ShortSwapButtonClick() {
     try {
       if (!isWalletConnected) {
@@ -151,6 +145,12 @@ const ShortSwap = ({
     }
   }
 
+  useEffect(() => {
+    document.body.onclick = () => {
+      setShowSettings(false);
+    };
+  });
+
   return (
     <>
       <div className={styles.container}>
@@ -174,14 +174,12 @@ const ShortSwap = ({
             {showSettings && <PopupSettings />}
           </div>
           <Swap
-            tokenSymbol={tokenSymbol}
-            tokenImage={tokenImage}
             connectWallet={ShortSwapButtonClick}
-            buttonText={buttonText}
+            buttonText={!isWalletConnected ? "Connect Wallet" : "Swap"}
             spotPriceLoading={spotPriceLoading}
           />
         </div>
-        <PopupModal message={message} setMessage={setMessage}></PopupModal>
+        <PopupModal />
       </div>
     </>
   );

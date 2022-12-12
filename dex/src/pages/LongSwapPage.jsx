@@ -18,23 +18,11 @@ import { UIContext } from "../providers/context/UIProvider";
 import LongSwap from "../components/LongSwap";
 import { verifyLongSwap } from "../utils/verifyLongSwap";
 
-const LongSwapPage = (props) => {
-  const {
-    tokenSymbol,
-    tokenImage,
-    buttonText,
-    cancelPool,
-    withdrawPool,
-    isPlacedLongTermOrder,
-    setIsPlacedLongTermOrder,
-  } = props;
-
-  const [showSettings, setShowSettings] = useState(false);
+const LongSwapPage = () => {
+  const [isPlacedLongTermOrder, setIsPlacedLongTermOrder] = useState();
 
   const {
     orderLogsDecoded,
-    message,
-    setMessage,
     numberOfBlockIntervals,
     setOrderLogsDecoded,
     setLongSwapFormErrors,
@@ -57,6 +45,8 @@ const LongSwapPage = (props) => {
     setLoading,
     setError,
   } = useContext(ShortSwapContext);
+
+  const [showSettings, setShowSettings] = useState(false);
 
   const { provider } = useContext(WebContext);
 
@@ -136,6 +126,12 @@ const LongSwapPage = (props) => {
     }
   }
 
+  useEffect(() => {
+    document.body.onclick = () => {
+      setShowSettings(false);
+    };
+  });
+
   return (
     <>
       <div className={styles.container}>
@@ -149,18 +145,18 @@ const LongSwapPage = (props) => {
               <FontAwesomeIcon
                 className={styles.settingsIcon}
                 icon={faGear}
-                onClick={() => setShowSettings(!showSettings)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowSettings(!showSettings);
+                }}
               />
             </div>
 
             {showSettings && <PopupSettings swapType="long" />}
           </div>
           <LongSwap
-            swapType="long"
-            tokenSymbol={tokenSymbol}
-            tokenImage={tokenImage}
             connectWallet={LongSwapButtonClick}
-            buttonText={buttonText}
+            buttonText={!isWalletConnected ? "Connect Wallet" : "Swap"}
             longSwapVerifyLoading={longSwapVerifyLoading}
             setIsPlacedLongTermOrder={setIsPlacedLongTermOrder}
           />
@@ -168,9 +164,7 @@ const LongSwapPage = (props) => {
         <PopupModal
           isPlacedLongTermOrder={isPlacedLongTermOrder}
           setIsPlacedLongTermOrder={setIsPlacedLongTermOrder}
-          message={message}
-          setMessage={setMessage}
-        ></PopupModal>
+        />
 
         <div className={lsStyles.ordersWrapper}>
           <h4 className={lsStyles.longTermText}>Your Long Term Orders</h4>
@@ -181,10 +175,7 @@ const LongSwapPage = (props) => {
                 cardListCount > 2 && lsStyles.scrollable
               )}
             >
-              <LongTermOrderCard
-                cancelPool={cancelPool}
-                withdrawPool={withdrawPool}
-              ></LongTermOrderCard>
+              <LongTermOrderCard />
             </div>
           </div>
         </div>

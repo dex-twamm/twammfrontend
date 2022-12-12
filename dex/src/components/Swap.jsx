@@ -15,13 +15,7 @@ import { WebContext } from "../providers/context/WebProvider";
 import { UIContext } from "../providers/context/UIProvider";
 
 const Swap = (props) => {
-  const {
-    connectWallet,
-    buttonText,
-    swapType,
-    spotPriceLoading,
-    setIsPlacedLongTermOrder,
-  } = props;
+  const { connectWallet, buttonText, spotPriceLoading } = props;
 
   const [display, setDisplay] = useState(false);
 
@@ -137,7 +131,6 @@ const Swap = (props) => {
     return () => {
       setTargetDate("");
       setTransactionHash(undefined);
-      setIsPlacedLongTermOrder && setIsPlacedLongTermOrder();
       setSwitchInput(false);
     };
   }, []);
@@ -193,7 +186,6 @@ const Swap = (props) => {
             setDisplay={setDisplay}
             setTokenA={setTokenA}
             setTokenB={setTokenB}
-            swapType={swapType}
           />
 
           <Input

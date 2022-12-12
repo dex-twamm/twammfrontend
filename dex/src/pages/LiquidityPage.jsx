@@ -1,16 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   AddLiquidity,
   LiquidityPools,
   RemoveLiquidity,
 } from "../components/Liquidity";
 
-const LiquidityPage = ({
-  showAddLiquidity,
-  setShowAddLiquidity,
-  showRemoveLiquidity,
-  setShowRemoveLiquidity,
-}) => {
+const LiquidityPage = () => {
+  const [showRemoveLiquidity, setShowRemoveLiquidity] = useState(false);
+  const [showAddLiquidity, setShowAddLiquidity] = useState(false);
+
   let liquidityMarkup = (
     <LiquidityPools
       showRemoveLiquidity={setShowRemoveLiquidity}

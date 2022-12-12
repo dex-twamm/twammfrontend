@@ -1,16 +1,10 @@
 import { useEffect } from "react";
-import { createContext, useContext, useState } from "react";
+import { createContext, useState } from "react";
 import { NETWORKS } from "../../utils/networks";
 
 const UIContext = createContext(null);
 
-export const useNetwork = () => {
-  const { selectedNetwork } = useContext(UIContext);
-  if (selectedNetwork) return selectedNetwork;
-};
-
 const UIProvider = ({ children }) => {
-  const [showDropdown, setShowDropdown] = useState(false);
   const [selectedNetwork, setSelectedNetwork] = useState();
   const [nId, setNetId] = useState();
 
@@ -30,8 +24,6 @@ const UIProvider = ({ children }) => {
   return (
     <UIContext.Provider
       value={{
-        showDropdown,
-        setShowDropdown,
         selectedNetwork,
         setSelectedNetwork,
         nId,

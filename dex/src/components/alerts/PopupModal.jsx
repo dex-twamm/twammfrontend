@@ -2,16 +2,11 @@ import { Alert, Backdrop, Button } from "@mui/material";
 import { useEffect } from "react";
 import { useContext } from "react";
 import { POPUP_MESSAGE } from "../../constants";
-import { ShortSwapContext } from "../../providers";
+import { LongSwapContext, ShortSwapContext } from "../../providers";
 import { UIContext } from "../../providers/context/UIProvider";
 import { getPoolTransactionUrl } from "../../utils/poolUtils";
 
-const PopupModal = ({
-  isPlacedLongTermOrder,
-  setIsPlacedLongTermOrder,
-  message,
-  setMessage,
-}) => {
+const PopupModal = ({ isPlacedLongTermOrder, setIsPlacedLongTermOrder }) => {
   const {
     error,
     setError,
@@ -20,6 +15,8 @@ const PopupModal = ({
     transactionHash,
     setTransactionHash,
   } = useContext(ShortSwapContext);
+
+  const { message, setMessage } = useContext(LongSwapContext);
 
   const { selectedNetwork } = useContext(UIContext);
 

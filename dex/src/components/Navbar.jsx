@@ -1,36 +1,22 @@
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { POPUP_MESSAGE } from "../constants";
 import styles from "../css/Navbar.module.css";
 import { ShortSwapContext, UIContext } from "../providers";
-import { toHex } from "../utils";
+import { toHex, truncateAddress } from "../utils";
 import { connectWallet } from "../utils/connetWallet";
 import { DisconnectWalletOption } from "./DisconnectWalletOption";
 import NavOptionDropdwon from "./navbarDropdown/NavOptionDropdwon";
 import { NETWORKS } from "../utils/networks";
 
 const Navbar = (props) => {
-  const {
-    showDropdown,
-    setShowDropdown,
-    selectedNetwork,
-    setSelectedNetwork,
-    nId,
-  } = useContext(UIContext);
+  const { selectedNetwork, setSelectedNetwork, nId } = useContext(UIContext);
 
-  const {
-    walletBalance,
-    walletAddress,
-    accountStatus,
-    disconnectWallet,
-    change,
-    showDisconnect,
-    setShowDisconnect,
-  } = props;
+  const { disconnectWallet, change, showDisconnect, setShowDisconnect } = props;
   const {
     setError,
     isWalletConnected,
@@ -38,8 +24,12 @@ const Navbar = (props) => {
     setCurrentBlock,
     setBalance,
     setAccount,
+    account,
+    balance,
     setWalletConnected,
   } = useContext(ShortSwapContext);
+
+  const [showDropdown, setShowDropdown] = useState(false);
 
   let initialNetwork = {};
 
@@ -126,7 +116,7 @@ const Navbar = (props) => {
   });
 
   const handleDisconnect = () => {
-    walletAddress && setShowDisconnect(true);
+    account && setShowDisconnect(true);
   };
 
   const walletConnect = async () => {
@@ -140,6 +130,12 @@ const Navbar = (props) => {
       nId
     );
   };
+
+  useEffect(() => {
+    document.body.onclick = () => {
+      setShowDropdown(false);
+    };
+  });
 
   return (
     <header className={styles.header} id="header">
@@ -201,18 +197,18 @@ const Navbar = (props) => {
           )}
 
           <div className={styles.walletBalance}>
-            {accountStatus ? (
+            {isWalletConnected ? (
               <>
                 <button
                   className={classNames(styles.btnWallet, styles.leftRadius)}
                 >
-                  {walletBalance}
+                  {balance}
                 </button>
                 <button
                   onClick={handleDisconnect}
                   className={classNames(styles.btnWallet, styles.rightRadius)}
                 >
-                  {walletAddress}
+                  {truncateAddress(account)}
                 </button>
               </>
             ) : (

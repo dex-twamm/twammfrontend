@@ -28,7 +28,6 @@ const LongSwap = (props) => {
   const {
     connectWallet,
     buttonText,
-    swapType,
     longSwapVerifyLoading,
     setIsPlacedLongTermOrder,
   } = props;
@@ -264,7 +263,6 @@ const LongSwap = (props) => {
             setDisplay={setDisplay}
             setTokenA={setTokenA}
             setTokenB={setTokenB}
-            swapType={swapType}
           />
 
           {longSwapFormErrors?.balError && (
