@@ -302,7 +302,7 @@ const LongSwap = (props) => {
                     fontFamily: "Open Sans",
                   }}
                 >
-                  {`${targetDate} `.substring(0, 16)}
+                  {`${targetDate} `.substring(0, 17)}
                 </Box>
 
                 <Box
@@ -339,7 +339,7 @@ const LongSwap = (props) => {
                     paddingRight: "2px",
                   }}
                 >
-                  Order Completetion Date
+                  Order Completion Date
                 </Box>
               </Typography>
               <Slider
