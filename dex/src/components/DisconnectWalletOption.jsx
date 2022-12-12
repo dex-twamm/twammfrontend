@@ -30,14 +30,15 @@ const style = {
   pt: 2,
 };
 
-const DisconnectWalletOption = ({ setOpen, open, setShowDisconnect }) => {
+const DisconnectWalletOption = ({ showDisconnect, setShowDisconnect }) => {
   const { account, setAccount, setWalletConnected, setBalance } =
     useContext(ShortSwapContext);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => setShowDisconnect(false);
   const { selectedNetwork } = useContext(UIContext);
 
   const handleDisconnectWallet = () => {
-    disconnect(setShowDisconnect, setAccount, setWalletConnected, setBalance);
+    disconnect(setAccount, setWalletConnected, setBalance);
+    setShowDisconnect(false);
   };
 
   return (
@@ -51,7 +52,7 @@ const DisconnectWalletOption = ({ setOpen, open, setShowDisconnect }) => {
       }}
     >
       <Modal
-        open={open}
+        open={showDisconnect}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"

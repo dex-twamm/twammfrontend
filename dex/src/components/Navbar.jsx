@@ -13,10 +13,12 @@ import { DisconnectWalletOption } from "./DisconnectWalletOption";
 import NavOptionDropdwon from "./navbarDropdown/NavOptionDropdwon";
 import { NETWORKS } from "../utils/networks";
 
-const Navbar = (props) => {
+const Navbar = () => {
+  const [showDisconnect, setShowDisconnect] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+
   const { selectedNetwork, setSelectedNetwork, nId } = useContext(UIContext);
 
-  const { showDisconnect, setShowDisconnect } = props;
   const {
     setError,
     isWalletConnected,
@@ -28,8 +30,6 @@ const Navbar = (props) => {
     balance,
     setWalletConnected,
   } = useContext(ShortSwapContext);
-
-  const [showDropdown, setShowDropdown] = useState(false);
 
   let initialNetwork = {};
 
@@ -142,8 +142,7 @@ const Navbar = (props) => {
       {showDisconnect && (
         <DisconnectWalletOption
           setShowDisconnect={setShowDisconnect}
-          setOpen={setShowDisconnect}
-          open={showDisconnect}
+          showDisconnect={showDisconnect}
         />
       )}
       <div className={styles.row}>

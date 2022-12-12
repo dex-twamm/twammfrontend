@@ -9,12 +9,10 @@ const refreshState = (setAccount, setWalletConnected, setBalance) => {
 
 // Disconnect Wallet
 export const disconnect = async (
-  setShowDisconnect,
   setAccount,
   setWalletConnected,
   setBalance
 ) => {
   web3Modal.clearCachedProvider();
   refreshState(setAccount, setWalletConnected, setBalance);
-  setShowDisconnect(false);
 };

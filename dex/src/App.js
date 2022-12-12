@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo } from "react";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Navbar";
@@ -19,8 +19,6 @@ import LiquidityPage from "./pages/LiquidityPage";
 import { disconnect } from "./utils/disconnectWallet";
 
 function App() {
-  const [showDisconnect, setShowDisconnect] = useState(false);
-
   const {
     srcAddress,
     setSwapAmount,
@@ -192,12 +190,7 @@ function App() {
         if (accounts) setAccount(accounts[0]);
       };
       const handleDisconnect = () => {
-        disconnect(
-          setShowDisconnect,
-          setAccount,
-          setWalletConnected,
-          setBalance
-        );
+        disconnect(setAccount, setWalletConnected, setBalance);
       };
 
       provider.on("accountsChanged", handleAccountsChanged);
@@ -216,10 +209,7 @@ function App() {
   return (
     <>
       <div className="main">
-        <Navbar
-          showDisconnect={showDisconnect}
-          setShowDisconnect={setShowDisconnect}
-        />
+        <Navbar />
         <Routes>
           <Route path="/shortswap" element={<ShortSwap />} />
           <Route path="/" element={<LongSwapPage />} />
