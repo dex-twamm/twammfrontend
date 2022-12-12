@@ -46,10 +46,6 @@ function App() {
   const { nId, setSelectedNetwork, selectedNetwork } = useContext(UIContext);
 
   useEffect(() => {
-    account && setWalletConnected(true);
-  }, [account, setWalletConnected]);
-
-  useEffect(() => {
     if (web3Modal.cachedProvider) {
       connectWallet(
         setweb3provider,
@@ -63,7 +59,7 @@ function App() {
     }
   }, []);
 
-  //  Swap Token
+  // Swap Token
   useEffect(() => {
     if (transactionHash) {
       setSwapAmount(0);
