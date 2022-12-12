@@ -114,7 +114,7 @@ function App() {
   const tokenBalance = useCallback(async () => {
     setLoading(true);
     setOrderLogsLoading(true);
-    if (!account) {
+    if (account) {
       const provider = await getProvider(
         true,
         setweb3provider,
