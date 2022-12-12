@@ -39,7 +39,6 @@ export const _placeLongTermOrders = async (
     );
     // console.log('amountIn', amountIn);
     const blockIntervals = Math.ceil(numberOfBlockIntervals);
-    console.log("Intervals", numberOfBlockIntervals);
     const signer = await getProvider(
       true,
       setweb3provider,
@@ -66,7 +65,7 @@ export const _placeLongTermOrders = async (
         setIsPlacedLongTermOrder(true);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
         setIsPlacedLongTermOrder(false);
       })
       .finally(setLoading(false));

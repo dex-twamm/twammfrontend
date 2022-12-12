@@ -40,12 +40,6 @@ export const _swapTokens = async (
   );
   const pCash = ethers.utils.parseUnits(poolCash, tokenIn.decimals);
 
-  console.log(
-    "walletBalanceWeisdasd",
-    walletBalanceWei.toString(),
-    pCash.toString(),
-    swapAmountWei.toString()
-  );
   if (swapAmountWei.lte(walletBalanceWei)) {
     try {
       const signer = await getProvider(
@@ -56,12 +50,10 @@ export const _swapTokens = async (
         setAccount,
         setWalletConnected
       );
-      // console.log(signer);
       const assetIn = srcAddress;
       const assetOut = destAddress;
       const walletAddress = account;
 
-      console.log("hkhaskhaskjdasd", currentNetwork);
       // Call the swapTokens function from the `utils` folder
       await swapTokens(
         signer,
@@ -75,25 +67,21 @@ export const _swapTokens = async (
         currentNetwork
       )
         .then((res) => {
-          console.log("Responseeeee----->", res);
           setTransactionHash(res.hash);
           const swapResult = async (res) => {
             const result = await res.wait();
             return result;
           };
           swapResult(res).then((response) => {
-            console.log("Responseeeeeee", response);
             if (response.status === 1)
               setSuccess(POPUP_MESSAGE.shortSwapSuccess);
           });
         })
         .catch((err) => {
-          console.error("error on swap", err);
           setError(POPUP_MESSAGE.shortSwapFailed);
         });
       setLoading(false);
     } catch (err) {
-      console.error("errorr on swap", err);
       setLoading(false);
       setError(POPUP_MESSAGE.transactionCancelled);
     }

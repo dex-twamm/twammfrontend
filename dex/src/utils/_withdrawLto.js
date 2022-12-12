@@ -23,7 +23,6 @@ export const _withdrawLTO = async (
   setSelectedNetwork,
   nId
 ) => {
-  console.log("Order Id", orderId);
   setDisableActionBtn(true);
   setLoading(true);
   try {

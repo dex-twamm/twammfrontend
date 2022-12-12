@@ -60,7 +60,6 @@ export async function placeLongTermOrder(
   setTransactionHash(placeLtoTx.hash);
 
   console.log("====Swap Results After Placed=====", await placeLtoTx.wait());
-  console.log(txHash);
   return txHash;
 }
 

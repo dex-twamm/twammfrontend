@@ -18,9 +18,6 @@ export const getLongSwapEstimatedConvertedToken = async (
   walletAddress,
   currentNetwork
 ) => {
-  let txHash;
-
-  console.log("Amount in value", amountIn, numberOfBlockIntervals);
   const exchangeContract = new Contract(
     getpoolVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
@@ -51,8 +48,6 @@ export const getLongSwapEstimatedConvertedToken = async (
   ];
 
   const gasEstimate = await exchangeContract.estimateGas.joinPool(...swapData);
-
-  console.log("gas estimate price", gasEstimate);
 
   const placeLtoTx = await exchangeContract.callStatic.joinPool(...swapData, {
     gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
@@ -117,14 +112,12 @@ export const verifyLongSwap = async (
         walletAddress,
         currentNetwork
       ).then((res) => {
-        console.log("Response From Query Batch Swap", res);
         errors.balError = undefined;
         setLongSwapFormErrors(errors ?? "");
         setLongSwapVerifyLoading(false);
       });
     } catch (e) {
       setLongSwapVerifyLoading(false);
-      console.log("errororrrrrrrr", typeof e, { ...e });
       if (e.reason) {
         if (e.reason.match("BAL#304")) {
           setLongSwapFormErrors({

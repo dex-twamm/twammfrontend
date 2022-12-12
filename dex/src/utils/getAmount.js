@@ -23,7 +23,6 @@ export const getTokensBalance = async (
       balances,
       poolConfig?.tokens[index].decimals
     );
-    // console.log("Balances", readableBalance);
     newBalance.push({ [address]: readableBalance });
   }
   async function balanceContract(address) {
@@ -41,7 +40,6 @@ export const getTokensBalance = async (
     );
     return balanceOfTokens;
   }
-  console.log("newBalance", newBalance);
   return newBalance.map((item) => item);
 };
 
@@ -58,6 +56,5 @@ export const getLPTokensBalance = async (
 
   const balanceOfLPTokens = await poolContract.balanceOf(walletAddress);
   const readableBalance = bigToStr(balanceOfLPTokens);
-  console.log("BLPT", readableBalance);
   return readableBalance;
 };

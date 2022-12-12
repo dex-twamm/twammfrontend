@@ -9,9 +9,6 @@ export const getAllowance = async (
   tokenAddress,
   currentNetwork
 ) => {
-  console.log("Allowance Input provider", provider);
-  console.log("Allowance Input walletAddress", walletAddress);
-  console.log("Allowance Input tokenAddress", tokenAddress);
   const ERC20Contract = new Contract(
     tokenAddress,
     ERC20_TOKEN_CONTRACT_ABI,
@@ -22,7 +19,6 @@ export const getAllowance = async (
     walletAddress,
     getpoolVaultContractAddress(currentNetwork)
   );
-  console.log("Allowance---->", allowance);
   return allowance;
 };
 
@@ -37,6 +33,5 @@ export const getApproval = async (provider, tokenAddress, currentNetwork) => {
     getpoolVaultContractAddress(currentNetwork),
     MAX_UINT256
   );
-  console.log("Allowanc-->", allowance);
   return allowance;
 };

@@ -37,21 +37,6 @@ export const swapTokens = async (
   const targetDate = new Date();
   targetDate.setSeconds(deadline * 60);
   const deadlineTimestamp = targetDate.getTime();
-  console.log(
-    "Inputs",
-    assetIn,
-    assetOut,
-    expectedSwapOut,
-    tolerance,
-    deadline,
-    swapAmountWei,
-    expectedSwapOutAfterTolerance
-  );
-
-  console.log(
-    "getNetworkPoolId(currentNetwork)",
-    getNetworkPoolId(currentNetwork)
-  );
 
   const swapData = [
     {
@@ -77,18 +62,11 @@ export const swapTokens = async (
 
   const gasEstimate = await exchangeContract.estimateGas.swap(...swapData);
 
-  console.log(
-    "Swap value passdddd",
-    ...swapData,
-    Math.floor(gasEstimate.toNumber() * 1.2)
-  );
-
   const swapTx = await exchangeContract.swap(...swapData, {
     gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
   });
 
-  let txHash = swapTx.hash;
-  console.log("swapTxxxx", swapTx.hash);
+  // let txHash = swapTx.hash;
   // const txResult = await swapTx.wait();
   // console.log("Swap Results After Placed", txResult)
   return swapTx;

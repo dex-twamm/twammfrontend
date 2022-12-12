@@ -24,8 +24,6 @@ export const spotPrice = async (
   setExpectedSwapOut,
   currentNetwork
 ) => {
-  console.log("swapAmount ---->", swapAmount, srcAddress, destAddress);
-
   if (swapAmount) {
     setSpotPriceLoading(true);
 
@@ -39,7 +37,6 @@ export const spotPrice = async (
 
     //todo : Change this to use token decimal places
     const swapAmountWei = ethers.utils.parseUnits(swapAmount, tokenIn.decimals);
-    console.log("swapAmountWei", swapAmountWei);
 
     const errors = {};
 
@@ -52,8 +49,6 @@ export const spotPrice = async (
       setWalletConnected
     );
     const walletAddress = account;
-
-    console.log("Expected swap out ---->", expectedSwapOut);
 
     //for shortswap
     try {
@@ -68,7 +63,6 @@ export const spotPrice = async (
         deadline,
         currentNetwork
       ).then((res) => {
-        console.log("Response From Query Batch Swap", res.toString());
         errors.balError = undefined;
         setFormErrors(errors ?? "");
         setSpotPrice(
@@ -80,7 +74,6 @@ export const spotPrice = async (
       });
     } catch (e) {
       setSpotPriceLoading(false);
-      console.log("erroror", typeof e, { ...e });
       if (e.reason) {
         if (e.reason.match("BAL#304")) {
           setFormErrors({

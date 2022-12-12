@@ -31,14 +31,6 @@ export const getEstimatedConvertedToken = async (
   const targetDate = new Date();
   targetDate.setSeconds(deadline * 60);
   const deadlineTimestamp = targetDate.getTime();
-  console.log(
-    "Inputs",
-    expectedSwapOut,
-    tolerance,
-    deadline,
-    swapAmountWei,
-    expectedSwapOutAfterTolerance
-  );
 
   const swapData = [
     {
