@@ -14,7 +14,7 @@ import { spotPrice } from "../utils/getSpotPrice";
 import { getEthLogs } from "../utils/get_ethLogs";
 import { _swapTokens } from "../utils/shortSwap";
 
-const ShortSwap = ({ buttonText }) => {
+const ShortSwap = () => {
   const {
     isWalletConnected,
     setweb3provider,

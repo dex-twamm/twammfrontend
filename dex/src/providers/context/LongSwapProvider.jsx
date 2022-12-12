@@ -6,7 +6,6 @@ import { UIContext } from "./UIProvider";
 
 export const LongSwapProvider = ({ children }) => {
   const [sliderValue, setSliderValue] = useState(1);
-
   const [orderLogsDecoded, setOrderLogsDecoded] = useState([]);
   const [latestBlock, setLatestBlock] = useState("");
   const [numberOfBlockIntervals, setNumberOfBlockIntervals] = useState(1);
