@@ -23,8 +23,12 @@ export const LongSwapProvider = ({ children }) => {
   const { selectedNetwork } = useContext(UIContext);
 
   useEffect(() => {
-    const poolConfig = Object.values(POOLS?.[selectedNetwork?.network])?.[0];
-
+    let poolConfig;
+    if(POOLS?.[selectedNetwork?.network]) {
+      poolConfig = Object.values(POOLS?.[selectedNetwork?.network])?.[0];
+    } else {
+      poolConfig = Object.values(POOLS['Ethereum'])[0];
+    }
     setTokenA({
       ...poolConfig?.tokens[0],
       balance: 0,
