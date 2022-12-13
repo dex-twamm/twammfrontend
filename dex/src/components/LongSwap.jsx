@@ -21,7 +21,6 @@ import Input from "./Input";
 import { FiChevronDown } from "react-icons/fi";
 
 import { getApproval } from "../utils/getApproval";
-import { WebContext } from "../providers/context/WebProvider";
 import { UIContext } from "../providers/context/UIProvider";
 
 const LongSwap = (props) => {
@@ -30,7 +29,6 @@ const LongSwap = (props) => {
     buttonText,
     swapType,
     longSwapVerifyLoading,
-    setIsPlacedLongTermOrder,
   } = props;
 
   const [display, setDisplay] = useState(false);
@@ -49,6 +47,7 @@ const LongSwap = (props) => {
     srcAddress,
     setTransactionHash,
     isWalletConnected,
+    web3provider,
   } = useContext(ShortSwapContext);
 
   const {
@@ -65,7 +64,6 @@ const LongSwap = (props) => {
     longSwapFormErrors,
   } = useContext(LongSwapContext);
 
-  const { provider } = useContext(WebContext);
   const { selectedNetwork } = useContext(UIContext);
 
   const handleDisplay = (event) => {
@@ -103,7 +101,7 @@ const LongSwap = (props) => {
   const handleApproveButton = async () => {
     try {
       const approval = await getApproval(
-        provider,
+        web3provider,
         srcAddress,
         selectedNetwork?.network
       );
@@ -136,7 +134,6 @@ const LongSwap = (props) => {
           .executionTime
       );
     }
-    console.log("Number of block value", newValue);
   };
 
   useEffect(() => {
@@ -156,15 +153,6 @@ const LongSwap = (props) => {
       setLongSwapFormErrors({ balError: undefined });
     };
   }, [setLongSwapFormErrors]);
-
-  useEffect(() => {
-    return () => {
-      setTargetDate("");
-      setExecutionTIme("");
-      setTransactionHash(undefined);
-      setIsPlacedLongTermOrder && setIsPlacedLongTermOrder();
-    };
-  }, []);
 
   console.log("Form errororororor", longSwapFormErrors);
 
@@ -402,7 +390,7 @@ const LongSwap = (props) => {
                 !tokenA.tokenIsSet ||
                 !tokenB.tokenIsSet ||
                 !swapAmount ||
-                numberOfBlockIntervals <= 0 ||
+                !numberOfBlockIntervals ||
                 disableAllowBtn ||
                 longSwapVerifyLoading ||
                 parseFloat(allowance) <= swapAmount

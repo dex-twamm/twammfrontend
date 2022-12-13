@@ -26,7 +26,6 @@ export const ShortSwapProvider = ({ children }) => {
   const [currentBlock, setCurrentBlock] = useState();
   const [spotPrice, setSpotPrice] = useState(0);
   const [LPTokenBalance, setLPTokenBalance] = useState([]);
-  // const [provider, setProvider] = useState("");
   const [balance, setBalance] = useState();
   const [spotPriceLoading, setSpotPriceLoading] = useState(false);
 

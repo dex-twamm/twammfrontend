@@ -9,7 +9,6 @@ import {
 } from ".";
 import {
   POPUP_MESSAGE,
-  TWAMM_POOL_ABI,
   VAULT_CONTRACT_ABI,
 } from "../constants";
 import { getEthLogs } from "./get_ethLogs";
@@ -158,7 +157,7 @@ export async function cancelLTO(
   setTransactionHash(orderHash);
   const exitPoolResult = await exitPoolTx.wait();
   setMessage(POPUP_MESSAGE.ltoCancelSuccess);
-  await getEthLogs(provider, walletAdress).then((res) => {
+  await getEthLogs(signer, walletAdress, currentNetwork).then((res) => {
     const resArray = Array.from(res.values());
     setOrderLogsDecoded(resArray);
   });
@@ -222,7 +221,7 @@ export async function withdrawLTO(
   );
   setTransactionHash(orderHash);
   const withdrawLTOResult = await withdrawLTOTx.wait();
-  await getEthLogs(provider, walletAdress).then((res) => {
+  await getEthLogs(provider, walletAdress, currentNetwork).then((res) => {
     const resArray = Array.from(res.values());
     setOrderLogsDecoded(resArray);
   });

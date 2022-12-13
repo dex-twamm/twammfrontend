@@ -8,8 +8,8 @@ export const LongSwapProvider = ({ children }) => {
   const [sliderValue, setSliderValue] = useState(1);
 
   const [orderLogsDecoded, setOrderLogsDecoded] = useState([]);
-  const [latestBlock, setLatestBlock] = useState("");
-  const [numberOfBlockIntervals, setNumberOfBlockIntervals] = useState(1);
+  const [lastVirtualOrderBlock, setLastVirtualOrderBlock] = useState("");
+  const [numberOfBlockIntervals, setNumberOfBlockIntervals] = useState(0);
   const [targetDate, setTargetDate] = useState("");
   const [allowance, setAllowance] = useState("");
   const [message, setMessage] = useState("");
@@ -55,8 +55,8 @@ export const LongSwapProvider = ({ children }) => {
         setTargetDate,
         orderLogsDecoded,
         setOrderLogsDecoded,
-        latestBlock,
-        setLatestBlock,
+        lastVirtualOrderBlock,
+        setLastVirtualOrderBlock,
         numberOfBlockIntervals,
         setNumberOfBlockIntervals,
         allowance,

@@ -1,7 +1,6 @@
 import { POPUP_MESSAGE } from "../constants";
 import { cancelLTO } from "./addLiquidity";
 import { connectWallet } from "./connetWallet";
-import { getProvider } from "./getProvider";
 
 // cancelLTO
 export const _cancelLTO = async (
@@ -10,6 +9,7 @@ export const _cancelLTO = async (
   setLoading,
   setDisableActionBtn,
   account,
+  web3provider,
   setweb3provider,
   setCurrentBlock,
   setBalance,
@@ -18,7 +18,6 @@ export const _cancelLTO = async (
   isWalletConnected,
   setOrderLogsDecoded,
   setMessage,
-  provider,
   setTransactionHash,
   currentNetwork,
   setSelectedNetwork,
@@ -28,14 +27,6 @@ export const _cancelLTO = async (
   setDisableActionBtn(true);
   try {
     const walletAddress = account;
-    const signer = await getProvider(
-      true,
-      setweb3provider,
-      setCurrentBlock,
-      setBalance,
-      setAccount,
-      setWalletConnected
-    );
     if (!isWalletConnected) {
       await connectWallet(
         setweb3provider,
@@ -43,19 +34,18 @@ export const _cancelLTO = async (
         setBalance,
         setAccount,
         setWalletConnected,
-        setSelectedNetwork,
-        nId
+        setSelectedNetwork
       );
     }
     await cancelLTO(
       walletAddress,
-      signer,
+      web3provider.getSigner(),
       orderId,
       orderHash,
       setTransactionHash,
       setOrderLogsDecoded,
       setMessage,
-      provider,
+      web3provider,
       currentNetwork
     );
     setLoading(false);

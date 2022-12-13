@@ -4,10 +4,7 @@ import classNames from "classnames";
 import React, { useContext, useState } from "react";
 import styles from "../css/AddLiquidity.module.css";
 
-import {
-  calculateNumBlockIntervals,
-  valueLabel,
-} from "../methods/longSwapMethod";
+
 import { LongSwapContext } from "../providers";
 import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
 import Input from "./Input";
@@ -15,24 +12,19 @@ import Input from "./Input";
 import { BigNumber } from "ethers";
 import { bigToStr } from "../utils";
 import { getApproval } from "../utils/getApproval";
-import { WebContext } from "../providers/context/WebProvider";
 import { UIContext } from "../providers/context/UIProvider";
 
 const Swap = (props) => {
   const {
-    connectWallet,
+    handleButtonClick,
     buttonText,
     swapType,
     spotPriceLoading,
-    setIsPlacedLongTermOrder,
   } = props;
 
   const [display, setDisplay] = useState(false);
-  const [isSubmit, setIsSubmit] = useState(false);
-  const [value, setValue] = useState(0.0);
   const [open, setOpen] = useState(false);
   const [disableAllowBtn, setDisableAllowBtn] = useState(true);
-  const [switchInput, setSwitchInput] = useState();
 
   const handleClose = () => setOpen((state) => !state);
 
@@ -53,31 +45,18 @@ const Swap = (props) => {
     isWalletConnected,
   } = useContext(ShortSwapContext);
 
-  const { tokenA, tokenB, setTokenA, setTokenB, setTargetDate, allowance } =
+  const { tokenA, tokenB, setTokenA, setTokenB, allowance } =
     useContext(LongSwapContext);
 
-  const { provider } = useContext(WebContext);
+  const{ web3provider } = useContext(ShortSwapContext);
   const { selectedNetwork } = useContext(UIContext);
 
-  // console.log("Provider", provider);
-  // console.log("SC", srcAddress);
-  // console.log("Form Errors", formErrors);
-  console.log("SwapAmount", swapAmount, allowance, srcAddress);
   const handleDisplay = (event) => {
-    console.log("Current Target Id", event.currentTarget.id);
     setSelectToken(event.currentTarget.id);
     setDisplay(!display);
     setSpotPrice(0);
     setExpectedSwapOut(0.0);
   };
-
-  useEffect(() => {
-    setExpectedSwapOut(0);
-    return () => {
-      setExpectedSwapOut();
-      setSpotPrice();
-    };
-  }, []);
 
   useEffect(() => {
     if (tokenA?.symbol === tokenB?.symbol)
@@ -91,22 +70,20 @@ const Swap = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsSubmit(true);
   };
 
   const handleClick = () => {
     buttonText === "Swap" && setFormErrors(validate(swapAmount));
-    connectWallet();
+    handleButtonClick();
   };
 
   const handleApproveButton = async () => {
     try {
       const approval = await getApproval(
-        provider,
+        web3provider,
         srcAddress,
         selectedNetwork?.network
       );
-      console.log("Approval---->", approval);
       setTransactionHash(approval.hash);
     } catch (e) {
       console.log(e);
@@ -121,13 +98,6 @@ const Swap = (props) => {
     }
 
     return errors;
-  };
-
-  console.log("Allowance Swap-->", allowance, swapAmount);
-  // console.log(first);
-
-  const handleInputSwitch = () => {
-    setSwitchInput((prev) => !prev);
   };
 
   useEffect(() => {
@@ -150,36 +120,15 @@ const Swap = (props) => {
 
   console.log("Disable Allow Button--->", disableAllowBtn, formErrors);
 
-  useEffect(() => {
-    return () => {
-      setTargetDate("");
-      setTransactionHash(undefined);
-      setIsPlacedLongTermOrder && setIsPlacedLongTermOrder();
-      setSwitchInput(false);
-    };
-  }, []);
-
-  console.log("Spot price loading", expectedSwapOut);
-
-  //for switching the input sectons in short swap
-
   // useEffect(() => {
-  //   if (typeof switchInput === "boolean") {
-  //     const num = expectedSwapOut && ethers.utils.formatEther(expectedSwapOut);
-  //     setSwapAmount(parseFloat(num)?.toFixed(4));
-  //     const token_a = tokenA;
-  //     setTokenA(tokenB);
-  //     setTokenB(token_a);
-  //   }
-  // }, [switchInput]);
+  //   return () => {
+  //     setTargetDate("");
+  //     setTransactionHash(undefined);
+  //     setIsPlacedLongTermOrder && setIsPlacedLongTermOrder();
+  //   };
+  // });
 
-  console.log(
-    "Switch Input datas",
-    tokenA,
-    tokenB,
-    swapAmount,
-    expectedSwapOut
-  );
+  console.log("spotPrice", spotPrice);
 
   return (
     <>
@@ -222,25 +171,6 @@ const Swap = (props) => {
             setTokenB={setTokenB}
             swapType={swapType}
           />
-          {/* 
-          {formErrors.swapAmount && (
-            <div className={styles.errorAlert}>
-              <Alert
-                severity="error"
-                sx={{ borderRadius: "16px" }}
-                onClose={() => setFormErrors({})}
-              >
-                {formErrors.swapAmount}
-              </Alert>
-            </div>
-          )} */}
-
-          {/* <FontAwesomeIcon
-                style={{ zIndex: "1", cursor: "pointer" }}
-                className={style.iconDown}
-                icon={faArrowDown}
-                onClick={handleInputSwitch}
-              /> */}
           <Input
             id={2}
             input={
@@ -267,8 +197,6 @@ const Swap = (props) => {
               </Alert>
             </div>
           )}
-
-          {/* swapAmount !== 0 && tokenB.tokenIsSet &&  */}
           {swapAmount !== 0 && tokenB?.tokenIsSet && (
             <>
               <Box
@@ -281,21 +209,16 @@ const Swap = (props) => {
                   padding: { xs: "0px 4px", sm: "4px 8px" },
                 }}
                 className={open && styles.swapunit}
-
-                // onClick={handleClose}
               >
                 {!formErrors.balError ? (
                   <Box
                     sx={{
                       display: "flex",
-                      // flexDirection:{xs:'column',sm:'row'},
                       alignItems: {
                         xs: "flex-start ",
                         sm: "center",
                         md: "center",
                       },
-                      // justifyContent:{xs:'center',sm:'space-between'},
-                      // width:'fit-content',
                       width: {
                         xs: "70%",
                         sm: "fit-content",
@@ -309,7 +232,7 @@ const Swap = (props) => {
                   >
                     {spotPriceLoading ? (
                       <Skeleton width={"100px"} />
-                    ) : spotPrice == 0 || !spotPrice ? (
+                    ) : spotPrice === 0 || !spotPrice ? (
                       <p></p>
                     ) : (
                       <p
@@ -336,10 +259,6 @@ const Swap = (props) => {
                             ` ${spotPrice?.toFixed(4)} ${tokenB.symbol}`
                           )}
                         </label>
-                        {/* <span style={{ color: "#333333", opacity: 0.7 }}>
-                          {" "}
-                          ($123)
-                        </span> */}
                       </p>
                     )}
                   </Box>
@@ -356,39 +275,8 @@ const Swap = (props) => {
                     padding: "4px",
                   }}
                 >
-                  {/* <span
-                    style={{
-                      color: "#333333",
-                      opacity: 0.7,
-                      background: "#f7f8fa",
-                      borderRadius: "10px",
-                      padding: "4px 6px",
-                    }}
-                  >
-                    $1.23
-                  </span> */}
-
-                  {/* {open ? (
-                    <KeyboardArrowUpOutlinedIcon
-                      sx={{
-                        fontSize: "24px",
-                        color: "#333333",
-                        cursor: "pointer",
-                      }}
-                      onClick={handleClose}
-                    />
-                  ) : (
-                    <FiChevronDown
-                      fontSize={"24px"}
-                      style={{ color: "#333333", cursor: "pointer" }}
-                      onClick={handleClose}
-                    />
-                  )} */}
-                  {/* {spotPriceLoading && <CircularProgress size={15} />} */}
                 </Box>
               </Box>
-
-              {/* <LongTermSwapCardDropdown open={open} handleClose={handleClose} tokenB={tokenB}/> */}
             </>
           )}
 

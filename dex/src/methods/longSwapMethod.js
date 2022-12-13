@@ -27,7 +27,7 @@ const valueLabel = (value, currentBlock) => {
     executionTime: timeString,
     targetDate: `${targetDate.toLocaleString()}`,
   };
-  console.log("targetDate", targetDate, timeString);
+  console.log("targetDate values", values);
   return values;
 };
 

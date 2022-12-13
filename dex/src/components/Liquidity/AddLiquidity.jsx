@@ -1,26 +1,19 @@
 import { faArrowLeft, faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Box, Tabs } from "@mui/material";
 import classNames from "classnames";
 import React, { useContext, useEffect, useState } from "react";
 import { FiChevronDown } from "react-icons/fi";
 import styles from "../../css/AddLiquidity.module.css";
 import { LongSwapContext, ShortSwapContext } from "../../providers";
 import { UIContext } from "../../providers/context/UIProvider";
-import { WebContext } from "../../providers/context/WebProvider";
-import { POOLS, POOL_ID } from "../../utils/pool";
+import { POOLS } from "../../utils/pool";
 import { _joinPool } from "../../utils/_joinPool";
-import { DisconnectWalletOption } from "../DisconnectWalletOption";
-import FeeTierOptions from "../FeeTierOptions";
 import Input from "../Input";
 import Modal from "../Modal";
-import { LiquidityPools } from "./LiquidityPools";
 
 const AddLiquidity = (props) => {
   const { showAddLiquidity } = props;
   const [display, setDisplay] = useState(false);
-  const [primaryToken, setPrimaryToken] = useState("");
-  const [secondaryToken, setSecondaryToken] = useState();
   const [showSettings, setShowSettings] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [buttonText, setButtonText] = useState("Connect Wallet");
@@ -41,9 +34,7 @@ const AddLiquidity = (props) => {
     setWalletConnected,
     isWalletConnected,
   } = useContext(ShortSwapContext);
-  const { selectedNetwork, setSelectedNetwork, nId } = useContext(UIContext);
-
-  const handleToggle = () => setDisplay(!display);
+  const { selectedNetwork, setSelectedNetwork } = useContext(UIContext);
 
   useEffect(() => {
     if (tokenA.symbol === tokenB.symbol)
@@ -92,8 +83,7 @@ const AddLiquidity = (props) => {
       setWalletConnected,
       isWalletConnected,
       selectedNetwork?.network,
-      setSelectedNetwork,
-      nId
+      setSelectedNetwork
     );
   };
 

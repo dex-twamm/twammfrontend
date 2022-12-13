@@ -39,7 +39,7 @@ const PopupModal = ({
   const handleClose = () => {
     setError("");
     setSuccess("");
-    // setTransactionHash("");
+    setTransactionHash("");
     setIsPlacedLongTermOrder && setIsPlacedLongTermOrder();
     setMessage("");
   };
