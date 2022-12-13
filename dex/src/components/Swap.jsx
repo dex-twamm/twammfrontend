@@ -11,7 +11,6 @@ import Input from "./Input";
 import { BigNumber } from "ethers";
 import { bigToStr } from "../utils";
 import { getApproval } from "../utils/getApproval";
-import { WebContext } from "../providers/context/WebProvider";
 import { UIContext } from "../providers/context/UIProvider";
 
 const Swap = (props) => {
@@ -21,7 +20,6 @@ const Swap = (props) => {
 
   const [open, setOpen] = useState(false);
   const [disableAllowBtn, setDisableAllowBtn] = useState(true);
-  const [switchInput, setSwitchInput] = useState();
 
   const handleClose = () => setOpen((state) => !state);
 
@@ -42,10 +40,10 @@ const Swap = (props) => {
     isWalletConnected,
   } = useContext(ShortSwapContext);
 
-  const { tokenA, tokenB, setTokenA, setTokenB, setTargetDate, allowance } =
+  const { tokenA, tokenB, setTokenA, setTokenB, allowance } =
     useContext(LongSwapContext);
 
-  const { provider } = useContext(WebContext);
+  const { web3provider } = useContext(ShortSwapContext);
   const { selectedNetwork } = useContext(UIContext);
 
   const handleDisplay = (event) => {
@@ -54,14 +52,6 @@ const Swap = (props) => {
     setSpotPrice(0);
     setExpectedSwapOut(0.0);
   };
-
-  useEffect(() => {
-    setExpectedSwapOut(0);
-    return () => {
-      setExpectedSwapOut();
-      setSpotPrice();
-    };
-  }, []);
 
   useEffect(() => {
     if (tokenA?.symbol === tokenB?.symbol)
@@ -85,7 +75,7 @@ const Swap = (props) => {
   const handleApproveButton = async () => {
     try {
       const approval = await getApproval(
-        provider,
+        web3provider,
         srcAddress,
         selectedNetwork?.network
       );
@@ -103,10 +93,6 @@ const Swap = (props) => {
     }
 
     return errors;
-  };
-
-  const handleInputSwitch = () => {
-    setSwitchInput((prev) => !prev);
   };
 
   useEffect(() => {
@@ -129,23 +115,19 @@ const Swap = (props) => {
 
   useEffect(() => {
     return () => {
-      setTargetDate("");
       setTransactionHash(undefined);
-      setSwitchInput(false);
     };
   }, []);
 
   //for switching the input sectons in short swap
 
   // useEffect(() => {
-  //   if (typeof switchInput === "boolean") {
-  //     const num = expectedSwapOut && ethers.utils.formatEther(expectedSwapOut);
-  //     setSwapAmount(parseFloat(num)?.toFixed(4));
-  //     const token_a = tokenA;
-  //     setTokenA(tokenB);
-  //     setTokenB(token_a);
-  //   }
-  // }, [switchInput]);
+  //   return () => {
+  //     setTargetDate("");
+  //     setTransactionHash(undefined);
+  //     setIsPlacedLongTermOrder && setIsPlacedLongTermOrder();
+  //   };
+  // });
 
   return (
     <>
@@ -187,7 +169,6 @@ const Swap = (props) => {
             setTokenA={setTokenA}
             setTokenB={setTokenB}
           />
-
           <Input
             id={2}
             input={
@@ -214,7 +195,6 @@ const Swap = (props) => {
               </Alert>
             </div>
           )}
-
           {swapAmount !== 0 && tokenB?.tokenIsSet && (
             <>
               <Box
@@ -250,7 +230,7 @@ const Swap = (props) => {
                   >
                     {spotPriceLoading ? (
                       <Skeleton width={"100px"} />
-                    ) : spotPrice == 0 || !spotPrice ? (
+                    ) : spotPrice === 0 || !spotPrice ? (
                       <p></p>
                     ) : (
                       <p

@@ -21,7 +21,6 @@ import Input from "./Input";
 import { FiChevronDown } from "react-icons/fi";
 
 import { getApproval } from "../utils/getApproval";
-import { WebContext } from "../providers/context/WebProvider";
 import { UIContext } from "../providers/context/UIProvider";
 
 const LongSwap = (props) => {
@@ -48,6 +47,7 @@ const LongSwap = (props) => {
     srcAddress,
     setTransactionHash,
     isWalletConnected,
+    web3provider,
   } = useContext(ShortSwapContext);
 
   const {
@@ -64,7 +64,6 @@ const LongSwap = (props) => {
     longSwapFormErrors,
   } = useContext(LongSwapContext);
 
-  const { provider } = useContext(WebContext);
   const { selectedNetwork } = useContext(UIContext);
 
   const handleDisplay = (event) => {
@@ -101,7 +100,7 @@ const LongSwap = (props) => {
   const handleApproveButton = async () => {
     try {
       const approval = await getApproval(
-        provider,
+        web3provider,
         srcAddress,
         selectedNetwork?.network
       );
@@ -295,7 +294,7 @@ const LongSwap = (props) => {
                     fontFamily: "Open Sans",
                   }}
                 >
-                  {`${targetDate} `.substring(0, 16)}
+                  {`${targetDate} `.substring(0, 17)}
                 </Box>
 
                 <Box
@@ -332,7 +331,7 @@ const LongSwap = (props) => {
                     paddingRight: "2px",
                   }}
                 >
-                  Order Completetion Date
+                  Order Completion Date
                 </Box>
               </Typography>
               <Slider
@@ -395,7 +394,7 @@ const LongSwap = (props) => {
                 !tokenA.tokenIsSet ||
                 !tokenB.tokenIsSet ||
                 !swapAmount ||
-                numberOfBlockIntervals <= 0 ||
+                !numberOfBlockIntervals ||
                 disableAllowBtn ||
                 longSwapVerifyLoading ||
                 parseFloat(allowance) <= swapAmount

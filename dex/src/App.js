@@ -28,33 +28,34 @@ function App() {
     setPoolCash,
     account,
     setAccount,
+    isWalletConnected,
     setWalletConnected,
     setExpectedSwapOut,
     setweb3provider,
     setCurrentBlock,
     setLPTokenBalance,
     setBalance,
+    web3provider,
   } = useContext(ShortSwapContext);
   const {
     setOrderLogsDecoded,
     setLatestBlock,
+    setLastVirtualOrderBlock,
     setAllowance,
     setOrderLogsLoading,
   } = useContext(LongSwapContext);
-  const { provider, setProvider } = useContext(WebContext);
 
-  const { nId, setSelectedNetwork, selectedNetwork } = useContext(UIContext);
+  const { setSelectedNetwork, selectedNetwork } = useContext(UIContext);
 
   useEffect(() => {
-    if (web3Modal.cachedProvider) {
+    if (web3Modal.cachedProvider && !isWalletConnected) {
       connectWallet(
         setweb3provider,
         setCurrentBlock,
         setBalance,
         setAccount,
         setWalletConnected,
-        setSelectedNetwork,
-        nId
+        setSelectedNetwork
       );
     }
   }, []);
@@ -70,21 +71,13 @@ function App() {
   // Use Memo
   useMemo(() => {
     const allowance = async () => {
-      const provider = await getProvider(
-        true,
-        setweb3provider,
-        setCurrentBlock,
-        setBalance,
-        setAccount,
-        setWalletConnected
-      );
       const tokenAddress = srcAddress;
       const walletAddress = account;
 
       // Allowance
       if (srcAddress) {
         await getAllowance(
-          provider,
+          web3provider?.getSigner(),
           walletAddress,
           tokenAddress,
           selectedNetwork?.network
@@ -93,7 +86,7 @@ function App() {
         });
         // Pool Balance
         await getPoolBalance(
-          provider,
+          web3provider?.getSigner(),
           tokenAddress,
           selectedNetwork?.network
         ).then((res) => {
@@ -109,16 +102,6 @@ function App() {
     setLoading(true);
     setOrderLogsLoading(true);
     if (account) {
-      const provider = await getProvider(
-        true,
-        setweb3provider,
-        setCurrentBlock,
-        setBalance,
-        setAccount,
-        setWalletConnected
-      );
-      setProvider(provider);
-
       // const tokenAddress = srcAddress;
       const walletAddress = account;
       if (!walletAddress) {
@@ -126,20 +109,21 @@ function App() {
       }
       try {
         await getTokensBalance(
-          provider,
+          web3provider?.getSigner(),
           account,
           selectedNetwork?.network
         ).then((res) => {
           setTokenBalances(res);
         });
 
-        await getLastVirtualOrderBlock(provider, selectedNetwork?.network).then(
-          (res) => {
-            setLatestBlock(res);
-          }
-        );
+        await getLastVirtualOrderBlock(
+          web3provider?.getSigner(),
+          selectedNetwork?.network
+        ).then((res) => {
+          setLastVirtualOrderBlock(res);
+        });
         await getEthLogs(
-          provider,
+          web3provider?.getSigner(),
           walletAddress,
           selectedNetwork?.network
         ).then((res) => {
@@ -149,7 +133,7 @@ function App() {
 
         // Pool Token's Balance
         await getLPTokensBalance(
-          provider,
+          web3provider?.getSigner(),
           walletAddress,
           selectedNetwork?.network
         ).then((res) => {
@@ -163,7 +147,7 @@ function App() {
         setOrderLogsLoading(false);
       }
     }
-  }, [account]);
+  }, [account, web3provider]);
 
   useEffect(() => {
     tokenBalance();
@@ -181,7 +165,8 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (provider?.on) {
+    let signer = web3provider?.getSigner();
+    if (signer?.on) {
       const handleAccountsChanged = (accounts) => {
         if (accounts) setAccount(accounts[0]);
       };
@@ -189,18 +174,18 @@ function App() {
         disconnect(setAccount, setWalletConnected, setBalance);
       };
 
-      provider.on("accountsChanged", handleAccountsChanged);
+      signer.on("accountsChanged", handleAccountsChanged);
 
-      provider.on("disconnect", handleDisconnect);
+      signer.on("disconnect", handleDisconnect);
 
       return () => {
-        if (provider.removeListener) {
-          provider.removeListener("accountsChanged", handleAccountsChanged);
-          provider.removeListener("disconnect", handleDisconnect);
+        if (signer.removeListener) {
+          signer.removeListener("accountsChanged", handleAccountsChanged);
+          signer.removeListener("disconnect", handleDisconnect);
         }
       };
     }
-  }, [provider]);
+  }, [web3provider]);
 
   return (
     <>

@@ -1,7 +1,6 @@
 import { BigNumber, Contract, ethers } from "ethers";
 import { MAX_UINT256 } from ".";
 import { POPUP_MESSAGE, VAULT_CONTRACT_ABI } from "../constants";
-import { getProvider } from "./getProvider";
 import {
   getNetworkPoolId,
   getPoolConfig,
@@ -53,10 +52,6 @@ export const getLongSwapEstimatedConvertedToken = async (
     gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
   });
   console.log("===LongTerm Placed====", placeLtoTx);
-  // setTransactionHash(placeLtoTx.hash);
-
-  // console.log("====Swap Results After Placed=====", await placeLtoTx.wait());
-  // console.log(txHash);
   return placeLtoTx;
 };
 
@@ -65,11 +60,7 @@ export const verifyLongSwap = async (
   setLongSwapVerifyLoading,
   srcAddress,
   destAddress,
-  setweb3provider,
-  setCurrentBlock,
-  setBalance,
-  setAccount,
-  setWalletConnected,
+  web3provider,
   account,
   setLongSwapFormErrors,
   currentNetwork,
@@ -82,14 +73,7 @@ export const verifyLongSwap = async (
 
     const errors = {};
 
-    const signer = await getProvider(
-      true,
-      setweb3provider,
-      setCurrentBlock,
-      setBalance,
-      setAccount,
-      setWalletConnected
-    );
+    const signer = web3provider.getSigner();
     const walletAddress = account;
 
     try {
@@ -103,7 +87,7 @@ export const verifyLongSwap = async (
         swapAmount,
         poolConfig.tokens[tokenInIndex].decimals
       );
-      await getLongSwapEstimatedConvertedToken(
+      await verifyLongSwapTxn(
         tokenInIndex,
         tokenOutIndex,
         amountIn,
@@ -123,29 +107,31 @@ export const verifyLongSwap = async (
           setLongSwapFormErrors({
             balError: POPUP_MESSAGE["BAL#304"],
           });
-        }
-        if (e.reason.match("BAL#347")) {
+        } else if (e.reason.match("BAL#347")) {
           setLongSwapFormErrors({
             balError: POPUP_MESSAGE["BAL#347"],
           });
-        }
-        if (e.reason.match("BAL#346")) {
+        } else if (e.reason.match("BAL#346")) {
           setLongSwapFormErrors({
             balError: POPUP_MESSAGE["BAL#346"],
           });
-        }
-        if (e.reason.match("BAL#510")) {
+        } else if (e.reason.match("BAL#510")) {
           setLongSwapFormErrors({
             balError: POPUP_MESSAGE["BAL#510"],
           });
-        }
-        if (
+        } else if (e.reason.match("underflow")) {
+          setLongSwapFormErrors({ balError: "Underflow" });
+        } else if (
           e.reason.match("ERC20: transfer amount exceeds allowance") ||
           e.reason.match("allowance")
         ) {
           setLongSwapVerifyLoading(false);
           errors.balError = undefined;
           setLongSwapFormErrors(errors ?? "");
+        } else {
+          setLongSwapFormErrors({
+            balError: POPUP_MESSAGE.unknown,
+          });
         }
       } else {
         setLongSwapFormErrors({
@@ -155,4 +141,52 @@ export const verifyLongSwap = async (
       setLongSwapVerifyLoading(false);
     }
   }
+};
+
+export const verifyLongSwapTxn = async (
+  tokenInIndex,
+  tokenOutIndex,
+  amountIn,
+  numberOfBlockIntervals,
+  signer,
+  walletAddress,
+  currentNetwork
+) => {
+  const exchangeContract = new Contract(
+    getpoolVaultContractAddress(currentNetwork),
+
+    VAULT_CONTRACT_ABI,
+    signer
+  );
+  const abiCoder = ethers.utils.defaultAbiCoder;
+  const encodedRequest = abiCoder.encode(
+    ["uint256", "uint256", "uint256", "uint256", "uint256"],
+    [
+      4,
+      tokenInIndex,
+      tokenOutIndex,
+      amountIn,
+      BigNumber.from(numberOfBlockIntervals),
+    ]
+  );
+
+  const inputData = [
+    getNetworkPoolId(currentNetwork),
+    walletAddress,
+    walletAddress,
+    {
+      assets: getPoolTokenAddresses(currentNetwork),
+      maxAmountsIn: [MAX_UINT256, MAX_UINT256],
+      fromInternalBalance: false,
+      userData: encodedRequest,
+    },
+  ];
+
+  const gasEstimate = await exchangeContract.estimateGas.joinPool(...inputData);
+
+  const placeLtoTx = await exchangeContract.callStatic.joinPool(...inputData, {
+    gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
+  });
+  console.log("===LongTerm Placed====", placeLtoTx);
+  return placeLtoTx;
 };

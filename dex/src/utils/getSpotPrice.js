@@ -1,23 +1,16 @@
 import { ethers } from "ethers";
 import { POPUP_MESSAGE } from "../constants";
 import { getEstimatedConvertedToken } from "./batchSwap";
-import { getProvider } from "./getProvider";
 import { getPoolConfig } from "./poolUtils";
 
-//Spot Prices
+// Spot Prices
 export const spotPrice = async (
   swapAmount,
   setSpotPriceLoading,
   srcAddress,
   destAddress,
-  setweb3provider,
-  setCurrentBlock,
-  setBalance,
-  setAccount,
-  setWalletConnected,
+  web3provider,
   account,
-  expectedSwapOut,
-  tolerance,
   deadline,
   setFormErrors,
   setSpotPrice,
@@ -40,14 +33,7 @@ export const spotPrice = async (
 
     const errors = {};
 
-    const signer = await getProvider(
-      true,
-      setweb3provider,
-      setCurrentBlock,
-      setBalance,
-      setAccount,
-      setWalletConnected
-    );
+    const signer = web3provider.getSigner();
     const walletAddress = account;
 
     //for shortswap
@@ -58,8 +44,6 @@ export const spotPrice = async (
         tokenIn.address,
         tokenOut.address,
         walletAddress,
-        expectedSwapOut,
-        tolerance,
         deadline,
         currentNetwork
       ).then((res) => {
@@ -71,6 +55,11 @@ export const spotPrice = async (
         );
         setSpotPriceLoading(false);
         setExpectedSwapOut(res);
+
+        console.log(
+          (parseFloat(res) * 10 ** tokenIn.decimals) /
+            (parseFloat(swapAmountWei) * 10 ** tokenOut.decimals)
+        );
       });
     } catch (e) {
       setSpotPriceLoading(false);

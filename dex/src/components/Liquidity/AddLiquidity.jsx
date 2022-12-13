@@ -34,7 +34,7 @@ const AddLiquidity = (props) => {
     setWalletConnected,
     isWalletConnected,
   } = useContext(ShortSwapContext);
-  const { selectedNetwork, setSelectedNetwork, nId } = useContext(UIContext);
+  const { selectedNetwork, setSelectedNetwork } = useContext(UIContext);
 
   useEffect(() => {
     if (tokenA.symbol === tokenB.symbol)
@@ -82,8 +82,7 @@ const AddLiquidity = (props) => {
       setWalletConnected,
       isWalletConnected,
       selectedNetwork?.network,
-      setSelectedNetwork,
-      nId
+      setSelectedNetwork
     );
   };
 

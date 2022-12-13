@@ -9,18 +9,22 @@ const UIProvider = ({ children }) => {
   const [nId, setNetId] = useState();
 
   useEffect(() => {
-    window.ethereum.request({ method: "net_version" }).then((net_version) => {
+    console.log("UIProvider useEffect");
+    window.ethereum?.request({ method: "net_version" }).then((net_version) => {
       const initialNetwork = NETWORKS.find((nw) => nw.chainId === net_version);
+      console.log("initialNetwork", initialNetwork);
       setNetId(net_version);
       setSelectedNetwork({
         network: initialNetwork?.name,
         logo: initialNetwork?.logo,
         chainId: initialNetwork?.chainId,
       });
+      localStorage.setItem("network_name", initialNetwork?.name);
+      localStorage.setItem("network_logo", initialNetwork?.logo);
+      localStorage.setItem("chainId", initialNetwork?.chainId);
     });
   }, []);
 
-  if (!selectedNetwork) return null;
   return (
     <UIContext.Provider
       value={{

@@ -126,8 +126,7 @@ const Navbar = () => {
       setBalance,
       setAccount,
       setWalletConnected,
-      setSelectedNetwork,
-      nId
+      setSelectedNetwork
     );
   };
 

@@ -36,6 +36,7 @@ const PopupModal = ({ isPlacedLongTermOrder, setIsPlacedLongTermOrder }) => {
   const handleClose = () => {
     setError("");
     setSuccess("");
+    setTransactionHash("");
     setIsPlacedLongTermOrder && setIsPlacedLongTermOrder();
     setMessage("");
   };

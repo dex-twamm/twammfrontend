@@ -9,11 +9,10 @@ import styles from "../css/ShortSwap.module.css";
 import { LongSwapContext, ShortSwapContext } from "../providers";
 import Tabs from "../components/Tabs";
 import PopupModal from "../components/alerts/PopupModal";
-import { getProvider } from "../utils/getProvider";
 import { getEthLogs } from "../utils/get_ethLogs";
 import { _placeLongTermOrders } from "../utils/placeLongTermOrder";
-import { WebContext } from "../providers/context/WebProvider";
 import { connectWallet } from "../utils/connetWallet";
+
 import { UIContext } from "../providers/context/UIProvider";
 import LongSwap from "../components/LongSwap";
 import { verifyLongSwap } from "../utils/verifyLongSwap";
@@ -32,6 +31,7 @@ const LongSwapPage = () => {
 
   const {
     isWalletConnected,
+    web3provider,
     setweb3provider,
     setCurrentBlock,
     setBalance,
@@ -48,9 +48,7 @@ const LongSwapPage = () => {
 
   const [showSettings, setShowSettings] = useState(false);
 
-  const { provider } = useContext(WebContext);
-
-  const { selectedNetwork, setSelectedNetwork, nId } = useContext(UIContext);
+  const { selectedNetwork, setSelectedNetwork } = useContext(UIContext);
 
   const ethLogsCount = orderLogsDecoded
     ? Object.keys(orderLogsDecoded).length
@@ -66,11 +64,7 @@ const LongSwapPage = () => {
         setLongSwapVerifyLoading,
         srcAddress,
         destAddress,
-        setweb3provider,
-        setCurrentBlock,
-        setBalance,
-        setAccount,
-        setWalletConnected,
+        web3provider,
         account,
         setLongSwapFormErrors,
         selectedNetwork?.network,
@@ -91,36 +85,27 @@ const LongSwapPage = () => {
         setBalance,
         setAccount,
         setWalletConnected,
-        setSelectedNetwork,
-        nId
+        setSelectedNetwork
       );
-      const signer = await getProvider(
-        true,
-        setweb3provider,
-        setCurrentBlock,
-        setBalance,
-        setAccount,
-        setWalletConnected
+      await getEthLogs(
+        web3provider.getSigner(),
+        account,
+        selectedNetwork?.network
       );
-      await getEthLogs(signer, account, selectedNetwork?.network);
     } else {
+      console.log(web3provider, web3provider.getSigner());
       await _placeLongTermOrders(
         swapAmount,
         srcAddress,
         destAddress,
         numberOfBlockIntervals,
-        setweb3provider,
-        setCurrentBlock,
-        setBalance,
-        setAccount,
-        setWalletConnected,
+        web3provider,
         account,
         setTransactionHash,
         setLoading,
         setIsPlacedLongTermOrder,
         setOrderLogsDecoded,
         setError,
-        provider,
         selectedNetwork?.network
       );
     }

@@ -1,9 +1,9 @@
 import { joinPool } from "./addLiquidity";
 import { connectWallet } from "./connetWallet";
-import { getProvider } from "./getProvider";
 
 export const _joinPool = async (
   account,
+  web3provider,
   setweb3provider,
   setCurrentBlock,
   setBalance,
@@ -11,19 +11,11 @@ export const _joinPool = async (
   setWalletConnected,
   isWalletConnected,
   currentNetwork,
-  setSelectedNetwork,
-  nId
+  setSelectedNetwork
 ) => {
   try {
     const walletAddress = account;
-    const signer = await getProvider(
-      true,
-      setweb3provider,
-      setCurrentBlock,
-      setBalance,
-      setAccount,
-      setWalletConnected
-    );
+    const signer = web3provider.getSigner();
     if (!isWalletConnected) {
       await connectWallet(
         setweb3provider,
@@ -31,8 +23,7 @@ export const _joinPool = async (
         setBalance,
         setAccount,
         setWalletConnected,
-        setSelectedNetwork,
-        nId
+        setSelectedNetwork
       );
     }
     await joinPool(walletAddress, signer, currentNetwork);

@@ -8,7 +8,6 @@ import LongTermSwapCardDropdown from "./LongTermSwapCardDropdown";
 import { _withdrawLTO } from "../utils/_withdrawLto";
 import { _cancelLTO } from "../utils/_cancelLto";
 import { LongSwapContext, ShortSwapContext } from "../providers";
-import { WebContext } from "../providers/context/WebProvider";
 import { ethers } from "ethers";
 import { getPoolConfig } from "../utils/poolUtils";
 
@@ -18,6 +17,7 @@ const LongTermOrderSingleCard = ({ it }) => {
     isWalletConnected,
     setLoading,
     account,
+    web3provider,
     setweb3provider,
     setCurrentBlock,
     setBalance,
@@ -27,15 +27,13 @@ const LongTermOrderSingleCard = ({ it }) => {
   } = useContext(ShortSwapContext);
 
   const {
-    latestBlock,
+    lastVirtualOrderBlock,
     disableActionBtn,
     setDisableActionBtn,
     setOrderLogsDecoded,
     setMessage,
   } = useContext(LongSwapContext);
   const { selectedNetwork, setSelectedNetwork, nId } = useContext(UIContext);
-
-  const { provider } = useContext(WebContext);
 
   const [orderStatus, setOrderStatus] = useState();
   const [newTime, setNewTime] = useState(
@@ -73,9 +71,9 @@ const LongTermOrderSingleCard = ({ it }) => {
     soldToken = amountOf?.sub(it?.unsoldAmount);
   } else {
     soldToken =
-      latestBlock > expBlock
+      lastVirtualOrderBlock > expBlock
         ? amountOf
-        : latestBlock?.sub(stBlock)?.mul(it.salesRate);
+        : lastVirtualOrderBlock?.sub(stBlock)?.mul(it.salesRate);
   }
 
   const averagePrice =
@@ -89,6 +87,7 @@ const LongTermOrderSingleCard = ({ it }) => {
       setLoading,
       setDisableActionBtn,
       account,
+      web3provider,
       setweb3provider,
       setCurrentBlock,
       setBalance,
@@ -97,7 +96,6 @@ const LongTermOrderSingleCard = ({ it }) => {
       isWalletConnected,
       setOrderLogsDecoded,
       setMessage,
-      provider,
       setTransactionHash,
       selectedNetwork?.network,
       setSelectedNetwork,
@@ -112,6 +110,7 @@ const LongTermOrderSingleCard = ({ it }) => {
       setLoading,
       setDisableActionBtn,
       account,
+      web3provider,
       setweb3provider,
       setCurrentBlock,
       setBalance,
@@ -120,7 +119,6 @@ const LongTermOrderSingleCard = ({ it }) => {
       isWalletConnected,
       setOrderLogsDecoded,
       setMessage,
-      provider,
       setTransactionHash,
       selectedNetwork?.network,
       setSelectedNetwork,
@@ -133,7 +131,7 @@ const LongTermOrderSingleCard = ({ it }) => {
       setOrderStatus({ status: "Completed", progress: 100 });
     } else if (it?.state === "cancelled") {
       setOrderStatus({ status: "Cancelled", progress: 100 });
-    } else if (latestBlock >= it.expirationBlock) {
+    } else if (lastVirtualOrderBlock >= it.expirationBlock) {
       setOrderStatus({ status: "Execution Completed", progress: 100 });
     } else {
       if (it.expirationBlock > currentBlock.number) {
@@ -143,14 +141,14 @@ const LongTermOrderSingleCard = ({ it }) => {
         setOrderStatus({
           status: `Time Remaining: ${timeString}`,
           progress:
-            ((latestBlock - it?.startBlock) * 100) /
+            ((lastVirtualOrderBlock - it?.startBlock) * 100) /
             (it?.expirationBlock - it?.startBlock),
         });
       } else {
         setOrderStatus({ status: "Execution Completed", progress: 100 });
       }
     }
-  }, [it, newTime]);
+  }, [it, currentBlock, lastVirtualOrderBlock, newTime]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -250,7 +248,7 @@ const LongTermOrderSingleCard = ({ it }) => {
 
           <div className={styles.extrasContainer}>
             <div className={styles.fees}>{poolConfig?.fees} fees</div>
-            {soldToken != 0 && (
+            {soldToken !== 0 && (
               <div className={styles.averagePrice}>
                 {averagePrice.toFixed(4)} Average Price
               </div>

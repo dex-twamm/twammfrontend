@@ -25,6 +25,7 @@ export const getTokensBalance = async (
     );
     newBalance.push({ [address]: readableBalance });
   }
+  console.log("Balances", newBalance);
   async function balanceContract(address) {
     const ERC20Contract = new Contract(
       address,

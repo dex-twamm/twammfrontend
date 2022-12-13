@@ -21,7 +21,7 @@ const LongTermSwapCardDropdown = (props) => {
         <Box
           id="basic-menu"
           onClose={handleClose}
-          MenuListProps={{
+          menulistprops={{
             "aria-labelledby": "basic-button",
           }}
         >
@@ -113,6 +113,7 @@ const LongTermSwapCardDropdown = (props) => {
                     };
                     return (
                       <Box
+                        key={transactionHash}
                         sx={{
                           width: "100%",
                           display: "flex",

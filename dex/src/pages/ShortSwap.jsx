@@ -9,7 +9,6 @@ import styles from "../css/ShortSwap.module.css";
 import { ShortSwapContext } from "../providers";
 import { UIContext } from "../providers/context/UIProvider";
 import { connectWallet } from "../utils/connetWallet";
-import { getProvider } from "../utils/getProvider";
 import { spotPrice } from "../utils/getSpotPrice";
 import { getEthLogs } from "../utils/get_ethLogs";
 import { _swapTokens } from "../utils/shortSwap";
@@ -18,6 +17,7 @@ const ShortSwap = () => {
   const {
     isWalletConnected,
     setweb3provider,
+    web3provider,
     setCurrentBlock,
     setBalance,
     setAccount,
@@ -41,7 +41,7 @@ const ShortSwap = () => {
     spotPriceLoading,
     setSpotPriceLoading,
   } = useContext(ShortSwapContext);
-  const { selectedNetwork, setSelectedNetwork, nId } = useContext(UIContext);
+  const { selectedNetwork, setSelectedNetwork } = useContext(UIContext);
 
   useEffect(() => {
     // Wait for 0.5 second before fetching price.
@@ -51,11 +51,7 @@ const ShortSwap = () => {
         setSpotPriceLoading,
         srcAddress,
         destAddress,
-        setweb3provider,
-        setCurrentBlock,
-        setBalance,
-        setAccount,
-        setWalletConnected,
+        web3provider,
         account,
         expectedSwapOut,
         tolerance,
@@ -73,11 +69,7 @@ const ShortSwap = () => {
         setSpotPriceLoading,
         srcAddress,
         destAddress,
-        setweb3provider,
-        setCurrentBlock,
-        setBalance,
-        setAccount,
-        setWalletConnected,
+        web3provider,
         account,
         expectedSwapOut,
         tolerance,
@@ -105,28 +97,19 @@ const ShortSwap = () => {
           setBalance,
           setAccount,
           setWalletConnected,
-          setSelectedNetwork,
-          nId
+          setSelectedNetwork
         );
-        const signer = await getProvider(
-          true,
-          setweb3provider,
-          setCurrentBlock,
-          setBalance,
-          setAccount,
-          setWalletConnected
+        await getEthLogs(
+          web3provider.getSigner(),
+          account,
+          selectedNetwork?.network
         );
-        await getEthLogs(signer, account, selectedNetwork?.network);
       } else {
         await _swapTokens(
           ethBalance,
           poolCash,
           swapAmount,
-          setweb3provider,
-          setCurrentBlock,
-          setBalance,
-          setAccount,
-          setWalletConnected,
+          web3provider,
           srcAddress,
           destAddress,
           account,
