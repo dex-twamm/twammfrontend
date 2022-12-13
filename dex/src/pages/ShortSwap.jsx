@@ -53,8 +53,6 @@ const ShortSwap = () => {
         destAddress,
         web3provider,
         account,
-        expectedSwapOut,
-        tolerance,
         deadline,
         setFormErrors,
         setSpotPrice,
@@ -71,8 +69,6 @@ const ShortSwap = () => {
         destAddress,
         web3provider,
         account,
-        expectedSwapOut,
-        tolerance,
         deadline,
         setFormErrors,
         setSpotPrice,
@@ -85,6 +81,12 @@ const ShortSwap = () => {
       clearTimeout(interval2);
     };
   }, [swapAmount, destAddress, srcAddress]);
+
+  console.log(
+    "Sppot price loading",
+    spotPriceLoading,
+    selectedNetwork?.network
+  );
 
   const [showSettings, setShowSettings] = useState(false);
 

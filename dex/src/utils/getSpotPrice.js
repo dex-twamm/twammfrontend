@@ -19,12 +19,13 @@ export const spotPrice = async (
 ) => {
   if (swapAmount) {
     setSpotPriceLoading(true);
+    console.log("Sjasdhaksdahsjkasd", currentNetwork);
 
     const poolConfig = getPoolConfig(currentNetwork);
-    const tokenIn = poolConfig.tokens.find(
+    const tokenIn = poolConfig?.tokens.find(
       (token) => token.address === srcAddress
     );
-    const tokenOut = poolConfig.tokens.find(
+    const tokenOut = poolConfig?.tokens.find(
       (token) => token.address === destAddress
     );
 

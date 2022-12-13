@@ -5,13 +5,11 @@ import Navbar from "./components/Navbar";
 import LongSwapPage from "./pages/LongSwapPage";
 import ShortSwap from "./pages/ShortSwap";
 import { LongSwapContext, ShortSwapContext, UIContext } from "./providers";
-import { WebContext } from "./providers/context/WebProvider";
 import { bigToStr } from "./utils";
 import { getPoolBalance } from "./utils/addLiquidity";
 import { connectWallet } from "./utils/connetWallet";
 import { getLPTokensBalance, getTokensBalance } from "./utils/getAmount";
 import { getAllowance } from "./utils/getApproval";
-import { getProvider } from "./utils/getProvider";
 import { getEthLogs } from "./utils/get_ethLogs";
 import { getLastVirtualOrderBlock } from "./utils/longSwap";
 import { web3Modal } from "./utils/providerOptions";
@@ -39,7 +37,6 @@ function App() {
   } = useContext(ShortSwapContext);
   const {
     setOrderLogsDecoded,
-    setLatestBlock,
     setLastVirtualOrderBlock,
     setAllowance,
     setOrderLogsLoading,

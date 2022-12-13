@@ -189,7 +189,7 @@ const LiquidityPools = () => {
                           borderRadius: "17px",
                         }}
                       >
-                        {getPoolFees(selectedNetwork?.network)}%
+                        {getPoolFees(selectedNetwork?.network)}
                       </span>
                     </Box>
                   </Box>

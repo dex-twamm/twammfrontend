@@ -6,6 +6,7 @@ export const getNetworkPoolId = (currentNetwork = "Goerli") => {
 };
 
 export const getPoolConfig = (currentNetwork = "Goerli") => {
+  console.log("Current network from spotpreice", currentNetwork);
   const poolData = Object.values(POOLS?.[currentNetwork])?.[0];
   return poolData;
 };
