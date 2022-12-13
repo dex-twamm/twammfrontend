@@ -1,7 +1,6 @@
 import { POPUP_MESSAGE } from "../constants";
 import { withdrawLTO } from "./addLiquidity";
 import { connectWallet } from "./connetWallet";
-import { getProvider } from "./getProvider";
 
 export const _withdrawLTO = async (
   orderId,
@@ -9,6 +8,7 @@ export const _withdrawLTO = async (
   setLoading,
   setDisableActionBtn,
   account,
+  web3provider,
   setweb3provider,
   setCurrentBlock,
   setBalance,
@@ -17,30 +17,24 @@ export const _withdrawLTO = async (
   isWalletConnected,
   setOrderLogsDecoded,
   setMessage,
-  provider,
   setTransactionHash,
-  currentNetwork
+  currentNetwork,
+  setSelectedNetwork,
+  nId
 ) => {
-  console.log("Order Id", orderId);
   setDisableActionBtn(true);
   setLoading(true);
   try {
     const walletAddress = account;
-    const signer = await getProvider(
-      true,
-      setweb3provider,
-      setCurrentBlock,
-      setBalance,
-      setAccount,
-      setWalletConnected
-    );
+    const signer = web3provider.getSigner();
     if (!isWalletConnected) {
       await connectWallet(
         setweb3provider,
         setCurrentBlock,
         setBalance,
         setAccount,
-        setWalletConnected
+        setWalletConnected,
+        setSelectedNetwork
       );
     }
 
@@ -52,7 +46,7 @@ export const _withdrawLTO = async (
       setTransactionHash,
       setOrderLogsDecoded,
       setMessage,
-      provider,
+      web3provider,
       currentNetwork
     );
     setLoading(false);

@@ -9,17 +9,12 @@ import {
 } from ".";
 import {
   POPUP_MESSAGE,
-  TWAMM_POOL_ABI,
   VAULT_CONTRACT_ABI,
 } from "../constants";
 import { getEthLogs } from "./get_ethLogs";
 import { POOLS } from "./pool";
 
-export async function joinPool(
-  walletAddress,
-  signer,
-  currentNetwork = "Goerli"
-) {
+export async function joinPool(walletAddress, signer, currentNetwork) {
   const encodedRequest = defaultAbiCoder.encode(
     ["uint256", "uint256[]", "uint256"],
     // JoinKind, User Input AmountIn, MinimumBpt Out
@@ -54,7 +49,7 @@ export async function exitPool(
   walletAdress,
   signer,
   bptAmountIn,
-  currentNetwork = "Goerli"
+  currentNetwork
 ) {
   const poolContract = new Contract(
     Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
@@ -114,7 +109,7 @@ export async function cancelLTO(
   setOrderLogsDecoded,
   setMessage,
   provider,
-  currentNetwork = "Goerli"
+  currentNetwork
 ) {
   const poolContract = new Contract(
     Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
@@ -162,7 +157,7 @@ export async function cancelLTO(
   setTransactionHash(orderHash);
   const exitPoolResult = await exitPoolTx.wait();
   setMessage(POPUP_MESSAGE.ltoCancelSuccess);
-  await getEthLogs(provider, walletAdress).then((res) => {
+  await getEthLogs(signer, walletAdress, currentNetwork).then((res) => {
     const resArray = Array.from(res.values());
     setOrderLogsDecoded(resArray);
   });
@@ -179,9 +174,8 @@ export async function withdrawLTO(
   setOrderLogsDecoded,
   setMessage,
   provider,
-  currentNetwork = "Goerli"
+  currentNetwork
 ) {
-  // const currentNetwork = "Goerli";
   const poolContract = new Contract(
     Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
     VAULT_CONTRACT_ABI,
@@ -227,7 +221,7 @@ export async function withdrawLTO(
   );
   setTransactionHash(orderHash);
   const withdrawLTOResult = await withdrawLTOTx.wait();
-  await getEthLogs(provider, walletAdress).then((res) => {
+  await getEthLogs(provider, walletAdress, currentNetwork).then((res) => {
     const resArray = Array.from(res.values());
     setOrderLogsDecoded(resArray);
   });
@@ -235,11 +229,7 @@ export async function withdrawLTO(
   setMessage(POPUP_MESSAGE.ltoWithdrawn);
 }
 
-export async function getPoolBalance(
-  signer,
-  tokenAddress,
-  currentNetwork = "Goerli"
-) {
+export async function getPoolBalance(signer, tokenAddress, currentNetwork) {
   const tokenIndex = Object.values(POOLS[currentNetwork])[0]?.tokens.filter(
     (item) => item.address === tokenAddress
   );

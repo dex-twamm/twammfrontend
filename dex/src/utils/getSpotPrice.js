@@ -1,21 +1,15 @@
 import { ethers } from "ethers";
 import { POPUP_MESSAGE } from "../constants";
-import { useNetwork } from "../providers/context/UIProvider";
 import { getEstimatedConvertedToken } from "./batchSwap";
-import { getProvider } from "./getProvider";
 import { POOLS } from "./pool";
 
-//Spot Prices
+// Spot Prices
 export const spotPrice = async (
   swapAmount,
   setSpotPriceLoading,
   srcAddress,
   destAddress,
-  setweb3provider,
-  setCurrentBlock,
-  setBalance,
-  setAccount,
-  setWalletConnected,
+  web3provider,
   account,
   expectedSwapOut,
   tolerance,
@@ -40,21 +34,16 @@ export const spotPrice = async (
 
     //todo : Change this to use token decimal places
     const swapAmountWei = ethers.utils.parseUnits(swapAmount, tokenIn.decimals);
-    console.log("swapAmountWei", swapAmountWei);
+    console.log("swapAmountWei", swapAmountWei.toString());
 
     const errors = {};
 
-    const signer = await getProvider(
-      true,
-      setweb3provider,
-      setCurrentBlock,
-      setBalance,
-      setAccount,
-      setWalletConnected
-    );
+    const signer = web3provider.getSigner();
     const walletAddress = account;
 
     console.log("Expected swap out ---->", expectedSwapOut);
+
+    //for shortswap
     try {
       await getEstimatedConvertedToken(
         signer,
@@ -62,12 +51,10 @@ export const spotPrice = async (
         tokenIn.address,
         tokenOut.address,
         walletAddress,
-        expectedSwapOut,
-        tolerance,
         deadline,
         currentNetwork
       ).then((res) => {
-        console.log("Response From Query Batch Swap", res.toString());
+        console.log("Response From estimated swap", res.toString());
         errors.balError = undefined;
         setFormErrors(errors ?? "");
         setSpotPrice(
@@ -76,6 +63,8 @@ export const spotPrice = async (
         );
         setSpotPriceLoading(false);
         setExpectedSwapOut(res);
+        console.log((parseFloat(res) * 10 ** tokenIn.decimals) /
+        (parseFloat(swapAmountWei) * 10 ** tokenOut.decimals));
       });
     } catch (e) {
       setSpotPriceLoading(false);
@@ -91,7 +80,10 @@ export const spotPrice = async (
             balError: POPUP_MESSAGE["BAL#510"],
           });
         }
-        if (e.reason.match("ERC20: transfer amount exceeds allowance") || e.reason.match("allowance") ) {
+        if (
+          e.reason.match("ERC20: transfer amount exceeds allowance") ||
+          e.reason.match("allowance")
+        ) {
           setSpotPriceLoading(false);
           setSpotPrice(0);
           errors.balError = undefined;

@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useContext } from "react";
 import { POPUP_MESSAGE } from "../../constants";
 import { ShortSwapContext } from "../../providers";
-import { useNetwork } from "../../providers/context/UIProvider";
+import { UIContext } from "../../providers/context/UIProvider";
 import { POOLS } from "../../utils/pool";
 
 const PopupModal = ({
@@ -21,7 +21,7 @@ const PopupModal = ({
     setTransactionHash,
   } = useContext(ShortSwapContext);
 
-  const currentNetwork = useNetwork();
+  const { selectedNetwork } = useContext(UIContext);
 
   // Timeout For Backdrop
   useEffect(() => {
@@ -39,7 +39,7 @@ const PopupModal = ({
   const handleClose = () => {
     setError("");
     setSuccess("");
-    // setTransactionHash("");
+    setTransactionHash("");
     setIsPlacedLongTermOrder && setIsPlacedLongTermOrder();
     setMessage("");
   };
@@ -51,14 +51,14 @@ const PopupModal = ({
   const handleButtonClick = () => {
     console.log(
       "links",
-      Object.values(POOLS?.[currentNetwork?.network])?.[0].transactionUrl,
+      Object.values(POOLS?.[selectedNetwork?.network])?.[0].transactionUrl,
       `${
-        Object.values(POOLS?.[currentNetwork?.network])?.[0]?.transactonUrl
+        Object.values(POOLS?.[selectedNetwork?.network])?.[0]?.transactonUrl
       }${transactionHash}`
     );
     window.open(
       `${
-        Object.values(POOLS?.[currentNetwork?.network])?.[0].transactionUrl
+        Object.values(POOLS?.[selectedNetwork?.network])?.[0].transactionUrl
       }${transactionHash}`
     );
   };

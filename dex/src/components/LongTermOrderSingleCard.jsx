@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { HiExternalLink } from "react-icons/hi";
 import styles from "../css/LongTermOrderCard.module.css";
-import { useNetwork } from "../providers/context/UIProvider";
+import { UIContext } from "../providers/context/UIProvider";
 import { bigToFloat, bigToStr } from "../utils";
 import classNames from "classnames";
 import { POOLS } from "../utils/pool";
@@ -10,7 +10,6 @@ import LongTermSwapCardDropdown from "./LongTermSwapCardDropdown";
 import { _withdrawLTO } from "../utils/_withdrawLto";
 import { _cancelLTO } from "../utils/_cancelLto";
 import { LongSwapContext, ShortSwapContext } from "../providers";
-import { WebContext } from "../providers/context/WebProvider";
 import { ethers } from "ethers";
 
 const LongTermOrderSingleCard = ({ it }) => {
@@ -19,6 +18,7 @@ const LongTermOrderSingleCard = ({ it }) => {
     isWalletConnected,
     setLoading,
     account,
+    web3provider,
     setweb3provider,
     setCurrentBlock,
     setBalance,
@@ -28,22 +28,22 @@ const LongTermOrderSingleCard = ({ it }) => {
   } = useContext(ShortSwapContext);
 
   const {
-    latestBlock,
+    lastVirtualOrderBlock,
     disableActionBtn,
     setDisableActionBtn,
     setOrderLogsDecoded,
     setMessage,
   } = useContext(LongSwapContext);
-
-  const { provider } = useContext(WebContext);
+  const { selectedNetwork, setSelectedNetwork, nId } = useContext(UIContext);
 
   const [orderStatus, setOrderStatus] = useState();
   const [newTime, setNewTime] = useState(
     (it.expirationBlock - currentBlock.number) * 12
   );
 
-  const currentNetwork = useNetwork();
-  const poolConfig = Object.values(POOLS[currentNetwork?.network])[0];
+  const poolConfig = Object.values(
+    POOLS[selectedNetwork?.network ?? "Goerli"]
+  )[0];
   const tokenIn = poolConfig.tokens[it.sellTokenIndex];
   const tokenOut = poolConfig.tokens[it.buyTokenIndex];
 
@@ -72,13 +72,14 @@ const LongTermOrderSingleCard = ({ it }) => {
     soldToken = amountOf?.sub(it?.unsoldAmount);
   } else {
     soldToken =
-      latestBlock > expBlock
+      lastVirtualOrderBlock > expBlock
         ? amountOf
-        : latestBlock?.sub(stBlock)?.mul(it.salesRate);
+        : lastVirtualOrderBlock?.sub(stBlock)?.mul(it.salesRate);
   }
 
   const averagePrice =
-    bigToFloat(convertedAmount, tokenOut.decimals) / bigToFloat(soldToken, tokenIn.decimals);
+    bigToFloat(convertedAmount, tokenOut.decimals) /
+    bigToFloat(soldToken, tokenIn.decimals);
 
   const handleCancel = (orderId, orderHash) => {
     _cancelLTO(
@@ -87,6 +88,7 @@ const LongTermOrderSingleCard = ({ it }) => {
       setLoading,
       setDisableActionBtn,
       account,
+      web3provider,
       setweb3provider,
       setCurrentBlock,
       setBalance,
@@ -95,9 +97,10 @@ const LongTermOrderSingleCard = ({ it }) => {
       isWalletConnected,
       setOrderLogsDecoded,
       setMessage,
-      provider,
       setTransactionHash,
-      currentNetwork?.network
+      selectedNetwork?.network,
+      setSelectedNetwork,
+      nId
     );
   };
 
@@ -108,6 +111,7 @@ const LongTermOrderSingleCard = ({ it }) => {
       setLoading,
       setDisableActionBtn,
       account,
+      web3provider,
       setweb3provider,
       setCurrentBlock,
       setBalance,
@@ -116,9 +120,10 @@ const LongTermOrderSingleCard = ({ it }) => {
       isWalletConnected,
       setOrderLogsDecoded,
       setMessage,
-      provider,
       setTransactionHash,
-      currentNetwork?.network
+      selectedNetwork?.network,
+      setSelectedNetwork,
+      nId
     );
   };
 
@@ -127,25 +132,24 @@ const LongTermOrderSingleCard = ({ it }) => {
       setOrderStatus({ status: "Completed", progress: 100 });
     } else if (it?.state === "cancelled") {
       setOrderStatus({ status: "Cancelled", progress: 100 });
-    } else if (latestBlock >= it.expirationBlock) {
+    } else if (lastVirtualOrderBlock >= it.expirationBlock) {
       setOrderStatus({ status: "Execution Completed", progress: 100 });
     } else {
       if (it.expirationBlock > currentBlock.number) {
-        // const timeRemaining = (it.expirationBlock - currentBlock.number) * 12;
         let date = new Date(0);
         date.setSeconds(newTime); // specify value for SECONDS here
         const timeString = date.toISOString().substring(11, 16);
         setOrderStatus({
           status: `Time Remaining: ${timeString}`,
           progress:
-            ((latestBlock - it?.startBlock) * 100) /
+            ((lastVirtualOrderBlock - it?.startBlock) * 100) /
             (it?.expirationBlock - it?.startBlock),
         });
       } else {
         setOrderStatus({ status: "Execution Completed", progress: 100 });
       }
     }
-  }, [it, newTime]);
+  }, [it, currentBlock, lastVirtualOrderBlock, newTime]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -184,9 +188,7 @@ const LongTermOrderSingleCard = ({ it }) => {
               />
               <p className={styles.tokenText}>
                 <span>
-                  {bigToStr(soldToken, tokenIn.decimals)}{" "}
-                  {tokenIn.symbol}{" "}
-                  of
+                  {bigToStr(soldToken, tokenIn.decimals)} {tokenIn.symbol} of
                 </span>
                 <span> {bigToStr(amountOf, tokenIn.decimals)}</span>
               </p>
@@ -218,8 +220,7 @@ const LongTermOrderSingleCard = ({ it }) => {
                 alt={tokenOut.symbol}
               />
               <p className={classNames(styles.tokenText, styles.greenText)}>
-                {bigToStr(convertedAmount, tokenOut.decimals)}{" "}
-                {tokenOut.symbol}
+                {bigToStr(convertedAmount, tokenOut.decimals)} {tokenOut.symbol}
               </p>
             </div>
           </div>
@@ -237,20 +238,18 @@ const LongTermOrderSingleCard = ({ it }) => {
                   orderStatus?.status === "Completed"
                     ? styles.greenProgress
                     : orderStatus?.status === "Execution Completed"
-                      ? styles.greenProgress
-                      : orderStatus?.status === "Cancelled"
-                        ? styles.redProgress
-                        : styles.activeProgress
+                    ? styles.greenProgress
+                    : orderStatus?.status === "Cancelled"
+                    ? styles.redProgress
+                    : styles.activeProgress
                 )}
               ></div>
             </div>
           </div>
 
           <div className={styles.extrasContainer}>
-            <div className={styles.fees}>
-              {poolConfig?.fees} fees
-            </div>
-            {soldToken != 0 && (
+            <div className={styles.fees}>{poolConfig?.fees} fees</div>
+            {soldToken !== 0 && (
               <div className={styles.averagePrice}>
                 {averagePrice.toFixed(4)} Average Price
               </div>
@@ -279,7 +278,11 @@ const LongTermOrderSingleCard = ({ it }) => {
                 handleCancel(it?.orderId?.toNumber(), it?.transactionHash);
               }}
             >
-              {orderStatus?.status !== "Completed" ? "Cancel" : "Completed"}
+              {orderStatus?.status === "Completed"
+                ? "Completed"
+                : orderStatus?.status === "Cancelled"
+                ? "Cancelled"
+                : "Cancel"}
             </button>
             {orderStatus?.status !== "Cancelled" &&
               orderStatus?.status !== "Completed" && (

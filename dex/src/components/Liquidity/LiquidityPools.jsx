@@ -12,7 +12,7 @@ import { ShortSwapContext } from "../../providers";
 
 import CircularProgressBar from "../alerts/CircularProgressBar";
 import Tabs from "../Tabs";
-import { useNetwork } from "../../providers/context/UIProvider";
+import { UIContext } from "../../providers/context/UIProvider";
 
 const style = {
   position: "absolute",
@@ -38,6 +38,8 @@ const style = {
 const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
   const { LPTokenBalance, loading, isWalletConnected } =
     useContext(ShortSwapContext);
+  const { selectedNetwork } = useContext(UIContext);
+
   //   const [open, setOpen] = useState(false);
 
   const navigate = useNavigate();
@@ -50,8 +52,6 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
   const handleMoreOption = () => {
     navigate("/");
   };
-
-  const currentNetwork = useNetwork();
 
   console.log("LP Token balance", LPTokenBalance, POOLS);
   return (
@@ -402,10 +402,10 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                         }}
                       >
                         {`${
-                          Object.values(POOLS?.[currentNetwork?.network])?.[0]
+                          Object.values(POOLS?.[selectedNetwork?.network])?.[0]
                             .tokens[0].symbol
                         } / ${
-                          Object.values(POOLS?.[currentNetwork?.network])?.[0]
+                          Object.values(POOLS?.[selectedNetwork?.network])?.[0]
                             .tokens[1].symbol
                         }`}
                       </Typography>
@@ -426,7 +426,7 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                         }}
                       >
                         {
-                          Object.values(POOLS?.[currentNetwork?.network])?.[0]
+                          Object.values(POOLS?.[selectedNetwork?.network])?.[0]
                             ?.fees
                         }
                         %
@@ -577,7 +577,7 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                     onClick={() =>
                       window.open(
                         `${
-                          Object.values(POOLS?.[currentNetwork?.network])?.[0]
+                          Object.values(POOLS?.[selectedNetwork?.network])?.[0]
                             ?.balancerPoolUrl
                         }`,
                         "_blank"

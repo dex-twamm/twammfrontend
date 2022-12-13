@@ -1,49 +1,46 @@
-import { createContext, useContext, useState } from "react";
-// import {
-//   FAUCET_TOKEN_ADDRESS,
-//   MATIC_TOKEN_ADDRESS,
-//   POOL_ID,
-// } from "../../utils";
+import { createContext, useContext, useEffect, useState } from "react";
+
 import { POOLS } from "../../utils/pool";
-import { ShortSwapContext } from "./ShortSwapProvider";
-import ethLogo from "../../images/ethereum.png";
-import { useNetwork } from "./UIProvider";
+
+import { UIContext } from "./UIProvider";
 
 export const LongSwapProvider = ({ children }) => {
   const [sliderValue, setSliderValue] = useState(1);
 
   const [orderLogsDecoded, setOrderLogsDecoded] = useState([]);
-  const [latestBlock, setLatestBlock] = useState("");
-  const [numberOfBlockIntervals, setNumberOfBlockIntervals] = useState(1);
+  const [lastVirtualOrderBlock, setLastVirtualOrderBlock] = useState("");
+  const [numberOfBlockIntervals, setNumberOfBlockIntervals] = useState(0);
   const [targetDate, setTargetDate] = useState("");
   const [allowance, setAllowance] = useState("");
   const [message, setMessage] = useState("");
   const [disableActionBtn, setDisableActionBtn] = useState(false);
   const [orderLogsLoading, setOrderLogsLoading] = useState(false);
-  const { tokenBalances } = useContext(ShortSwapContext);
-  const currentNetwork = useNetwork();
+  const [longSwapFormErrors, setLongSwapFormErrors] = useState();
+  const [longSwapVerifyLoading, setLongSwapVerifyLoading] = useState(false);
+  const [tokenA, setTokenA] = useState();
+  const [tokenB, setTokenB] = useState();
 
-  let networkName = currentNetwork?.network;
-  if (
-    !networkName ||
-    networkName === "undefined" ||
-    networkName === "Select a Network"
-  ) {
-    networkName = "Ethereum";
-  }
-  console.log("networkName", networkName);
-  const poolConfig = Object.values(POOLS?.[networkName])?.[0];
-  const [tokenA, setTokenA] = useState({
-    ...poolConfig?.tokens[0],
-    balance: 0,
-    tokenIsSet: (poolConfig?.tokens[0].address ? true : false),
-  });
+  const { selectedNetwork } = useContext(UIContext);
 
-  const [tokenB, setTokenB] = useState({
-    ...poolConfig?.tokens[1],
-    balance: 0,
-    tokenIsSet: (poolConfig?.tokens[1].address ? true : false),
-  });
+  useEffect(() => {
+    let poolConfig;
+    if(POOLS?.[selectedNetwork?.network]) {
+      poolConfig = Object.values(POOLS?.[selectedNetwork?.network])?.[0];
+    } else {
+      poolConfig = Object.values(POOLS['Ethereum'])[0];
+    }
+    setTokenA({
+      ...poolConfig?.tokens[0],
+      balance: 0,
+      tokenIsSet: poolConfig?.tokens[0].address ? true : false,
+    });
+
+    setTokenB({
+      ...poolConfig?.tokens[1],
+      balance: 0,
+      tokenIsSet: poolConfig?.tokens[1].address ? true : false,
+    });
+  }, []);
 
   return (
     <LongSwapContext.Provider
@@ -58,8 +55,8 @@ export const LongSwapProvider = ({ children }) => {
         setTargetDate,
         orderLogsDecoded,
         setOrderLogsDecoded,
-        latestBlock,
-        setLatestBlock,
+        lastVirtualOrderBlock,
+        setLastVirtualOrderBlock,
         numberOfBlockIntervals,
         setNumberOfBlockIntervals,
         allowance,
@@ -70,6 +67,10 @@ export const LongSwapProvider = ({ children }) => {
         setDisableActionBtn,
         orderLogsLoading,
         setOrderLogsLoading,
+        longSwapFormErrors,
+        setLongSwapFormErrors,
+        longSwapVerifyLoading,
+        setLongSwapVerifyLoading,
       }}
     >
       {children}

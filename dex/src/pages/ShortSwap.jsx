@@ -1,36 +1,31 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import PopupModal from "../components/alerts/PopupModal";
 import PopupSettings from "../components/PopupSettings";
 import Swap from "../components/Swap";
 import Tabs from "../components/Tabs";
 import styles from "../css/ShortSwap.module.css";
 import { ShortSwapContext } from "../providers";
-import { useNetwork } from "../providers/context/UIProvider";
-import { WebContext } from "../providers/context/WebProvider";
+import { UIContext } from "../providers/context/UIProvider";
 import { connectWallet } from "../utils/connetWallet";
-import { getProvider } from "../utils/getProvider";
+import { spotPrice } from "../utils/getSpotPrice";
 import { getEthLogs } from "../utils/get_ethLogs";
-import { POOLS } from "../utils/pool";
 import { _swapTokens } from "../utils/shortSwap";
 
 const ShortSwap = ({
   tokenSymbol,
   tokenImage,
-  // connectWallet,
   buttonText,
   showSettings,
   setShowSettings,
-  spotPriceLoading,
   message,
   setMessage,
 }) => {
-  //   const [showSettings, setShowSettings] = useState(false);
-
   const {
     isWalletConnected,
     setweb3provider,
+    web3provider,
     setCurrentBlock,
     setBalance,
     setAccount,
@@ -48,18 +43,56 @@ const ShortSwap = ({
     ethBalance,
     poolCash,
     setSuccess,
+    setFormErrors,
+    setSpotPrice,
+    setExpectedSwapOut,
+    spotPriceLoading,
+    setSpotPriceLoading,
   } = useContext(ShortSwapContext);
+  const { selectedNetwork, setSelectedNetwork } = useContext(UIContext);
 
-  const { provider, setProvider } = useContext(WebContext);
-
-  const currentNetwork = useNetwork();
-
-  // console.log(
-  //   "Current network currentNetwork",
-  //   Object.values(POOLS[currentNetwork.network])[0]
-  // );
-
-  console.log("iswalletashkasjdhsakd", isWalletConnected);
+  useEffect(() => {
+    // Wait for 0.5 second before fetching price.
+    const interval1 = setTimeout(() => {
+      spotPrice(
+        swapAmount,
+        setSpotPriceLoading,
+        srcAddress,
+        destAddress,
+        web3provider,
+        account,
+        expectedSwapOut,
+        tolerance,
+        deadline,
+        setFormErrors,
+        setSpotPrice,
+        setExpectedSwapOut,
+        selectedNetwork?.network
+      );
+    }, 500);
+    // Update price every 12 seconds.
+    const interval2 = setTimeout(() => {
+      spotPrice(
+        swapAmount,
+        setSpotPriceLoading,
+        srcAddress,
+        destAddress,
+        web3provider,
+        account,
+        expectedSwapOut,
+        tolerance,
+        deadline,
+        setFormErrors,
+        setSpotPrice,
+        setExpectedSwapOut,
+        selectedNetwork?.network
+      );
+    }, 12000);
+    return () => {
+      clearTimeout(interval1);
+      clearTimeout(interval2);
+    };
+  }, [swapAmount, destAddress, srcAddress]);
 
   async function ShortSwapButtonClick() {
     try {
@@ -69,27 +102,16 @@ const ShortSwap = ({
           setCurrentBlock,
           setBalance,
           setAccount,
-          setWalletConnected
+          setWalletConnected,
+          setSelectedNetwork
         );
-        const signer = await getProvider(
-          true,
-          setweb3provider,
-          setCurrentBlock,
-          setBalance,
-          setAccount,
-          setWalletConnected
-        );
-        await getEthLogs(signer);
+        await getEthLogs(web3provider.getSigner(), account, selectedNetwork?.network);
       } else {
         await _swapTokens(
           ethBalance,
           poolCash,
           swapAmount,
-          setweb3provider,
-          setCurrentBlock,
-          setBalance,
-          setAccount,
-          setWalletConnected,
+          web3provider,
           srcAddress,
           destAddress,
           account,
@@ -100,7 +122,7 @@ const ShortSwap = ({
           setSuccess,
           setError,
           setLoading,
-          currentNetwork?.network
+          selectedNetwork?.network
         );
       }
     } catch (err) {
@@ -133,7 +155,7 @@ const ShortSwap = ({
           <Swap
             tokenSymbol={tokenSymbol}
             tokenImage={tokenImage}
-            connectWallet={ShortSwapButtonClick}
+            handleButtonClick={ShortSwapButtonClick}
             buttonText={buttonText}
             spotPriceLoading={spotPriceLoading}
           />

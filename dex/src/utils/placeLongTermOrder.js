@@ -1,6 +1,5 @@
 import { ethers } from "ethers";
 import { POPUP_MESSAGE } from "../constants";
-import { getProvider } from "./getProvider";
 import { getEthLogs } from "./get_ethLogs";
 import { placeLongTermOrder } from "./longSwap";
 import { POOLS } from "./pool";
@@ -10,37 +9,31 @@ export const _placeLongTermOrders = async (
   srcAddress,
   destAddress,
   numberOfBlockIntervals,
-  setweb3provider,
-  setCurrentBlock,
-  setBalance,
-  setAccount,
-  setWalletConnected,
+  web3provider,
   account,
   setTransactionHash,
   setLoading,
   setIsPlacedLongTermOrder,
   setOrderLogsDecoded,
   setError,
-  provider,
-  currentNetwork = "Goerli"
+  currentNetwork
 ) => {
   const poolConfig = Object.values(POOLS[currentNetwork])[0];
 
   try {
-    const tokenInIndex = poolConfig.tokens.findIndex((object) => srcAddress === object.address);
-    const tokenOutIndex = poolConfig.tokens.findIndex((object) => destAddress === object.address);
-    const amountIn = ethers.utils.parseUnits(swapAmount, poolConfig.tokens[tokenInIndex].decimals);
-    // console.log('amountIn', amountIn);
-    const blockIntervals = Math.ceil(numberOfBlockIntervals);
-    console.log("Intervals", numberOfBlockIntervals);
-    const signer = await getProvider(
-      true,
-      setweb3provider,
-      setCurrentBlock,
-      setBalance,
-      setAccount,
-      setWalletConnected
+    const tokenInIndex = poolConfig.tokens.findIndex(
+      (object) => srcAddress === object.address
     );
+    const tokenOutIndex = poolConfig.tokens.findIndex(
+      (object) => destAddress === object.address
+    );
+    const amountIn = ethers.utils.parseUnits(
+      swapAmount,
+      poolConfig.tokens[tokenInIndex].decimals
+    );
+    const blockIntervals = Math.ceil(numberOfBlockIntervals);
+
+    const signer = web3provider.getSigner();
 
     const walletAddress = account;
     // Call the PlaceLongTermOrders function from the `utils` folder*
@@ -63,7 +56,7 @@ export const _placeLongTermOrders = async (
         setIsPlacedLongTermOrder(false);
       })
       .finally(setLoading(false));
-    await getEthLogs(provider, walletAddress).then((res) => {
+    await getEthLogs(signer, walletAddress, currentNetwork).then((res) => {
       const resArray = Array.from(res.values());
       setOrderLogsDecoded(resArray);
     });

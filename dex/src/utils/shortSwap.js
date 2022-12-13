@@ -1,6 +1,5 @@
 import { ethers } from "ethers";
 import { POPUP_MESSAGE } from "../constants";
-import { getProvider } from "./getProvider";
 import { POOLS } from "./pool";
 import { swapTokens } from "./swap";
 
@@ -8,11 +7,7 @@ export const _swapTokens = async (
   ethBalance,
   poolCash,
   swapAmount,
-  setweb3provider,
-  setCurrentBlock,
-  setBalance,
-  setAccount,
-  setWalletConnected,
+  web3provider,
   srcAddress,
   destAddress,
   account,
@@ -23,14 +18,18 @@ export const _swapTokens = async (
   setSuccess,
   setError,
   setLoading,
-  currentNetwork = "Goerli"
+  currentNetwork
 ) => {
   const poolConfig = Object.values(POOLS[currentNetwork])[0];
-  const tokenIn = poolConfig.tokens.find((token) => token.address === srcAddress);
-  const tokenOut = poolConfig.tokens.find((token) => token.address === destAddress);
+  const tokenIn = poolConfig.tokens.find(
+    (token) => token.address === srcAddress
+  );
 
   const swapAmountWei = ethers.utils.parseUnits(swapAmount, tokenIn.decimals);
-  const walletBalanceWei = ethers.utils.parseUnits(ethBalance, tokenIn.decimals);
+  const walletBalanceWei = ethers.utils.parseUnits(
+    ethBalance,
+    tokenIn.decimals
+  );
   const pCash = ethers.utils.parseUnits(poolCash, tokenIn.decimals);
 
   console.log(
@@ -41,15 +40,7 @@ export const _swapTokens = async (
   );
   if (swapAmountWei.lte(walletBalanceWei)) {
     try {
-      const signer = await getProvider(
-        true,
-        setweb3provider,
-        setCurrentBlock,
-        setBalance,
-        setAccount,
-        setWalletConnected
-      );
-      // console.log(signer);
+      const signer = web3provider.getSigner();
       const assetIn = srcAddress;
       const assetOut = destAddress;
       const walletAddress = account;

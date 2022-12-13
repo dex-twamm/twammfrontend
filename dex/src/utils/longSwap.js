@@ -1,14 +1,9 @@
-import { BigNumber, Contract, ethers, utils } from "ethers";
+import { BigNumber, Contract, ethers } from "ethers";
 import {
   LONGTERM_ABI,
   VAULT_CONTRACT_ABI,
-  VAULT_CONTRACT_ADDRESS,
-  TWAMM_POOL_ABI,
 } from "../constants";
 import {
-  // POOL_ID,
-  // FAUCET_TOKEN_ADDRESS,
-  // MATIC_TOKEN_ADDRESS,
   MAX_UINT256,
 } from ".";
 import { POOLS } from "./pool";
@@ -21,7 +16,7 @@ export async function placeLongTermOrder(
   signer,
   walletAddress,
   setTransactionHash,
-  currentNetwork = "Goerli"
+  currentNetwork
 ) {
   let txHash;
 
@@ -83,11 +78,7 @@ export async function placeLongTermOrder(
   return txHash;
 }
 
-export async function getLongTermOrder(
-  signer,
-  orderId,
-  currentNetwork = "Goerli"
-) {
+export async function getLongTermOrder(signer, orderId, currentNetwork) {
   const contract = new Contract(
     Object.values(POOLS?.[currentNetwork])?.[0].address,
     LONGTERM_ABI,
@@ -99,10 +90,7 @@ export async function getLongTermOrder(
   return orderDetails;
 }
 
-export async function getLastVirtualOrderBlock(
-  signer,
-  currentNetwork = "Goerli"
-) {
+export async function getLastVirtualOrderBlock(signer, currentNetwork) {
   const contract = new Contract(
     Object.values(POOLS?.[currentNetwork])?.[0].LTOContract,
     LONGTERM_ABI,
@@ -110,11 +98,11 @@ export async function getLastVirtualOrderBlock(
   );
 
   const longterm = await contract.longTermOrders();
-  const latestBlock = longterm.lastVirtualOrderBlock;
+  const lastVirtualOrderBlock = longterm.lastVirtualOrderBlock;
 
   console.log(
     "====GET Long Term DETAILS=====",
     longterm.lastVirtualOrderBlock.toNumber()
   );
-  return latestBlock;
+  return lastVirtualOrderBlock;
 }

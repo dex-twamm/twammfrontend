@@ -11,7 +11,6 @@ import { toHex } from "../utils";
 import { connectWallet } from "../utils/connetWallet";
 import { DisconnectWalletOption } from "./DisconnectWalletOption";
 import NavOptionDropdwon from "./navbarDropdown/NavOptionDropdwon";
-import { WebContext } from "../providers/context/WebProvider";
 import { NETWORKS } from "../utils/networks";
 
 const Navbar = (props) => {
@@ -27,17 +26,13 @@ const Navbar = (props) => {
     walletBalance,
     walletAddress,
     accountStatus,
-    // connectWallet,
     disconnectWallet,
     change,
     showDisconnect,
     setShowDisconnect,
   } = props;
   const {
-    error,
     setError,
-    setLoading,
-    setSwapAmount,
     isWalletConnected,
     setweb3provider,
     setCurrentBlock,
@@ -45,39 +40,37 @@ const Navbar = (props) => {
     setAccount,
     setWalletConnected,
   } = useContext(ShortSwapContext);
-  const { provider, setProvider } = useContext(WebContext);
 
-  // const [netId, setNetId] = useState("");
-  // const [isOpen, setOpen] = useState(false);
-  console.log("Wallet Status", isWalletConnected);
-  // const [showDisconnect, setShowDisconnect] = useState(false);
+  let initialNetwork = {};
 
-  // const nId = window.ethereum?.networkVersion;
-  console.log("nId--->", nId);
-  const initialNetwork = NETWORKS.find((id) => id.chainId === nId);
-  console.log("initialNetwork", initialNetwork);
-
-  console.log("network from storage", localStorage.getItem("network_name"), localStorage.getItem("chainId"));
-
-  if (!localStorage.getItem("network_name")) {
-    console.log("localStorage", "network_name", initialNetwork.name);
-    localStorage.setItem("network_name", initialNetwork.name);
-    localStorage.setItem("network_logo", initialNetwork.logo);
-    localStorage.setItem("chainId", initialNetwork.chainId);
-  } else if (localStorage.getItem("chainId") === nId) {
-    const network = NETWORKS.find((nw) => nw.chainId === nId);
-    console.log("localStorage", "network_name", network);
-    localStorage.setItem("network_name", network.name);
-    localStorage.setItem("network_logo", network.logo);
-    localStorage.setItem("chainId", network.chainId);
+  if(typeof nId === 'undefined' || nId === 'undefined') {
+    initialNetwork = NETWORKS[1];
+  } else {
+    initialNetwork = NETWORKS.find((id) => id.chainId === nId);
   }
+
+  useEffect(() => {
+    if (
+      !localStorage.getItem("network_name") ||
+      localStorage.getItem("network_name") === "undefined"
+    ) {
+      localStorage.setItem("network_name", initialNetwork?.name);
+      localStorage.setItem("network_logo", initialNetwork?.logo);
+      localStorage.setItem("chainId", initialNetwork?.chainId);
+    } else if (localStorage.getItem("chainId") === nId) {
+      const network = NETWORKS.find((nw) => nw.chainId === nId);
+      localStorage.setItem("network_name", network?.name);
+      localStorage.setItem("network_logo", network?.logo);
+      localStorage.setItem("chainId", network?.chainId);
+    }
+  }, [initialNetwork]);
 
   const network_name = localStorage.getItem("network_name");
   const network_logo = localStorage.getItem("network_logo");
   const network_id = localStorage.getItem("chainId");
 
   useEffect(() => {
-    if(typeof network_name !== 'undefined' && network_name !== 'undefined') {
+    if (typeof network_name !== "undefined" && network_name !== "undefined") {
       setSelectedNetwork({
         network: network_name,
         logo: network_logo,
@@ -85,20 +78,14 @@ const Navbar = (props) => {
       });
     } else {
       setSelectedNetwork({
-        network: initialNetwork[0]?.name,
-        logo: initialNetwork[0]?.logo,
-        chainId:initialNetwork[0]?.chainId,
+        network: initialNetwork?.[0]?.name,
+        logo: initialNetwork?.[0]?.logo,
+        chainId: initialNetwork?.[0]?.chainId,
       });
     }
-    console.log(selectedNetwork);
   }, [network_name]);
 
   const handleSelect = async (networkName, logo, chainId) => {
-    // localStorage.setItem("network_name", networkName);
-    // localStorage.setItem("network_logo", logo);
-    // console.log(chainId);
-
-    console.log("handleSelect chainId", networkName, logo, chainId);
     const id = chainId;
     if (isWalletConnected) {
       try {
@@ -111,7 +98,6 @@ const Navbar = (props) => {
           logo: logo,
           chainId: chainId,
         });
-        console.log("localStorage", "network_name", networkName);
         localStorage.setItem("network_name", networkName);
         localStorage.setItem("network_logo", logo);
         localStorage.setItem("chainId", id);
@@ -123,8 +109,6 @@ const Navbar = (props) => {
       }
     }
   };
-
-  console.log("Selected network-->", selectedNetwork);
 
   const networkList = NETWORKS.map((network, index) => {
     return (
@@ -151,7 +135,8 @@ const Navbar = (props) => {
       setCurrentBlock,
       setBalance,
       setAccount,
-      setWalletConnected
+      setWalletConnected,
+      setSelectedNetwork
     );
   };
 
