@@ -50,7 +50,6 @@ const Swap = (props) => {
     setSelectToken(event.currentTarget.id);
     setDisplay(!display);
     setSpotPrice(0);
-    setExpectedSwapOut(0.0);
   };
 
   useEffect(() => {
