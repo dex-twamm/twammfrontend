@@ -32,7 +32,7 @@ export const getPoolVaultContractAddress = (currentNetwork = "Goerli") => {
   return Object.values(POOLS?.[currentNetwork])?.[0]?.VAULT_CONTRACT_ADDRESS;
 };
 
-export const getPoolAddress = (currentNetwork = "Goerli") => {
+export const getPoolContractAddress = (currentNetwork = "Goerli") => {
   return Object.values(POOLS?.[currentNetwork])?.[0]?.address;
 };
 

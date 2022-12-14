@@ -3,7 +3,7 @@ import { LONGTERM_ABI, VAULT_CONTRACT_ABI } from "../constants";
 import { MAX_UINT256 } from ".";
 import {
   getNetworkPoolId,
-  getPoolAddress,
+  getPoolContractAddress,
   getPoolLtoContractAddress,
   getPoolTokenAddresses,
   getPoolVaultContractAddress,
@@ -65,7 +65,7 @@ export async function placeLongTermOrder(
 
 export async function getLongTermOrder(signer, orderId, currentNetwork) {
   const contract = new Contract(
-    getPoolAddress(currentNetwork),
+    getPoolContractAddress(currentNetwork),
     LONGTERM_ABI,
     signer
   );
