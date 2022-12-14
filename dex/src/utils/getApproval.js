@@ -21,7 +21,11 @@ export const getAllowance = async (
   );
 };
 
-export const getApproval = async (provider, tokenAddress, currentNetwork) => {
+export const approveMaxAllowance = async (
+  provider,
+  tokenAddress,
+  currentNetwork
+) => {
   const ERC20Contract = new Contract(
     tokenAddress,
     ERC20_TOKEN_CONTRACT_ABI,
