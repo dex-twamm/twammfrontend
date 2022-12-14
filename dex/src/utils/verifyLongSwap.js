@@ -51,7 +51,6 @@ export const verifyLongSwapTxn = async (
   const placeLtoTx = await vaultContract.callStatic.joinPool(...swapData, {
     gasLimit: Math.floor(gasEstimate.toNumber() * GAS_OVERAGE_FACTOR),
   });
-  console.log("===LongTerm Placed====", placeLtoTx);
   return placeLtoTx;
 };
 

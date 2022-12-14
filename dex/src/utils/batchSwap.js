@@ -49,8 +49,5 @@ export const getEstimatedConvertedToken = async (
   const swapTx = await exchangeContract.callStatic.swap(...swapData, {
     gasLimit: Math.floor(gasEstimate.toNumber() * GAS_OVERAGE_FACTOR),
   });
-  // const txResult = await swapTx.wait();
   return swapTx;
-
-  // const swapResult = await swapTx.wait();
 };

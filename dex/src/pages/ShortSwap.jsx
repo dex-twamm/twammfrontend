@@ -82,12 +82,6 @@ const ShortSwap = () => {
     };
   }, [swapAmount, destAddress, srcAddress]);
 
-  console.log(
-    "Sppot price loading",
-    spotPriceLoading,
-    selectedNetwork?.network
-  );
-
   const [showSettings, setShowSettings] = useState(false);
 
   async function ShortSwapButtonClick() {

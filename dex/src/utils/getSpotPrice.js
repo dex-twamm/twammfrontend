@@ -19,7 +19,6 @@ export const spotPrice = async (
 ) => {
   if (swapAmount) {
     setSpotPriceLoading(true);
-    console.log("Sjasdhaksdahsjkasd", currentNetwork);
 
     const poolConfig = getPoolConfig(currentNetwork);
     const tokenIn = poolConfig?.tokens.find(
@@ -56,11 +55,6 @@ export const spotPrice = async (
         );
         setSpotPriceLoading(false);
         setExpectedSwapOut(res);
-
-        console.log(
-          (parseFloat(res) * 10 ** tokenIn.decimals) /
-            (parseFloat(swapAmountWei) * 10 ** tokenOut.decimals)
-        );
       });
     } catch (e) {
       setSpotPriceLoading(false);

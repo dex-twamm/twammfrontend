@@ -47,7 +47,6 @@ const AddLiquidity = (props) => {
   }, [tokenA, tokenB, setTokenB]);
 
   useEffect(() => {
-    console.log("Prabin Swap", typeof Number(swapAmount), swapAmount);
     if (tokenB.tokenIsSet && Number(swapAmount) !== 0) {
       setButtonText("Add Liquidity");
       setButtonDisabled(false);
@@ -64,10 +63,7 @@ const AddLiquidity = (props) => {
 
   const tokenDetails = getPoolTokens(selectedNetwork?.network);
 
-  console.log("Prabin", tokenA, tokenB);
-
   const handleDisplay = (event) => {
-    console.log("Current Target Id", event.currentTarget.id);
     setSelectToken(event.currentTarget.id);
     setDisplay(!display);
   };

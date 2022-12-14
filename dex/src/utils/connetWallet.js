@@ -11,10 +11,9 @@ export const connectWallet = async (
   setSelectedNetwork
 ) => {
   try {
-    console.log("Connecting to wallet");
     const provider = await web3Modal.connect();
     const web3Provider = new providers.Web3Provider(provider);
-    
+
     const accounts = await web3Provider.listAccounts();
 
     // TODO - Update Every Transaction After 12 Seconds
@@ -33,7 +32,6 @@ export const connectWallet = async (
 
     window.ethereum?.request({ method: "net_version" }).then((net_version) => {
       const initialNetwork = NETWORKS.find((nw) => nw.chainId === net_version);
-      console.log("initialNetwork", initialNetwork);
       setSelectedNetwork({
         network: initialNetwork?.name,
         logo: initialNetwork?.logo,

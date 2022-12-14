@@ -42,7 +42,6 @@ export async function joinPool(walletAddress, signer, currentNetwork) {
   });
 
   const joinPoolResult = await joinPool.wait();
-  console.log(joinPoolResult);
 }
 
 export async function exitPool(
@@ -80,8 +79,6 @@ export async function exitPool(
     gasLimit: Math.floor(gasEstimate.toNumber() * GAS_OVERAGE_FACTOR),
   });
   const exitPoolResult = await exitPoolTx.wait();
-
-  console.log(exitPoolResult);
 }
 
 export async function cancelLTO(
@@ -130,8 +127,6 @@ export async function cancelLTO(
     const resArray = Array.from(res.values());
     setOrderLogsDecoded(resArray);
   });
-
-  console.log("exitPoolResult-->", exitPoolResult);
 }
 
 export async function withdrawLTO(
@@ -178,7 +173,6 @@ export async function withdrawLTO(
     const resArray = Array.from(res.values());
     setOrderLogsDecoded(resArray);
   });
-  console.log("withdrawLTOResult", withdrawLTOResult);
   setMessage(POPUP_MESSAGE.ltoWithdrawn);
 }
 
@@ -200,9 +194,5 @@ export async function getPoolBalance(signer, tokenAddress, currentNetwork) {
   const cash = poolBalance.cash._hex;
 
   const readableCash = ethers.utils.formatUnits(cash, tokenIndex?.[0].decimals);
-  console.log(
-    "====Pool Cash====",
-    ethers.utils.formatUnits(poolBalance.cash._hex, tokenIndex?.[0].decimals)
-  );
   return readableCash.toString();
 }

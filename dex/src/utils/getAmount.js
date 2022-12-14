@@ -26,7 +26,6 @@ export const getTokensBalance = async (
     );
     newBalance.push({ [address]: readableBalance });
   }
-  console.log("Balances", newBalance);
   async function balanceContract(address) {
     const ERC20Contract = new Contract(
       address,
@@ -34,12 +33,6 @@ export const getTokensBalance = async (
       provider
     );
     const balanceOfTokens = await ERC20Contract.balanceOf(walletAddress);
-    console.log(
-      "Balance of_" +
-        address +
-        "_is=" +
-        ethers.utils.formatEther(balanceOfTokens)
-    );
     return balanceOfTokens;
   }
   return newBalance.map((item) => item);

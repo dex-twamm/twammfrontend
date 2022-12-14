@@ -1,7 +1,7 @@
 import { BigNumber, Contract } from "ethers";
 import { GAS_OVERAGE_FACTOR, VAULT_CONTRACT_ABI } from "../constants";
 import { MAX_UINT256 } from ".";
-import { getPoolId, getPoolConfig } from "./poolUtils";
+import { getPoolId } from "./poolUtils";
 import { getVaultContractAddress } from "./networkUtils";
 
 /*
@@ -18,8 +18,6 @@ export const swapTokens = async (
   deadline,
   currentNetwork
 ) => {
-  const poolConfig = getPoolConfig(currentNetwork);
-
   // Create a new instance of the exchange contract
   const exchangeContract = new Contract(
     getVaultContractAddress(currentNetwork),
@@ -63,11 +61,5 @@ export const swapTokens = async (
     gasLimit: Math.floor(gasEstimate.toNumber() * GAS_OVERAGE_FACTOR),
   });
 
-  // let txHash = swapTx.hash;
-  // const txResult = await swapTx.wait();
-  // console.log("Swap Results After Placed", txResult)
   return swapTx;
-
-  // const swapResult = await swapTx.wait();
-  // console.log(swapResult.transactionHash);
 };

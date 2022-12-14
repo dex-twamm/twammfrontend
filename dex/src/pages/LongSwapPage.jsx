@@ -93,7 +93,6 @@ const LongSwapPage = () => {
         selectedNetwork?.network
       );
     } else {
-      console.log(web3provider, web3provider.getSigner());
       await _placeLongTermOrders(
         swapAmount,
         srcAddress,

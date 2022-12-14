@@ -9,10 +9,8 @@ const UIProvider = ({ children }) => {
   const [nId, setNetId] = useState();
 
   useEffect(() => {
-    console.log("UIProvider useEffect");
     window.ethereum?.request({ method: "net_version" }).then((net_version) => {
       const initialNetwork = NETWORKS.find((nw) => nw.chainId === net_version);
-      console.log("initialNetwork", initialNetwork);
       setNetId(net_version);
       setSelectedNetwork({
         network: initialNetwork?.name,
