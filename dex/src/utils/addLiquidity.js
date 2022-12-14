@@ -17,12 +17,12 @@ export async function joinPool(walletAddress, signer, currentNetwork) {
     // TODO Calculate MinBptOut Using Query Join Pool and Tolerance
     [1, [fp(1e-12), fp(1.0)], 0]
   );
-  const poolContract = new Contract(
+  const vaultContract = new Contract(
     getPoolVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );
-  const joinPool = await poolContract.joinPool(
+  const data = [
     getPoolId(currentNetwork),
     walletAddress,
     walletAddress,
@@ -32,19 +32,26 @@ export async function joinPool(walletAddress, signer, currentNetwork) {
       maxAmountsIn: [MAX_UINT256, MAX_UINT256],
       fromInternalBalance: false,
       userData: encodedRequest,
-    }
-  );
+    },
+  ];
+
+  const gasEstimate = await vaultContract.estimateGas.joinPool(...data);
+
+  const joinPool = await vaultContract.joinPool(...data, {
+    gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
+  });
+
   const joinPoolResult = await joinPool.wait();
   console.log(joinPoolResult);
 }
 
 export async function exitPool(
-  walletAdress,
+  walletAddress,
   signer,
   bptAmountIn,
   currentNetwork
 ) {
-  const poolContract = new Contract(
+  const vaultContract = new Contract(
     getPoolVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
@@ -57,8 +64,8 @@ export async function exitPool(
 
   const data = [
     getPoolId(currentNetwork),
-    walletAdress,
-    walletAdress,
+    walletAddress,
+    walletAddress,
     {
       assets: getPoolTokenAddresses(currentNetwork),
       minAmountsOut: [0, 0],
@@ -67,9 +74,9 @@ export async function exitPool(
     },
   ];
 
-  const gasEstimate = await poolContract.estimateGas.exitPool(...data);
+  const gasEstimate = await vaultContract.estimateGas.exitPool(...data);
 
-  const exitPoolTx = await poolContract.exitPool(...data, {
+  const exitPoolTx = await vaultContract.exitPool(...data, {
     gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
   });
   const exitPoolResult = await exitPoolTx.wait();
@@ -78,7 +85,7 @@ export async function exitPool(
 }
 
 export async function cancelLTO(
-  walletAdress,
+  walletAddress,
   signer,
   orderId,
   orderHash,
@@ -88,7 +95,7 @@ export async function cancelLTO(
   provider,
   currentNetwork
 ) {
-  const poolContract = new Contract(
+  const vaultContract = new Contract(
     getPoolVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
@@ -101,8 +108,8 @@ export async function cancelLTO(
 
   const data = [
     getPoolId(currentNetwork),
-    walletAdress,
-    walletAdress,
+    walletAddress,
+    walletAddress,
     {
       assets: getPoolTokenAddresses(currentNetwork),
       minAmountsOut: [0, 0],
@@ -111,15 +118,15 @@ export async function cancelLTO(
     },
   ];
 
-  const gasEstimate = await poolContract.estimateGas.exitPool(...data);
+  const gasEstimate = await vaultContract.estimateGas.exitPool(...data);
 
-  const exitPoolTx = await poolContract.exitPool(...data, {
+  const exitPoolTx = await vaultContract.exitPool(...data, {
     gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
   });
   setTransactionHash(orderHash);
   const exitPoolResult = await exitPoolTx.wait();
   setMessage(POPUP_MESSAGE.ltoCancelSuccess);
-  await getEthLogs(signer, walletAdress, currentNetwork).then((res) => {
+  await getEthLogs(signer, walletAddress, currentNetwork).then((res) => {
     const resArray = Array.from(res.values());
     setOrderLogsDecoded(resArray);
   });
@@ -128,7 +135,7 @@ export async function cancelLTO(
 }
 
 export async function withdrawLTO(
-  walletAdress,
+  walletAddress,
   signer,
   orderId,
   orderHash,
@@ -138,7 +145,7 @@ export async function withdrawLTO(
   provider,
   currentNetwork
 ) {
-  const poolContract = new Contract(
+  const vaultContract = new Contract(
     getPoolVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
@@ -151,8 +158,8 @@ export async function withdrawLTO(
 
   const data = [
     getPoolId(currentNetwork),
-    walletAdress,
-    walletAdress,
+    walletAddress,
+    walletAddress,
     {
       assets: getPoolTokenAddresses(currentNetwork),
       minAmountsOut: [0, 0],
@@ -161,13 +168,13 @@ export async function withdrawLTO(
     },
   ];
 
-  const gasEstimate = await poolContract.estimateGas.exitPool(...data);
-  const withdrawLTOTx = await poolContract.exitPool(...data, {
+  const gasEstimate = await vaultContract.estimateGas.exitPool(...data);
+  const withdrawLTOTx = await vaultContract.exitPool(...data, {
     gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
   });
   setTransactionHash(orderHash);
   const withdrawLTOResult = await withdrawLTOTx.wait();
-  await getEthLogs(provider, walletAdress, currentNetwork).then((res) => {
+  await getEthLogs(provider, walletAddress, currentNetwork).then((res) => {
     const resArray = Array.from(res.values());
     setOrderLogsDecoded(resArray);
   });
