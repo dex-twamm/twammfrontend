@@ -52,14 +52,15 @@ export const getTokensBalance = async (
 };
 
 export const getLPTokensBalance = async (
-  provider,
+  signer,
   walletAddress,
   currentNetwork
 ) => {
+  console.log("getLPTokensBalance", signer, walletAddress, currentNetwork);
   const poolContract = new Contract(
     Object.values(POOLS?.[currentNetwork])?.[0].address,
     TWAMM_POOL_ABI,
-    provider
+    signer
   );
 
   const balanceOfLPTokens = await poolContract.balanceOf(walletAddress);

@@ -13,7 +13,7 @@ export const connectWallet = async (
   try {
     console.log("Connecting to wallet");
     const provider = await web3Modal.connect();
-    const web3Provider = new providers.Web3Provider(provider);
+    const web3Provider = new providers.Web3Provider(provider, 'any');
     
     const accounts = await web3Provider.listAccounts();
 
