@@ -8,7 +8,7 @@ import {
   getPoolVaultContractAddress,
 } from "./poolUtils";
 
-export const getLongSwapEstimatedConvertedToken = async (
+export const verifyLongSwapTxn = async (
   tokenInIndex,
   tokenOutIndex,
   amountIn,
@@ -17,7 +17,7 @@ export const getLongSwapEstimatedConvertedToken = async (
   walletAddress,
   currentNetwork
 ) => {
-  const exchangeContract = new Contract(
+  const vaultContract = new Contract(
     getPoolVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
@@ -46,9 +46,9 @@ export const getLongSwapEstimatedConvertedToken = async (
     },
   ];
 
-  const gasEstimate = await exchangeContract.estimateGas.joinPool(...swapData);
+  const gasEstimate = await vaultContract.estimateGas.joinPool(...swapData);
 
-  const placeLtoTx = await exchangeContract.callStatic.joinPool(...swapData, {
+  const placeLtoTx = await vaultContract.callStatic.joinPool(...swapData, {
     gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
   });
   console.log("===LongTerm Placed====", placeLtoTx);
@@ -141,52 +141,4 @@ export const verifyLongSwap = async (
       setLongSwapVerifyLoading(false);
     }
   }
-};
-
-export const verifyLongSwapTxn = async (
-  tokenInIndex,
-  tokenOutIndex,
-  amountIn,
-  numberOfBlockIntervals,
-  signer,
-  walletAddress,
-  currentNetwork
-) => {
-  const exchangeContract = new Contract(
-    getPoolVaultContractAddress(currentNetwork),
-
-    VAULT_CONTRACT_ABI,
-    signer
-  );
-  const abiCoder = ethers.utils.defaultAbiCoder;
-  const encodedRequest = abiCoder.encode(
-    ["uint256", "uint256", "uint256", "uint256", "uint256"],
-    [
-      4,
-      tokenInIndex,
-      tokenOutIndex,
-      amountIn,
-      BigNumber.from(numberOfBlockIntervals),
-    ]
-  );
-
-  const inputData = [
-    getPoolId(currentNetwork),
-    walletAddress,
-    walletAddress,
-    {
-      assets: getPoolTokenAddresses(currentNetwork),
-      maxAmountsIn: [MAX_UINT256, MAX_UINT256],
-      fromInternalBalance: false,
-      userData: encodedRequest,
-    },
-  ];
-
-  const gasEstimate = await exchangeContract.estimateGas.joinPool(...inputData);
-
-  const placeLtoTx = await exchangeContract.callStatic.joinPool(...inputData, {
-    gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
-  });
-  console.log("===LongTerm Placed====", placeLtoTx);
-  return placeLtoTx;
 };

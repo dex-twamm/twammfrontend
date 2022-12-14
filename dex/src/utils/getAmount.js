@@ -2,7 +2,11 @@ import { Contract, ethers } from "ethers";
 import { bigToStr } from ".";
 
 import { ERC20_TOKEN_CONTRACT_ABI, TWAMM_POOL_ABI } from "../constants";
-import { getPoolContractAddress, getPoolConfig } from "./poolUtils";
+import {
+  getPoolContractAddress,
+  getPoolConfig,
+  getPoolTokenAddresses,
+} from "./poolUtils";
 // To Retrieve Token Balances
 export const getTokensBalance = async (
   provider,
@@ -10,10 +14,7 @@ export const getTokensBalance = async (
   currentNetwork
 ) => {
   const poolConfig = getPoolConfig(currentNetwork);
-  var tokenAddress = [
-    poolConfig?.TOKEN_ONE_ADDRESS,
-    poolConfig?.TOKEN_TWO_ADDRESS,
-  ];
+  var tokenAddress = getPoolTokenAddresses(currentNetwork);
 
   const newBalance = [];
   for (let index = 0; index < tokenAddress.length; index++) {
