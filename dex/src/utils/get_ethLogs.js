@@ -4,27 +4,27 @@ import { getLongTermOrder } from "./longSwap";
 import { getPoolContractAddress } from "./poolUtils";
 
 export async function getEthLogs(signer, walletAddress, currentNetwork) {
-  const exchangeContract = new Contract(
+  const poolContract = new Contract(
     getPoolContractAddress(currentNetwork),
     TWAMM_POOL_ABI,
     signer
   );
 
-  const placedFilter = exchangeContract.filters.LongTermOrderPlaced(
+  const placedFilter = poolContract.filters.LongTermOrderPlaced(
     null,
     null,
     null,
     null,
     walletAddress
   );
-  const cancelFilter = exchangeContract.filters.LongTermOrderCancelled(
+  const cancelFilter = poolContract.filters.LongTermOrderCancelled(
     null,
     null,
     null,
     null,
     walletAddress
   );
-  const withdrawnFilter = exchangeContract.filters.LongTermOrderWithdrawn(
+  const withdrawnFilter = poolContract.filters.LongTermOrderWithdrawn(
     null,
     null,
     null,
@@ -32,13 +32,13 @@ export async function getEthLogs(signer, walletAddress, currentNetwork) {
     walletAddress
   );
 
-  const eventsPlaced = await exchangeContract.queryFilter(placedFilter);
+  const eventsPlaced = await poolContract.queryFilter(placedFilter);
   console.log("=====Placed LOGS=====", eventsPlaced);
 
-  const eventsCancelled = await exchangeContract.queryFilter(cancelFilter);
+  const eventsCancelled = await poolContract.queryFilter(cancelFilter);
   console.log("==== Cancelled Logs ====", eventsCancelled);
 
-  const eventsWithdrawn = await exchangeContract.queryFilter(withdrawnFilter);
+  const eventsWithdrawn = await poolContract.queryFilter(withdrawnFilter);
   console.log("==== Withdrawn Logs ====", eventsWithdrawn);
 
   // console.log("==== Amount In ====", ethers.utils.formatUnits(eventsPlaced[0].topics[1], "ether"))
