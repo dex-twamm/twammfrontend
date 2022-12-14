@@ -7,13 +7,13 @@ export const providerOptions = {
     package: CoinbaseWalletSDK,
     options: {
       appName: "TWAMM",
-      infuraid: { 3: `https://goerli.infura.io/v3/${process.env.INFURA_KEY}` },
+      infuraId: process.env.INFURA_KEY,
     },
   },
   walletconnect: {
     package: WalletConnect,
     options: {
-      infuraid: { 3: `https://goerli.infura.io/v3/${process.env.INFURA_KEY}` },
+      infuraId: process.env.INFURA_KEY,
     },
   },
 };
