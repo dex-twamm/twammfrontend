@@ -1,7 +1,7 @@
 import { Contract } from "ethers";
 import { MAX_UINT256 } from ".";
 import { ERC20_TOKEN_CONTRACT_ABI } from "../constants";
-import { getpoolVaultContractAddress } from "./poolUtils";
+import { getPoolVaultContractAddress } from "./poolUtils";
 
 export const getAllowance = async (
   provider,
@@ -17,7 +17,7 @@ export const getAllowance = async (
 
   const allowance = await ERC20Contract.allowance(
     walletAddress,
-    getpoolVaultContractAddress(currentNetwork)
+    getPoolVaultContractAddress(currentNetwork)
   );
   return allowance;
 };
@@ -30,7 +30,7 @@ export const getApproval = async (provider, tokenAddress, currentNetwork) => {
   );
 
   const allowance = await ERC20Contract.approve(
-    getpoolVaultContractAddress(currentNetwork),
+    getPoolVaultContractAddress(currentNetwork),
     MAX_UINT256
   );
   return allowance;

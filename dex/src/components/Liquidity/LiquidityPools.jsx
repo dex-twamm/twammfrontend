@@ -9,7 +9,7 @@ import { ShortSwapContext } from "../../providers";
 import CircularProgressBar from "../alerts/CircularProgressBar";
 import Tabs from "../Tabs";
 import {
-  getpoolBalancerUrl,
+  getPoolBalancerUrl,
   getPoolFees,
   getPoolTokens,
 } from "../../utils/poolUtils";
@@ -260,7 +260,7 @@ const LiquidityPools = () => {
                   <button
                     onClick={() =>
                       window.open(
-                        `${getpoolBalancerUrl(selectedNetwork?.network)}`,
+                        `${getPoolBalancerUrl(selectedNetwork?.network)}`,
                         "_blank"
                       )
                     }

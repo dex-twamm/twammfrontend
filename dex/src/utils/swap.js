@@ -4,7 +4,7 @@ import { MAX_UINT256 } from ".";
 import {
   getNetworkPoolId,
   getPoolConfig,
-  getpoolVaultContractAddress,
+  getPoolVaultContractAddress,
 } from "./poolUtils";
 
 /*
@@ -25,7 +25,7 @@ export const swapTokens = async (
 
   // Create a new instance of the exchange contract
   const exchangeContract = new Contract(
-    getpoolVaultContractAddress(currentNetwork),
+    getPoolVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );

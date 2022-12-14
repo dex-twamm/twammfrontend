@@ -3,10 +3,10 @@ import { LONGTERM_ABI, VAULT_CONTRACT_ABI } from "../constants";
 import { MAX_UINT256 } from ".";
 import {
   getNetworkPoolId,
-  getpoolAddress,
-  getpoolLtoContract,
+  getPoolAddress,
+  getPoolLtoContractAddress,
   getPoolTokenAddresses,
-  getpoolVaultContractAddress,
+  getPoolVaultContractAddress,
 } from "./poolUtils";
 
 export async function placeLongTermOrder(
@@ -22,7 +22,7 @@ export async function placeLongTermOrder(
   let txHash;
 
   const exchangeContract = new Contract(
-    getpoolVaultContractAddress(currentNetwork),
+    getPoolVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -65,7 +65,7 @@ export async function placeLongTermOrder(
 
 export async function getLongTermOrder(signer, orderId, currentNetwork) {
   const contract = new Contract(
-    getpoolAddress(currentNetwork),
+    getPoolAddress(currentNetwork),
     LONGTERM_ABI,
     signer
   );
@@ -77,7 +77,7 @@ export async function getLongTermOrder(signer, orderId, currentNetwork) {
 
 export async function getLastVirtualOrderBlock(signer, currentNetwork) {
   const contract = new Contract(
-    getpoolLtoContract(currentNetwork),
+    getPoolLtoContractAddress(currentNetwork),
     LONGTERM_ABI,
     signer
   );

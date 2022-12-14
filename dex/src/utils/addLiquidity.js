@@ -7,7 +7,7 @@ import {
   getNetworkPoolId,
   getPoolTokenAddresses,
   getPoolTokens,
-  getpoolVaultContractAddress,
+  getPoolVaultContractAddress,
 } from "./poolUtils";
 
 export async function joinPool(walletAddress, signer, currentNetwork) {
@@ -18,7 +18,7 @@ export async function joinPool(walletAddress, signer, currentNetwork) {
     [1, [fp(1e-12), fp(1.0)], 0]
   );
   const poolContract = new Contract(
-    getpoolVaultContractAddress(currentNetwork),
+    getPoolVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -45,7 +45,7 @@ export async function exitPool(
   currentNetwork
 ) {
   const poolContract = new Contract(
-    getpoolVaultContractAddress(currentNetwork),
+    getPoolVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -89,7 +89,7 @@ export async function cancelLTO(
   currentNetwork
 ) {
   const poolContract = new Contract(
-    getpoolVaultContractAddress(currentNetwork),
+    getPoolVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -139,7 +139,7 @@ export async function withdrawLTO(
   currentNetwork
 ) {
   const poolContract = new Contract(
-    getpoolVaultContractAddress(currentNetwork),
+    getPoolVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -181,7 +181,7 @@ export async function getPoolBalance(signer, tokenAddress, currentNetwork) {
   );
 
   const vaultContract = new Contract(
-    getpoolVaultContractAddress(currentNetwork),
+    getPoolVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );

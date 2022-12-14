@@ -1,7 +1,7 @@
 import { BigNumber, Contract } from "ethers";
 import { VAULT_CONTRACT_ABI } from "../constants";
 import { MAX_UINT256 } from ".";
-import { getNetworkPoolId, getpoolVaultContractAddress } from "./poolUtils";
+import { getNetworkPoolId, getPoolVaultContractAddress } from "./poolUtils";
 
 export const getEstimatedConvertedToken = async (
   signer,
@@ -14,7 +14,7 @@ export const getEstimatedConvertedToken = async (
 ) => {
   // Create a new instance of the exchange contract
   const exchangeContract = new Contract(
-    getpoolVaultContractAddress(currentNetwork),
+    getPoolVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );

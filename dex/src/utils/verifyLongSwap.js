@@ -5,7 +5,7 @@ import {
   getNetworkPoolId,
   getPoolConfig,
   getPoolTokenAddresses,
-  getpoolVaultContractAddress,
+  getPoolVaultContractAddress,
 } from "./poolUtils";
 
 export const getLongSwapEstimatedConvertedToken = async (
@@ -18,7 +18,7 @@ export const getLongSwapEstimatedConvertedToken = async (
   currentNetwork
 ) => {
   const exchangeContract = new Contract(
-    getpoolVaultContractAddress(currentNetwork),
+    getPoolVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -153,7 +153,7 @@ export const verifyLongSwapTxn = async (
   currentNetwork
 ) => {
   const exchangeContract = new Contract(
-    getpoolVaultContractAddress(currentNetwork),
+    getPoolVaultContractAddress(currentNetwork),
 
     VAULT_CONTRACT_ABI,
     signer
