@@ -4,18 +4,18 @@ import { ERC20_TOKEN_CONTRACT_ABI } from "../constants";
 import { POOLS } from "./pool";
 
 export const getAllowance = async (
-  provider,
+  signer,
   walletAddress,
   tokenAddress,
   currentNetwork
 ) => {
-  console.log("Allowance Input provider", provider);
+  console.log("Allowance Input provider", signer);
   console.log("Allowance Input walletAddress", walletAddress);
   console.log("Allowance Input tokenAddress", tokenAddress);
   const ERC20Contract = new Contract(
     tokenAddress,
     ERC20_TOKEN_CONTRACT_ABI,
-    provider
+    signer
   );
 
   const allowance = await ERC20Contract.allowance(
@@ -30,7 +30,7 @@ export const getApproval = async (provider, tokenAddress, currentNetwork) => {
   const ERC20Contract = new Contract(
     tokenAddress,
     ERC20_TOKEN_CONTRACT_ABI,
-    provider
+    provider.getSigner()
   );
 
   const allowance = await ERC20Contract.approve(

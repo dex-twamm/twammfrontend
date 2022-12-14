@@ -68,19 +68,17 @@ export const spotPrice = async (
       });
     } catch (e) {
       setSpotPriceLoading(false);
-      console.log("erroror", typeof e, { ...e });
+      console.log("getSpotPrice error", typeof e, { ...e });
       if (e.reason) {
         if (e.reason.match("BAL#304")) {
           setFormErrors({
             balError: POPUP_MESSAGE["BAL#304"],
           });
-        }
-        if (e.reason.match("BAL#510")) {
+        } else if (e.reason.match("BAL#510")) {
           setFormErrors({
             balError: POPUP_MESSAGE["BAL#510"],
           });
-        }
-        if (
+        } else if (
           e.reason.match("ERC20: transfer amount exceeds allowance") ||
           e.reason.match("allowance")
         ) {
@@ -89,6 +87,10 @@ export const spotPrice = async (
           errors.balError = undefined;
           setFormErrors(errors ?? "");
           setExpectedSwapOut(0);
+        } else {
+          setFormErrors({
+            balError: POPUP_MESSAGE.unknown,
+          });
         }
       } else {
         setFormErrors({

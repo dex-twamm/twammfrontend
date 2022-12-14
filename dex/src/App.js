@@ -64,7 +64,19 @@ function App() {
 
   const { setSelectedNetwork, selectedNetwork } = useContext(UIContext);
 
-  console.log("Current Block", currentBlock);
+  // Connect cached Wallet as early as possible in cycle.
+  useEffect(() => {
+    if (web3Modal.cachedProvider && !isWalletConnected) {
+      connectWallet(
+        setweb3provider,
+        setCurrentBlock,
+        setBalance,
+        setAccount,
+        setWalletConnected,
+        setSelectedNetwork
+      );
+    }
+  });
 
   useEffect(() => {
     account && setWalletConnected(true);
@@ -84,19 +96,6 @@ function App() {
     refreshState();
     setShowDisconnect(false);
   };
-
-  useEffect(() => {
-    if (web3Modal.cachedProvider && !isWalletConnected) {
-      connectWallet(
-        setweb3provider,
-        setCurrentBlock,
-        setBalance,
-        setAccount,
-        setWalletConnected,
-        setSelectedNetwork
-      );
-    }
-  });
 
   //  Swap Token
 
@@ -158,7 +157,7 @@ function App() {
   const tokenBalance = useCallback(async () => {
     setLoading(true);
     setOrderLogsLoading(true);
-    if (typeof account !== "undefined") {
+    if (typeof account !== "undefined" && typeof web3provider !== "undefined") {
 
       // const tokenAddress = srcAddress;
       const walletAddress = account;
