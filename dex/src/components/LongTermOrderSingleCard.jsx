@@ -249,7 +249,7 @@ const LongTermOrderSingleCard = ({ it }) => {
 
           <div className={styles.extrasContainer}>
             <div className={styles.fees}>{poolConfig?.fees} fees</div>
-            {soldToken !== 0 && (
+            {soldToken != 0 && (
               <div className={styles.averagePrice}>
                 {averagePrice.toFixed(4)} Average Price
               </div>
