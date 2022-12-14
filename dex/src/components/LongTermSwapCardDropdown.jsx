@@ -5,8 +5,8 @@ import CircleIcon from "@mui/icons-material/Circle";
 import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutlined";
 import { FiChevronDown } from "react-icons/fi";
 import { bigToStr } from "../utils";
-import { getPoolTransactionUrl } from "../utils/poolUtils";
 import { UIContext } from "../providers";
+import { getBlockExplorerTransactionUrl } from "../utils/networkUtils";
 
 const LongTermSwapCardDropdown = (props) => {
   const { withdrawals } = props;
@@ -106,7 +106,7 @@ const LongTermSwapCardDropdown = (props) => {
                     const transactionHash = items.transactionHash;
                     const handleClick = () => {
                       window.open(
-                        `${getPoolTransactionUrl(
+                        `${getBlockExplorerTransactionUrl(
                           selectedNetwork?.network
                         )}${transactionHash}`
                       );

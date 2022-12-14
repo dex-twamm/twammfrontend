@@ -8,14 +8,6 @@ export const getPoolConfig = (currentNetwork = "Goerli") => {
   return Object.values(POOLS?.[currentNetwork])?.[0];
 };
 
-export const getPoolEthersScanUrl = (currentNetwork = "Goerli") => {
-  return Object.values(POOLS?.[currentNetwork])?.[0]?.ethersScanUrl;
-};
-
-export const getPoolTransactionUrl = (currentNetwork = "Goerli") => {
-  return Object.values(POOLS?.[currentNetwork])?.[0]?.transactionUrl;
-};
-
 export const getPoolTokens = (currentNetwork = "Goerli") => {
   return Object.values(POOLS?.[currentNetwork])?.[0]?.tokens;
 };

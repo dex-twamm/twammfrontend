@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { POPUP_MESSAGE } from "../../constants";
 import { LongSwapContext, ShortSwapContext } from "../../providers";
 import { UIContext } from "../../providers/context/UIProvider";
-import { getPoolTransactionUrl } from "../../utils/poolUtils";
+import { getBlockExplorerTransactionUrl } from "../../utils/networkUtils";
 
 const PopupModal = ({ isPlacedLongTermOrder, setIsPlacedLongTermOrder }) => {
   const {
@@ -47,7 +47,9 @@ const PopupModal = ({ isPlacedLongTermOrder, setIsPlacedLongTermOrder }) => {
 
   const handleButtonClick = () => {
     window.open(
-      `${getPoolTransactionUrl(selectedNetwork?.network)}${transactionHash}`
+      `${getBlockExplorerTransactionUrl(
+        selectedNetwork?.network
+      )}${transactionHash}`
     );
   };
 
