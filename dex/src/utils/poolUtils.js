@@ -16,10 +16,6 @@ export const getPoolFees = (currentNetwork = "Goerli") => {
   return Object.values(POOLS?.[currentNetwork])?.[0]?.fees;
 };
 
-export const getPoolVaultContractAddress = (currentNetwork = "Goerli") => {
-  return Object.values(POOLS?.[currentNetwork])?.[0]?.VAULT_CONTRACT_ADDRESS;
-};
-
 export const getPoolContractAddress = (currentNetwork = "Goerli") => {
   return Object.values(POOLS?.[currentNetwork])?.[0]?.address;
 };

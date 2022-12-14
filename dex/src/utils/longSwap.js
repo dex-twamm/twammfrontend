@@ -10,8 +10,8 @@ import {
   getPoolContractAddress,
   getPoolLtoContractAddress,
   getPoolTokenAddresses,
-  getPoolVaultContractAddress,
 } from "./poolUtils";
+import { getVaultContractAddress } from "./networkUtils";
 
 export async function placeLongTermOrder(
   tokenInIndex,
@@ -26,7 +26,7 @@ export async function placeLongTermOrder(
   let txHash;
 
   const exchangeContract = new Contract(
-    getPoolVaultContractAddress(currentNetwork),
+    getVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );

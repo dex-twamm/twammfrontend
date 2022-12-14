@@ -5,12 +5,8 @@ import {
   POPUP_MESSAGE,
   VAULT_CONTRACT_ABI,
 } from "../constants";
-import {
-  getPoolId,
-  getPoolConfig,
-  getPoolTokenAddresses,
-  getPoolVaultContractAddress,
-} from "./poolUtils";
+import { getVaultContractAddress } from "./networkUtils";
+import { getPoolId, getPoolConfig, getPoolTokenAddresses } from "./poolUtils";
 
 export const verifyLongSwapTxn = async (
   tokenInIndex,
@@ -22,7 +18,7 @@ export const verifyLongSwapTxn = async (
   currentNetwork
 ) => {
   const vaultContract = new Contract(
-    getPoolVaultContractAddress(currentNetwork),
+    getVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );

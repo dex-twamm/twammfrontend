@@ -7,12 +7,8 @@ import {
   VAULT_CONTRACT_ABI,
 } from "../constants";
 import { getEthLogs } from "./get_ethLogs";
-import {
-  getPoolId,
-  getPoolTokenAddresses,
-  getPoolTokens,
-  getPoolVaultContractAddress,
-} from "./poolUtils";
+import { getVaultContractAddress } from "./networkUtils";
+import { getPoolId, getPoolTokenAddresses, getPoolTokens } from "./poolUtils";
 
 export async function joinPool(walletAddress, signer, currentNetwork) {
   const encodedRequest = defaultAbiCoder.encode(
@@ -22,7 +18,7 @@ export async function joinPool(walletAddress, signer, currentNetwork) {
     [1, [fp(1e-12), fp(1.0)], 0]
   );
   const vaultContract = new Contract(
-    getPoolVaultContractAddress(currentNetwork),
+    getVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -56,7 +52,7 @@ export async function exitPool(
   currentNetwork
 ) {
   const vaultContract = new Contract(
-    getPoolVaultContractAddress(currentNetwork),
+    getVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -100,7 +96,7 @@ export async function cancelLTO(
   currentNetwork
 ) {
   const vaultContract = new Contract(
-    getPoolVaultContractAddress(currentNetwork),
+    getVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -150,7 +146,7 @@ export async function withdrawLTO(
   currentNetwork
 ) {
   const vaultContract = new Contract(
-    getPoolVaultContractAddress(currentNetwork),
+    getVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -192,7 +188,7 @@ export async function getPoolBalance(signer, tokenAddress, currentNetwork) {
   );
 
   const vaultContract = new Contract(
-    getPoolVaultContractAddress(currentNetwork),
+    getVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );

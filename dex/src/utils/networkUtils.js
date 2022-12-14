@@ -9,3 +9,8 @@ export const getBlockExplorerTransactionUrl = (currentNetwork) => {
   const network = NETWORKS.filter((item) => item?.name === currentNetwork);
   return network?.[0]?.transactionUrl;
 };
+
+export const getVaultContractAddress = (currentNetwork) => {
+  const network = NETWORKS.filter((item) => item?.name === currentNetwork);
+  return network?.[0]?.vaultAddress;
+};
