@@ -117,14 +117,9 @@ const Swap = (props) => {
   useEffect(() => {
     return () => {
       setFormErrors({ balError: undefined });
-    };
-  }, [setFormErrors]);
-
-  useEffect(() => {
-    return () => {
       setTransactionHash(undefined);
     };
-  }, []);
+  }, [setFormErrors, setTransactionHash]);
 
   //for switching the input sectons in short swap
 
