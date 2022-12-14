@@ -2,7 +2,7 @@ import { BigNumber, Contract } from "ethers";
 import { VAULT_CONTRACT_ABI } from "../constants";
 import { MAX_UINT256 } from ".";
 import {
-  getNetworkPoolId,
+  getPoolId,
   getPoolConfig,
   getPoolVaultContractAddress,
 } from "./poolUtils";
@@ -40,7 +40,7 @@ export const swapTokens = async (
 
   const swapData = [
     {
-      poolId: getNetworkPoolId(currentNetwork),
+      poolId: getPoolId(currentNetwork),
       kind: kind,
       assetIn: assetIn,
       assetOut: assetOut,

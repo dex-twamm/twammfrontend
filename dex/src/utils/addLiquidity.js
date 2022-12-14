@@ -4,7 +4,7 @@ import { fp, MAX_UINT256 } from ".";
 import { POPUP_MESSAGE, VAULT_CONTRACT_ABI } from "../constants";
 import { getEthLogs } from "./get_ethLogs";
 import {
-  getNetworkPoolId,
+  getPoolId,
   getPoolTokenAddresses,
   getPoolTokens,
   getPoolVaultContractAddress,
@@ -23,7 +23,7 @@ export async function joinPool(walletAddress, signer, currentNetwork) {
     signer
   );
   const joinPool = await poolContract.joinPool(
-    getNetworkPoolId(currentNetwork),
+    getPoolId(currentNetwork),
     walletAddress,
     walletAddress,
     {
@@ -56,7 +56,7 @@ export async function exitPool(
   );
 
   const data = [
-    getNetworkPoolId(currentNetwork),
+    getPoolId(currentNetwork),
     walletAdress,
     walletAdress,
     {
@@ -100,7 +100,7 @@ export async function cancelLTO(
   );
 
   const data = [
-    getNetworkPoolId(currentNetwork),
+    getPoolId(currentNetwork),
     walletAdress,
     walletAdress,
     {
@@ -150,7 +150,7 @@ export async function withdrawLTO(
   );
 
   const data = [
-    getNetworkPoolId(currentNetwork),
+    getPoolId(currentNetwork),
     walletAdress,
     walletAdress,
     {
@@ -187,7 +187,7 @@ export async function getPoolBalance(signer, tokenAddress, currentNetwork) {
   );
 
   const poolBalance = await vaultContract.getPoolTokenInfo(
-    getNetworkPoolId(currentNetwork),
+    getPoolId(currentNetwork),
     tokenAddress
   );
   const cash = poolBalance.cash._hex;

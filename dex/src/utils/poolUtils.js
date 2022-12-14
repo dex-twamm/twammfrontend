@@ -1,6 +1,6 @@
 import { POOLS } from "./pool";
 
-export const getNetworkPoolId = (currentNetwork = "Goerli") => {
+export const getPoolId = (currentNetwork = "Goerli") => {
   return Object.keys(POOLS[currentNetwork])?.[0];
 };
 

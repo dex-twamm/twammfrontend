@@ -2,7 +2,7 @@ import { BigNumber, Contract, ethers } from "ethers";
 import { LONGTERM_ABI, VAULT_CONTRACT_ABI } from "../constants";
 import { MAX_UINT256 } from ".";
 import {
-  getNetworkPoolId,
+  getPoolId,
   getPoolContractAddress,
   getPoolLtoContractAddress,
   getPoolTokenAddresses,
@@ -39,7 +39,7 @@ export async function placeLongTermOrder(
   );
 
   const swapData = [
-    getNetworkPoolId(currentNetwork),
+    getPoolId(currentNetwork),
     walletAddress,
     walletAddress,
     {

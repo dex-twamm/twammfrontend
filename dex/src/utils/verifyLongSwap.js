@@ -2,7 +2,7 @@ import { BigNumber, Contract, ethers } from "ethers";
 import { MAX_UINT256 } from ".";
 import { POPUP_MESSAGE, VAULT_CONTRACT_ABI } from "../constants";
 import {
-  getNetworkPoolId,
+  getPoolId,
   getPoolConfig,
   getPoolTokenAddresses,
   getPoolVaultContractAddress,
@@ -35,7 +35,7 @@ export const getLongSwapEstimatedConvertedToken = async (
   );
 
   const swapData = [
-    getNetworkPoolId(currentNetwork),
+    getPoolId(currentNetwork),
     walletAddress,
     walletAddress,
     {
@@ -171,7 +171,7 @@ export const verifyLongSwapTxn = async (
   );
 
   const inputData = [
-    getNetworkPoolId(currentNetwork),
+    getPoolId(currentNetwork),
     walletAddress,
     walletAddress,
     {

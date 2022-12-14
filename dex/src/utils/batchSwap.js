@@ -1,7 +1,7 @@
 import { BigNumber, Contract } from "ethers";
 import { VAULT_CONTRACT_ABI } from "../constants";
 import { MAX_UINT256 } from ".";
-import { getNetworkPoolId, getPoolVaultContractAddress } from "./poolUtils";
+import { getPoolId, getPoolVaultContractAddress } from "./poolUtils";
 
 export const getEstimatedConvertedToken = async (
   signer,
@@ -25,7 +25,7 @@ export const getEstimatedConvertedToken = async (
 
   const swapData = [
     {
-      poolId: getNetworkPoolId(currentNetwork),
+      poolId: getPoolId(currentNetwork),
       kind: kind,
       assetIn: assetIn,
       assetOut: assetOut,
