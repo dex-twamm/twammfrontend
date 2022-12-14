@@ -9,7 +9,7 @@ export const getAllowance = async (
   tokenAddress,
   currentNetwork
 ) => {
-  console.log("Allowance Input provider", provider);
+  console.log("Allowance Input provider", signer);
   console.log("Allowance Input walletAddress", walletAddress);
   console.log("Allowance Input tokenAddress", tokenAddress);
   const ERC20Contract = new Contract(
