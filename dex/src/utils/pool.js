@@ -12,8 +12,6 @@ export const POOLS = {
       transactionUrl: "https://goerli.etherscan.io/tx/",
       fees: "0.3%",
       LTOContract: "0x04143AA32FB58bcB943dfF29C3aad9C51FcF9630",
-      TOKEN_ONE_ADDRESS: "0x499d11E0b6eAC7c0593d8Fb292DCBbF815Fb29Ae",
-      TOKEN_TWO_ADDRESS: "0xBA62BCfcAaFc6622853cca2BE6Ac7d845BC0f2Dc",
       tokens: [
         {
           symbol: "MATIC",
@@ -42,8 +40,6 @@ export const POOLS = {
       transactionUrl: "https://etherscan.io/tx/",
       fees: "0.3%",
       LTOContract: "0xB9d9e972100a1dD01cd441774b45b5821e136043",
-      TOKEN_TWO_ADDRESS: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-      TOKEN_ONE_ADDRESS: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
       tokens: [
         {
           symbol: "DAI",
