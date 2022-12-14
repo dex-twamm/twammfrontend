@@ -8,11 +8,7 @@ import { ShortSwapContext } from "../../providers";
 
 import CircularProgressBar from "../alerts/CircularProgressBar";
 import Tabs from "../Tabs";
-import {
-  getPoolBalancerUrl,
-  getPoolFees,
-  getPoolTokens,
-} from "../../utils/poolUtils";
+import { getPoolFees, getPoolId, getPoolTokens } from "../../utils/poolUtils";
 import { UIContext } from "../../providers/context/UIProvider";
 
 const LiquidityPools = () => {
@@ -260,7 +256,9 @@ const LiquidityPools = () => {
                   <button
                     onClick={() =>
                       window.open(
-                        `${getPoolBalancerUrl(selectedNetwork?.network)}`,
+                        `https://app.balancer.fi/#/pool/${getPoolId(
+                          selectedNetwork?.network
+                        )}/invest`,
                         "_blank"
                       )
                     }

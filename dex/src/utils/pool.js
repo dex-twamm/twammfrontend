@@ -6,8 +6,6 @@ export const POOLS = {
     "0xdab1b8c505867ec1e7292b17d7a4b42b6e1626680002000000000000000002c1": {
       VAULT_CONTRACT_ADDRESS: "0xBA12222222228d8Ba445958a75a0704d566BF2C8",
       address: "0xdab1b8c505867ec1e7292b17d7a4b42b6e162668",
-      balancerPoolUrl:
-        "https://app.balancer.fi/#/pool/0xdab1b8c505867ec1e7292b17d7a4b42b6e1626680002000000000000000002c1/invest",
       fees: "0.3%",
       LTOContract: "0x04143AA32FB58bcB943dfF29C3aad9C51FcF9630",
       tokens: [
@@ -32,8 +30,6 @@ export const POOLS = {
     "0x028e3e920996e443d12e410d62874cebdd3618070002000000000000000003eb": {
       VAULT_CONTRACT_ADDRESS: "0xBA12222222228d8Ba445958a75a0704d566BF2C8",
       address: "0x028e3e920996e443d12e410d62874cebdd361807",
-      balancerPoolUrl:
-        "https://app.balancer.fi/#/pool/0x5c6ee304399dbdb9c8ef030ab642b10820db8f56000200000000000000000014/invest",
       fees: "0.3%",
       LTOContract: "0xB9d9e972100a1dD01cd441774b45b5821e136043",
       tokens: [
