@@ -10,7 +10,7 @@ import Input from "./Input";
 
 import { BigNumber } from "ethers";
 import { bigToStr } from "../utils";
-import { getApproval } from "../utils/getApproval";
+import { approveMaxAllowance } from "../utils/getApproval";
 import { UIContext } from "../providers/context/UIProvider";
 
 const Swap = (props) => {
@@ -81,7 +81,7 @@ const Swap = (props) => {
 
   const handleApproveButton = async () => {
     try {
-      const approval = await getApproval(
+      const approval = await approveMaxAllowance(
         web3provider,
         srcAddress,
         selectedNetwork?.network

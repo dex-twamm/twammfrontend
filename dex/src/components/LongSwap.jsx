@@ -20,7 +20,7 @@ import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
 import Input from "./Input";
 import { FiChevronDown } from "react-icons/fi";
 
-import { getApproval } from "../utils/getApproval";
+import { approveMaxAllowance } from "../utils/getApproval";
 import { UIContext } from "../providers/context/UIProvider";
 
 const LongSwap = (props) => {
@@ -99,7 +99,7 @@ const LongSwap = (props) => {
 
   const handleApproveButton = async () => {
     try {
-      const approval = await getApproval(
+      const approval = await approveMaxAllowance(
         web3provider,
         srcAddress,
         selectedNetwork?.network

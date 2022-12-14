@@ -15,11 +15,10 @@ export const getAllowance = async (
     provider
   );
 
-  const allowance = await ERC20Contract.allowance(
+  return await ERC20Contract.allowance(
     walletAddress,
     getPoolVaultContractAddress(currentNetwork)
   );
-  return allowance;
 };
 
 export const getApproval = async (provider, tokenAddress, currentNetwork) => {
@@ -29,9 +28,8 @@ export const getApproval = async (provider, tokenAddress, currentNetwork) => {
     provider
   );
 
-  const allowance = await ERC20Contract.approve(
+  return await ERC20Contract.approve(
     getPoolVaultContractAddress(currentNetwork),
     MAX_UINT256
   );
-  return allowance;
 };
