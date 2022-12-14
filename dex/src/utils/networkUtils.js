@@ -1,16 +1,18 @@
 import { NETWORKS } from "./networks";
 
-export const getBlockExplorerAddressUrl = (currentNetwork) => {
+export const getActiveNetwork = (currentNetwork) => {
   const network = NETWORKS.filter((item) => item?.name === currentNetwork);
-  return network?.[0]?.blockExplorerUrl;
+  return network?.[0];
+};
+
+export const getBlockExplorerAddressUrl = (currentNetwork) => {
+  return getActiveNetwork(currentNetwork)?.blockExplorerUrl;
 };
 
 export const getBlockExplorerTransactionUrl = (currentNetwork) => {
-  const network = NETWORKS.filter((item) => item?.name === currentNetwork);
-  return network?.[0]?.transactionUrl;
+  return getActiveNetwork(currentNetwork)?.transactionUrl;
 };
 
 export const getVaultContractAddress = (currentNetwork) => {
-  const network = NETWORKS.filter((item) => item?.name === currentNetwork);
-  return network?.[0]?.vaultAddress;
+  return getActiveNetwork(currentNetwork)?.vaultAddress;
 };
