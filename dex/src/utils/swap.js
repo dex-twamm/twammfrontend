@@ -1,5 +1,5 @@
 import { BigNumber, Contract } from "ethers";
-import { VAULT_CONTRACT_ABI } from "../constants";
+import { GAS_OVERAGE_FACTOR, VAULT_CONTRACT_ABI } from "../constants";
 import { MAX_UINT256 } from ".";
 import {
   getPoolId,
@@ -63,7 +63,7 @@ export const swapTokens = async (
   const gasEstimate = await exchangeContract.estimateGas.swap(...swapData);
 
   const swapTx = await exchangeContract.swap(...swapData, {
-    gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
+    gasLimit: Math.floor(gasEstimate.toNumber() * GAS_OVERAGE_FACTOR),
   });
 
   // let txHash = swapTx.hash;

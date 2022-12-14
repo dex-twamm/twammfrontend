@@ -1,6 +1,10 @@
 import { BigNumber, Contract, ethers } from "ethers";
 import { MAX_UINT256 } from ".";
-import { POPUP_MESSAGE, VAULT_CONTRACT_ABI } from "../constants";
+import {
+  GAS_OVERAGE_FACTOR,
+  POPUP_MESSAGE,
+  VAULT_CONTRACT_ABI,
+} from "../constants";
 import {
   getPoolId,
   getPoolConfig,
@@ -49,7 +53,7 @@ export const verifyLongSwapTxn = async (
   const gasEstimate = await vaultContract.estimateGas.joinPool(...swapData);
 
   const placeLtoTx = await vaultContract.callStatic.joinPool(...swapData, {
-    gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
+    gasLimit: Math.floor(gasEstimate.toNumber() * GAS_OVERAGE_FACTOR),
   });
   console.log("===LongTerm Placed====", placeLtoTx);
   return placeLtoTx;

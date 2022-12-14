@@ -1,5 +1,9 @@
 import { BigNumber, Contract, ethers } from "ethers";
-import { LONGTERM_ABI, VAULT_CONTRACT_ABI } from "../constants";
+import {
+  GAS_OVERAGE_FACTOR,
+  LONGTERM_ABI,
+  VAULT_CONTRACT_ABI,
+} from "../constants";
 import { MAX_UINT256 } from ".";
 import {
   getPoolId,
@@ -53,7 +57,7 @@ export async function placeLongTermOrder(
   const gasEstimate = await exchangeContract.estimateGas.joinPool(...swapData);
 
   const placeLtoTx = await exchangeContract.joinPool(...swapData, {
-    gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
+    gasLimit: Math.floor(gasEstimate.toNumber() * GAS_OVERAGE_FACTOR),
   });
   console.log("===LongTerm Placed====", placeLtoTx);
   txHash = placeLtoTx.hash;

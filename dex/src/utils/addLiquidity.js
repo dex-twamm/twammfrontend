@@ -1,7 +1,11 @@
 import { Contract, ethers } from "ethers";
 import { defaultAbiCoder } from "ethers/lib/utils";
 import { fp, MAX_UINT256 } from ".";
-import { POPUP_MESSAGE, VAULT_CONTRACT_ABI } from "../constants";
+import {
+  GAS_OVERAGE_FACTOR,
+  POPUP_MESSAGE,
+  VAULT_CONTRACT_ABI,
+} from "../constants";
 import { getEthLogs } from "./get_ethLogs";
 import {
   getPoolId,
@@ -38,7 +42,7 @@ export async function joinPool(walletAddress, signer, currentNetwork) {
   const gasEstimate = await vaultContract.estimateGas.joinPool(...data);
 
   const joinPool = await vaultContract.joinPool(...data, {
-    gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
+    gasLimit: Math.floor(gasEstimate.toNumber() * GAS_OVERAGE_FACTOR),
   });
 
   const joinPoolResult = await joinPool.wait();
@@ -77,7 +81,7 @@ export async function exitPool(
   const gasEstimate = await vaultContract.estimateGas.exitPool(...data);
 
   const exitPoolTx = await vaultContract.exitPool(...data, {
-    gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
+    gasLimit: Math.floor(gasEstimate.toNumber() * GAS_OVERAGE_FACTOR),
   });
   const exitPoolResult = await exitPoolTx.wait();
 
@@ -121,7 +125,7 @@ export async function cancelLTO(
   const gasEstimate = await vaultContract.estimateGas.exitPool(...data);
 
   const exitPoolTx = await vaultContract.exitPool(...data, {
-    gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
+    gasLimit: Math.floor(gasEstimate.toNumber() * GAS_OVERAGE_FACTOR),
   });
   setTransactionHash(orderHash);
   const exitPoolResult = await exitPoolTx.wait();
@@ -170,7 +174,7 @@ export async function withdrawLTO(
 
   const gasEstimate = await vaultContract.estimateGas.exitPool(...data);
   const withdrawLTOTx = await vaultContract.exitPool(...data, {
-    gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
+    gasLimit: Math.floor(gasEstimate.toNumber() * GAS_OVERAGE_FACTOR),
   });
   setTransactionHash(orderHash);
   const withdrawLTOResult = await withdrawLTOTx.wait();
