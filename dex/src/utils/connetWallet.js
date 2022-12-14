@@ -13,6 +13,10 @@ export const connectWallet = async (
   try {
     console.log("Connecting to wallet");
     const provider = await web3Modal.connect();
+
+    // TODO: Fix switching to Goerli on Coinbase Wallet.
+    // If automatic connect with cacheprovider & localstorage contains goerli, pass that below. else any.
+    // If manual connect pass network name.
     const web3Provider = new providers.Web3Provider(provider, 'any');
     
     const accounts = await web3Provider.listAccounts();

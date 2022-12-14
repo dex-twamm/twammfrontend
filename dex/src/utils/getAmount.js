@@ -10,7 +10,7 @@ import { ERC20_TOKEN_CONTRACT_ABI, TWAMM_POOL_ABI } from "../constants";
 import { POOLS } from "./pool";
 // To Retrieve Token Balances
 export const getTokensBalance = async (
-  provider,
+  signer,
   walletAddress,
   currentNetwork
 ) => {
@@ -36,7 +36,7 @@ export const getTokensBalance = async (
     const ERC20Contract = new Contract(
       address,
       ERC20_TOKEN_CONTRACT_ABI,
-      provider
+      signer
     );
     const balanceOfTokens = await ERC20Contract.balanceOf(walletAddress);
     console.log(
