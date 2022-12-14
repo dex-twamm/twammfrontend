@@ -8,9 +8,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useContext } from "react";
 import { ShortSwapContext } from "../providers";
 import { truncateAddress } from "../utils";
-import { getPoolEthersScanUrl } from "../utils/poolUtils";
 import { UIContext } from "../providers/context/UIProvider";
 import { disconnect } from "../utils/disconnectWallet";
+import { getBlockExplorerAddressUrl } from "../utils/networkUtils";
 
 const style = {
   position: "absolute",
@@ -206,7 +206,7 @@ const DisconnectWalletOption = ({ showDisconnect, setShowDisconnect }) => {
               <Button
                 onClick={() =>
                   window.open(
-                    `${getPoolEthersScanUrl(
+                    `${getBlockExplorerAddressUrl(
                       selectedNetwork?.network
                     )}${account}`,
                     "_blank"
