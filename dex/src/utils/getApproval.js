@@ -4,7 +4,7 @@ import { ERC20_TOKEN_CONTRACT_ABI } from "../constants";
 import { getVaultContractAddress } from "./networkUtils";
 
 export const getAllowance = async (
-  provider,
+  signer,
   walletAddress,
   tokenAddress,
   currentNetwork
@@ -12,7 +12,7 @@ export const getAllowance = async (
   const ERC20Contract = new Contract(
     tokenAddress,
     ERC20_TOKEN_CONTRACT_ABI,
-    provider
+    signer
   );
 
   return await ERC20Contract.allowance(
@@ -29,7 +29,7 @@ export const approveMaxAllowance = async (
   const ERC20Contract = new Contract(
     tokenAddress,
     ERC20_TOKEN_CONTRACT_ABI,
-    provider
+    provider.getSigner()
   );
 
   return await ERC20Contract.approve(

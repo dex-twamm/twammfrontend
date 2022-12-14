@@ -6,7 +6,7 @@ import PopupSettings from "../components/PopupSettings";
 import Swap from "../components/Swap";
 import Tabs from "../components/Tabs";
 import styles from "../css/ShortSwap.module.css";
-import { ShortSwapContext } from "../providers";
+import { LongSwapContext, ShortSwapContext } from "../providers";
 import { UIContext } from "../providers/context/UIProvider";
 import { connectWallet } from "../utils/connetWallet";
 import { spotPrice } from "../utils/getSpotPrice";
@@ -42,45 +42,54 @@ const ShortSwap = () => {
     setSpotPriceLoading,
   } = useContext(ShortSwapContext);
   const { selectedNetwork, setSelectedNetwork } = useContext(UIContext);
+  const { allowance } = useContext(LongSwapContext);
 
   useEffect(() => {
-    // Wait for 0.5 second before fetching price.
-    const interval1 = setTimeout(() => {
-      spotPrice(
-        swapAmount,
-        setSpotPriceLoading,
-        srcAddress,
-        destAddress,
-        web3provider,
-        account,
-        deadline,
-        setFormErrors,
-        setSpotPrice,
-        setExpectedSwapOut,
-        selectedNetwork?.network
-      );
-    }, 500);
-    // Update price every 12 seconds.
-    const interval2 = setTimeout(() => {
-      spotPrice(
-        swapAmount,
-        setSpotPriceLoading,
-        srcAddress,
-        destAddress,
-        web3provider,
-        account,
-        deadline,
-        setFormErrors,
-        setSpotPrice,
-        setExpectedSwapOut,
-        selectedNetwork?.network
-      );
-    }, 12000);
+    let interval1, interval2;
+    // Do not fetch prices if not enough allowance.
+    if (parseFloat(allowance) > swapAmount) {
+      // Wait for 0.5 second before fetching price.
+      interval1 = setTimeout(() => {
+        spotPrice(
+          swapAmount,
+          setSpotPriceLoading,
+          srcAddress,
+          destAddress,
+          web3provider,
+          account,
+          expectedSwapOut,
+          tolerance,
+          deadline,
+          setFormErrors,
+          setSpotPrice,
+          setExpectedSwapOut,
+          selectedNetwork?.network
+        );
+      }, 500);
+      // Update price every 12 seconds.
+      interval2 = setTimeout(() => {
+        spotPrice(
+          swapAmount,
+          setSpotPriceLoading,
+          srcAddress,
+          destAddress,
+          web3provider,
+          account,
+          expectedSwapOut,
+          tolerance,
+          deadline,
+          setFormErrors,
+          setSpotPrice,
+          setExpectedSwapOut,
+          selectedNetwork?.network
+        );
+      }, 12000);
+    }
     return () => {
       clearTimeout(interval1);
       clearTimeout(interval2);
     };
-  }, [swapAmount, destAddress, srcAddress]);
+  }, [swapAmount, destAddress, srcAddress, allowance]);
 
   const [showSettings, setShowSettings] = useState(false);
 

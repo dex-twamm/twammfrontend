@@ -9,7 +9,7 @@ import {
 } from "./poolUtils";
 // To Retrieve Token Balances
 export const getTokensBalance = async (
-  provider,
+  signer,
   walletAddress,
   currentNetwork
 ) => {
@@ -30,7 +30,7 @@ export const getTokensBalance = async (
     const ERC20Contract = new Contract(
       address,
       ERC20_TOKEN_CONTRACT_ABI,
-      provider
+      signer
     );
     const balanceOfTokens = await ERC20Contract.balanceOf(walletAddress);
     return balanceOfTokens;
@@ -39,14 +39,15 @@ export const getTokensBalance = async (
 };
 
 export const getLPTokensBalance = async (
-  provider,
+  signer,
   walletAddress,
   currentNetwork
 ) => {
+  console.log("getLPTokensBalance", signer, walletAddress, currentNetwork);
   const poolContract = new Contract(
     getPoolContractAddress(currentNetwork),
     TWAMM_POOL_ABI,
-    provider
+    signer
   );
 
   const balanceOfLPTokens = await poolContract.balanceOf(walletAddress);

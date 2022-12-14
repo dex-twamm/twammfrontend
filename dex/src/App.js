@@ -44,6 +44,7 @@ function App() {
 
   const { setSelectedNetwork, selectedNetwork } = useContext(UIContext);
 
+  // Connect cached Wallet as early as possible in cycle.
   useEffect(() => {
     if (web3Modal.cachedProvider && !isWalletConnected) {
       connectWallet(
@@ -98,7 +99,7 @@ function App() {
   const tokenBalance = useCallback(async () => {
     setLoading(true);
     setOrderLogsLoading(true);
-    if (account) {
+    if (account && web3provider) {
       // const tokenAddress = srcAddress;
       const walletAddress = account;
       if (!walletAddress) {
