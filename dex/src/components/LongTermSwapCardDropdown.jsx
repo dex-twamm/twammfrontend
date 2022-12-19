@@ -5,18 +5,15 @@ import CircleIcon from "@mui/icons-material/Circle";
 import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutlined";
 import { FiChevronDown } from "react-icons/fi";
 import { bigToStr } from "../utils";
-import { POOLS } from "../utils/pool";
 import { UIContext } from "../providers";
+import { getBlockExplorerTransactionUrl } from "../utils/networkUtils";
 
 const LongTermSwapCardDropdown = (props) => {
+  const { withdrawals } = props;
   const { selectedNetwork } = useContext(UIContext);
-
   const [open, setOpen] = useState(false);
 
-  // const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen((state) => !state);
-
-  const { withdrawals } = props;
 
   return (
     <>
@@ -35,10 +32,8 @@ const LongTermSwapCardDropdown = (props) => {
               justifyContent: "center",
               alignItems: "center",
               width: "100%",
-              // p:'10px',
               borderRadius: "24px",
               minHeight: "100px",
-              // border:'1px solid red'
             }}
           >
             <Box
@@ -72,7 +67,6 @@ const LongTermSwapCardDropdown = (props) => {
                     width: "100%",
                     display: "flex",
                     alignItems: "center",
-                    // justifyContent: "center",
                     color: "#333333",
                     fontSize: "18px",
                     fontFamily: "Open Sans",
@@ -112,10 +106,9 @@ const LongTermSwapCardDropdown = (props) => {
                     const transactionHash = items.transactionHash;
                     const handleClick = () => {
                       window.open(
-                        `${
-                          Object.values(POOLS[selectedNetwork?.network])[0]
-                            ?.transactionUrl
-                        }${transactionHash}`
+                        `${getBlockExplorerTransactionUrl(
+                          selectedNetwork?.network
+                        )}${transactionHash}`
                       );
                     };
                     return (
@@ -130,7 +123,6 @@ const LongTermSwapCardDropdown = (props) => {
                             md: "flex-start",
                           },
                           justifyContent: "center",
-                          // border:'1px solid red',
                           padding: "5px",
                           paddingLeft: "0px",
                           marginLeft: "0px",

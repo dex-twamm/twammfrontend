@@ -150,7 +150,7 @@
     rgb(0 0 0 / 4%) 0px 16px 24px, rgb(0 0 0 / 1%) 0px 24px 32px;
   width: fit-content;
 
-  background: rgba(255, 255, 255, 0.3);
+  background: rgb(242 242 252 / 94%);
   border: 1px solid white;
 }
 
@@ -184,7 +184,7 @@
 }
 
 .networkName:hover {
-  background-color: #efefef;
+  background-color: #e4e4e4;
 }
 
 .networkList {

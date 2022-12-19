@@ -1,6 +1,6 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import PopupModal from "../components/alerts/PopupModal";
 import PopupSettings from "../components/PopupSettings";
 import Swap from "../components/Swap";
@@ -13,15 +13,7 @@ import { spotPrice } from "../utils/getSpotPrice";
 import { getEthLogs } from "../utils/get_ethLogs";
 import { _swapTokens } from "../utils/shortSwap";
 
-const ShortSwap = ({
-  tokenSymbol,
-  tokenImage,
-  buttonText,
-  showSettings,
-  setShowSettings,
-  message,
-  setMessage,
-}) => {
+const ShortSwap = () => {
   const {
     isWalletConnected,
     setweb3provider,
@@ -65,8 +57,6 @@ const ShortSwap = ({
           destAddress,
           web3provider,
           account,
-          expectedSwapOut,
-          tolerance,
           deadline,
           setFormErrors,
           setSpotPrice,
@@ -83,8 +73,6 @@ const ShortSwap = ({
           destAddress,
           web3provider,
           account,
-          expectedSwapOut,
-          tolerance,
           deadline,
           setFormErrors,
           setSpotPrice,
@@ -99,6 +87,8 @@ const ShortSwap = ({
     };
   }, [swapAmount, destAddress, srcAddress, allowance]);
 
+  const [showSettings, setShowSettings] = useState(false);
+
   async function ShortSwapButtonClick() {
     try {
       if (!isWalletConnected) {
@@ -110,7 +100,11 @@ const ShortSwap = ({
           setWalletConnected,
           setSelectedNetwork
         );
-        await getEthLogs(web3provider.getSigner(), account, selectedNetwork?.network);
+        await getEthLogs(
+          web3provider.getSigner(),
+          account,
+          selectedNetwork?.network
+        );
       } else {
         await _swapTokens(
           ethBalance,
@@ -135,6 +129,12 @@ const ShortSwap = ({
     }
   }
 
+  useEffect(() => {
+    document.body.onclick = () => {
+      setShowSettings(false);
+    };
+  });
+
   return (
     <>
       <div className={styles.container}>
@@ -158,14 +158,12 @@ const ShortSwap = ({
             {showSettings && <PopupSettings />}
           </div>
           <Swap
-            tokenSymbol={tokenSymbol}
-            tokenImage={tokenImage}
-            handleButtonClick={ShortSwapButtonClick}
-            buttonText={buttonText}
+            connectWallet={ShortSwapButtonClick}
+            buttonText={!isWalletConnected ? "Connect Wallet" : "Swap"}
             spotPriceLoading={spotPriceLoading}
           />
         </div>
-        <PopupModal message={message} setMessage={setMessage}></PopupModal>
+        <PopupModal />
       </div>
     </>
   );

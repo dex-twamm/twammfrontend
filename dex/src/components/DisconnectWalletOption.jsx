@@ -1,23 +1,16 @@
-// Sagar
-// import { Modal } from '@mui/material';
-import React, { useState } from "react";
-import { Box, Button, IconButton, Typography } from "@mui/material";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import AddIcon from "@mui/icons-material/Add";
+import React from "react";
+import { Box, Button, Typography } from "@mui/material";
 import Modal from "@mui/material/Modal";
 import AdjustIcon from "@mui/icons-material/Adjust";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import { Link } from "react-router-dom";
 import LaunchIcon from "@mui/icons-material/Launch";
 import CloseIcon from "@mui/icons-material/Close";
-import { height } from "@mui/system";
 import { useContext } from "react";
 import { ShortSwapContext } from "../providers";
 import { truncateAddress } from "../utils";
-import { HiExternalLink } from "react-icons/hi";
-import styles from "../css/LongTermOrderCard.module.css";
-import { POOLS, POOL_ID } from "../utils/pool";
 import { UIContext } from "../providers/context/UIProvider";
+import { disconnect } from "../utils/disconnectWallet";
+import { getBlockExplorerAddressUrl } from "../utils/networkUtils";
 
 const style = {
   position: "absolute",
@@ -31,27 +24,22 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   minWidth: { xs: "95%", sm: 500, md: 425 },
-  // minHeight:350,
   bgcolor: "#F7F8FA",
   boxShadow: 24,
   borderRadius: 4,
   pt: 2,
-  // bgcolor:'red',
-  // boxSizing:'border-box'
 };
 
-const DisconnectWalletOption = ({
-  setOpen,
-  open,
-  disconnectWallet,
-  change,
-}) => {
-  const { account } = useContext(ShortSwapContext);
-  // const [open, setOpen] = useState(true);
-
-  // const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+const DisconnectWalletOption = ({ showDisconnect, setShowDisconnect }) => {
+  const { account, setAccount, setWalletConnected, setBalance } =
+    useContext(ShortSwapContext);
+  const handleClose = () => setShowDisconnect(false);
   const { selectedNetwork } = useContext(UIContext);
+
+  const handleDisconnectWallet = () => {
+    disconnect(setAccount, setWalletConnected, setBalance);
+    setShowDisconnect(false);
+  };
 
   return (
     <Box
@@ -63,9 +51,8 @@ const DisconnectWalletOption = ({
         borderRadius: 4,
       }}
     >
-      {/* <Button onClick={handleOpen}>Open modal</Button> */}
       <Modal
-        open={open}
+        open={showDisconnect}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -129,7 +116,7 @@ const DisconnectWalletOption = ({
               </Typography>
 
               <Button
-                onClick={disconnectWallet}
+                onClick={handleDisconnectWallet}
                 size="small"
                 disableFocusRipple
                 sx={{
@@ -146,23 +133,6 @@ const DisconnectWalletOption = ({
               >
                 Disconnect
               </Button>
-
-              {/* <Button
-                onClick={change}
-                size="small"
-                sx={{
-                  p: { md: "0px 9px", sm: "0px 9px", xs: "0px 10px" },
-                  color: "#f50057",
-                  textTransform: "capitalize",
-                  border: "1px solid #f50057",
-                  borderRadius: "10px",
-                  fontSize: { xs: "14px", sm: "16px" },
-                  ":hover": { border: "1px solid #f50057" },
-                }}
-                variant="outlined"
-              >
-                Change
-              </Button> */}
             </Box>
 
             <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
@@ -236,10 +206,9 @@ const DisconnectWalletOption = ({
               <Button
                 onClick={() =>
                   window.open(
-                    `${
-                      Object.values(POOLS?.[selectedNetwork?.network])?.[0]
-                        ?.ethersScanUrl
-                    }${account}`,
+                    `${getBlockExplorerAddressUrl(
+                      selectedNetwork?.network
+                    )}${account}`,
                     "_blank"
                   )
                 }
@@ -264,24 +233,6 @@ const DisconnectWalletOption = ({
               </Button>
             </Box>
           </Box>
-          {/* <Box
-            sx={{
-              background: "#DCDCDC",
-              width: "100%",
-              height: 60,
-              display: "flex",
-              fontFamily: "Open Sans",
-              justifyContent: "center",
-              mt: 0,
-              alignItems: "center",
-              borderRadius: "0px 0px 16px 16px",
-            }}
-          >
-            <Typography sx={{ fontFamily: "Open Sans" }}>
-              {" "}
-              Your transactions will appear here...
-            </Typography>
-          </Box> */}
         </Box>
       </Modal>
     </Box>

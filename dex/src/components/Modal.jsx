@@ -1,9 +1,9 @@
-import { Alert, Backdrop, Skeleton } from "@mui/material";
+import { Skeleton } from "@mui/material";
 import classNames from "classnames";
 import React, { useContext, useEffect, useState } from "react";
 import styles from "../css/Modal.module.css";
 import { LongSwapContext, ShortSwapContext, UIContext } from "../providers";
-import { POOLS } from "../utils/pool";
+import { getPoolTokens } from "../utils/poolUtils";
 
 const Modal = ({
   display,
@@ -15,8 +15,6 @@ const Modal = ({
   // useContext To Retrieve The Source and Destination Address of The Token
   const {
     isWalletConnected,
-    srcAddress,
-    destAddress,
     setSrcAddress,
     setDestAddress,
     selectToken,
@@ -29,8 +27,7 @@ const Modal = ({
   const { selectedNetwork } = useContext(UIContext);
 
   useEffect(() => {
-    const tokenDetail = Object.values(POOLS?.[selectedNetwork?.network])?.[0]
-      ?.tokens;
+    const tokenDetail = getPoolTokens(selectedNetwork?.network);
     setTokenDetails(tokenDetail);
   }, []);
 
@@ -41,9 +38,7 @@ const Modal = ({
 
   // Handle Select Token Modal display
   const handleTokenSelection = (token) => {
-    console.log("TokenSelected Prabin", selectToken);
     const chosenToken = tokenDetails?.find((x) => x.symbol === token.symbol);
-    console.log("Chosen Token", chosenToken);
 
     let balances = tokenBalances.map((obj) => ({
       address: Object.keys(obj)[0],
@@ -70,7 +65,6 @@ const Modal = ({
         tokenIsSet: true,
       });
     } else if (selectToken === "2") {
-      //setTokenTo
       setDestAddress(chosenToken.address);
       if (chosenToken.symbol === tokenA.symbol) {
         return <></>;
@@ -83,8 +77,6 @@ const Modal = ({
     }
     handleModalClose();
   };
-
-  console.log("Tokenssssssss", tokenA, "----", tokenB);
 
   let tokensList;
   let tokensDetail = tokenDetails;
@@ -112,8 +104,6 @@ const Modal = ({
           ) : (
             <Skeleton width={100} />
           )}
-
-          {/* {parseFloat(token.balance).toFixed(2)} */}
         </p>
         {token.type === "coming_soon" && (
           <div className={styles.comingSoon}>
@@ -124,13 +114,8 @@ const Modal = ({
     );
   };
   if (selectToken === "2") {
-    // tokensDetail = tokenDetails.filter(
-    //     token => token.name !== tokenA.symbol
-    // );
-
     tokensList = tokensDetail?.map((token) => {
       if (token.name === tokenA.symbol) {
-        console.log("Here");
         return (
           <div
             className={classNames(styles.modalToken, styles.modalTokenDisabled)}

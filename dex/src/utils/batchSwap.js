@@ -1,7 +1,8 @@
 import { BigNumber, Contract } from "ethers";
-import { VAULT_CONTRACT_ABI } from "../constants";
+import { GAS_OVERAGE_FACTOR, VAULT_CONTRACT_ABI } from "../constants";
 import { MAX_UINT256 } from ".";
-import { POOLS } from "./pool";
+import { getPoolId } from "./poolUtils";
+import { getVaultContractAddress } from "./networkUtils";
 
 export const getEstimatedConvertedToken = async (
   signer,
@@ -14,7 +15,7 @@ export const getEstimatedConvertedToken = async (
 ) => {
   // Create a new instance of the exchange contract
   const exchangeContract = new Contract(
-    Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
+    getVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -23,29 +24,9 @@ export const getEstimatedConvertedToken = async (
   targetDate.setSeconds(deadline * 60);
   const deadlineTimestamp = targetDate.getTime();
 
-  const gasEstimate = await exchangeContract.estimateGas.swap(
+  const swapData = [
     {
-      poolId: Object.keys(POOLS[currentNetwork])[0],
-      kind: kind,
-      assetIn: assetIn,
-      assetOut: assetOut,
-      amount: swapAmountWei,
-      userData: "0x",
-    },
-    {
-      sender: walletAddress,
-      fromInternalBalance: false,
-      recipient: walletAddress,
-      toInternalBalance: false,
-    },
-    kind === 0 ? 0 : MAX_UINT256, // 0 if given in, infinite if given out.  // Slippage  // TODO // Need To QueryBatchSwap Price - 1%
-
-    BigNumber.from(Math.floor(deadlineTimestamp / 1000)) // Deadline // Minutes Into Seconds Then Type BigNumber
-  );
-
-  const swapTx = await exchangeContract.callStatic.swap(
-    {
-      poolId: Object.keys(POOLS[currentNetwork])[0],
+      poolId: getPoolId(currentNetwork),
       kind: kind,
       assetIn: assetIn,
       assetOut: assetOut,
@@ -61,9 +42,12 @@ export const getEstimatedConvertedToken = async (
     kind === 0 ? 0 : MAX_UINT256, // 0 if given in, infinite if given out.  // Slippage  // TODO // Need To QueryBatchSwap Price - 1%
 
     BigNumber.from(Math.floor(deadlineTimestamp / 1000)), // Deadline // Minutes Into Seconds Then Type BigNumber
-    {
-      gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
-    }
-  );
+  ];
+
+  const gasEstimate = await exchangeContract.estimateGas.swap(...swapData);
+
+  const swapTx = await exchangeContract.callStatic.swap(...swapData, {
+    gasLimit: Math.floor(gasEstimate.toNumber() * GAS_OVERAGE_FACTOR),
+  });
   return swapTx;
 };

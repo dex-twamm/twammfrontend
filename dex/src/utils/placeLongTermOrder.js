@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 import { POPUP_MESSAGE } from "../constants";
 import { getEthLogs } from "./get_ethLogs";
 import { placeLongTermOrder } from "./longSwap";
-import { POOLS } from "./pool";
+import { getPoolConfig } from "./poolUtils";
 
 export const _placeLongTermOrders = async (
   swapAmount,
@@ -18,7 +18,7 @@ export const _placeLongTermOrders = async (
   setError,
   currentNetwork
 ) => {
-  const poolConfig = Object.values(POOLS[currentNetwork])[0];
+  const poolConfig = getPoolConfig(currentNetwork);
 
   try {
     const tokenInIndex = poolConfig.tokens.findIndex(
@@ -52,7 +52,7 @@ export const _placeLongTermOrders = async (
         setIsPlacedLongTermOrder(true);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
         setIsPlacedLongTermOrder(false);
       })
       .finally(setLoading(false));

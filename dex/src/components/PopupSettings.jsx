@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import styles from "../css/PopupSettings.module.css";
 import { ShortSwapContext } from "../providers";
 
@@ -48,16 +48,6 @@ const PopupSettings = ({ swapType }) => {
               >
                 2
               </button>
-
-              {/* <div className={styles.inputContainer}>
-              <input
-                className={styles.inputSlippageTolerance}
-                type="number"
-                placeholder="0.10"
-                defaultValue={0.1}
-              />
-              <p>%</p>
-            </div> */}
             </div>
           </div>
         )}

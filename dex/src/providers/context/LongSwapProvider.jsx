@@ -1,12 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-import { POOLS } from "../../utils/pool";
+import { getPoolConfig } from "../../utils/poolUtils";
 
 import { UIContext } from "./UIProvider";
 
 export const LongSwapProvider = ({ children }) => {
   const [sliderValue, setSliderValue] = useState(1);
-
   const [orderLogsDecoded, setOrderLogsDecoded] = useState([]);
   const [lastVirtualOrderBlock, setLastVirtualOrderBlock] = useState("");
   const [numberOfBlockIntervals, setNumberOfBlockIntervals] = useState(0);
@@ -23,12 +22,7 @@ export const LongSwapProvider = ({ children }) => {
   const { selectedNetwork } = useContext(UIContext);
 
   useEffect(() => {
-    let poolConfig;
-    if(POOLS?.[selectedNetwork?.network]) {
-      poolConfig = Object.values(POOLS?.[selectedNetwork?.network])?.[0];
-    } else {
-      poolConfig = Object.values(POOLS['Ethereum'])[0];
-    }
+    const poolConfig = getPoolConfig(selectedNetwork?.network);
     setTokenA({
       ...poolConfig?.tokens[0],
       balance: 0,

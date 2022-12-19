@@ -11,14 +11,12 @@ export const connectWallet = async (
   setSelectedNetwork
 ) => {
   try {
-    console.log("Connecting to wallet");
     const provider = await web3Modal.connect();
-
     // TODO: Fix switching to Goerli on Coinbase Wallet.
     // If automatic connect with cacheprovider & localstorage contains goerli, pass that below. else any.
     // If manual connect pass network name.
-    const web3Provider = new providers.Web3Provider(provider, 'any');
-    
+    const web3Provider = new providers.Web3Provider(provider, "any");
+
     const accounts = await web3Provider.listAccounts();
 
     // TODO - Update Every Transaction After 12 Seconds
@@ -37,7 +35,6 @@ export const connectWallet = async (
 
     window.ethereum?.request({ method: "net_version" }).then((net_version) => {
       const initialNetwork = NETWORKS.find((nw) => nw.chainId === net_version);
-      console.log("initialNetwork", initialNetwork);
       setSelectedNetwork({
         network: initialNetwork?.name,
         logo: initialNetwork?.logo,

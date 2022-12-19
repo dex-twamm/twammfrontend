@@ -4,13 +4,12 @@ import styles from "../css/LongTermOrderCard.module.css";
 import { UIContext } from "../providers/context/UIProvider";
 import { bigToFloat, bigToStr } from "../utils";
 import classNames from "classnames";
-import { POOLS } from "../utils/pool";
-
 import LongTermSwapCardDropdown from "./LongTermSwapCardDropdown";
 import { _withdrawLTO } from "../utils/_withdrawLto";
 import { _cancelLTO } from "../utils/_cancelLto";
 import { LongSwapContext, ShortSwapContext } from "../providers";
 import { ethers } from "ethers";
+import { getPoolConfig } from "../utils/poolUtils";
 
 const LongTermOrderSingleCard = ({ it }) => {
   const {
@@ -41,13 +40,13 @@ const LongTermOrderSingleCard = ({ it }) => {
     (it.expirationBlock - currentBlock.number) * 12
   );
 
-  const poolConfig = Object.values(
-    POOLS[selectedNetwork?.network ?? "Goerli"]
-  )[0];
+  const poolConfig = getPoolConfig(selectedNetwork?.network ?? "Goerli");
+
   const tokenIn = poolConfig.tokens[it.sellTokenIndex];
   const tokenOut = poolConfig.tokens[it.buyTokenIndex];
 
   const remainingTimeRef = useRef();
+
   let convertedAmount = ethers.constants.Zero;
   if (it.state === "completed" || it.state === "cancelled") {
     // Order Completed and Deleted
@@ -249,7 +248,7 @@ const LongTermOrderSingleCard = ({ it }) => {
 
           <div className={styles.extrasContainer}>
             <div className={styles.fees}>{poolConfig?.fees} fees</div>
-            {soldToken !== 0 && (
+            {bigToFloat(soldToken) !== 0 && (
               <div className={styles.averagePrice}>
                 {averagePrice.toFixed(4)} Average Price
               </div>

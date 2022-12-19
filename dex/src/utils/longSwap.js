@@ -1,12 +1,17 @@
 import { BigNumber, Contract, ethers } from "ethers";
 import {
+  GAS_OVERAGE_FACTOR,
   LONGTERM_ABI,
   VAULT_CONTRACT_ABI,
 } from "../constants";
+import { MAX_UINT256 } from ".";
 import {
-  MAX_UINT256,
-} from ".";
-import { POOLS } from "./pool";
+  getPoolId,
+  getPoolContractAddress,
+  getPoolLtoContractAddress,
+  getPoolTokenAddresses,
+} from "./poolUtils";
+import { getVaultContractAddress } from "./networkUtils";
 
 export async function placeLongTermOrder(
   tokenInIndex,
@@ -21,7 +26,7 @@ export async function placeLongTermOrder(
   let txHash;
 
   const exchangeContract = new Contract(
-    Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
+    getVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -37,62 +42,43 @@ export async function placeLongTermOrder(
     ]
   );
 
-  const gasEstimate = await exchangeContract.estimateGas.joinPool(
-    Object.keys(POOLS[currentNetwork])[0],
+  const swapData = [
+    getPoolId(currentNetwork),
     walletAddress,
     walletAddress,
     {
-      assets: [
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
-      ],
-      maxAmountsIn: [MAX_UINT256, MAX_UINT256],
-      fromInternalBalance: false,
-      userData: encodedRequest,
-    }
-  );
-
-  const placeLtoTx = await exchangeContract.joinPool(
-    Object.keys(POOLS[currentNetwork])[0],
-    walletAddress,
-    walletAddress,
-    {
-      assets: [
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
-      ],
+      assets: getPoolTokenAddresses(currentNetwork),
       maxAmountsIn: [MAX_UINT256, MAX_UINT256],
       fromInternalBalance: false,
       userData: encodedRequest,
     },
-    {
-      gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
-    }
-  );
-  console.log("===LongTerm Placed====", placeLtoTx);
+  ];
+
+  const gasEstimate = await exchangeContract.estimateGas.joinPool(...swapData);
+
+  const placeLtoTx = await exchangeContract.joinPool(...swapData, {
+    gasLimit: Math.floor(gasEstimate.toNumber() * GAS_OVERAGE_FACTOR),
+  });
   txHash = placeLtoTx.hash;
   setTransactionHash(placeLtoTx.hash);
 
-  console.log("====Swap Results After Placed=====", await placeLtoTx.wait());
-  console.log(txHash);
   return txHash;
 }
 
 export async function getLongTermOrder(signer, orderId, currentNetwork) {
   const contract = new Contract(
-    Object.values(POOLS?.[currentNetwork])?.[0].address,
+    getPoolContractAddress(currentNetwork),
     LONGTERM_ABI,
     signer
   );
   const getOrderDetails = await contract.getLongTermOrder(orderId);
   const orderDetails = await getOrderDetails;
-  console.log("==== ORDER DETAILS=====", orderDetails);
   return orderDetails;
 }
 
 export async function getLastVirtualOrderBlock(signer, currentNetwork) {
   const contract = new Contract(
-    Object.values(POOLS?.[currentNetwork])?.[0].LTOContract,
+    getPoolLtoContractAddress(currentNetwork),
     LONGTERM_ABI,
     signer
   );
@@ -100,9 +86,5 @@ export async function getLastVirtualOrderBlock(signer, currentNetwork) {
   const longterm = await contract.longTermOrders();
   const lastVirtualOrderBlock = longterm.lastVirtualOrderBlock;
 
-  console.log(
-    "====GET Long Term DETAILS=====",
-    longterm.lastVirtualOrderBlock.toNumber()
-  );
   return lastVirtualOrderBlock;
 }

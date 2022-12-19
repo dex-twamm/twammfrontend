@@ -1,18 +1,14 @@
 import { Contract, ethers } from "ethers";
 import { defaultAbiCoder } from "ethers/lib/utils";
+import { fp, MAX_UINT256 } from ".";
 import {
-  // FAUCET_TOKEN_ADDRESS,
-  fp,
-  // MATIC_TOKEN_ADDRESS,
-  MAX_UINT256,
-  // POOL_ID,
-} from ".";
-import {
+  GAS_OVERAGE_FACTOR,
   POPUP_MESSAGE,
   VAULT_CONTRACT_ABI,
 } from "../constants";
 import { getEthLogs } from "./get_ethLogs";
-import { POOLS } from "./pool";
+import { getVaultContractAddress } from "./networkUtils";
+import { getPoolId, getPoolTokenAddresses, getPoolTokens } from "./poolUtils";
 
 export async function joinPool(walletAddress, signer, currentNetwork) {
   const encodedRequest = defaultAbiCoder.encode(
@@ -21,38 +17,41 @@ export async function joinPool(walletAddress, signer, currentNetwork) {
     // TODO Calculate MinBptOut Using Query Join Pool and Tolerance
     [1, [fp(1e-12), fp(1.0)], 0]
   );
-  const poolContract = new Contract(
-    Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
+  const vaultContract = new Contract(
+    getVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );
-  const joinPool = await poolContract.joinPool(
-    Object.keys(POOLS[currentNetwork])[0],
+  const data = [
+    getPoolId(currentNetwork),
     walletAddress,
     walletAddress,
     {
-      assets: [
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
-      ],
+      assets: getPoolTokenAddresses(currentNetwork),
       // Could Be User Input Same as Encoded Above -- Left to Figure It Out
       maxAmountsIn: [MAX_UINT256, MAX_UINT256],
       fromInternalBalance: false,
       userData: encodedRequest,
-    }
-  );
+    },
+  ];
+
+  const gasEstimate = await vaultContract.estimateGas.joinPool(...data);
+
+  const joinPool = await vaultContract.joinPool(...data, {
+    gasLimit: Math.floor(gasEstimate.toNumber() * GAS_OVERAGE_FACTOR),
+  });
+
   const joinPoolResult = await joinPool.wait();
-  console.log(joinPoolResult);
 }
 
 export async function exitPool(
-  walletAdress,
+  walletAddress,
   signer,
   bptAmountIn,
   currentNetwork
 ) {
-  const poolContract = new Contract(
-    Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
+  const vaultContract = new Contract(
+    getVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -62,46 +61,28 @@ export async function exitPool(
     [4, bptAmountIn]
   );
 
-  const gasEstimate = await poolContract.estimateGas.exitPool(
-    Object.keys(POOLS[currentNetwork])[0],
-    walletAdress,
-    walletAdress,
+  const data = [
+    getPoolId(currentNetwork),
+    walletAddress,
+    walletAddress,
     {
-      assets: [
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
-      ],
-      minAmountsOut: [0, 0],
-      userData: encodedRequest,
-      toInternalBalance: false,
-    }
-  );
-
-  const exitPoolTx = await poolContract.exitPool(
-    Object.keys(POOLS[currentNetwork])[0],
-    walletAdress,
-    walletAdress,
-    {
-      assets: [
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
-      ],
+      assets: getPoolTokenAddresses(currentNetwork),
       minAmountsOut: [0, 0],
       userData: encodedRequest,
       toInternalBalance: false,
     },
-    {
-      // gasLimit: 500000,
-      gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
-    }
-  );
-  const exitPoolResult = await exitPoolTx.wait();
+  ];
 
-  console.log(exitPoolResult);
+  const gasEstimate = await vaultContract.estimateGas.exitPool(...data);
+
+  const exitPoolTx = await vaultContract.exitPool(...data, {
+    gasLimit: Math.floor(gasEstimate.toNumber() * GAS_OVERAGE_FACTOR),
+  });
+  const exitPoolResult = await exitPoolTx.wait();
 }
 
 export async function cancelLTO(
-  walletAdress,
+  walletAddress,
   signer,
   orderId,
   orderHash,
@@ -111,8 +92,8 @@ export async function cancelLTO(
   provider,
   currentNetwork
 ) {
-  const poolContract = new Contract(
-    Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
+  const vaultContract = new Contract(
+    getVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -122,51 +103,34 @@ export async function cancelLTO(
     [4, orderId]
   );
 
-  const gasEstimate = await poolContract.estimateGas.exitPool(
-    Object.keys(POOLS[currentNetwork])[0],
-    walletAdress,
-    walletAdress,
+  const data = [
+    getPoolId(currentNetwork),
+    walletAddress,
+    walletAddress,
     {
-      assets: [
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
-      ],
-      minAmountsOut: [0, 0],
-      userData: encodedRequest,
-      toInternalBalance: false,
-    }
-  );
-  const exitPoolTx = await poolContract.exitPool(
-    Object.keys(POOLS[currentNetwork])[0],
-    walletAdress,
-    walletAdress,
-    {
-      assets: [
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
-      ],
+      assets: getPoolTokenAddresses(currentNetwork),
       minAmountsOut: [0, 0],
       userData: encodedRequest,
       toInternalBalance: false,
     },
-    {
-      // gasLimit: 500000,
-      gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
-    }
-  );
+  ];
+
+  const gasEstimate = await vaultContract.estimateGas.exitPool(...data);
+
+  const exitPoolTx = await vaultContract.exitPool(...data, {
+    gasLimit: Math.floor(gasEstimate.toNumber() * GAS_OVERAGE_FACTOR),
+  });
   setTransactionHash(orderHash);
   const exitPoolResult = await exitPoolTx.wait();
   setMessage(POPUP_MESSAGE.ltoCancelSuccess);
-  await getEthLogs(signer, walletAdress, currentNetwork).then((res) => {
+  await getEthLogs(signer, walletAddress, currentNetwork).then((res) => {
     const resArray = Array.from(res.values());
     setOrderLogsDecoded(resArray);
   });
-
-  console.log("exitPoolResult-->", exitPoolResult);
 }
 
 export async function withdrawLTO(
-  walletAdress,
+  walletAddress,
   signer,
   orderId,
   orderHash,
@@ -176,8 +140,8 @@ export async function withdrawLTO(
   provider,
   currentNetwork
 ) {
-  const poolContract = new Contract(
-    Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
+  const vaultContract = new Contract(
+    getVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );
@@ -187,76 +151,48 @@ export async function withdrawLTO(
     [5, orderId]
   );
 
-  const gasEstimate = await poolContract.estimateGas.exitPool(
-    Object.keys(POOLS[currentNetwork])[0],
-    walletAdress,
-    walletAdress,
+  const data = [
+    getPoolId(currentNetwork),
+    walletAddress,
+    walletAddress,
     {
-      assets: [
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
-      ],
-      minAmountsOut: [0, 0],
-      userData: encodedRequest,
-      toInternalBalance: false,
-    }
-  );
-  const withdrawLTOTx = await poolContract.exitPool(
-    Object.keys(POOLS[currentNetwork])[0],
-    walletAdress,
-    walletAdress,
-    {
-      assets: [
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
-      ],
+      assets: getPoolTokenAddresses(currentNetwork),
       minAmountsOut: [0, 0],
       userData: encodedRequest,
       toInternalBalance: false,
     },
-    {
-      // gasLimit: 500000,
-      gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
-    }
-  );
+  ];
+
+  const gasEstimate = await vaultContract.estimateGas.exitPool(...data);
+  const withdrawLTOTx = await vaultContract.exitPool(...data, {
+    gasLimit: Math.floor(gasEstimate.toNumber() * GAS_OVERAGE_FACTOR),
+  });
   setTransactionHash(orderHash);
   const withdrawLTOResult = await withdrawLTOTx.wait();
-  await getEthLogs(provider, walletAdress, currentNetwork).then((res) => {
+  await getEthLogs(provider, walletAddress, currentNetwork).then((res) => {
     const resArray = Array.from(res.values());
     setOrderLogsDecoded(resArray);
   });
-  console.log("withdrawLTOResult", withdrawLTOResult);
   setMessage(POPUP_MESSAGE.ltoWithdrawn);
 }
 
 export async function getPoolBalance(signer, tokenAddress, currentNetwork) {
-  const tokenIndex = Object.values(POOLS[currentNetwork])[0]?.tokens.filter(
+  const tokenIndex = getPoolTokens(currentNetwork).filter(
     (item) => item.address === tokenAddress
   );
 
-  console.log("TokenIndex--->", tokenIndex);
   const vaultContract = new Contract(
-    Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
+    getVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
     signer
   );
-  console.log(
-    "pool id-->",
-    Object.keys(POOLS[currentNetwork])[0],
-    tokenAddress,
-    currentNetwork,
-    signer
-  );
+
   const poolBalance = await vaultContract.getPoolTokenInfo(
-    Object.keys(POOLS[currentNetwork])[0],
+    getPoolId(currentNetwork),
     tokenAddress
   );
   const cash = poolBalance.cash._hex;
 
   const readableCash = ethers.utils.formatUnits(cash, tokenIndex?.[0].decimals);
-  console.log(
-    "====Pool Cash====",
-    ethers.utils.formatUnits(poolBalance.cash._hex, tokenIndex?.[0].decimals)
-  );
   return readableCash.toString();
 }

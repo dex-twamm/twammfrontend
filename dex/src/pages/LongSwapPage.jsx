@@ -12,27 +12,16 @@ import PopupModal from "../components/alerts/PopupModal";
 import { getEthLogs } from "../utils/get_ethLogs";
 import { _placeLongTermOrders } from "../utils/placeLongTermOrder";
 import { connectWallet } from "../utils/connetWallet";
+
 import { UIContext } from "../providers/context/UIProvider";
 import LongSwap from "../components/LongSwap";
 import { verifyLongSwap } from "../utils/verifyLongSwap";
 
-const LongSwapPage = (props) => {
-  const {
-    tokenSymbol,
-    tokenImage,
-    buttonText,
-    cancelPool,
-    withdrawPool,
-    isPlacedLongTermOrder,
-    setIsPlacedLongTermOrder,
-  } = props;
-
-  const [showSettings, setShowSettings] = useState(false);
+const LongSwapPage = () => {
+  const [isPlacedLongTermOrder, setIsPlacedLongTermOrder] = useState();
 
   const {
     orderLogsDecoded,
-    message,
-    setMessage,
     numberOfBlockIntervals,
     setOrderLogsDecoded,
     setLongSwapFormErrors,
@@ -57,6 +46,8 @@ const LongSwapPage = (props) => {
     setError,
   } = useContext(ShortSwapContext);
 
+  const [showSettings, setShowSettings] = useState(false);
+
   const { selectedNetwork, setSelectedNetwork } = useContext(UIContext);
 
   const ethLogsCount = orderLogsDecoded
@@ -65,18 +56,7 @@ const LongSwapPage = (props) => {
 
   const cardListCount = ethLogsCount;
 
-  console.log("Logs Count", ethLogsCount, cardListCount);
-
-  console.log("Is long term order placed", isPlacedLongTermOrder);
-
   useEffect(() => {
-    console.log(
-      "Long Swap ----",
-      selectedNetwork?.network,
-      swapAmount,
-      destAddress,
-      srcAddress
-    );
     // Wait for 0.5 second before fetching price.
     const interval1 = setTimeout(() => {
       verifyLongSwap(
@@ -98,7 +78,6 @@ const LongSwapPage = (props) => {
   }, [swapAmount, destAddress, srcAddress, numberOfBlockIntervals]);
 
   async function LongSwapButtonClick() {
-    console.log("Wallet", isWalletConnected);
     if (!isWalletConnected) {
       await connectWallet(
         setweb3provider,
@@ -108,9 +87,12 @@ const LongSwapPage = (props) => {
         setWalletConnected,
         setSelectedNetwork
       );
-      await getEthLogs(web3provider.getSigner(), account, selectedNetwork?.network);
+      await getEthLogs(
+        web3provider.getSigner(),
+        account,
+        selectedNetwork?.network
+      );
     } else {
-      console.log(web3provider, web3provider.getSigner());
       await _placeLongTermOrders(
         swapAmount,
         srcAddress,
@@ -128,14 +110,11 @@ const LongSwapPage = (props) => {
     }
   }
 
-  // useEffect(() => {
-  //   if (swapAmount && swapAmount > tokenA.balance) {
-  //     setFormErrors({ balError: "Invalid AMt" });
-  //   }
-  //   return () => {
-  //     setFormErrors("");
-  //   };
-  // }, [swapAmount, tokenA, setFormErrors]);
+  useEffect(() => {
+    document.body.onclick = () => {
+      setShowSettings(false);
+    };
+  });
 
   return (
     <>
@@ -150,18 +129,18 @@ const LongSwapPage = (props) => {
               <FontAwesomeIcon
                 className={styles.settingsIcon}
                 icon={faGear}
-                onClick={() => setShowSettings(!showSettings)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowSettings(!showSettings);
+                }}
               />
             </div>
 
             {showSettings && <PopupSettings swapType="long" />}
           </div>
           <LongSwap
-            swapType="long"
-            tokenSymbol={tokenSymbol}
-            tokenImage={tokenImage}
             connectWallet={LongSwapButtonClick}
-            buttonText={buttonText}
+            buttonText={!isWalletConnected ? "Connect Wallet" : "Swap"}
             longSwapVerifyLoading={longSwapVerifyLoading}
             setIsPlacedLongTermOrder={setIsPlacedLongTermOrder}
           />
@@ -169,9 +148,7 @@ const LongSwapPage = (props) => {
         <PopupModal
           isPlacedLongTermOrder={isPlacedLongTermOrder}
           setIsPlacedLongTermOrder={setIsPlacedLongTermOrder}
-          message={message}
-          setMessage={setMessage}
-        ></PopupModal>
+        />
 
         <div className={lsStyles.ordersWrapper}>
           <h4 className={lsStyles.longTermText}>Your Long Term Orders</h4>
@@ -182,14 +159,7 @@ const LongSwapPage = (props) => {
                 cardListCount > 2 && lsStyles.scrollable
               )}
             >
-              <LongTermOrderCard
-                cancelPool={cancelPool}
-                withdrawPool={withdrawPool}
-              ></LongTermOrderCard>
-
-              {/* <div style={{ with: "100%", height:"auto" }}>
-              <LongTermSwapCardDropdown tokenB={tokenB} />
-            </div> */}
+              <LongTermOrderCard />
             </div>
           </div>
         </div>

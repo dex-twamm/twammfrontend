@@ -4,25 +4,20 @@ import classNames from "classnames";
 import React, { useContext, useState } from "react";
 import styles from "../css/AddLiquidity.module.css";
 
-
 import { LongSwapContext } from "../providers";
 import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
 import Input from "./Input";
 
 import { BigNumber } from "ethers";
 import { bigToStr } from "../utils";
-import { getApproval } from "../utils/getApproval";
+import { approveMaxAllowance } from "../utils/getApproval";
 import { UIContext } from "../providers/context/UIProvider";
 
 const Swap = (props) => {
-  const {
-    handleButtonClick,
-    buttonText,
-    swapType,
-    spotPriceLoading,
-  } = props;
+  const { connectWallet, buttonText, spotPriceLoading } = props;
 
   const [display, setDisplay] = useState(false);
+
   const [open, setOpen] = useState(false);
   const [disableAllowBtn, setDisableAllowBtn] = useState(true);
 
@@ -48,15 +43,21 @@ const Swap = (props) => {
   const { tokenA, tokenB, setTokenA, setTokenB, allowance } =
     useContext(LongSwapContext);
 
-  const{ web3provider } = useContext(ShortSwapContext);
+  const { web3provider } = useContext(ShortSwapContext);
   const { selectedNetwork } = useContext(UIContext);
 
   const handleDisplay = (event) => {
     setSelectToken(event.currentTarget.id);
     setDisplay(!display);
     setSpotPrice(0);
-    setExpectedSwapOut(0.0);
   };
+
+  useEffect(() => {
+    return () => {
+      setExpectedSwapOut();
+      setSpotPrice();
+    };
+  }, []);
 
   useEffect(() => {
     if (tokenA?.symbol === tokenB?.symbol)
@@ -74,12 +75,12 @@ const Swap = (props) => {
 
   const handleClick = () => {
     buttonText === "Swap" && setFormErrors(validate(swapAmount));
-    handleButtonClick();
+    connectWallet();
   };
 
   const handleApproveButton = async () => {
     try {
-      const approval = await getApproval(
+      const approval = await approveMaxAllowance(
         web3provider,
         srcAddress,
         selectedNetwork?.network
@@ -115,10 +116,11 @@ const Swap = (props) => {
   useEffect(() => {
     return () => {
       setFormErrors({ balError: undefined });
+      setTransactionHash(undefined);
     };
-  }, [setFormErrors]);
+  }, [setFormErrors, setTransactionHash]);
 
-  console.log("Disable Allow Button--->", disableAllowBtn, formErrors);
+  //for switching the input sectons in short swap
 
   // useEffect(() => {
   //   return () => {
@@ -127,8 +129,6 @@ const Swap = (props) => {
   //     setIsPlacedLongTermOrder && setIsPlacedLongTermOrder();
   //   };
   // });
-
-  console.log("spotPrice", spotPrice);
 
   return (
     <>
@@ -169,7 +169,6 @@ const Swap = (props) => {
             setDisplay={setDisplay}
             setTokenA={setTokenA}
             setTokenB={setTokenB}
-            swapType={swapType}
           />
           <Input
             id={2}
@@ -274,8 +273,7 @@ const Swap = (props) => {
                     gap: { xs: "0px", sm: "5px" },
                     padding: "4px",
                   }}
-                >
-                </Box>
+                ></Box>
               </Box>
             </>
           )}

@@ -2,16 +2,11 @@ import { Alert, Backdrop, Button } from "@mui/material";
 import { useEffect } from "react";
 import { useContext } from "react";
 import { POPUP_MESSAGE } from "../../constants";
-import { ShortSwapContext } from "../../providers";
+import { LongSwapContext, ShortSwapContext } from "../../providers";
 import { UIContext } from "../../providers/context/UIProvider";
-import { POOLS } from "../../utils/pool";
+import { getBlockExplorerTransactionUrl } from "../../utils/networkUtils";
 
-const PopupModal = ({
-  isPlacedLongTermOrder,
-  setIsPlacedLongTermOrder,
-  message,
-  setMessage,
-}) => {
+const PopupModal = ({ isPlacedLongTermOrder, setIsPlacedLongTermOrder }) => {
   const {
     error,
     setError,
@@ -20,6 +15,8 @@ const PopupModal = ({
     transactionHash,
     setTransactionHash,
   } = useContext(ShortSwapContext);
+
+  const { message, setMessage } = useContext(LongSwapContext);
 
   const { selectedNetwork } = useContext(UIContext);
 
@@ -49,32 +46,20 @@ const PopupModal = ({
   };
 
   const handleButtonClick = () => {
-    console.log(
-      "links",
-      Object.values(POOLS?.[selectedNetwork?.network])?.[0].transactionUrl,
-      `${
-        Object.values(POOLS?.[selectedNetwork?.network])?.[0]?.transactonUrl
-      }${transactionHash}`
-    );
     window.open(
-      `${
-        Object.values(POOLS?.[selectedNetwork?.network])?.[0].transactionUrl
-      }${transactionHash}`
+      `${getBlockExplorerTransactionUrl(
+        selectedNetwork?.network
+      )}${transactionHash}`
     );
   };
 
   const buttonAction = <Button onClick={handleButtonClick}>View</Button>;
-
-  console.log("<---Transaction hash--->", transactionHash);
-
-  console.log("successs", message ? true : false, message);
 
   const AlertStyle = {
     margin: "5px",
     background: "rgba(255, 255, 255, 0.5)",
   };
 
-  console.log("hajsdhkajsdhkajsd", error);
   return (
     <>
       <div style={AlertStyle}>

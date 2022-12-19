@@ -31,8 +31,6 @@ const Input = (props) => {
 
   const { setSelectedNetwork } = useContext(UIContext);
 
-  console.log("swap token", tokenA, tokenB);
-
   useEffect(() => {
     const balanceA =
       tokenBalances && tokenBalances?.filter((item) => item[tokenA?.address]);

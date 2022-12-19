@@ -20,15 +20,15 @@ import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
 import Input from "./Input";
 import { FiChevronDown } from "react-icons/fi";
 
-import { getApproval } from "../utils/getApproval";
+import { approveMaxAllowance } from "../utils/getApproval";
 import { UIContext } from "../providers/context/UIProvider";
 
 const LongSwap = (props) => {
   const {
     connectWallet,
     buttonText,
-    swapType,
     longSwapVerifyLoading,
+    setIsPlacedLongTermOrder,
   } = props;
 
   const [display, setDisplay] = useState(false);
@@ -69,7 +69,6 @@ const LongSwap = (props) => {
   const handleDisplay = (event) => {
     setSelectToken(event.currentTarget.id);
     setDisplay(!display);
-    // setSpotPrice(0);
     setExpectedSwapOut(0.0);
   };
 
@@ -100,7 +99,7 @@ const LongSwap = (props) => {
 
   const handleApproveButton = async () => {
     try {
-      const approval = await getApproval(
+      const approval = await approveMaxAllowance(
         web3provider,
         srcAddress,
         selectedNetwork?.network
@@ -154,7 +153,14 @@ const LongSwap = (props) => {
     };
   }, [setLongSwapFormErrors]);
 
-  console.log("Form errororororor", longSwapFormErrors);
+  useEffect(() => {
+    return () => {
+      setTargetDate("");
+      setExecutionTIme("");
+      setTransactionHash(undefined);
+      setIsPlacedLongTermOrder && setIsPlacedLongTermOrder();
+    };
+  }, []);
 
   return (
     <>
@@ -194,7 +200,6 @@ const LongSwap = (props) => {
               <div className={styles.pairContainer}>
                 <div
                   onClick={() => {
-                    // setShowModal(true);
                     setDisplay(true);
                     setSelectToken("1");
                   }}
@@ -257,7 +262,6 @@ const LongSwap = (props) => {
             setDisplay={setDisplay}
             setTokenA={setTokenA}
             setTokenB={setTokenB}
-            swapType={swapType}
           />
 
           {longSwapFormErrors?.balError && (

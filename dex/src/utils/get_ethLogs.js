@@ -1,31 +1,30 @@
 import { Contract, ethers } from "ethers";
-// import { POOL_ID } from ".";
 import { TWAMM_POOL_ABI } from "../constants";
 import { getLongTermOrder } from "./longSwap";
-import { POOLS } from "./pool";
+import { getPoolContractAddress } from "./poolUtils";
 
 export async function getEthLogs(signer, walletAddress, currentNetwork) {
-  const exchangeContract = new Contract(
-    Object.values(POOLS?.[currentNetwork])?.[0]?.address,
+  const poolContract = new Contract(
+    getPoolContractAddress(currentNetwork),
     TWAMM_POOL_ABI,
     signer
   );
 
-  const placedFilter = exchangeContract.filters.LongTermOrderPlaced(
+  const placedFilter = poolContract.filters.LongTermOrderPlaced(
     null,
     null,
     null,
     null,
     walletAddress
   );
-  const cancelFilter = exchangeContract.filters.LongTermOrderCancelled(
+  const cancelFilter = poolContract.filters.LongTermOrderCancelled(
     null,
     null,
     null,
     null,
     walletAddress
   );
-  const withdrawnFilter = exchangeContract.filters.LongTermOrderWithdrawn(
+  const withdrawnFilter = poolContract.filters.LongTermOrderWithdrawn(
     null,
     null,
     null,
@@ -33,27 +32,19 @@ export async function getEthLogs(signer, walletAddress, currentNetwork) {
     walletAddress
   );
 
-  const eventsPlaced = await exchangeContract.queryFilter(placedFilter);
-  console.log("=====Placed LOGS=====", eventsPlaced);
+  const eventsPlaced = await poolContract.queryFilter(placedFilter);
 
-  const eventsCancelled = await exchangeContract.queryFilter(cancelFilter);
-  console.log("==== Cancelled Logs ====", eventsCancelled);
+  const eventsCancelled = await poolContract.queryFilter(cancelFilter);
 
-  const eventsWithdrawn = await exchangeContract.queryFilter(withdrawnFilter);
-  console.log("==== Withdrawn Logs ====", eventsWithdrawn);
-
-  // console.log("==== Amount In ====", ethers.utils.formatUnits(eventsPlaced[0].topics[1], "ether"))
-  // console.log("==== Amount Out ====", ethers.utils.formatUnits(eventsPlaced[0].topics[2], "ether"))
+  const eventsWithdrawn = await poolContract.queryFilter(withdrawnFilter);
 
   const abiCoder = ethers.utils.defaultAbiCoder;
   const placedEventsDecoded = new Map();
-  // console.log("==== Event Decoded  ==== ", typeof eventDecoded);
   for (let i = 0; i < eventsPlaced.length; i++) {
     const log = abiCoder.decode(
       ["uint256", "uint256", "uint256"],
       eventsPlaced[i].data
     );
-    console.log("Log 0", log[0]);
     const orderDetails = await getLongTermOrder(signer, log[0], currentNetwork);
     placedEventsDecoded.set(log[0].toNumber(), {
       orderId: log[0],
@@ -69,18 +60,14 @@ export async function getEthLogs(signer, walletAddress, currentNetwork) {
       cancelledProceeds: 0,
       state: "inProgress",
     });
-    // console.log("=== ETH Logs Decoded ===", eventsPlaced)
   }
-  console.log("=== ETH Logs Decoded ===", placedEventsDecoded);
 
   for (let i = 0; i < eventsWithdrawn.length; i++) {
     const log = abiCoder.decode(
       ["uint256", "uint256", "uint256", "uint256", "bool"],
       eventsWithdrawn[i].data
     );
-    console.log("Log Withdrawn", log);
     let orderObject = placedEventsDecoded.get(log[0].toNumber());
-    console.log("Order Object", orderObject);
     orderObject.withdrawals.push({
       blockNumber: eventsWithdrawn[i].blockNumber,
       isPartialWithdrawal: log[4],
@@ -92,7 +79,6 @@ export async function getEthLogs(signer, walletAddress, currentNetwork) {
     if (!log[4]) {
       orderObject.state = "completed";
     }
-    console.log("=== ETH Logs Withdrawn ===", eventsWithdrawn);
   }
 
   for (let i = 0; i < eventsCancelled.length; i++) {
@@ -100,9 +86,7 @@ export async function getEthLogs(signer, walletAddress, currentNetwork) {
       ["uint256", "uint256", "uint256", "uint256", "uint256"],
       eventsCancelled[i].data
     );
-    console.log("Log Cancelled", log);
     let orderObject = placedEventsDecoded.get(log[0].toNumber());
-    console.log("Order Object", orderObject);
     orderObject.unsoldAmount = log[4];
     orderObject.convertedValue = log[3];
     orderObject.state = "cancelled";
@@ -112,10 +96,7 @@ export async function getEthLogs(signer, walletAddress, currentNetwork) {
       proceeds: log[3],
       transactionHash: eventsCancelled[i].transactionHash,
     });
-    console.log("=== ETH Logs Cancelled ===", eventsCancelled);
   }
-
-  // console.log("=== WithDr Logs Decoded ===", placedEventsDecoded)
 
   return placedEventsDecoded;
 }
