@@ -96,6 +96,7 @@ const PopupModal = ({
               severity="success"
               onClose={() => {
                 handleClose();
+                window.location.reload();
               }}
             >
               {success}

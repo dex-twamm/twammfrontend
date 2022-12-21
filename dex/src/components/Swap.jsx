@@ -4,7 +4,6 @@ import classNames from "classnames";
 import React, { useContext, useState } from "react";
 import styles from "../css/AddLiquidity.module.css";
 
-
 import { LongSwapContext } from "../providers";
 import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
 import Input from "./Input";
@@ -15,12 +14,7 @@ import { getApproval } from "../utils/getApproval";
 import { UIContext } from "../providers/context/UIProvider";
 
 const Swap = (props) => {
-  const {
-    handleButtonClick,
-    buttonText,
-    swapType,
-    spotPriceLoading,
-  } = props;
+  const { handleButtonClick, buttonText, swapType, spotPriceLoading } = props;
 
   const [display, setDisplay] = useState(false);
   const [open, setOpen] = useState(false);
@@ -48,7 +42,7 @@ const Swap = (props) => {
   const { tokenA, tokenB, setTokenA, setTokenB, allowance } =
     useContext(LongSwapContext);
 
-  const{ web3provider } = useContext(ShortSwapContext);
+  const { web3provider } = useContext(ShortSwapContext);
   const { selectedNetwork } = useContext(UIContext);
 
   const handleDisplay = (event) => {
@@ -274,8 +268,7 @@ const Swap = (props) => {
                     gap: { xs: "0px", sm: "5px" },
                     padding: "4px",
                   }}
-                >
-                </Box>
+                ></Box>
               </Box>
             </>
           )}
