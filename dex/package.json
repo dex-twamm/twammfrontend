@@ -20,6 +20,7 @@
     "axios": "^0.27.2",
     "classnames": "^2.3.1",
     "cors": "^2.8.5",
+    "cypress": "^12.1.0",
     "decimal.js": "^10.4.0",
     "ethers": "^5.6.9",
     "moment": "^2.29.4",
@@ -35,7 +36,7 @@
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
-    "test": "react-app-rewired test",
+    "test": "cypress open",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

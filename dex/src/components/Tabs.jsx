@@ -61,7 +61,11 @@ const Tabs = () => {
     </Link>
   ));
 
-  return <div className={styles.tabContainerCenter}>{tabList}</div>;
+  return (
+    <div className={styles.tabContainerCenter} data-cy="tab-list">
+      {tabList}
+    </div>
+  );
 };
 
 export default Tabs;
