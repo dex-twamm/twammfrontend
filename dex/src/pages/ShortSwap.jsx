@@ -110,7 +110,11 @@ const ShortSwap = ({
           setWalletConnected,
           setSelectedNetwork
         );
-        await getEthLogs(web3provider.getSigner(), account, selectedNetwork?.network);
+        await getEthLogs(
+          web3provider.getSigner(),
+          account,
+          selectedNetwork?.network
+        );
       } else {
         await _swapTokens(
           ethBalance,

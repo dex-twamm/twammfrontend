@@ -38,6 +38,7 @@ const LongSwapPage = (props) => {
     setLongSwapFormErrors,
     longSwapVerifyLoading,
     setLongSwapVerifyLoading,
+    allowance,
   } = useContext(LongSwapContext);
 
   const {
@@ -77,21 +78,23 @@ const LongSwapPage = (props) => {
       destAddress,
       srcAddress
     );
+    let interval1;
     // Wait for 0.5 second before fetching price.
-    const interval1 = setTimeout(() => {
-      verifyLongSwap(
-        swapAmount,
-        setLongSwapVerifyLoading,
-        srcAddress,
-        destAddress,
-        web3provider,
-        account,
-        setLongSwapFormErrors,
-        selectedNetwork?.network,
-        numberOfBlockIntervals
-      );
-    }, 500);
-
+    if (parseFloat(allowance) > swapAmount) {
+      interval1 = setTimeout(() => {
+        verifyLongSwap(
+          swapAmount,
+          setLongSwapVerifyLoading,
+          srcAddress,
+          destAddress,
+          web3provider,
+          account,
+          setLongSwapFormErrors,
+          selectedNetwork?.network,
+          numberOfBlockIntervals
+        );
+      }, 500);
+    }
     return () => {
       clearTimeout(interval1);
     };
@@ -108,7 +111,11 @@ const LongSwapPage = (props) => {
         setWalletConnected,
         setSelectedNetwork
       );
-      await getEthLogs(web3provider.getSigner(), account, selectedNetwork?.network);
+      await getEthLogs(
+        web3provider.getSigner(),
+        account,
+        selectedNetwork?.network
+      );
     } else {
       console.log(web3provider, web3provider.getSigner());
       await _placeLongTermOrders(

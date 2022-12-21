@@ -24,12 +24,7 @@ import { getApproval } from "../utils/getApproval";
 import { UIContext } from "../providers/context/UIProvider";
 
 const LongSwap = (props) => {
-  const {
-    connectWallet,
-    buttonText,
-    swapType,
-    longSwapVerifyLoading,
-  } = props;
+  const { connectWallet, buttonText, swapType, longSwapVerifyLoading } = props;
 
   const [display, setDisplay] = useState(false);
   const [value, setValue] = useState(0.0);
@@ -48,6 +43,7 @@ const LongSwap = (props) => {
     setTransactionHash,
     isWalletConnected,
     web3provider,
+    setAllowTwammMessage,
   } = useContext(ShortSwapContext);
 
   const {
@@ -107,7 +103,7 @@ const LongSwap = (props) => {
       );
       setTransactionHash(approval.hash);
     } catch (e) {
-      console.log(e);
+      setAllowTwammMessage(e?.message);
     }
   };
 

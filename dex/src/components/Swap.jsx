@@ -37,6 +37,7 @@ const Swap = (props) => {
     srcAddress,
     setTransactionHash,
     isWalletConnected,
+    setAllowTwammMessage,
   } = useContext(ShortSwapContext);
 
   const { tokenA, tokenB, setTokenA, setTokenB, allowance } =
@@ -81,6 +82,7 @@ const Swap = (props) => {
       setTransactionHash(approval.hash);
     } catch (e) {
       console.log(e);
+      setAllowTwammMessage(e?.message);
     }
   };
 
@@ -273,8 +275,8 @@ const Swap = (props) => {
             </>
           )}
 
-          {parseFloat(allowance) <= swapAmount &&
-          swapAmount &&
+          {swapAmount &&
+          parseFloat(allowance) <= swapAmount &&
           tokenA.tokenIsSet &&
           tokenB.tokenIsSet ? (
             <button
