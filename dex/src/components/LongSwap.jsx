@@ -404,8 +404,6 @@ const LongSwap = (props) => {
                 "Enter an Amount"
               ) : longSwapVerifyLoading ? (
                 <CircularProgress sx={{ color: "white" }} />
-              ) : !isWalletConnected ? (
-                "Connect Wallet"
               ) : (
                 "Swap"
               )}

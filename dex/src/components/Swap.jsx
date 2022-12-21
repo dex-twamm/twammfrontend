@@ -327,8 +327,6 @@ const Swap = (props) => {
                 "Enter an Amount"
               ) : spotPriceLoading ? (
                 <CircularProgress sx={{ color: "white" }} />
-              ) : !isWalletConnected ? (
-                "Connect Wallet"
               ) : (
                 "Swap"
               )}
