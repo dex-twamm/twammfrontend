@@ -61,7 +61,7 @@ export async function placeLongTermOrder(
   });
   txHash = placeLtoTx.hash;
   setTransactionHash(placeLtoTx.hash);
-
+  await placeLtoTx.wait();
   return txHash;
 }
 
@@ -85,6 +85,5 @@ export async function getLastVirtualOrderBlock(signer, currentNetwork) {
 
   const longterm = await contract.longTermOrders();
   const lastVirtualOrderBlock = longterm.lastVirtualOrderBlock;
-
   return lastVirtualOrderBlock;
 }
