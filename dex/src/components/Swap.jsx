@@ -14,7 +14,7 @@ import { approveMaxAllowance } from "../utils/getApproval";
 import { UIContext } from "../providers/context/UIProvider";
 
 const Swap = (props) => {
-  const { connectWallet, buttonText, spotPriceLoading } = props;
+  const { connectWallet, spotPriceLoading } = props;
 
   const [display, setDisplay] = useState(false);
 
@@ -74,7 +74,7 @@ const Swap = (props) => {
   };
 
   const handleClick = () => {
-    buttonText === "Swap" && setFormErrors(validate(swapAmount));
+    isWalletConnected && setFormErrors(validate(swapAmount));
     connectWallet();
   };
 
@@ -327,8 +327,10 @@ const Swap = (props) => {
                 "Enter an Amount"
               ) : spotPriceLoading ? (
                 <CircularProgress sx={{ color: "white" }} />
+              ) : !isWalletConnected ? (
+                "Connect Wallet"
               ) : (
-                buttonText
+                "Swap"
               )}
             </button>
           ) : (

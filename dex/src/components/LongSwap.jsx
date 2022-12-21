@@ -24,12 +24,8 @@ import { approveMaxAllowance } from "../utils/getApproval";
 import { UIContext } from "../providers/context/UIProvider";
 
 const LongSwap = (props) => {
-  const {
-    connectWallet,
-    buttonText,
-    longSwapVerifyLoading,
-    setIsPlacedLongTermOrder,
-  } = props;
+  const { connectWallet, longSwapVerifyLoading, setIsPlacedLongTermOrder } =
+    props;
 
   const [display, setDisplay] = useState(false);
   const [value, setValue] = useState(0.0);
@@ -93,7 +89,7 @@ const LongSwap = (props) => {
   };
 
   const handleClick = () => {
-    buttonText === "Swap" && setLongSwapFormErrors(validate(swapAmount));
+    isWalletConnected && setLongSwapFormErrors(validate(swapAmount));
     connectWallet();
   };
 
@@ -408,8 +404,10 @@ const LongSwap = (props) => {
                 "Enter an Amount"
               ) : longSwapVerifyLoading ? (
                 <CircularProgress sx={{ color: "white" }} />
+              ) : !isWalletConnected ? (
+                "Connect Wallet"
               ) : (
-                buttonText
+                "Swap"
               )}
             </button>
           ) : (

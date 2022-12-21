@@ -159,7 +159,6 @@ const ShortSwap = () => {
           </div>
           <Swap
             connectWallet={ShortSwapButtonClick}
-            buttonText={!isWalletConnected ? "Connect Wallet" : "Swap"}
             spotPriceLoading={spotPriceLoading}
           />
         </div>

@@ -140,7 +140,6 @@ const LongSwapPage = () => {
           </div>
           <LongSwap
             connectWallet={LongSwapButtonClick}
-            buttonText={!isWalletConnected ? "Connect Wallet" : "Swap"}
             longSwapVerifyLoading={longSwapVerifyLoading}
             setIsPlacedLongTermOrder={setIsPlacedLongTermOrder}
           />
