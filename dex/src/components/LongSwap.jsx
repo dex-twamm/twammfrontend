@@ -122,12 +122,18 @@ const LongSwap = (props) => {
       setValue(newValue);
       setNumberOfBlockIntervals(calculateNumBlockIntervals(newValue));
       setTargetDate(
-        valueLabel(calculateNumBlockIntervals(newValue), currentBlock)
-          .targetDate
+        valueLabel(
+          calculateNumBlockIntervals(newValue),
+          currentBlock,
+          selectedNetwork?.network
+        ).targetDate
       );
       setExecutionTIme(
-        valueLabel(calculateNumBlockIntervals(newValue), currentBlock)
-          .executionTime
+        valueLabel(
+          calculateNumBlockIntervals(newValue),
+          currentBlock,
+          selectedNetwork?.network
+        ).executionTime
       );
     }
   };
