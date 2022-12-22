@@ -48,8 +48,14 @@ export const _placeLongTermOrders = async (
       currentNetwork
     )
       .then((res) => {
-        setTransactionHash(res);
-        setIsPlacedLongTermOrder(true);
+        setTransactionHash(res.hash);
+        const placeLtoTxResult = async (res) => {
+          const result = await res.wait();
+          return result;
+        };
+        placeLtoTxResult(res).then((response) => {
+          if (response.status === 1) setIsPlacedLongTermOrder(true);
+        });
       })
       .catch((err) => {
         console.error(err);

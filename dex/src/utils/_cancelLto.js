@@ -1,6 +1,7 @@
 import { POPUP_MESSAGE } from "../constants";
 import { cancelLTO } from "./addLiquidity";
 import { connectWallet } from "./connetWallet";
+import { getEthLogs } from "./get_ethLogs";
 
 // cancelLTO
 export const _cancelLTO = async (
@@ -20,8 +21,7 @@ export const _cancelLTO = async (
   setMessage,
   setTransactionHash,
   currentNetwork,
-  setSelectedNetwork,
-  nId
+  setSelectedNetwork
 ) => {
   setLoading(true);
   setDisableActionBtn(true);
@@ -37,19 +37,29 @@ export const _cancelLTO = async (
         setSelectedNetwork
       );
     }
+    const signer = web3provider.getSigner();
     await cancelLTO(
       walletAddress,
       web3provider.getSigner(),
       orderId,
       orderHash,
       setTransactionHash,
-      setOrderLogsDecoded,
-      setMessage,
-      web3provider,
       currentNetwork
-    );
+    ).then((res) => {
+      const exitPoolResult = async (res) => {
+        const result = await res.wait();
+        return result;
+      };
+      exitPoolResult(res).then((response) => {
+        if (response.status === 1) setMessage(POPUP_MESSAGE.ltoCancelSuccess);
+      });
+    });
     setLoading(false);
     setDisableActionBtn(false);
+    await getEthLogs(signer, walletAddress, currentNetwork).then((res) => {
+      const resArray = Array.from(res.values());
+      setOrderLogsDecoded(resArray);
+    });
   } catch (e) {
     console.log(e);
     setMessage(POPUP_MESSAGE.ltoCancelFailed);
