@@ -31,6 +31,7 @@ const ShortSwap = ({
     setAccount,
     setWalletConnected,
     swapAmount,
+    setSwapAmount,
     srcAddress,
     destAddress,
     account,
@@ -133,6 +134,9 @@ const ShortSwap = ({
           setLoading,
           selectedNetwork?.network
         );
+
+        setSwapAmount(0);
+        setExpectedSwapOut(0.0);
       }
     } catch (err) {
       console.error(err);

@@ -94,15 +94,6 @@ function App() {
     setShowDisconnect(false);
   };
 
-  //  Swap Token
-
-  useEffect(() => {
-    if (transactionHash) {
-      setSwapAmount(0);
-      setExpectedSwapOut(0);
-    }
-  }, [transactionHash]);
-
   const data = {
     token: {
       name: "Ethereum",

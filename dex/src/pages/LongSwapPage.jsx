@@ -50,6 +50,7 @@ const LongSwapPage = (props) => {
     setAccount,
     setWalletConnected,
     swapAmount,
+    setSwapAmount,
     srcAddress,
     destAddress,
     account,
@@ -102,36 +103,41 @@ const LongSwapPage = (props) => {
 
   async function LongSwapButtonClick() {
     console.log("Wallet", isWalletConnected);
-    if (!isWalletConnected) {
-      await connectWallet(
-        setweb3provider,
-        setCurrentBlock,
-        setBalance,
-        setAccount,
-        setWalletConnected,
-        setSelectedNetwork
-      );
-      await getEthLogs(
-        web3provider.getSigner(),
-        account,
-        selectedNetwork?.network
-      );
-    } else {
-      console.log(web3provider, web3provider.getSigner());
-      await _placeLongTermOrders(
-        swapAmount,
-        srcAddress,
-        destAddress,
-        numberOfBlockIntervals,
-        web3provider,
-        account,
-        setTransactionHash,
-        setLoading,
-        setIsPlacedLongTermOrder,
-        setOrderLogsDecoded,
-        setError,
-        selectedNetwork?.network
-      );
+    try {
+      if (!isWalletConnected) {
+        await connectWallet(
+          setweb3provider,
+          setCurrentBlock,
+          setBalance,
+          setAccount,
+          setWalletConnected,
+          setSelectedNetwork
+        );
+        await getEthLogs(
+          web3provider.getSigner(),
+          account,
+          selectedNetwork?.network
+        );
+      } else {
+        console.log(web3provider, web3provider.getSigner());
+        await _placeLongTermOrders(
+          swapAmount,
+          srcAddress,
+          destAddress,
+          numberOfBlockIntervals,
+          web3provider,
+          account,
+          setTransactionHash,
+          setLoading,
+          setIsPlacedLongTermOrder,
+          setOrderLogsDecoded,
+          setError,
+          selectedNetwork?.network
+        );
+        setSwapAmount(0);
+      }
+    } catch (err) {
+      console.log(err);
     }
   }
 

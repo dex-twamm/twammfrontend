@@ -373,7 +373,7 @@ const LongSwap = (props) => {
           ) : (
             <></>
           )}
-          {isWalletConnected ? (
+          {isWalletConnected && allowance ? (
             <button
               className={classNames(styles.btn, styles.btnConnect)}
               style={{
@@ -404,12 +404,20 @@ const LongSwap = (props) => {
                 buttonText
               )}
             </button>
-          ) : (
+          ) : !isWalletConnected ? (
             <button
               className={classNames(styles.btn, styles.btnConnect)}
               onClick={handleClick}
             >
               Connect Wallet
+            </button>
+          ) : (
+            //this is for the small time interval while allowance is loading.
+            <button
+              className={classNames(styles.btn, styles.btnConnect)}
+              onClick={handleClick}
+            >
+              <CircularProgress sx={{ color: "white" }} />
             </button>
           )}
         </Box>

@@ -298,7 +298,7 @@ const Swap = (props) => {
           ) : (
             <></>
           )}
-          {isWalletConnected ? (
+          {isWalletConnected && allowance ? (
             <button
               className={classNames(styles.btn, styles.btnConnect)}
               style={{
@@ -328,12 +328,19 @@ const Swap = (props) => {
                 buttonText
               )}
             </button>
-          ) : (
+          ) : !isWalletConnected ? (
             <button
               className={classNames(styles.btn, styles.btnConnect)}
               onClick={handleClick}
             >
               Connect Wallet
+            </button>
+          ) : (
+            <button
+              className={classNames(styles.btn, styles.btnConnect)}
+              onClick={handleClick}
+            >
+              <CircularProgress sx={{ color: "white" }} />
             </button>
           )}
         </Box>
