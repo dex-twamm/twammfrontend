@@ -78,10 +78,10 @@ const LongSwapPage = (props) => {
       destAddress,
       srcAddress
     );
-    let interval1;
+    let verifyLongSwapInterval;
     // Wait for 0.5 second before fetching price.
     if (parseFloat(allowance) > swapAmount) {
-      interval1 = setTimeout(() => {
+      verifyLongSwapInterval = setTimeout(() => {
         verifyLongSwap(
           swapAmount,
           setLongSwapVerifyLoading,
@@ -96,7 +96,7 @@ const LongSwapPage = (props) => {
       }, 500);
     }
     return () => {
-      clearTimeout(interval1);
+      clearTimeout(verifyLongSwapInterval);
     };
   }, [swapAmount, destAddress, srcAddress, numberOfBlockIntervals]);
 
