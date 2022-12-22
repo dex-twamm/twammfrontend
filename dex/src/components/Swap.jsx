@@ -37,7 +37,7 @@ const Swap = (props) => {
     srcAddress,
     setTransactionHash,
     isWalletConnected,
-    setAllowTwammMessage,
+    setAllowTwammErrorMessage,
   } = useContext(ShortSwapContext);
 
   const { tokenA, tokenB, setTokenA, setTokenB, allowance } =
@@ -82,7 +82,7 @@ const Swap = (props) => {
       setTransactionHash(approval.hash);
     } catch (e) {
       console.log(e);
-      setAllowTwammMessage(e?.message);
+      setAllowTwammErrorMessage(e?.message);
     }
   };
 

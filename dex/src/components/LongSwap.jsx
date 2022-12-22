@@ -43,7 +43,7 @@ const LongSwap = (props) => {
     setTransactionHash,
     isWalletConnected,
     web3provider,
-    setAllowTwammMessage,
+    setAllowTwammErrorMessage,
   } = useContext(ShortSwapContext);
 
   const {
@@ -103,7 +103,7 @@ const LongSwap = (props) => {
       );
       setTransactionHash(approval.hash);
     } catch (e) {
-      setAllowTwammMessage(e?.message);
+      setAllowTwammErrorMessage(e?.message);
     }
   };
 

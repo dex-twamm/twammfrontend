@@ -27,7 +27,7 @@ export const ShortSwapProvider = ({ children }) => {
   const [LPTokenBalance, setLPTokenBalance] = useState([]);
   const [balance, setBalance] = useState();
   const [spotPriceLoading, setSpotPriceLoading] = useState(false);
-  const [allowTwammMessage, setAllowTwammMessage] = useState("");
+  const [allowTwammErrorMessage, setAllowTwammErrorMessage] = useState("");
 
   return (
     <ShortSwapContext.Provider
@@ -84,8 +84,8 @@ export const ShortSwapProvider = ({ children }) => {
         setBalance,
         spotPriceLoading,
         setSpotPriceLoading,
-        allowTwammMessage,
-        setAllowTwammMessage,
+        allowTwammErrorMessage,
+        setAllowTwammErrorMessage,
       }}
     >
       {children}
