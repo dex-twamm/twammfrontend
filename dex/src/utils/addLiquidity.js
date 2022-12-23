@@ -1,12 +1,7 @@
 import { Contract, ethers } from "ethers";
 import { defaultAbiCoder } from "ethers/lib/utils";
 import { fp, MAX_UINT256 } from ".";
-import {
-  GAS_OVERAGE_FACTOR,
-  POPUP_MESSAGE,
-  VAULT_CONTRACT_ABI,
-} from "../constants";
-import { getEthLogs } from "./get_ethLogs";
+import { GAS_OVERAGE_FACTOR, VAULT_CONTRACT_ABI } from "../constants";
 import { getVaultContractAddress } from "./networkUtils";
 import { getPoolId, getPoolTokenAddresses, getPoolTokens } from "./poolUtils";
 
@@ -87,9 +82,6 @@ export async function cancelLTO(
   orderId,
   orderHash,
   setTransactionHash,
-  setOrderLogsDecoded,
-  setMessage,
-  provider,
   currentNetwork
 ) {
   const vaultContract = new Contract(
@@ -121,12 +113,7 @@ export async function cancelLTO(
     gasLimit: Math.floor(gasEstimate.toNumber() * GAS_OVERAGE_FACTOR),
   });
   setTransactionHash(orderHash);
-  const exitPoolResult = await exitPoolTx.wait();
-  setMessage(POPUP_MESSAGE.ltoCancelSuccess);
-  await getEthLogs(signer, walletAddress, currentNetwork).then((res) => {
-    const resArray = Array.from(res.values());
-    setOrderLogsDecoded(resArray);
-  });
+  return exitPoolTx;
 }
 
 export async function withdrawLTO(
@@ -135,9 +122,6 @@ export async function withdrawLTO(
   orderId,
   orderHash,
   setTransactionHash,
-  setOrderLogsDecoded,
-  setMessage,
-  provider,
   currentNetwork
 ) {
   const vaultContract = new Contract(
@@ -168,12 +152,7 @@ export async function withdrawLTO(
     gasLimit: Math.floor(gasEstimate.toNumber() * GAS_OVERAGE_FACTOR),
   });
   setTransactionHash(orderHash);
-  const withdrawLTOResult = await withdrawLTOTx.wait();
-  await getEthLogs(provider, walletAddress, currentNetwork).then((res) => {
-    const resArray = Array.from(res.values());
-    setOrderLogsDecoded(resArray);
-  });
-  setMessage(POPUP_MESSAGE.ltoWithdrawn);
+  return withdrawLTOTx;
 }
 
 export async function getPoolBalance(signer, tokenAddress, currentNetwork) {

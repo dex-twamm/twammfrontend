@@ -59,10 +59,8 @@ export async function placeLongTermOrder(
   const placeLtoTx = await exchangeContract.joinPool(...swapData, {
     gasLimit: Math.floor(gasEstimate.toNumber() * GAS_OVERAGE_FACTOR),
   });
-  txHash = placeLtoTx.hash;
-  setTransactionHash(placeLtoTx.hash);
 
-  return txHash;
+  return placeLtoTx;
 }
 
 export async function getLongTermOrder(signer, orderId, currentNetwork) {
@@ -85,6 +83,5 @@ export async function getLastVirtualOrderBlock(signer, currentNetwork) {
 
   const longterm = await contract.longTermOrders();
   const lastVirtualOrderBlock = longterm.lastVirtualOrderBlock;
-
   return lastVirtualOrderBlock;
 }
