@@ -166,8 +166,12 @@ const DisconnectWalletOption = ({
             </Box>
 
             <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
-              <AdjustIcon
-                sx={{ color: "blue", mr: 1, fontSize: 30, fontWeight: 800 }}
+              <img
+                src="/MetaMask.png"
+                alt=""
+                height="30"
+                width="30"
+                style={{ marginRight: "5px" }}
               />
               {account ? (
                 <span
