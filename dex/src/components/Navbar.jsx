@@ -17,7 +17,7 @@ const Navbar = () => {
   const [showDisconnect, setShowDisconnect] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
 
-  const { selectedNetwork, setSelectedNetwork, nId } = useContext(UIContext);
+  const { selectedNetwork, setSelectedNetwork } = useContext(UIContext);
 
   const {
     setError,
@@ -31,36 +31,13 @@ const Navbar = () => {
     setWalletConnected,
   } = useContext(ShortSwapContext);
 
-  let initialNetwork = {};
-
-  if (typeof nId === "undefined" || nId === "undefined") {
-    initialNetwork = NETWORKS[1];
-  } else {
-    initialNetwork = NETWORKS.find((id) => id.chainId === nId);
-  }
-
-  useEffect(() => {
-    if (!selectedNetwork) {
-      setSelectedNetwork({
-        network: initialNetwork?.name,
-        logo: initialNetwork?.logo,
-        chainId: initialNetwork?.chainId,
-      });
-    }
-  }, [initialNetwork]);
-
-  const handleSelect = async (networkName, logo, chainId) => {
+  const handleSelect = async (chainId) => {
     const id = chainId;
     if (isWalletConnected) {
       try {
         await window.ethereum.request({
           method: "wallet_switchEthereumChain",
           params: [{ chainId: toHex(id) }],
-        });
-        setSelectedNetwork({
-          network: networkName,
-          logo: logo,
-          chainId: chainId,
         });
         window.location.reload();
       } catch (err) {
@@ -76,9 +53,7 @@ const Navbar = () => {
         key={index}
         className={styles.networkName}
         value={network.chainId}
-        onClick={() =>
-          handleSelect(network.name, network.logo, network.chainId)
-        }
+        onClick={() => handleSelect(network.chainId)}
       >
         {network.name}
       </p>
