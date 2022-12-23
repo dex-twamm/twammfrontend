@@ -429,7 +429,6 @@ const LiquidityPools = ({ showAddLiquidity, showRemoveLiquidity }) => {
                           Object.values(POOLS?.[selectedNetwork?.network])?.[0]
                             ?.fees
                         }
-                        %
                       </span>
                     </Box>
 
