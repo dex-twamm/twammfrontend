@@ -1,9 +1,8 @@
 import { timeDeltaString } from "../utils";
-import { POOLS } from "../utils/pool";
+import { getPoolBlockInterval } from "../utils/poolUtils";
 
 const valueLabel = (value, currentBlock, currentNetwork) => {
-  const blockInterval = Object.values(POOLS?.[currentNetwork])?.[0]
-    ?.blockInterval;
+  const blockInterval = getPoolBlockInterval(currentNetwork);
 
   let currentBlockNumber = currentBlock?.number || 0;
   const numBlocks =
