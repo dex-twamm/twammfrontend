@@ -19,6 +19,8 @@ const PopupModal = ({
     setSuccess,
     transactionHash,
     setTransactionHash,
+    allowTwammErrorMessage,
+    setAllowTwammErrorMessage,
   } = useContext(ShortSwapContext);
 
   const { selectedNetwork } = useContext(UIContext);
@@ -42,6 +44,7 @@ const PopupModal = ({
     setTransactionHash("");
     setIsPlacedLongTermOrder && setIsPlacedLongTermOrder();
     setMessage("");
+    setAllowTwammErrorMessage("");
   };
 
   const handleTransactonClose = () => {
@@ -96,6 +99,7 @@ const PopupModal = ({
               severity="success"
               onClose={() => {
                 handleClose();
+                window.location.reload();
               }}
             >
               {success}
@@ -127,6 +131,21 @@ const PopupModal = ({
               {isPlacedLongTermOrder === true
                 ? POPUP_MESSAGE.ltoPlaced
                 : POPUP_MESSAGE.ltoPlaceFailed}
+            </Alert>
+          </Backdrop>
+        )}
+        {allowTwammErrorMessage && (
+          <Backdrop
+            open={allowTwammErrorMessage ? true : false}
+            onClose={handleClose}
+          >
+            <Alert
+              severity={"error"}
+              onClose={() => {
+                handleClose();
+              }}
+            >
+              {allowTwammErrorMessage}
             </Alert>
           </Backdrop>
         )}

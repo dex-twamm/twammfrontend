@@ -12,10 +12,7 @@ import LongSwapPage from "./pages/LongSwapPage";
 import ShortSwap from "./pages/ShortSwap";
 import { LongSwapContext, ShortSwapContext, UIContext } from "./providers";
 import { bigToStr, truncateAddress } from "./utils";
-import {
-
-  getPoolBalance,
-} from "./utils/addLiquidity";
+import { getPoolBalance } from "./utils/addLiquidity";
 import { connectWallet } from "./utils/connetWallet";
 import { getLPTokensBalance, getTokensBalance } from "./utils/getAmount";
 import { getAllowance } from "./utils/getApproval";
@@ -97,15 +94,6 @@ function App() {
     setShowDisconnect(false);
   };
 
-  //  Swap Token
-
-  useEffect(() => {
-    if (transactionHash) {
-      setSwapAmount(0);
-      setExpectedSwapOut(0);
-    }
-  }, [transactionHash]);
-
   const data = {
     token: {
       name: "Ethereum",
@@ -158,7 +146,6 @@ function App() {
     setLoading(true);
     setOrderLogsLoading(true);
     if (typeof account !== "undefined" && typeof web3provider !== "undefined") {
-
       // const tokenAddress = srcAddress;
       const walletAddress = account;
       if (!walletAddress) {
@@ -173,11 +160,12 @@ function App() {
           setTokenBalances(res);
         });
 
-        await getLastVirtualOrderBlock(web3provider?.getSigner(), selectedNetwork?.network).then(
-          (res) => {
-            setLastVirtualOrderBlock(res);
-          }
-        );
+        await getLastVirtualOrderBlock(
+          web3provider?.getSigner(),
+          selectedNetwork?.network
+        ).then((res) => {
+          setLastVirtualOrderBlock(res);
+        });
         await getEthLogs(
           web3provider?.getSigner(),
           walletAddress,
@@ -261,11 +249,7 @@ function App() {
   );
 
   if (showAddLiquidity) {
-    liquidityMarkup = (
-      <AddLiquidity
-        showAddLiquidity={setShowAddLiquidity}
-      />
-    );
+    liquidityMarkup = <AddLiquidity showAddLiquidity={setShowAddLiquidity} />;
   } else if (showRemoveLiquidity)
     liquidityMarkup = (
       <RemoveLiquidity showRemoveLiquidity={setShowRemoveLiquidity} />
@@ -273,6 +257,22 @@ function App() {
 
   // Condition of Liquidity existing
   // if(liquidityExists) liquidityMarkup = <LiquidityPools/>
+
+  //This will automatically change the account of our app without refreshing when the account in metamask is changed.
+  useEffect(() => {
+    window.ethereum.on("accountsChanged", function (accounts) {
+      setAccount(accounts[0]);
+    });
+
+    connectWallet(
+      setweb3provider,
+      setCurrentBlock,
+      setBalance,
+      setAccount,
+      setWalletConnected,
+      setSelectedNetwork
+    );
+  }, [account]);
 
   return (
     <>

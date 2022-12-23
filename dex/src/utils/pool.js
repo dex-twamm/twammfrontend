@@ -14,6 +14,7 @@ export const POOLS = {
       LTOContract: "0x04143AA32FB58bcB943dfF29C3aad9C51FcF9630",
       TOKEN_ONE_ADDRESS: "0x499d11E0b6eAC7c0593d8Fb292DCBbF815Fb29Ae",
       TOKEN_TWO_ADDRESS: "0xBA62BCfcAaFc6622853cca2BE6Ac7d845BC0f2Dc",
+      blockInterval: 150,
       tokens: [
         {
           symbol: "MATIC",
@@ -44,6 +45,7 @@ export const POOLS = {
       LTOContract: "0x9D3f9803826EB51B046D4366a5cf7313308E7CDC",
       TOKEN_ONE_ADDRESS: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
       TOKEN_TWO_ADDRESS: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+      blockInterval: 150,
       tokens: [
         {
           symbol: "USDC",

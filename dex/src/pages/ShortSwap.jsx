@@ -31,6 +31,7 @@ const ShortSwap = ({
     setAccount,
     setWalletConnected,
     swapAmount,
+    setSwapAmount,
     srcAddress,
     destAddress,
     account,
@@ -110,7 +111,11 @@ const ShortSwap = ({
           setWalletConnected,
           setSelectedNetwork
         );
-        await getEthLogs(web3provider.getSigner(), account, selectedNetwork?.network);
+        await getEthLogs(
+          web3provider.getSigner(),
+          account,
+          selectedNetwork?.network
+        );
       } else {
         await _swapTokens(
           ethBalance,
@@ -129,6 +134,9 @@ const ShortSwap = ({
           setLoading,
           selectedNetwork?.network
         );
+
+        setSwapAmount(0);
+        setExpectedSwapOut(0.0);
       }
     } catch (err) {
       console.error(err);
