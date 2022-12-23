@@ -39,24 +39,6 @@ const Navbar = () => {
     initialNetwork = NETWORKS.find((id) => id.chainId === nId);
   }
 
-  console.log("Selected Network in Navbar", selectedNetwork);
-
-  // useEffect(() => {
-  //   if (
-  //     !localStorage.getItem("network_name") ||
-  //     localStorage.getItem("network_name") === "undefined"
-  //   ) {
-  //     localStorage.setItem("network_name", initialNetwork?.name);
-  //     localStorage.setItem("network_logo", initialNetwork?.logo);
-  //     localStorage.setItem("chainId", initialNetwork?.chainId);
-  //   } else if (localStorage.getItem("chainId") === nId) {
-  //     const network = NETWORKS.find((nw) => nw.chainId === nId);
-  //     localStorage.setItem("network_name", network?.name);
-  //     localStorage.setItem("network_logo", network?.logo);
-  //     localStorage.setItem("chainId", network?.chainId);
-  //   }
-  // }, [initialNetwork]);
-
   useEffect(() => {
     if (!selectedNetwork) {
       setSelectedNetwork({
@@ -66,26 +48,6 @@ const Navbar = () => {
       });
     }
   }, [initialNetwork]);
-
-  // const network_name = localStorage.getItem("network_name");
-  // const network_logo = localStorage.getItem("network_logo");
-  // const network_id = localStorage.getItem("chainId");
-
-  // // useEffect(() => {
-  // //   if (typeof network_name !== "undefined" && network_name !== "undefined") {
-  // //     setSelectedNetwork({
-  // //       network: network_name,
-  // //       logo: network_logo,
-  // //       chainId: network_id,
-  // //     });
-  // //   } else {
-  // //     setSelectedNetwork({
-  // //       network: initialNetwork?.[0]?.name,
-  // //       logo: initialNetwork?.[0]?.logo,
-  // //       chainId: initialNetwork?.[0]?.chainId,
-  // //     });
-  // //   }
-  // // }, [network_name]);
 
   const handleSelect = async (networkName, logo, chainId) => {
     const id = chainId;
@@ -100,10 +62,6 @@ const Navbar = () => {
           logo: logo,
           chainId: chainId,
         });
-        // localStorage.setItem("network_name", networkName);
-        // localStorage.setItem("network_logo", logo);
-        // localStorage.setItem("chainId", id);
-
         window.location.reload();
       } catch (err) {
         console.error(err);
