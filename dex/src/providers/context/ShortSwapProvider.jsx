@@ -2,8 +2,6 @@ import { createContext, useState } from "react";
 
 export const ShortSwapProvider = ({ children }) => {
   const [swapAmount, setSwapAmount] = useState(0);
-  const [srcAddress, setSrcAddress] = useState("");
-  const [destAddress, setDestAddress] = useState("");
   const [error, setError] = useState();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState();
@@ -30,10 +28,6 @@ export const ShortSwapProvider = ({ children }) => {
       value={{
         swapAmount,
         setSwapAmount,
-        srcAddress,
-        setSrcAddress,
-        destAddress,
-        setDestAddress,
         error,
         setError,
         setLoading,

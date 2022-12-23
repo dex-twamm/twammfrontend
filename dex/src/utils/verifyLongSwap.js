@@ -57,8 +57,8 @@ export const verifyLongSwapTxn = async (
 export const verifyLongSwap = async (
   swapAmount,
   setLongSwapVerifyLoading,
-  srcAddress,
-  destAddress,
+  tokenA,
+  tokenB,
   web3provider,
   account,
   setLongSwapFormErrors,
@@ -77,10 +77,10 @@ export const verifyLongSwap = async (
 
     try {
       const tokenInIndex = poolConfig.tokens.findIndex(
-        (object) => srcAddress === object.address
+        (object) => tokenA === object.address
       );
       const tokenOutIndex = poolConfig.tokens.findIndex(
-        (object) => destAddress === object.address
+        (object) => tokenB === object.address
       );
       const amountIn = ethers.utils.parseUnits(
         swapAmount,

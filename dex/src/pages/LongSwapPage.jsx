@@ -27,6 +27,8 @@ const LongSwapPage = () => {
     setLongSwapFormErrors,
     longSwapVerifyLoading,
     setLongSwapVerifyLoading,
+    tokenA,
+    tokenB,
   } = useContext(LongSwapContext);
 
   const {
@@ -38,8 +40,6 @@ const LongSwapPage = () => {
     setAccount,
     setWalletConnected,
     swapAmount,
-    srcAddress,
-    destAddress,
     account,
     setTransactionHash,
     setLoading,
@@ -62,8 +62,8 @@ const LongSwapPage = () => {
       verifyLongSwap(
         swapAmount,
         setLongSwapVerifyLoading,
-        srcAddress,
-        destAddress,
+        tokenA?.address,
+        tokenB?.address,
         web3provider,
         account,
         setLongSwapFormErrors,
@@ -75,7 +75,7 @@ const LongSwapPage = () => {
     return () => {
       clearTimeout(interval1);
     };
-  }, [swapAmount, destAddress, srcAddress, numberOfBlockIntervals]);
+  }, [swapAmount, tokenB, tokenA, numberOfBlockIntervals]);
 
   async function LongSwapButtonClick() {
     if (!isWalletConnected) {
@@ -95,8 +95,8 @@ const LongSwapPage = () => {
     } else {
       await _placeLongTermOrders(
         swapAmount,
-        srcAddress,
-        destAddress,
+        tokenA?.address,
+        tokenB?.address,
         numberOfBlockIntervals,
         web3provider,
         account,

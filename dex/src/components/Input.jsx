@@ -19,14 +19,8 @@ const Input = (props) => {
     setTokenB,
     placeholder,
   } = props;
-  const {
-    tokenBalances,
-    selectToken,
-    setEthBalance,
-    setSrcAddress,
-    setDestAddress,
-    isWalletConnected,
-  } = useContext(ShortSwapContext);
+  const { tokenBalances, selectToken, setEthBalance, isWalletConnected } =
+    useContext(ShortSwapContext);
   const { tokenA, tokenB } = useContext(LongSwapContext);
 
   const { setSelectedNetwork } = useContext(UIContext);
@@ -47,8 +41,6 @@ const Input = (props) => {
     });
     // TODO: Rename this to TokenInBalance.
     setEthBalance(balanceA?.[0]?.[tokenA?.address]);
-    setSrcAddress(tokenA?.address);
-    setDestAddress(tokenB?.address);
   }, [setTokenA, setTokenB, tokenBalances, setSelectedNetwork]);
 
   return (

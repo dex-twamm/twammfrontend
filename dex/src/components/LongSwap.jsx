@@ -44,7 +44,6 @@ const LongSwap = (props) => {
     setExpectedSwapOut,
     error,
     currentBlock,
-    srcAddress,
     setTransactionHash,
     isWalletConnected,
     web3provider,
@@ -101,7 +100,7 @@ const LongSwap = (props) => {
     try {
       const approval = await approveMaxAllowance(
         web3provider,
-        srcAddress,
+        tokenA?.address,
         selectedNetwork?.network
       );
       setTransactionHash(approval.hash);

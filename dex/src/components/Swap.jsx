@@ -35,7 +35,6 @@ const Swap = (props) => {
     error,
     setSpotPrice,
     spotPrice,
-    srcAddress,
     setTransactionHash,
     isWalletConnected,
   } = useContext(ShortSwapContext);
@@ -82,7 +81,7 @@ const Swap = (props) => {
     try {
       const approval = await approveMaxAllowance(
         web3provider,
-        srcAddress,
+        tokenA?.address,
         selectedNetwork?.network
       );
       setTransactionHash(approval.hash);
