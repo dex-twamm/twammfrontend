@@ -7,8 +7,8 @@ import { getPoolConfig } from "./poolUtils";
 export const spotPrice = async (
   swapAmount,
   setSpotPriceLoading,
-  srcAddress,
-  destAddress,
+  tokenA,
+  tokenB,
   web3provider,
   account,
   deadline,
@@ -22,10 +22,10 @@ export const spotPrice = async (
 
     const poolConfig = getPoolConfig(currentNetwork);
     const tokenIn = poolConfig?.tokens.find(
-      (token) => token.address === srcAddress
+      (token) => token.address === tokenA
     );
     const tokenOut = poolConfig?.tokens.find(
-      (token) => token.address === destAddress
+      (token) => token.address === tokenB
     );
 
     //todo : Change this to use token decimal places

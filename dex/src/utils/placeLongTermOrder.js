@@ -6,8 +6,8 @@ import { getPoolConfig } from "./poolUtils";
 
 export const _placeLongTermOrders = async (
   swapAmount,
-  srcAddress,
-  destAddress,
+  tokenA,
+  tokenB,
   numberOfBlockIntervals,
   web3provider,
   account,
@@ -22,10 +22,10 @@ export const _placeLongTermOrders = async (
 
   try {
     const tokenInIndex = poolConfig.tokens.findIndex(
-      (object) => srcAddress === object.address
+      (object) => tokenA === object.address
     );
     const tokenOutIndex = poolConfig.tokens.findIndex(
-      (object) => destAddress === object.address
+      (object) => tokenB === object.address
     );
     const amountIn = ethers.utils.parseUnits(
       swapAmount,
