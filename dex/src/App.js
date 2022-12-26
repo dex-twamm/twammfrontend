@@ -265,6 +265,15 @@ function App() {
     };
     window.ethereum.on("accountsChanged", accountsChangedListener);
 
+    return () => {
+      window.ethereum.removeListener(
+        "accountsChanged",
+        accountsChangedListener
+      );
+    };
+  }, []);
+
+  useEffect(() => {
     connectWallet(
       setweb3provider,
       setCurrentBlock,
@@ -273,13 +282,6 @@ function App() {
       setWalletConnected,
       setSelectedNetwork
     );
-
-    return () => {
-      window.ethereum.removeListener(
-        "accountsChanged",
-        accountsChangedListener
-      );
-    };
   }, [account]);
 
   return (
