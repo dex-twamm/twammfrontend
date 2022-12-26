@@ -50,16 +50,20 @@ export const _cancelLTO = async (
         const result = await res.wait();
         return result;
       };
-      exitPoolResult(res).then((response) => {
-        if (response.status === 1) setMessage(POPUP_MESSAGE.ltoCancelSuccess);
+      exitPoolResult(res).then(async (response) => {
+        if (response.status === 1) {
+          await getEthLogs(signer, walletAddress, currentNetwork).then(
+            (res) => {
+              const resArray = Array.from(res.values());
+              setOrderLogsDecoded(resArray);
+            }
+          );
+          setMessage(POPUP_MESSAGE.ltoCancelSuccess);
+        } else setMessage(POPUP_MESSAGE.ltoCancelFailed);
       });
     });
     setLoading(false);
     setDisableActionBtn(false);
-    await getEthLogs(signer, walletAddress, currentNetwork).then((res) => {
-      const resArray = Array.from(res.values());
-      setOrderLogsDecoded(resArray);
-    });
   } catch (e) {
     console.log(e);
     setMessage(POPUP_MESSAGE.ltoCancelFailed);

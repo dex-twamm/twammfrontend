@@ -30,7 +30,16 @@ export const _exitPool = async (
         setSelectedNetwork
       );
     }
-    await exitPool(walletAddress, signer, bptAmountIn, currentNetwork);
+    await exitPool(walletAddress, signer, bptAmountIn, currentNetwork).then(
+      (res) => {
+        const exitPoolResult = async () => {
+          const result = await res.wait();
+          return result;
+        };
+        //Todo- code as per the response from exitPoolResult goes here
+        // ...
+      }
+    );
     setLoading(false);
   } catch (e) {
     console.log(e);

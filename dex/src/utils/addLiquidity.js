@@ -32,11 +32,12 @@ export async function joinPool(walletAddress, signer, currentNetwork) {
 
   const gasEstimate = await vaultContract.estimateGas.joinPool(...data);
 
-  const joinPool = await vaultContract.joinPool(...data, {
+  const joinPoolTx = await vaultContract.joinPool(...data, {
     gasLimit: Math.floor(gasEstimate.toNumber() * GAS_OVERAGE_FACTOR),
   });
 
-  const joinPoolResult = await joinPool.wait();
+  // const joinPoolResult = await joinPool.wait();
+  return joinPoolTx;
 }
 
 export async function exitPool(
@@ -73,7 +74,8 @@ export async function exitPool(
   const exitPoolTx = await vaultContract.exitPool(...data, {
     gasLimit: Math.floor(gasEstimate.toNumber() * GAS_OVERAGE_FACTOR),
   });
-  const exitPoolResult = await exitPoolTx.wait();
+  // const exitPoolResult = await exitPoolTx.wait();
+  return exitPoolTx;
 }
 
 export async function cancelLTO(

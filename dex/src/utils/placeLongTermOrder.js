@@ -53,8 +53,16 @@ export const _placeLongTermOrders = async (
           const result = await res.wait();
           return result;
         };
-        placeLtoTxResult(res).then((response) => {
-          if (response.status === 1) setIsPlacedLongTermOrder(true);
+        placeLtoTxResult(res).then(async (response) => {
+          if (response.status === 1) {
+            await getEthLogs(signer, walletAddress, currentNetwork).then(
+              (res) => {
+                const resArray = Array.from(res.values());
+                setOrderLogsDecoded(resArray);
+              }
+            );
+            setIsPlacedLongTermOrder(true);
+          } else setIsPlacedLongTermOrder(true);
         });
       })
       .catch((err) => {
@@ -62,10 +70,6 @@ export const _placeLongTermOrders = async (
         setIsPlacedLongTermOrder(false);
       })
       .finally(setLoading(false));
-    await getEthLogs(signer, walletAddress, currentNetwork).then((res) => {
-      const resArray = Array.from(res.values());
-      setOrderLogsDecoded(resArray);
-    });
   } catch (err) {
     console.error(err);
     setLoading(false);
