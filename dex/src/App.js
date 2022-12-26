@@ -279,7 +279,6 @@ function App() {
         "accountsChanged",
         accountsChangedListener
       );
-      console.log("Returensdkasjdlaksjdl");
     };
   }, [account]);
 
