@@ -10,7 +10,6 @@ import { LongSwapContext, ShortSwapContext } from "../providers";
 import { UIContext } from "../providers/context/UIProvider";
 import { connectWallet } from "../utils/connetWallet";
 import { spotPrice } from "../utils/getSpotPrice";
-import { getEthLogs } from "../utils/get_ethLogs";
 import { _swapTokens } from "../utils/shortSwap";
 
 const ShortSwap = ({
@@ -101,6 +100,7 @@ const ShortSwap = ({
   }, [swapAmount, destAddress, srcAddress, allowance]);
 
   async function ShortSwapButtonClick() {
+    const performGetEthLogs = true;
     try {
       if (!isWalletConnected) {
         await connectWallet(
@@ -109,12 +109,11 @@ const ShortSwap = ({
           setBalance,
           setAccount,
           setWalletConnected,
-          setSelectedNetwork
-        );
-        await getEthLogs(
-          web3provider.getSigner(),
+          setSelectedNetwork,
+          web3provider,
           account,
-          selectedNetwork?.network
+          selectedNetwork?.network,
+          performGetEthLogs
         );
       } else {
         await _swapTokens(
