@@ -419,10 +419,7 @@ const LongSwap = (props) => {
             </button>
           ) : (
             //this is for the small time interval while allowance is loading.
-            <button
-              className={classNames(styles.btn, styles.btnConnect)}
-              onClick={handleClick}
-            >
+            <button className={classNames(styles.btn, styles.btnConnect)}>
               <CircularProgress sx={{ color: "white" }} />
             </button>
           )}

@@ -336,10 +336,7 @@ const Swap = (props) => {
               Connect Wallet
             </button>
           ) : (
-            <button
-              className={classNames(styles.btn, styles.btnConnect)}
-              onClick={handleClick}
-            >
+            <button className={classNames(styles.btn, styles.btnConnect)}>
               <CircularProgress sx={{ color: "white" }} />
             </button>
           )}
