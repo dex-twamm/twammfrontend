@@ -158,7 +158,7 @@ const ShortSwap = () => {
             {showSettings && <PopupSettings />}
           </div>
           <Swap
-            connectWallet={ShortSwapButtonClick}
+            handleSwapAction={ShortSwapButtonClick}
             spotPriceLoading={spotPriceLoading}
           />
         </div>

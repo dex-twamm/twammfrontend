@@ -14,7 +14,7 @@ import { approveMaxAllowance } from "../utils/getApproval";
 import { UIContext } from "../providers/context/UIProvider";
 
 const Swap = (props) => {
-  const { connectWallet, spotPriceLoading } = props;
+  const { handleSwapAction, spotPriceLoading } = props;
 
   const [display, setDisplay] = useState(false);
 
@@ -75,7 +75,7 @@ const Swap = (props) => {
 
   const handleClick = () => {
     isWalletConnected && setFormErrors(validate(swapAmount));
-    connectWallet();
+    handleSwapAction();
   };
 
   const handleApproveButton = async () => {
