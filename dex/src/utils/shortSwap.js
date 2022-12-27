@@ -8,8 +8,8 @@ export const _swapTokens = async (
   poolCash,
   swapAmount,
   web3provider,
-  srcAddress,
-  destAddress,
+  tokenA,
+  tokenB,
   account,
   expectedSwapOut,
   tolerance,
@@ -21,9 +21,7 @@ export const _swapTokens = async (
   currentNetwork
 ) => {
   const poolConfig = getPoolConfig(currentNetwork);
-  const tokenIn = poolConfig.tokens.find(
-    (token) => token.address === srcAddress
-  );
+  const tokenIn = poolConfig.tokens.find((token) => token.address === tokenA);
 
   const swapAmountWei = ethers.utils.parseUnits(swapAmount, tokenIn.decimals);
   const walletBalanceWei = ethers.utils.parseUnits(
@@ -35,8 +33,8 @@ export const _swapTokens = async (
   if (swapAmountWei.lte(walletBalanceWei)) {
     try {
       const signer = web3provider.getSigner();
-      const assetIn = srcAddress;
-      const assetOut = destAddress;
+      const assetIn = tokenA;
+      const assetOut = tokenB;
       const walletAddress = account;
 
       // Call the swapTokens function from the `utils` folder

@@ -24,7 +24,7 @@ import { approveMaxAllowance } from "../utils/getApproval";
 import { UIContext } from "../providers/context/UIProvider";
 
 const LongSwap = (props) => {
-  const { connectWallet, buttonText, longSwapVerifyLoading } = props;
+  const { handleLongSwapAction, longSwapVerifyLoading } = props;
 
   const [display, setDisplay] = useState(false);
   const [value, setValue] = useState(0.0);
@@ -39,7 +39,6 @@ const LongSwap = (props) => {
     setExpectedSwapOut,
     error,
     currentBlock,
-    srcAddress,
     setTransactionHash,
     isWalletConnected,
     web3provider,
@@ -89,15 +88,15 @@ const LongSwap = (props) => {
   };
 
   const handleClick = () => {
-    buttonText === "Swap" && setLongSwapFormErrors(validate(swapAmount));
-    connectWallet();
+    isWalletConnected && setLongSwapFormErrors(validate(swapAmount));
+    handleLongSwapAction();
   };
 
   const handleApproveButton = async () => {
     try {
       const approval = await approveMaxAllowance(
         web3provider,
-        srcAddress,
+        tokenA?.address,
         selectedNetwork?.network
       );
       setTransactionHash(approval.hash);
@@ -405,7 +404,7 @@ const LongSwap = (props) => {
               ) : longSwapVerifyLoading ? (
                 <CircularProgress sx={{ color: "white" }} />
               ) : (
-                buttonText
+                "Swap"
               )}
             </button>
           ) : (

@@ -23,8 +23,6 @@ const ShortSwap = () => {
     setAccount,
     setWalletConnected,
     swapAmount,
-    srcAddress,
-    destAddress,
     account,
     setTransactionHash,
     setLoading,
@@ -42,7 +40,7 @@ const ShortSwap = () => {
     setSpotPriceLoading,
   } = useContext(ShortSwapContext);
   const { selectedNetwork, setSelectedNetwork } = useContext(UIContext);
-  const { allowance } = useContext(LongSwapContext);
+  const { allowance, tokenA, tokenB } = useContext(LongSwapContext);
 
   useEffect(() => {
     let interval1, interval2;
@@ -53,8 +51,8 @@ const ShortSwap = () => {
         spotPrice(
           swapAmount,
           setSpotPriceLoading,
-          srcAddress,
-          destAddress,
+          tokenA?.address,
+          tokenB?.address,
           web3provider,
           account,
           deadline,
@@ -69,8 +67,8 @@ const ShortSwap = () => {
         spotPrice(
           swapAmount,
           setSpotPriceLoading,
-          srcAddress,
-          destAddress,
+          tokenA?.address,
+          tokenB?.address,
           web3provider,
           account,
           deadline,
@@ -85,7 +83,7 @@ const ShortSwap = () => {
       clearTimeout(interval1);
       clearTimeout(interval2);
     };
-  }, [swapAmount, destAddress, srcAddress, allowance]);
+  }, [swapAmount, tokenB, tokenA, allowance]);
 
   const [showSettings, setShowSettings] = useState(false);
 
@@ -111,8 +109,8 @@ const ShortSwap = () => {
           poolCash,
           swapAmount,
           web3provider,
-          srcAddress,
-          destAddress,
+          tokenA?.address,
+          tokenB?.address,
           account,
           expectedSwapOut,
           tolerance,
@@ -158,8 +156,7 @@ const ShortSwap = () => {
             {showSettings && <PopupSettings />}
           </div>
           <Swap
-            connectWallet={ShortSwapButtonClick}
-            buttonText={!isWalletConnected ? "Connect Wallet" : "Swap"}
+            handleSwapAction={ShortSwapButtonClick}
             spotPriceLoading={spotPriceLoading}
           />
         </div>

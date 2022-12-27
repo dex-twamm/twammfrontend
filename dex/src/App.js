@@ -18,7 +18,6 @@ import { disconnect } from "./utils/disconnectWallet";
 
 function App() {
   const {
-    srcAddress,
     setSwapAmount,
     setLoading,
     setTokenBalances,
@@ -36,6 +35,7 @@ function App() {
     web3provider,
   } = useContext(ShortSwapContext);
   const {
+    tokenA,
     setOrderLogsDecoded,
     setLastVirtualOrderBlock,
     setAllowance,
@@ -69,11 +69,11 @@ function App() {
   // Use Memo
   useMemo(() => {
     const allowance = async () => {
-      const tokenAddress = srcAddress;
+      const tokenAddress = tokenA?.address;
       const walletAddress = account;
 
       // Allowance
-      if (srcAddress) {
+      if (tokenA?.address) {
         await getAllowance(
           web3provider?.getSigner(),
           walletAddress,
@@ -93,14 +93,13 @@ function App() {
       }
     };
     allowance();
-  }, [srcAddress, transactionHash]);
+  }, [tokenA, transactionHash]);
 
   // Getting Each Token Balances
   const tokenBalance = useCallback(async () => {
     setLoading(true);
     setOrderLogsLoading(true);
     if (account && web3provider) {
-      // const tokenAddress = srcAddress;
       const walletAddress = account;
       if (!walletAddress) {
         return null;

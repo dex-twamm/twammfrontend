@@ -13,13 +13,8 @@ const Modal = ({
   tokenBalances,
 }) => {
   // useContext To Retrieve The Source and Destination Address of The Token
-  const {
-    isWalletConnected,
-    setSrcAddress,
-    setDestAddress,
-    selectToken,
-    setEthBalance,
-  } = useContext(ShortSwapContext);
+  const { isWalletConnected, selectToken, setEthBalance } =
+    useContext(ShortSwapContext);
 
   const { tokenA, tokenB } = useContext(LongSwapContext);
   const [tokenDetails, setTokenDetails] = useState();
@@ -51,13 +46,11 @@ const Modal = ({
     if (selectToken === "1") {
       //set tokenFrom
       setEthBalance(chosenTokenBalance);
-      setSrcAddress(chosenToken.address);
       if (chosenToken.symbol === tokenB.symbol) {
         setTokenB({
           ...tokenA,
           tokenIsSet: true,
         });
-        setDestAddress(tokenA.address);
       }
       setTokenA({
         ...chosenToken,
@@ -65,7 +58,6 @@ const Modal = ({
         tokenIsSet: true,
       });
     } else if (selectToken === "2") {
-      setDestAddress(chosenToken.address);
       if (chosenToken.symbol === tokenA.symbol) {
         return <></>;
       } else

@@ -17,7 +17,7 @@ const Navbar = () => {
   const [showDisconnect, setShowDisconnect] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
 
-  const { selectedNetwork, setSelectedNetwork, nId } = useContext(UIContext);
+  const { selectedNetwork, setSelectedNetwork } = useContext(UIContext);
 
   const {
     setError,
@@ -31,51 +31,7 @@ const Navbar = () => {
     setWalletConnected,
   } = useContext(ShortSwapContext);
 
-  let initialNetwork = {};
-
-  if (typeof nId === "undefined" || nId === "undefined") {
-    initialNetwork = NETWORKS[1];
-  } else {
-    initialNetwork = NETWORKS.find((id) => id.chainId === nId);
-  }
-
-  useEffect(() => {
-    if (
-      !localStorage.getItem("network_name") ||
-      localStorage.getItem("network_name") === "undefined"
-    ) {
-      localStorage.setItem("network_name", initialNetwork?.name);
-      localStorage.setItem("network_logo", initialNetwork?.logo);
-      localStorage.setItem("chainId", initialNetwork?.chainId);
-    } else if (localStorage.getItem("chainId") === nId) {
-      const network = NETWORKS.find((nw) => nw.chainId === nId);
-      localStorage.setItem("network_name", network?.name);
-      localStorage.setItem("network_logo", network?.logo);
-      localStorage.setItem("chainId", network?.chainId);
-    }
-  }, [initialNetwork]);
-
-  const network_name = localStorage.getItem("network_name");
-  const network_logo = localStorage.getItem("network_logo");
-  const network_id = localStorage.getItem("chainId");
-
-  useEffect(() => {
-    if (typeof network_name !== "undefined" && network_name !== "undefined") {
-      setSelectedNetwork({
-        network: network_name,
-        logo: network_logo,
-        chainId: network_id,
-      });
-    } else {
-      setSelectedNetwork({
-        network: initialNetwork?.[0]?.name,
-        logo: initialNetwork?.[0]?.logo,
-        chainId: initialNetwork?.[0]?.chainId,
-      });
-    }
-  }, [network_name]);
-
-  const handleSelect = async (networkName, logo, chainId) => {
+  const handleSelect = async (chainId) => {
     const id = chainId;
     if (isWalletConnected) {
       try {
@@ -83,15 +39,6 @@ const Navbar = () => {
           method: "wallet_switchEthereumChain",
           params: [{ chainId: toHex(id) }],
         });
-        setSelectedNetwork({
-          network: networkName,
-          logo: logo,
-          chainId: chainId,
-        });
-        localStorage.setItem("network_name", networkName);
-        localStorage.setItem("network_logo", logo);
-        localStorage.setItem("chainId", id);
-
         window.location.reload();
       } catch (err) {
         console.error(err);
@@ -106,9 +53,7 @@ const Navbar = () => {
         key={index}
         className={styles.networkName}
         value={network.chainId}
-        onClick={() =>
-          handleSelect(network.name, network.logo, network.chainId)
-        }
+        onClick={() => handleSelect(network.chainId)}
       >
         {network.name}
       </p>

@@ -14,7 +14,7 @@ import { approveMaxAllowance } from "../utils/getApproval";
 import { UIContext } from "../providers/context/UIProvider";
 
 const Swap = (props) => {
-  const { connectWallet, buttonText, spotPriceLoading } = props;
+  const { handleSwapAction, spotPriceLoading } = props;
 
   const [display, setDisplay] = useState(false);
 
@@ -35,7 +35,6 @@ const Swap = (props) => {
     error,
     setSpotPrice,
     spotPrice,
-    srcAddress,
     setTransactionHash,
     isWalletConnected,
   } = useContext(ShortSwapContext);
@@ -74,15 +73,15 @@ const Swap = (props) => {
   };
 
   const handleClick = () => {
-    buttonText === "Swap" && setFormErrors(validate(swapAmount));
-    connectWallet();
+    isWalletConnected && setFormErrors(validate(swapAmount));
+    handleSwapAction();
   };
 
   const handleApproveButton = async () => {
     try {
       const approval = await approveMaxAllowance(
         web3provider,
-        srcAddress,
+        tokenA?.address,
         selectedNetwork?.network
       );
       setTransactionHash(approval.hash);
@@ -318,7 +317,7 @@ const Swap = (props) => {
               ) : spotPriceLoading ? (
                 <CircularProgress sx={{ color: "white" }} />
               ) : (
-                buttonText
+                "Swap"
               )}
             </button>
           ) : (
