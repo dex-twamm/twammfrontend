@@ -21,9 +21,10 @@ const Modal = ({
     setDestAddress,
     selectToken,
     setEthBalance,
+    setFormErrors,
   } = useContext(ShortSwapContext);
 
-  const { tokenA, tokenB } = useContext(LongSwapContext);
+  const { tokenA, tokenB, allowance } = useContext(LongSwapContext);
   const [tokenDetails, setTokenDetails] = useState();
 
   const { selectedNetwork } = useContext(UIContext);
@@ -57,7 +58,9 @@ const Modal = ({
       //set tokenFrom
       setEthBalance(chosenTokenBalance);
       setSrcAddress(chosenToken.address);
-      if (chosenToken.symbol === tokenB.symbol) {
+      if (chosenToken.symbol === tokenA.symbol) {
+        return <></>;
+      } else if (chosenToken.symbol === tokenB.symbol) {
         setTokenB({
           ...tokenA,
           tokenIsSet: true,
@@ -84,7 +87,9 @@ const Modal = ({
     handleModalClose();
   };
 
-  console.log("Tokenssssssss", tokenA, "----", tokenB);
+  useEffect(() => {
+    setFormErrors({ balError: undefined });
+  }, [tokenA, setFormErrors]);
 
   let tokensList;
   let tokensDetail = tokenDetails;

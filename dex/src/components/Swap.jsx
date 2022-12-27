@@ -114,8 +114,6 @@ const Swap = (props) => {
     };
   }, [setFormErrors]);
 
-  console.log("Disable Allow Button--->", disableAllowBtn, formErrors);
-
   // useEffect(() => {
   //   return () => {
   //     setTargetDate("");
