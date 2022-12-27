@@ -139,8 +139,7 @@ const LongSwapPage = () => {
             {showSettings && <PopupSettings swapType="long" />}
           </div>
           <LongSwap
-            connectWallet={LongSwapButtonClick}
-            buttonText={!isWalletConnected ? "Connect Wallet" : "Swap"}
+            handleLongSwapAction={LongSwapButtonClick}
             longSwapVerifyLoading={longSwapVerifyLoading}
             setIsPlacedLongTermOrder={setIsPlacedLongTermOrder}
           />

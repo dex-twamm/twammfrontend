@@ -17,9 +17,6 @@ const UIProvider = ({ children }) => {
         logo: initialNetwork?.logo,
         chainId: initialNetwork?.chainId,
       });
-      localStorage.setItem("network_name", initialNetwork?.name);
-      localStorage.setItem("network_logo", initialNetwork?.logo);
-      localStorage.setItem("chainId", initialNetwork?.chainId);
     });
   }, []);
 

@@ -156,8 +156,7 @@ const ShortSwap = () => {
             {showSettings && <PopupSettings />}
           </div>
           <Swap
-            connectWallet={ShortSwapButtonClick}
-            buttonText={!isWalletConnected ? "Connect Wallet" : "Swap"}
+            handleSwapAction={ShortSwapButtonClick}
             spotPriceLoading={spotPriceLoading}
           />
         </div>
