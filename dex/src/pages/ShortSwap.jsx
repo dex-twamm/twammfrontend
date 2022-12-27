@@ -11,7 +11,7 @@ import { UIContext } from "../providers/context/UIProvider";
 import { connectWallet } from "../utils/connetWallet";
 import { spotPrice } from "../utils/getSpotPrice";
 import { getEthLogs } from "../utils/get_ethLogs";
-import { _swapTokens } from "../utils/shortSwap";
+import { _swapTokens } from "../utils/shortSwap.ts";
 
 const ShortSwap = () => {
   const {
@@ -104,6 +104,7 @@ const ShortSwap = () => {
           selectedNetwork?.network
         );
       } else {
+        console.log("tokenA?.address", tokenA?.address);
         await _swapTokens(
           ethBalance,
           poolCash,

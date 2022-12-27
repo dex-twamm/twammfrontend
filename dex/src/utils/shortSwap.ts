@@ -4,24 +4,28 @@ import { getPoolConfig } from "./poolUtils";
 import { swapTokens } from "./swap";
 
 export const _swapTokens = async (
-  ethBalance,
-  poolCash,
-  swapAmount,
-  web3provider,
-  tokenA,
-  tokenB,
-  account,
-  expectedSwapOut,
-  tolerance,
-  deadline,
-  setTransactionHash,
-  setSuccess,
-  setError,
-  setLoading,
-  currentNetwork
+  ethBalance: any,
+  poolCash: any,
+  swapAmount: any,
+  web3provider: any,
+  tokenA: string,
+  tokenB: any,
+  account: any,
+  expectedSwapOut: any,
+  tolerance: any,
+  deadline: any,
+  setTransactionHash: any,
+  setSuccess: any,
+  setError: any,
+  setLoading: any,
+  currentNetwork: any
 ) => {
   const poolConfig = getPoolConfig(currentNetwork);
-  const tokenIn = poolConfig.tokens.find((token) => token.address === tokenA);
+  const tokenIn = poolConfig.tokens.find(
+    (token: any) => token.address === tokenA
+  );
+
+  console.log("Token innnn", poolConfig, tokenA, swapAmount);
 
   const swapAmountWei = ethers.utils.parseUnits(swapAmount, tokenIn.decimals);
   const walletBalanceWei = ethers.utils.parseUnits(
@@ -51,7 +55,7 @@ export const _swapTokens = async (
       )
         .then((res) => {
           setTransactionHash(res.hash);
-          const swapResult = async (res) => {
+          const swapResult = async (res: any) => {
             const result = await res.wait();
             return result;
           };
