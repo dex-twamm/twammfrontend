@@ -23,8 +23,14 @@
       Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <!-- Google tag (gtag.js) -->
+    -->    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <title>LongSwap</title>
     <script
       async
       src="https://www.googletagmanager.com/gtag/js?id=G-X228D4N7TR"
@@ -35,15 +41,8 @@
         dataLayer.push(arguments);
       }
       gtag("js", new Date());
-      gtag("config", "G-X228D4N7TR");
+      gtag("config", "G-X228D4N7TR",{ 'debug_mode':true });
     </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <title>LongSwap</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
