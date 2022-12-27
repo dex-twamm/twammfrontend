@@ -120,16 +120,6 @@ const Swap = (props) => {
     };
   }, [setFormErrors, setTransactionHash]);
 
-  //for switching the input sectons in short swap
-
-  // useEffect(() => {
-  //   return () => {
-  //     setTargetDate("");
-  //     setTransactionHash(undefined);
-  //     setIsPlacedLongTermOrder && setIsPlacedLongTermOrder();
-  //   };
-  // });
-
   return (
     <>
       <form onSubmit={handleSubmit} className={styles.form}>

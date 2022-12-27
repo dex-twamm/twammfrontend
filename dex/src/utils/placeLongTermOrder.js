@@ -13,7 +13,7 @@ export const _placeLongTermOrders = async (
   account,
   setTransactionHash,
   setLoading,
-  setIsPlacedLongTermOrder,
+  setMessage,
   setOrderLogsDecoded,
   setError,
   currentNetwork
@@ -54,6 +54,7 @@ export const _placeLongTermOrders = async (
           return result;
         };
         placeLtoTxResult(res).then(async (response) => {
+          console.log("resonseasasas", response);
           if (response.status === 1) {
             await getEthLogs(signer, walletAddress, currentNetwork).then(
               (res) => {
@@ -61,13 +62,13 @@ export const _placeLongTermOrders = async (
                 setOrderLogsDecoded(resArray);
               }
             );
-            setIsPlacedLongTermOrder(true);
-          } else setIsPlacedLongTermOrder(false);
+            setMessage(POPUP_MESSAGE.ltoPlaced);
+          } else setMessage(POPUP_MESSAGE.ltoPlaceFailed);
         });
       })
       .catch((err) => {
         console.error(err);
-        setIsPlacedLongTermOrder(false);
+        setMessage(POPUP_MESSAGE.ltoPlaceFailed);
       })
       .finally(setLoading(false));
   } catch (err) {
