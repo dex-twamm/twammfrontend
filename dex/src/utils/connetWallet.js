@@ -9,11 +9,7 @@ export const connectWallet = async (
   setBalance,
   setAccount,
   setWalletConnected,
-  setSelectedNetwork,
-  web3provider,
-  account,
-  selectedNetwork,
-  performGetEthLogs
+  setSelectedNetwork
 ) => {
   try {
     console.log("Connecting to wallet");
@@ -49,11 +45,29 @@ export const connectWallet = async (
         chainId: initialNetwork?.chainId,
       });
     });
-    if (performGetEthLogs) {
-      await getEthLogs(web3provider, account, selectedNetwork);
-      console.log("askdkajsdhkajshdkasjdhak");
-    }
   } catch (err) {
     console.error(err);
   }
+};
+
+export const connectWalletAndGetEthLogs = async (
+  setweb3provider,
+  setCurrentBlock,
+  setBalance,
+  setAccount,
+  setWalletConnected,
+  setSelectedNetwork,
+  web3provider,
+  account,
+  selectedNetwork
+) => {
+  await connectWallet(
+    setweb3provider,
+    setCurrentBlock,
+    setBalance,
+    setAccount,
+    setWalletConnected,
+    setSelectedNetwork
+  );
+  await getEthLogs(web3provider, account, selectedNetwork);
 };

@@ -10,7 +10,7 @@ import { LongSwapContext, ShortSwapContext } from "../providers";
 import Tabs from "../components/Tabs";
 import PopupModal from "../components/alerts/PopupModal";
 import { _placeLongTermOrders } from "../utils/placeLongTermOrder";
-import { connectWallet } from "../utils/connetWallet";
+import { connectWalletAndGetEthLogs } from "../utils/connetWallet";
 import { UIContext } from "../providers/context/UIProvider";
 import LongSwap from "../components/LongSwap";
 import { verifyLongSwap } from "../utils/verifyLongSwap";
@@ -102,10 +102,9 @@ const LongSwapPage = (props) => {
 
   async function LongSwapButtonClick() {
     console.log("Wallet", isWalletConnected);
-    const performGetEthLogs = true;
     try {
       if (!isWalletConnected) {
-        await connectWallet(
+        await connectWalletAndGetEthLogs(
           setweb3provider,
           setCurrentBlock,
           setBalance,
@@ -114,8 +113,7 @@ const LongSwapPage = (props) => {
           setSelectedNetwork,
           web3provider,
           account,
-          selectedNetwork?.network,
-          performGetEthLogs
+          selectedNetwork?.network
         );
       } else {
         console.log(web3provider, web3provider.getSigner());
