@@ -53,6 +53,12 @@ const DisconnectWalletOption = ({
   const handleClose = () => setOpen(false);
   const { selectedNetwork } = useContext(UIContext);
 
+  const getConnectedWalletIcon = () => {
+    const wallet = localStorage.getItem("walletConnection");
+    if (wallet.includes("metamask")) return "/metaMask.svg";
+    else if (wallet.includes("coinbase")) return "/coinbase.svg";
+  };
+
   return (
     <Box
       sx={{
@@ -166,8 +172,12 @@ const DisconnectWalletOption = ({
             </Box>
 
             <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
-              <AdjustIcon
-                sx={{ color: "blue", mr: 1, fontSize: 30, fontWeight: 800 }}
+              <img
+                src={getConnectedWalletIcon()}
+                alt=""
+                height="30"
+                width="30"
+                style={{ marginRight: "5px" }}
               />
               {account ? (
                 <span
