@@ -3,6 +3,7 @@ import classNames from "classnames";
 import React, { useContext, useEffect, useState } from "react";
 import styles from "../css/Modal.module.css";
 import { LongSwapContext, ShortSwapContext, UIContext } from "../providers";
+import { getAllowance } from "../utils/getApproval";
 import { POOLS } from "../utils/pool";
 
 const Modal = ({
@@ -22,6 +23,9 @@ const Modal = ({
     selectToken,
     setEthBalance,
     setFormErrors,
+    swapAmount,
+    account,
+    web3provider,
   } = useContext(ShortSwapContext);
 
   const { tokenA, tokenB, allowance } = useContext(LongSwapContext);
@@ -89,6 +93,13 @@ const Modal = ({
 
   useEffect(() => {
     setFormErrors({ balError: undefined });
+    if (swapAmount && swapAmount !== "0")
+      getAllowance(
+        web3provider?.getSigner(),
+        account,
+        tokenA?.address,
+        selectedNetwork?.network
+      );
   }, [tokenA, setFormErrors]);
 
   let tokensList;
