@@ -62,7 +62,7 @@ export const _placeLongTermOrders = async (
               }
             );
             setIsPlacedLongTermOrder(true);
-          } else setIsPlacedLongTermOrder(true);
+          } else setIsPlacedLongTermOrder(false);
         });
       })
       .catch((err) => {
