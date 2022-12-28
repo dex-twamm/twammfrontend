@@ -162,7 +162,8 @@ const Navbar = () => {
               </button>
             )}
           </div>
-          <div
+          {/* Not used currently */}
+          {/* <div
             onClick={(e) => e.stopPropagation()}
             className={styles.menuOption}
           >
@@ -189,7 +190,7 @@ const Navbar = () => {
                 {<NavOptionDropdwon />}
               </span>
             )}
-          </div>
+          </div> */}
         </div>
       </div>
     </header>
