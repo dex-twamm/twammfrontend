@@ -1,20 +1,24 @@
 import { CircularProgress } from "@mui/material";
 import { Box } from "@mui/system";
+import { styled } from "@mui/system";
+
+export const RootBox = styled(Box)({
+  textAlign: "center",
+  position: "relative",
+});
+
+export const LabelBox = styled(Box)({
+  color: "text.primary",
+  fontSize: 20,
+  fontWeight: "medium",
+});
 
 const CircularProgressBar = ({ margin, label, loading }) => {
   return (
-    <Box
-      sx={{
-        textAlign: "center",
-        position: "relative",
-        marginTop: margin,
-      }}
-    >
-      <Box sx={{ color: "text.primary", fontSize: 20, fontWeight: "medium" }}>
-        {label}
-      </Box>
+    <RootBox>
+      <LabelBox>{label}</LabelBox>
       <CircularProgress disableShrink={loading} />
-    </Box>
+    </RootBox>
   );
 };
 
