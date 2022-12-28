@@ -1,37 +1,33 @@
-import { BigNumber, Contract } from "ethers";
-import { GAS_OVERAGE_FACTOR, VAULT_CONTRACT_ABI } from "../constants";
+import { BigNumber } from "ethers";
+import { GAS_OVERAGE_FACTOR } from "../constants";
 import { MAX_UINT256 } from ".";
 import { getPoolId } from "./poolUtils";
-import { getVaultContractAddress } from "./networkUtils";
+import { getExchangeContract } from "./getContracts";
+import { getGasLimit } from "./getGasLimit";
 
 /*
   swapTokens: Swaps `swapAmountWei` of Eth/Crypto Dev tokens with `tokenToBeReceivedAfterSwap` amount of Eth/Crypto Dev tokens.
 */
+const kind = 0; // GivenIn
+
+const getDeadlineStamp = (deadline) => {
+  const targetDate = new Date();
+  targetDate.setSeconds(deadline * 60);
+  const deadlineTimestamp = targetDate.getTime();
+  return deadlineTimestamp;
+};
+
 export const swapTokens = async (
   signer,
   swapAmountWei,
   assetIn,
   assetOut,
   walletAddress,
-  expectedSwapOut,
-  tolerance,
   deadline,
   currentNetwork
 ) => {
-  // Create a new instance of the exchange contract
-  const exchangeContract = new Contract(
-    getVaultContractAddress(currentNetwork),
-    VAULT_CONTRACT_ABI,
-    signer
-  );
-  const kind = 0; // GivenIn
-
-  const expectedSwapOutAfterTolerance = BigNumber.from(expectedSwapOut)
-    .mul(1000 - 10 * tolerance)
-    .div(1000);
-  const targetDate = new Date();
-  targetDate.setSeconds(deadline * 60);
-  const deadlineTimestamp = targetDate.getTime();
+  const exchangeContract = getExchangeContract(currentNetwork, signer);
+  const deadlineTimestamp = getDeadlineStamp(deadline);
 
   const swapData = [
     {
@@ -55,10 +51,8 @@ export const swapTokens = async (
     BigNumber.from(Math.floor(deadlineTimestamp / 1000)), // Deadline // Minutes Into Seconds Then Type BigNumber
   ];
 
-  const gasEstimate = await exchangeContract.estimateGas.swap(...swapData);
-
   const swapTx = await exchangeContract.swap(...swapData, {
-    gasLimit: Math.floor(gasEstimate.toNumber() * GAS_OVERAGE_FACTOR),
+    gasLimit: getGasLimit(exchangeContract, swapData, "swap"),
   });
 
   return swapTx;

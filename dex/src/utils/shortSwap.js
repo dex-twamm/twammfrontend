@@ -44,8 +44,6 @@ export const _swapTokens = async (
         assetIn,
         assetOut,
         walletAddress,
-        expectedSwapOut,
-        tolerance,
         deadline,
         currentNetwork
       )
