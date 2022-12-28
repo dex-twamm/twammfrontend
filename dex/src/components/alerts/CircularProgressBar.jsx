@@ -2,10 +2,11 @@ import { CircularProgress } from "@mui/material";
 import { Box } from "@mui/system";
 import { styled } from "@mui/system";
 
-export const RootBox = styled(Box)({
+export const RootBox = styled(Box)((props) => ({
   textAlign: "center",
   position: "relative",
-});
+  marginTop: props.margin,
+}));
 
 export const LabelBox = styled(Box)({
   color: "text.primary",
@@ -15,7 +16,7 @@ export const LabelBox = styled(Box)({
 
 const CircularProgressBar = ({ margin, label, loading }) => {
   return (
-    <RootBox>
+    <RootBox margin={margin}>
       <LabelBox>{label}</LabelBox>
       <CircularProgress disableShrink={loading} />
     </RootBox>
