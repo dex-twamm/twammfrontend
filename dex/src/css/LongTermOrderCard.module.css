@@ -204,3 +204,10 @@
   background-color: rgb(210, 66, 66);
   /* opacity: 0.5; */
 }
+
+.ptext {
+  font-family: Open Sans;
+  margin-bottom: 0px;
+  font-size: "14px";
+  padding: 0 5px;
+}
