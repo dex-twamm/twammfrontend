@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import { POPUP_MESSAGE } from "../constants";
-import { getEstimatedConvertedToken } from "./batchSwap";
 import { getPoolConfig } from "./poolUtils";
+import { swapTokens } from "./swap";
 
 // Spot Prices
 export const spotPrice = async (
@@ -38,14 +38,15 @@ export const spotPrice = async (
 
     //for shortswap
     try {
-      await getEstimatedConvertedToken(
+      await swapTokens(
         signer,
         swapAmountWei,
         tokenIn.address,
         tokenOut.address,
         walletAddress,
         deadline,
-        currentNetwork
+        currentNetwork,
+        true //this boolean is for running callStatic part in swap js which was initially done by getEstimatedConvertedToken ()
       ).then((res) => {
         errors.balError = undefined;
         setFormErrors(errors ?? "");

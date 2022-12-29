@@ -11,8 +11,6 @@ export const _swapTokens = async (
   tokenA,
   tokenB,
   account,
-  expectedSwapOut,
-  tolerance,
   deadline,
   setTransactionHash,
   setSuccess,

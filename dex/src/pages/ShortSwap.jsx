@@ -112,8 +112,6 @@ const ShortSwap = () => {
           tokenA?.address,
           tokenB?.address,
           account,
-          expectedSwapOut,
-          tolerance,
           deadline,
           setTransactionHash,
           setSuccess,

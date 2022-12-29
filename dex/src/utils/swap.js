@@ -1,5 +1,4 @@
 import { BigNumber } from "ethers";
-import { GAS_OVERAGE_FACTOR } from "../constants";
 import { MAX_UINT256 } from ".";
 import { getPoolId } from "./poolUtils";
 import { getExchangeContract } from "./getContracts";
@@ -24,7 +23,8 @@ export const swapTokens = async (
   assetOut,
   walletAddress,
   deadline,
-  currentNetwork
+  currentNetwork,
+  hasCallStatic
 ) => {
   const exchangeContract = getExchangeContract(currentNetwork, signer);
   const deadlineTimestamp = getDeadlineStamp(deadline);
@@ -51,9 +51,20 @@ export const swapTokens = async (
     BigNumber.from(Math.floor(deadlineTimestamp / 1000)), // Deadline // Minutes Into Seconds Then Type BigNumber
   ];
 
-  const swapTx = await exchangeContract.swap(...swapData, {
-    gasLimit: getGasLimit(exchangeContract, swapData, "swap"),
-  });
+  let swapTx;
+
+  //this will perform getEstimated token and verify txn
+  if (hasCallStatic) {
+    swapTx = await exchangeContract.callStatic.swap(...swapData, {
+      gasLimit: getGasLimit(exchangeContract, swapData, "swap"),
+    });
+  }
+  //this will perform the swap
+  else {
+    swapTx = await exchangeContract.swap(...swapData, {
+      gasLimit: getGasLimit(exchangeContract, swapData, "swap"),
+    });
+  }
 
   return swapTx;
 };
