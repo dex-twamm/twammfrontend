@@ -3,6 +3,7 @@ import { Alert, Box, CircularProgress, Skeleton } from "@mui/material";
 import classNames from "classnames";
 import React, { useContext, useState } from "react";
 import styles from "../css/AddLiquidity.module.css";
+import lsStyles from "../css/LongSwap.module.css";
 
 import { LongSwapContext } from "../providers";
 import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
@@ -132,27 +133,8 @@ const Swap = (props) => {
   return (
     <>
       <form onSubmit={handleSubmit} className={styles.form}>
-        <div
-          style={{
-            width: "96%",
-            height: "2px",
-            background: "#f0f0f0",
-            display: "flex",
-            justifyContent: "center",
-            margin: "auto",
-            marginBottom: "0px",
-          }}
-        />
-
-        <Box
-          padding={"6px 8px"}
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "5px",
-            boxSizing: "border-box",
-          }}
-        >
+        <div className={lsStyles.main} />
+        <Box className={lsStyles.mainBox}>
           <Input
             id={1}
             input={swapAmount ? swapAmount : ""}
@@ -234,15 +216,9 @@ const Swap = (props) => {
                       <p></p>
                     ) : (
                       <p
+                        className={lsStyles.spotPrice}
                         style={{
-                          cursor: "pointer",
-                          boxSizing: "border-box",
                           padding: { xs: "0px", sm: "8px 0px" },
-                          color: "black",
-                          fontFamily: "Open Sans",
-                          fontSize: "16px",
-                          fontWeight: 500,
-                          display: "flex",
                         }}
                         onClick={handleClose}
                       >
@@ -261,16 +237,10 @@ const Swap = (props) => {
                     )}
                   </Box>
                 ) : null}
-
                 <Box
+                  className={lsStyles.extraBox}
                   sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    boxSizing: "border-box",
-                    color: "#333333",
-                    fontFamily: "Open Sans",
                     gap: { xs: "0px", sm: "5px" },
-                    padding: "4px",
                   }}
                 ></Box>
               </Box>
