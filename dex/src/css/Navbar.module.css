@@ -380,5 +380,6 @@ a {
 
   .row {
     flex-direction: column;
+    gap: 10px;
   }
 }
