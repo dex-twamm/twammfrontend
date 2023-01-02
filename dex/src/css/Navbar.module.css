@@ -372,3 +372,13 @@ a {
 .options:hover {
   color: #000;
 }
+
+@media (max-width: 520px) {
+  .tabContainerCenter {
+    flex-direction: column;
+  }
+
+  .row {
+    flex-direction: column;
+  }
+}
