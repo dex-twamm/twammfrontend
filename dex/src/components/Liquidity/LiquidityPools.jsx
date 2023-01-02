@@ -1,35 +1,12 @@
 import React from "react";
-import "../../css/LiquidityPools.css";
+import styles from "../../css/LiquidityPool.module.css";
 import { useContext } from "react";
 import { ShortSwapContext } from "../../providers";
 import CircularProgressBar from "../alerts/CircularProgressBar";
 import Tabs from "../Tabs";
 import { getPoolFees, getPoolId, getPoolTokens } from "../../utils/poolUtils";
 import { UIContext } from "../../providers/context/UIProvider";
-import {
-  ContainerBox,
-  ContentBox,
-  HeadingBox,
-  InsideContentBox,
-  PoolTypography,
-  RootBox,
-  StyledBoxOne,
-  StyledBoxTwo,
-  StyledBoxThree,
-  StyledBoxFour,
-  StyledTypography,
-  StyledBoxFive,
-  StyledAvatarOne,
-  StyledAvatarTwo,
-  TokensTypography,
-  FeeTypography,
-  BalanceInfoBox,
-  BalanceInfoTypography,
-  BalanceTypography,
-  ButtonsBox,
-  RemoveLiquidityButton,
-  AddLiquidityButton,
-} from "./LiquidityPoolsStyles";
+import { Avatar, Box, Typography } from "@mui/material";
 
 const LiquidityPools = () => {
   const { LPTokenBalance, loading, isWalletConnected } =
@@ -37,18 +14,19 @@ const LiquidityPools = () => {
   const { selectedNetwork } = useContext(UIContext);
 
   return (
-    <RootBox>
+    <Box className={styles.rootBox}>
       <Tabs />
       {!isWalletConnected ? (
-        <ContainerBox>
-          <StyledTypography>
+        <Box className={styles.containerBox}>
+          <Typography className={styles.styledTypography}>
             Connect your wallet to view your Pools.
-          </StyledTypography>
-        </ContainerBox>
+          </Typography>
+        </Box>
       ) : !loading ? (
         <>
           {" "}
-          <HeadingBox
+          <Box
+            className={styles.headingBox}
             sx={{
               alignItems: {
                 xs: "flex-start",
@@ -64,48 +42,60 @@ const LiquidityPools = () => {
               flexDirection: { xs: "column", sm: "row", md: "row" },
             }}
           >
-            <PoolTypography>Pools</PoolTypography>
-          </HeadingBox>
-          <ContentBox
+            <Typography className={styles.poolTypography}>Pools</Typography>
+          </Box>
+          <Box
+            className={styles.contentBox}
             sx={{
               flexDirection: { xs: "row-reverse", sm: "row" },
               justifyContent: { xs: "flex-end", sm: "flex-end" },
             }}
           >
-            <InsideContentBox>
-              <StyledBoxOne>
-                <StyledBoxTwo>
-                  <StyledBoxThree>
-                    <StyledBoxFour>
-                      <StyledBoxFive>
-                        <StyledAvatarOne alt="Testv4" src="Testv4.jpeg" />
-                        <StyledAvatarTwo
+            <Box className={styles.insideContentBox}>
+              <Box className={styles.styledBoxOne}>
+                <Box className={styles.styledBoxTwo}>
+                  <Box className={styles.styledBoxThree}>
+                    <Box className={styles.styledBoxFour}>
+                      <Box className={styles.styledBoxFive}>
+                        <Avatar
+                          className={styles.styledAvatarOne}
+                          alt="Testv4"
+                          src="Testv4.jpeg"
+                        />
+                        <Avatar
+                          className={styles.styledAvatarTwo}
                           sizes="small"
                           alt="Faucet"
                           src="ethereum.png"
                         />
-                      </StyledBoxFive>
-                      <TokensTypography sx={{ fontSize: { xs: 16 } }}>
+                      </Box>
+                      <Typography
+                        className={styles.tokensTypography}
+                        sx={{ fontSize: { xs: 16 } }}
+                      >
                         {`${
                           getPoolTokens(selectedNetwork?.network)?.[0].symbol
                         } / ${
                           getPoolTokens(selectedNetwork?.network)?.[1].symbol
                         }`}
-                      </TokensTypography>
-                      <FeeTypography>
+                      </Typography>
+                      <Typography className={styles.feeTypography}>
                         {getPoolFees(selectedNetwork?.network)}
-                      </FeeTypography>
-                    </StyledBoxFour>
-                  </StyledBoxThree>
-                </StyledBoxTwo>
-                <BalanceInfoBox>
-                  <BalanceInfoTypography>
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Box>
+                <Box className={styles.balanceInfoBox}>
+                  <Typography className={styles.balanceInfoTypography}>
                     Your LP Token Balance:{" "}
-                    <BalanceTypography>{LPTokenBalance}</BalanceTypography>
-                  </BalanceInfoTypography>
-                </BalanceInfoBox>
+                    <Typography className={styles.balanceTypography}>
+                      {LPTokenBalance}
+                    </Typography>
+                  </Typography>
+                </Box>
 
-                <ButtonsBox
+                <Box
+                  className={styles.buttonsBox}
                   sx={{
                     paddingRight: { xs: "10px", sm: "10px" },
                     justifyContent: {
@@ -116,11 +106,12 @@ const LiquidityPools = () => {
                   }}
                 >
                   {LPTokenBalance != 0 && (
-                    <RemoveLiquidityButton>
+                    <button className={styles.removeLiquidityButton}>
                       Remove Liquidity
-                    </RemoveLiquidityButton>
+                    </button>
                   )}
-                  <AddLiquidityButton
+                  <button
+                    className={styles.addLiquidityButton}
                     onClick={() =>
                       window.open(
                         `https://app.balancer.fi/#/pool/${getPoolId(
@@ -129,14 +120,13 @@ const LiquidityPools = () => {
                         "_blank"
                       )
                     }
-                    style={{}}
                   >
                     Add Liquidity
-                  </AddLiquidityButton>
-                </ButtonsBox>
-              </StyledBoxOne>
-            </InsideContentBox>
-          </ContentBox>{" "}
+                  </button>
+                </Box>
+              </Box>
+            </Box>
+          </Box>{" "}
         </>
       ) : (
         <CircularProgressBar
@@ -144,7 +134,7 @@ const LiquidityPools = () => {
           label={"Please Wait"}
         ></CircularProgressBar>
       )}
-    </RootBox>
+    </Box>
   );
 };
 export { LiquidityPools };
