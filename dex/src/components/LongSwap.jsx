@@ -298,12 +298,11 @@ const LongSwap = (props) => {
           tokenA.tokenIsSet &&
           tokenB.tokenIsSet ? (
             <button
-              className={classNames(styles.btn, styles.btnConnect)}
-              style={{
-                background: "#554994",
-                borderRadius: "17px",
-                color: "white",
-              }}
+              className={classNames(
+                styles.btn,
+                styles.btnConnect,
+                styles.btnBtn
+              )}
               onClick={() => {
                 handleApproveButton();
               }}
@@ -318,12 +317,11 @@ const LongSwap = (props) => {
           )}
           {isWalletConnected ? (
             <button
-              className={classNames(styles.btn, styles.btnConnect)}
-              style={{
-                background: "#554994",
-                borderRadius: "17px",
-                color: "white",
-              }}
+              className={classNames(
+                styles.btn,
+                styles.btnConnect,
+                styles.btnBtn
+              )}
               onClick={handleClick}
               disabled={
                 !tokenA.tokenIsSet ||

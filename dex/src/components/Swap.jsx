@@ -181,19 +181,14 @@ const Swap = (props) => {
             <>
               <Box
                 sx={{
-                  boxSizing: "border-box",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  width: "100%",
                   padding: { xs: "0px 4px", sm: "4px 8px" },
                 }}
-                className={open && styles.swapunit}
+                className={(open && styles.swapunit, styles.spotPriceBox)}
               >
                 {!formErrors.balError ? (
                   <Box
+                    className={styles.spotBox}
                     sx={{
-                      display: "flex",
                       alignItems: {
                         xs: "flex-start ",
                         sm: "center",
@@ -205,8 +200,6 @@ const Swap = (props) => {
                         md: "fit-content",
                       },
 
-                      boxSizing: "border-box",
-                      fontFamily: "Open Sans",
                       gap: { xs: "2px", sm: "4px" },
                     }}
                   >
@@ -252,12 +245,11 @@ const Swap = (props) => {
           tokenA.tokenIsSet &&
           tokenB.tokenIsSet ? (
             <button
-              className={classNames(styles.btn, styles.btnConnect)}
-              style={{
-                background: "#554994",
-                borderRadius: "17px",
-                color: "white",
-              }}
+              className={classNames(
+                styles.btn,
+                styles.btnConnect,
+                styles.btnBtn
+              )}
               onClick={() => {
                 handleApproveButton();
               }}
@@ -272,12 +264,11 @@ const Swap = (props) => {
           )}
           {isWalletConnected ? (
             <button
-              className={classNames(styles.btn, styles.btnConnect)}
-              style={{
-                background: "#554994",
-                borderRadius: "17px",
-                color: "white",
-              }}
+              className={classNames(
+                styles.btn,
+                styles.btnConnect,
+                styles.btnBtn
+              )}
               onClick={handleClick}
               disabled={
                 !tokenA.tokenIsSet ||

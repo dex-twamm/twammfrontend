@@ -211,6 +211,26 @@
   font-weight: 600;
 }
 
+.btnBtn {
+  background: #554994;
+  border-radius: 17px;
+  color: white;
+}
+
+.spotPriceBox {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.spotBox {
+  display: flex;
+  box-sizing: border-box;
+  font-family: Open Sans;
+}
+
 /* 
 .add-liquidity {
   display: flex;
