@@ -1,9 +1,9 @@
-import { Contract, ethers } from "ethers";
+import { ethers } from "ethers";
 import { defaultAbiCoder } from "ethers/lib/utils";
 import { fp, MAX_UINT256 } from ".";
-import { GAS_OVERAGE_FACTOR, VAULT_CONTRACT_ABI } from "../constants";
-import { getVaultContractAddress } from "./networkUtils";
+import { getExchangeContract } from "./getContracts";
 import { getPoolId, getPoolTokenAddresses, getPoolTokens } from "./poolUtils";
+import { getGasLimit } from "./getGasLimit";
 
 export async function joinPool(walletAddress, signer, currentNetwork) {
   const encodedRequest = defaultAbiCoder.encode(
@@ -12,11 +12,8 @@ export async function joinPool(walletAddress, signer, currentNetwork) {
     // TODO Calculate MinBptOut Using Query Join Pool and Tolerance
     [1, [fp(1e-12), fp(1.0)], 0]
   );
-  const vaultContract = new Contract(
-    getVaultContractAddress(currentNetwork),
-    VAULT_CONTRACT_ABI,
-    signer
-  );
+  const vaultContract = getExchangeContract(currentNetwork, signer);
+
   const data = [
     getPoolId(currentNetwork),
     walletAddress,
@@ -30,13 +27,11 @@ export async function joinPool(walletAddress, signer, currentNetwork) {
     },
   ];
 
-  const gasEstimate = await vaultContract.estimateGas.joinPool(...data);
-
-  const joinPool = await vaultContract.joinPool(...data, {
-    gasLimit: Math.floor(gasEstimate.toNumber() * GAS_OVERAGE_FACTOR),
+  const joinPoolTx = await vaultContract.joinPool(...data, {
+    gasLimit: getGasLimit(vaultContract, data, "joinPool"),
   });
 
-  const joinPoolResult = await joinPool.wait();
+  // const joinPoolResult = await joinPool.wait();
 }
 
 export async function exitPool(
@@ -45,11 +40,7 @@ export async function exitPool(
   bptAmountIn,
   currentNetwork
 ) {
-  const vaultContract = new Contract(
-    getVaultContractAddress(currentNetwork),
-    VAULT_CONTRACT_ABI,
-    signer
-  );
+  const vaultContract = getExchangeContract(currentNetwork, signer);
   // bptAmountIn As User Input
   const encodedRequest = defaultAbiCoder.encode(
     ["uint256", "uint256"],
@@ -68,12 +59,10 @@ export async function exitPool(
     },
   ];
 
-  const gasEstimate = await vaultContract.estimateGas.exitPool(...data);
-
   const exitPoolTx = await vaultContract.exitPool(...data, {
-    gasLimit: Math.floor(gasEstimate.toNumber() * GAS_OVERAGE_FACTOR),
+    gasLimit: getGasLimit(vaultContract, data, "exitPool"),
   });
-  const exitPoolResult = await exitPoolTx.wait();
+  // const exitPoolResult = await exitPoolTx.wait();
 }
 
 export async function cancelLTO(
@@ -84,11 +73,7 @@ export async function cancelLTO(
   setTransactionHash,
   currentNetwork
 ) {
-  const vaultContract = new Contract(
-    getVaultContractAddress(currentNetwork),
-    VAULT_CONTRACT_ABI,
-    signer
-  );
+  const vaultContract = getExchangeContract(currentNetwork, signer);
   // bptAmountIn As User Input
   const encodedRequest = defaultAbiCoder.encode(
     ["uint256", "uint256"],
@@ -107,11 +92,10 @@ export async function cancelLTO(
     },
   ];
 
-  const gasEstimate = await vaultContract.estimateGas.exitPool(...data);
-
   const exitPoolTx = await vaultContract.exitPool(...data, {
-    gasLimit: Math.floor(gasEstimate.toNumber() * GAS_OVERAGE_FACTOR),
+    gasLimit: getGasLimit(vaultContract, data, "exitPool"),
   });
+
   setTransactionHash(orderHash);
   return exitPoolTx;
 }
@@ -124,11 +108,7 @@ export async function withdrawLTO(
   setTransactionHash,
   currentNetwork
 ) {
-  const vaultContract = new Contract(
-    getVaultContractAddress(currentNetwork),
-    VAULT_CONTRACT_ABI,
-    signer
-  );
+  const vaultContract = getExchangeContract(currentNetwork, signer);
   // bptAmountIn As User Input
   const encodedRequest = defaultAbiCoder.encode(
     ["uint256", "uint256"],
@@ -147,10 +127,10 @@ export async function withdrawLTO(
     },
   ];
 
-  const gasEstimate = await vaultContract.estimateGas.exitPool(...data);
   const withdrawLTOTx = await vaultContract.exitPool(...data, {
-    gasLimit: Math.floor(gasEstimate.toNumber() * GAS_OVERAGE_FACTOR),
+    gasLimit: getGasLimit(vaultContract, data, "exitPool"),
   });
+
   setTransactionHash(orderHash);
   return withdrawLTOTx;
 }
@@ -160,11 +140,7 @@ export async function getPoolBalance(signer, tokenAddress, currentNetwork) {
     (item) => item.address === tokenAddress
   );
 
-  const vaultContract = new Contract(
-    getVaultContractAddress(currentNetwork),
-    VAULT_CONTRACT_ABI,
-    signer
-  );
+  const vaultContract = getExchangeContract(currentNetwork, signer);
 
   const poolBalance = await vaultContract.getPoolTokenInfo(
     getPoolId(currentNetwork),
