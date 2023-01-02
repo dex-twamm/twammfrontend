@@ -1,0 +1,135 @@
+.containerBox {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  background: white;
+  border-radius: 32px;
+}
+
+.contentBox {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  font-size: 1.2vmax;
+  font-weight: 200;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #f7f8fa;
+  border-radius: 16px;
+  padding-top: 10px;
+}
+
+.headerBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.headerTypography {
+  color: #333333;
+  font-weight: 500;
+  font-size: 22px;
+  margin-left: 16px;
+}
+
+.infoBox {
+  width: 95%;
+  height: 25%;
+  margin: auto;
+  padding: 16px;
+  box-sizing: border-box;
+  border: 1px solid #808080;
+  border-radius: 15px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.infoTopBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.connectionInfoTypography {
+  width: 50%;
+  font-weight: 500;
+  font-size: 16px;
+  font-family: Open Sans;
+  color: #333333;
+  margin-right: 5px;
+}
+
+.disconnectButton {
+  margin-right: 10px;
+  color: #f50057 !important;
+  text-transform: capitalize;
+  border-radius: 12px;
+  border: 1px solid #f50057 !important;
+}
+
+.disconnectButton:hover {
+  border: 1px solid #f50057;
+}
+
+.infoMiddleBox {
+  display: flex;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.addressTypography {
+  margin-right: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  width: 200;
+  color: black;
+  overflow: hidden;
+}
+
+.dotTypography {
+  margin-right: 8px;
+  font-size: 30px;
+  font-weight: 600;
+  color: #333333;
+}
+
+.infoBottomBox {
+  display: flex;
+  align-items: center;
+  margin-top: 16px;
+  justify-content: space-between;
+}
+
+.copyAddressTypography {
+  display: flex;
+  align-items: center;
+  color: #f50057;
+  font-weight: 400;
+  margin-right: 16px;
+  font-size: 16px;
+}
+
+.copyIcon {
+  margin-right: 4px;
+  color: #f50057;
+  font-weight: 400;
+  font-size: 16px !important;
+}
+
+.viewTypography {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 16px;
+  font-family: Open Sans;
+}
+
+.viewIcon {
+  color: #808080;
+  margin-right: 8px;
+  font-size: 16px !important;
+}

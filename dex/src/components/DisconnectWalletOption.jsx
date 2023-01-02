@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import Modal from "@mui/material/Modal";
 import AdjustIcon from "@mui/icons-material/Adjust";
 
@@ -10,24 +10,10 @@ import { truncateAddress } from "../utils";
 import { UIContext } from "../providers/context/UIProvider";
 import { disconnect } from "../utils/disconnectWallet";
 import { getBlockExplorerAddressUrl } from "../utils/networkUtils";
-import {
-  ContainerBox,
-  ContentBox,
-  HeaderBox,
-  HeaderTypography,
-  InfoBox,
-  InfoTopBox,
-  ConnectionInfoTypography,
-  DisconnectButton,
-  InfoMiddleBox,
-  AddressTypography,
-  DotTypography,
-  InfoBottomBox,
-  CopyAddressTypography,
-  CopyIcon,
-  ViewTypography,
-  ViewIcon,
-} from "./DisconnectWalletOptionStyles";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import LaunchIcon from "@mui/icons-material/Launch";
+
+import styles from "../css/DisconnectWalletOption.module.css";
 
 const DisconnectWalletOption = ({ showDisconnect, setShowDisconnect }) => {
   const { account, setAccount, setWalletConnected, setBalance } =
@@ -41,28 +27,35 @@ const DisconnectWalletOption = ({ showDisconnect, setShowDisconnect }) => {
   };
 
   return (
-    <ContainerBox>
+    <Box className={styles.containerBox}>
       <Modal
         open={showDisconnect}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <ContentBox sx={{ minWidth: { xs: "95%", sm: 500, md: 425 } }}>
-          <HeaderBox>
-            <HeaderTypography>Account</HeaderTypography>
+        <Box
+          className={styles.contentBox}
+          sx={{ minWidth: { xs: "95%", sm: 500, md: 425 } }}
+        >
+          <Box className={styles.headerBox}>
+            <span className={styles.headerTypography}>Account</span>
             <Button onClick={handleClose}>
               <CloseIcon fontSize="large" sx={{ color: "#f50057" }} />
             </Button>
-          </HeaderBox>
+          </Box>
 
-          <InfoBox>
-            <InfoTopBox>
-              <ConnectionInfoTypography id="modal-modal-title">
+          <Box className={styles.infoBox}>
+            <Box className={styles.infoTopBox}>
+              <span
+                className={styles.connectionInfoTypography}
+                id="modal-modal-title"
+              >
                 Wallet Connected
-              </ConnectionInfoTypography>
+              </span>
 
-              <DisconnectButton
+              <Button
+                className={styles.disconnectButton}
                 onClick={handleDisconnectWallet}
                 size="small"
                 disableFocusRipple
@@ -73,23 +66,23 @@ const DisconnectWalletOption = ({ showDisconnect, setShowDisconnect }) => {
                 variant="outlined"
               >
                 Disconnect
-              </DisconnectButton>
-            </InfoTopBox>
+              </Button>
+            </Box>
 
-            <InfoMiddleBox>
+            <Box className={styles.infoMiddleBox}>
               <AdjustIcon
                 sx={{ color: "blue", mr: 1, fontSize: 30, fontWeight: 800 }}
               />
               {account ? (
-                <AddressTypography>
+                <span className={styles.addressTypography}>
                   {truncateAddress(account)}
-                </AddressTypography>
+                </span>
               ) : (
-                <DotTypography>....</DotTypography>
+                <span className={styles.dotTypography}>....</span>
               )}
-            </InfoMiddleBox>
+            </Box>
 
-            <InfoBottomBox>
+            <Box className={styles.infoBottomBox}>
               {" "}
               <Button
                 onClick={() => {
@@ -97,10 +90,13 @@ const DisconnectWalletOption = ({ showDisconnect, setShowDisconnect }) => {
                 }}
                 style={{ textTransform: "none" }}
               >
-                <CopyAddressTypography>
-                  <CopyIcon fontSize="large" />
+                <span className={styles.copyAddressTypography}>
+                  <ContentCopyIcon
+                    className={styles.copyIcon}
+                    fontSize="large"
+                  />
                   Copy Address
-                </CopyAddressTypography>{" "}
+                </span>{" "}
               </Button>
               <Button
                 onClick={() =>
@@ -113,16 +109,16 @@ const DisconnectWalletOption = ({ showDisconnect, setShowDisconnect }) => {
                 }
                 style={{ textTransform: "none" }}
               >
-                <ViewTypography>
-                  <ViewIcon fontSize="medium" />
+                <span className={styles.viewTypography}>
+                  <LaunchIcon className={styles.viewIcon} fontSize="medium" />
                   View on Explorer
-                </ViewTypography>
+                </span>
               </Button>
-            </InfoBottomBox>
-          </InfoBox>
-        </ContentBox>
+            </Box>
+          </Box>
+        </Box>
       </Modal>
-    </ContainerBox>
+    </Box>
   );
 };
 
