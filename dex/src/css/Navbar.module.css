@@ -376,6 +376,13 @@ a {
 @media (max-width: 520px) {
   .tabContainerCenter {
     flex-direction: column;
+    width: 100%;
+  }
+
+  .tabContainerCenter a {
+    width: 100%;
+    text-align: center;
+    padding: 0 10px;
   }
 
   .row {
