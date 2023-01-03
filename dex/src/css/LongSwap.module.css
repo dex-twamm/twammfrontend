@@ -79,3 +79,80 @@ html {
 .longTermOrderCard::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+.main {
+  width: 96%;
+  height: 2px;
+  background: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  margin-bottom: 0px;
+}
+
+.mainBox {
+  padding: 6px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  box-sizing: border-box;
+}
+
+.rangeSelectBox {
+  margin: 0 auto;
+}
+
+.dateBox {
+  float: right;
+  display: flex;
+  font-size: 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: Open Sans;
+}
+
+.timeBox {
+  font-size: 15px;
+  padding-left: 10px;
+  font-family: Open Sans;
+}
+
+.executionTime {
+  float: left;
+  display: flex;
+  font-family: Open Sans;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+  color: #000000;
+}
+
+.completionDate {
+  float: right;
+  display: flex;
+  font-family: Open Sans;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+  color: #000000;
+  padding-right: 2px;
+}
+
+.extraBox {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  color: #333333;
+  font-family: Open Sans;
+  padding: 4px;
+}
+
+.spotPrice {
+  cursor: pointer;
+  box-sizing: border-box;
+  color: black;
+  font-family: Open Sans;
+  font-size: 16px;
+  font-weight: 500;
+  display: flex;
+}

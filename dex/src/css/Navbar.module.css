@@ -77,6 +77,7 @@
     width: fit-content;
     display: flex;
     align-items: center;
+
     /* height: fit-content; */
     /* top: 40px; */
     /* right: 50%; */
@@ -228,7 +229,8 @@
 
 .rightRadius {
   background: rgba(255, 255, 255, 0.3);
-  border-radius: 40px;
+  border-bottom-right-radius: 40px;
+  border-top-right-radius: 40px;
 }
 
 .btnConnect {
@@ -371,4 +373,14 @@ a {
 
 .options:hover {
   color: #000;
+}
+
+@media (max-width: 520px) {
+  .tabContainerCenter {
+    flex-direction: column;
+  }
+
+  .row {
+    flex-direction: column;
+  }
 }

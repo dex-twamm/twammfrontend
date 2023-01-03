@@ -163,27 +163,8 @@ const LongSwap = (props) => {
   return (
     <>
       <form onSubmit={handleSubmit} className={styles.form}>
-        <div
-          style={{
-            width: "96%",
-            height: "2px",
-            background: "#f0f0f0",
-            display: "flex",
-            justifyContent: "center",
-            margin: "auto",
-            marginBottom: "0px",
-          }}
-        />
-
-        <Box
-          padding={"6px 8px"}
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "5px",
-            boxSizing: "border-box",
-          }}
-        >
+        <div className={lsStyles.main} />
+        <Box className={lsStyles.mainBox}>
           <Box
             className={styles.mainContent}
             style={{ marginTop: "0px", paddingTop: "0px" }}
@@ -271,64 +252,20 @@ const LongSwap = (props) => {
           )}
 
           <div className={lsStyles.rangeSelect}>
-            <Box
-              sx={{
-                margin: "0 auto",
-              }}
-            >
+            <Box className={lsStyles.rangeSelectBox}>
               <Typography
                 component={"span"}
                 fontWeight={600}
                 id="non-linear-slider"
                 gutterBottom
               >
-                <Box
-                  sx={{
-                    float: "right",
-                    display: "flex",
-                    fontSize: "15px",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    fontFamily: "Open Sans",
-                  }}
-                >
+                <Box className={lsStyles.dateBox}>
                   {`${targetDate} `.substring(0, 17)}
                 </Box>
 
-                <Box
-                  sx={{
-                    fontSize: "15px",
-                    paddingLeft: "10px",
-                    fontFamily: "Open Sans",
-                  }}
-                >
-                  {executionTime}
-                </Box>
-                <Box
-                  sx={{
-                    float: "left",
-                    display: "flex",
-                    fontFamily: "Open Sans",
-                    fontWeight: "600",
-                    fontSize: "16px",
-                    lineHeight: "22px",
-                    color: "#000000",
-                  }}
-                >
-                  Execution Time
-                </Box>
-                <Box
-                  sx={{
-                    float: "right",
-                    display: "flex",
-                    fontFamily: "Open Sans",
-                    fontWeight: "600",
-                    fontSize: "16px",
-                    lineHeight: "22px",
-                    color: "#000000",
-                    paddingRight: "2px",
-                  }}
-                >
+                <Box className={lsStyles.timeBox}>{executionTime}</Box>
+                <Box className={lsStyles.executionTime}>Execution Time</Box>
+                <Box className={lsStyles.completionDate}>
                   Order Completion Date
                 </Box>
               </Typography>
@@ -361,12 +298,11 @@ const LongSwap = (props) => {
           tokenA.tokenIsSet &&
           tokenB.tokenIsSet ? (
             <button
-              className={classNames(styles.btn, styles.btnConnect)}
-              style={{
-                background: "#554994",
-                borderRadius: "17px",
-                color: "white",
-              }}
+              className={classNames(
+                styles.btn,
+                styles.btnConnect,
+                styles.btnBtn
+              )}
               onClick={() => {
                 handleApproveButton();
               }}
@@ -381,12 +317,11 @@ const LongSwap = (props) => {
           )}
           {isWalletConnected ? (
             <button
-              className={classNames(styles.btn, styles.btnConnect)}
-              style={{
-                background: "#554994",
-                borderRadius: "17px",
-                color: "white",
-              }}
+              className={classNames(
+                styles.btn,
+                styles.btnConnect,
+                styles.btnBtn
+              )}
               onClick={handleClick}
               disabled={
                 !tokenA.tokenIsSet ||
