@@ -54,7 +54,6 @@ export const _placeLongTermOrders = async (
           return result;
         };
         placeLtoTxResult(res).then(async (response) => {
-          console.log("resonseasasas", response);
           if (response.status === 1) {
             await getEthLogs(signer, walletAddress, currentNetwork).then(
               (res) => {

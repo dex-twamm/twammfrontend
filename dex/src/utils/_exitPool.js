@@ -32,10 +32,6 @@ export const _exitPool = async (
     }
     await exitPool(walletAddress, signer, bptAmountIn, currentNetwork).then(
       (res) => {
-        const exitPoolResult = async () => {
-          const result = await res.wait();
-          return result;
-        };
         //Todo- code as per the response from exitPoolResult goes here
         // ...
       }

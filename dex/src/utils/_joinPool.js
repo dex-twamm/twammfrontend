@@ -27,10 +27,6 @@ export const _joinPool = async (
       );
     }
     await joinPool(walletAddress, signer, currentNetwork).then((res) => {
-      const joinPoolResult = async () => {
-        const result = await res.wait();
-        return result;
-      };
       //Todo- code as per the response from joinPoolResult goes here
       // ...
     });
