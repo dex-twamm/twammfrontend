@@ -286,7 +286,7 @@ const LongSwap = (props) => {
                   sx={{
                     float: "right",
                     display: "flex",
-                    fontSize: "15px",
+                    fontSize: { xs: "14px", sm: "15px", md: "16px" },
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     fontFamily: "Open Sans",
@@ -297,7 +297,7 @@ const LongSwap = (props) => {
 
                 <Box
                   sx={{
-                    fontSize: "15px",
+                    fontSize: { xs: "14px", sm: "15px", md: "16px" },
                     paddingLeft: "10px",
                     fontFamily: "Open Sans",
                   }}
@@ -310,7 +310,7 @@ const LongSwap = (props) => {
                     display: "flex",
                     fontFamily: "Open Sans",
                     fontWeight: "600",
-                    fontSize: "16px",
+                    fontSize: { xs: "14px", sm: "15px", md: "16px" },
                     lineHeight: "22px",
                     color: "#000000",
                   }}
@@ -323,7 +323,7 @@ const LongSwap = (props) => {
                     display: "flex",
                     fontFamily: "Open Sans",
                     fontWeight: "600",
-                    fontSize: "16px",
+                    fontSize: { xs: "14px", sm: "15px", md: "16px" },
                     lineHeight: "22px",
                     color: "#000000",
                     paddingRight: "2px",

@@ -372,3 +372,22 @@ a {
 .options:hover {
   color: #000;
 }
+
+@media (max-width: 520px) {
+  .tabContainerCenter a {
+    font-size: 13px;
+  }
+
+  .tabButton {
+    padding: 10px;
+  }
+
+  .row {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btnWallet {
+    font-size: 14px;
+  }
+}
