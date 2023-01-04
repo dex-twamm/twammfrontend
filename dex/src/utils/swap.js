@@ -4,6 +4,28 @@ import { getPoolId } from "./poolUtils";
 import { getExchangeContract } from "./getContracts";
 import { getGasLimit } from "./getGasLimit";
 
+export const verifySwapTokens = async (
+  signer,
+  swapAmountWei,
+  assetIn,
+  assetOut,
+  walletAddress,
+  deadline,
+  currentNetwork
+) => {
+  const verifyResult = await swapTokens(
+    signer,
+    swapAmountWei,
+    assetIn,
+    assetOut,
+    walletAddress,
+    deadline,
+    currentNetwork,
+    true
+  );
+  return verifyResult;
+};
+
 /*
   swapTokens: Swaps `swapAmountWei` of Eth/Crypto Dev tokens with `tokenToBeReceivedAfterSwap` amount of Eth/Crypto Dev tokens.
 */
