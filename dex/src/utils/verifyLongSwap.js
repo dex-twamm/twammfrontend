@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import { POPUP_MESSAGE } from "../constants";
-import { placeLongTermOrder } from "./longSwap";
+import { verifyLongSwapTxn } from "./longSwap";
 import { getPoolConfig } from "./poolUtils";
 
 export const verifyLongSwap = async (
@@ -35,15 +35,14 @@ export const verifyLongSwap = async (
         swapAmount,
         poolConfig.tokens[tokenInIndex].decimals
       );
-      await placeLongTermOrder(
+      await verifyLongSwapTxn(
         tokenInIndex,
         tokenOutIndex,
         amountIn,
         numberOfBlockIntervals,
         signer,
         walletAddress,
-        currentNetwork,
-        true //this boolean is for verifying the txn which was initially done with verifyLongSwapTxn().
+        currentNetwork
       ).then((res) => {
         errors.balError = undefined;
         setLongSwapFormErrors(errors ?? "");

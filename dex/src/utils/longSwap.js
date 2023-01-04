@@ -30,6 +30,28 @@ const getLongSwapEncodedRequest = (
   );
 };
 
+export const verifyLongSwapTxn = async (
+  tokenInIndex,
+  tokenOutIndex,
+  amountIn,
+  numberOfBlockIntervals,
+  signer,
+  walletAddress,
+  currentNetwork
+) => {
+  const verifyLongSwapTxnResult = await placeLongTermOrder(
+    tokenInIndex,
+    tokenOutIndex,
+    amountIn,
+    numberOfBlockIntervals,
+    signer,
+    walletAddress,
+    currentNetwork,
+    true
+  );
+  return verifyLongSwapTxnResult;
+};
+
 export async function placeLongTermOrder(
   tokenInIndex,
   tokenOutIndex,
