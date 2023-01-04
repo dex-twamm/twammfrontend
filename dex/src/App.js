@@ -260,10 +260,20 @@ function App() {
 
   //This will automatically change the account of our app without refreshing when the account in metamask is changed.
   useEffect(() => {
-    window.ethereum.on("accountsChanged", function (accounts) {
+    const accountsChangedListener = function (accounts) {
       setAccount(accounts[0]);
-    });
+    };
+    window.ethereum.on("accountsChanged", accountsChangedListener);
 
+    return () => {
+      window.ethereum.removeListener(
+        "accountsChanged",
+        accountsChangedListener
+      );
+    };
+  }, []);
+
+  useEffect(() => {
     connectWallet(
       setweb3provider,
       setCurrentBlock,
