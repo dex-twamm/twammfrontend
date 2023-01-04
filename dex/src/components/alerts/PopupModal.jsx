@@ -14,6 +14,8 @@ const PopupModal = () => {
     setSuccess,
     transactionHash,
     setTransactionHash,
+    allowTwammErrorMessage,
+    setAllowTwammErrorMessage,
   } = useContext(ShortSwapContext);
 
   const { message, setMessage } = useContext(LongSwapContext);
@@ -38,6 +40,7 @@ const PopupModal = () => {
     setSuccess("");
     setTransactionHash("");
     setMessage("");
+    setAllowTwammErrorMessage("");
   };
 
   const handleTransactonClose = () => {
@@ -80,6 +83,7 @@ const PopupModal = () => {
               severity="success"
               onClose={() => {
                 handleClose();
+                window.location.reload();
               }}
             >
               {success}
@@ -96,7 +100,6 @@ const PopupModal = () => {
             View Your Tx Progress
           </Alert>
         )}
-
         {message && (
           <Backdrop
             open={

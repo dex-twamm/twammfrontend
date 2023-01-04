@@ -1,8 +1,6 @@
 import React from "react";
 import { Box, Button } from "@mui/material";
 import Modal from "@mui/material/Modal";
-import AdjustIcon from "@mui/icons-material/Adjust";
-
 import CloseIcon from "@mui/icons-material/Close";
 import { useContext } from "react";
 import { ShortSwapContext } from "../providers";
@@ -24,6 +22,11 @@ const DisconnectWalletOption = ({ showDisconnect, setShowDisconnect }) => {
   const handleDisconnectWallet = () => {
     disconnect(setAccount, setWalletConnected, setBalance);
     setShowDisconnect(false);
+  };
+  const getConnectedWalletIcon = () => {
+    const wallet = localStorage.getItem("walletConnection");
+    if (wallet.includes("metamask")) return "/metaMask.svg";
+    else if (wallet.includes("coinbase")) return "/coinbase.svg";
   };
 
   return (
@@ -69,9 +72,13 @@ const DisconnectWalletOption = ({ showDisconnect, setShowDisconnect }) => {
               </Button>
             </Box>
 
-            <Box className={styles.infoMiddleBox}>
-              <AdjustIcon
-                sx={{ color: "blue", mr: 1, fontSize: 30, fontWeight: 800 }}
+            <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
+              <img
+                src={getConnectedWalletIcon()}
+                alt=""
+                height="30"
+                width="30"
+                style={{ marginRight: "5px" }}
               />
               {account ? (
                 <span className={styles.addressTypography}>

@@ -38,6 +38,7 @@ const Swap = (props) => {
     spotPrice,
     setTransactionHash,
     isWalletConnected,
+    setAllowTwammErrorMessage,
   } = useContext(ShortSwapContext);
 
   const { tokenA, tokenB, setTokenA, setTokenB, allowance } =
@@ -88,6 +89,7 @@ const Swap = (props) => {
       setTransactionHash(approval.hash);
     } catch (e) {
       console.log(e);
+      setAllowTwammErrorMessage(e?.message);
     }
   };
 
@@ -230,8 +232,8 @@ const Swap = (props) => {
             </>
           )}
 
-          {parseFloat(allowance) <= swapAmount &&
-          swapAmount &&
+          {swapAmount &&
+          parseFloat(allowance) <= swapAmount &&
           tokenA.tokenIsSet &&
           tokenB.tokenIsSet ? (
             <button
@@ -252,7 +254,7 @@ const Swap = (props) => {
           ) : (
             <></>
           )}
-          {isWalletConnected ? (
+          {isWalletConnected && allowance ? (
             <button
               className={classNames(
                 styles.btn,
@@ -281,12 +283,16 @@ const Swap = (props) => {
                 "Swap"
               )}
             </button>
-          ) : (
+          ) : !isWalletConnected ? (
             <button
               className={classNames(styles.btn, styles.btnConnect)}
               onClick={handleClick}
             >
               Connect Wallet
+            </button>
+          ) : (
+            <button className={classNames(styles.btn, styles.btnConnect)}>
+              <CircularProgress sx={{ color: "white" }} />
             </button>
           )}
         </Box>

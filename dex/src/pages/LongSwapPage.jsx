@@ -9,9 +9,9 @@ import styles from "../css/ShortSwap.module.css";
 import { LongSwapContext, ShortSwapContext } from "../providers";
 import Tabs from "../components/Tabs";
 import PopupModal from "../components/alerts/PopupModal";
-import { getEthLogs } from "../utils/get_ethLogs";
 import { _placeLongTermOrders } from "../utils/placeLongTermOrder";
 import { connectWallet } from "../utils/connetWallet";
+import { connectWalletAndGetEthLogs } from "../utils/connetWallet";
 
 import { UIContext } from "../providers/context/UIProvider";
 import LongSwap from "../components/LongSwap";
@@ -28,6 +28,7 @@ const LongSwapPage = () => {
     setMessage,
     tokenA,
     tokenB,
+    allowance,
   } = useContext(LongSwapContext);
 
   const {
@@ -39,6 +40,9 @@ const LongSwapPage = () => {
     setAccount,
     setWalletConnected,
     swapAmount,
+    setSwapAmount,
+    srcAddress,
+    destAddress,
     account,
     setTransactionHash,
     setLoading,
@@ -56,13 +60,18 @@ const LongSwapPage = () => {
   const cardListCount = ethLogsCount;
 
   useEffect(() => {
+    let verifyLongSwapInterval;
+
     // Wait for 0.5 second before fetching price.
-    const interval1 = setTimeout(() => {
+
+    verifyLongSwapInterval = setTimeout(() => {
       verifyLongSwap(
         swapAmount,
         setLongSwapVerifyLoading,
         tokenA?.address,
+
         tokenB?.address,
+
         web3provider,
         account,
         setLongSwapFormErrors,
@@ -72,40 +81,44 @@ const LongSwapPage = () => {
     }, 500);
 
     return () => {
-      clearTimeout(interval1);
+      clearTimeout(verifyLongSwapInterval);
     };
   }, [swapAmount, tokenB, tokenA, numberOfBlockIntervals]);
 
   async function LongSwapButtonClick() {
-    if (!isWalletConnected) {
-      await connectWallet(
-        setweb3provider,
-        setCurrentBlock,
-        setBalance,
-        setAccount,
-        setWalletConnected,
-        setSelectedNetwork
-      );
-      await getEthLogs(
-        web3provider.getSigner(),
-        account,
-        selectedNetwork?.network
-      );
-    } else {
-      await _placeLongTermOrders(
-        swapAmount,
-        tokenA?.address,
-        tokenB?.address,
-        numberOfBlockIntervals,
-        web3provider,
-        account,
-        setTransactionHash,
-        setLoading,
-        setMessage,
-        setOrderLogsDecoded,
-        setError,
-        selectedNetwork?.network
-      );
+    try {
+      if (!isWalletConnected) {
+        await connectWalletAndGetEthLogs(
+          setweb3provider,
+          setCurrentBlock,
+          setBalance,
+          setAccount,
+          setWalletConnected,
+          setSelectedNetwork,
+          web3provider,
+          account,
+          selectedNetwork?.network
+        );
+      } else {
+        console.log(web3provider, web3provider.getSigner());
+        await _placeLongTermOrders(
+          swapAmount,
+          tokenA?.address,
+          tokenB?.address,
+          numberOfBlockIntervals,
+          web3provider,
+          account,
+          setTransactionHash,
+          setLoading,
+          setMessage,
+          setOrderLogsDecoded,
+          setError,
+          selectedNetwork?.network
+        );
+        setSwapAmount(0);
+      }
+    } catch (err) {
+      console.log(err);
     }
   }
 

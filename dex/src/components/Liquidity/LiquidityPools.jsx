@@ -69,7 +69,8 @@ const LiquidityPools = () => {
                           src="ethereum.png"
                         />
                       </Box>
-                      <Typography
+
+                      <span
                         className={styles.tokensTypography}
                         sx={{ fontSize: { xs: 16 } }}
                       >
@@ -78,10 +79,10 @@ const LiquidityPools = () => {
                         } / ${
                           getPoolTokens(selectedNetwork?.network)?.[1].symbol
                         }`}
-                      </Typography>
-                      <Typography className={styles.feeTypography}>
+                      </span>
+                      <span className={styles.feeTypography}>
                         {getPoolFees(selectedNetwork?.network)}
-                      </Typography>
+                      </span>
                     </Box>
                   </Box>
                 </Box>

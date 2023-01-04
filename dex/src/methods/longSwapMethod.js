@@ -1,10 +1,15 @@
 import { timeDeltaString } from "../utils";
+import { getPoolBlockInterval } from "../utils/poolUtils";
 
-const valueLabel = (value, currentBlock) => {
+const valueLabel = (value, currentBlock, currentNetwork) => {
+  const blockInterval = getPoolBlockInterval(currentNetwork);
+
   let currentBlockNumber = currentBlock?.number || 0;
   const numBlocks =
-    Math.ceil(value) * 150 +
-    (currentBlockNumber % 150 ? 150 - (currentBlockNumber % 150) : 0);
+    Math.ceil(value) * blockInterval +
+    (currentBlockNumber % blockInterval
+      ? blockInterval - (currentBlockNumber % blockInterval)
+      : 0);
 
   let targetDate;
   if (currentBlock?.timestamp) {

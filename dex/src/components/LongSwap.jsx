@@ -42,6 +42,7 @@ const LongSwap = (props) => {
     setTransactionHash,
     isWalletConnected,
     web3provider,
+    setAllowTwammErrorMessage,
   } = useContext(ShortSwapContext);
 
   const {
@@ -101,7 +102,7 @@ const LongSwap = (props) => {
       );
       setTransactionHash(approval.hash);
     } catch (e) {
-      console.log(e);
+      setAllowTwammErrorMessage(e?.message);
     }
   };
 
@@ -120,12 +121,18 @@ const LongSwap = (props) => {
       setValue(newValue);
       setNumberOfBlockIntervals(calculateNumBlockIntervals(newValue));
       setTargetDate(
-        valueLabel(calculateNumBlockIntervals(newValue), currentBlock)
-          .targetDate
+        valueLabel(
+          calculateNumBlockIntervals(newValue),
+          currentBlock,
+          selectedNetwork?.network
+        ).targetDate
       );
       setExecutionTIme(
-        valueLabel(calculateNumBlockIntervals(newValue), currentBlock)
-          .executionTime
+        valueLabel(
+          calculateNumBlockIntervals(newValue),
+          currentBlock,
+          selectedNetwork?.network
+        ).executionTime
       );
     }
   };
@@ -312,7 +319,7 @@ const LongSwap = (props) => {
           ) : (
             <></>
           )}
-          {isWalletConnected ? (
+          {isWalletConnected && allowance ? (
             <button
               className={classNames(
                 styles.btn,
@@ -342,12 +349,17 @@ const LongSwap = (props) => {
                 "Swap"
               )}
             </button>
-          ) : (
+          ) : !isWalletConnected ? (
             <button
               className={classNames(styles.btn, styles.btnConnect)}
               onClick={handleClick}
             >
               Connect Wallet
+            </button>
+          ) : (
+            //this is for the small time interval while allowance is loading.
+            <button className={classNames(styles.btn, styles.btnConnect)}>
+              <CircularProgress sx={{ color: "white" }} />
             </button>
           )}
         </Box>

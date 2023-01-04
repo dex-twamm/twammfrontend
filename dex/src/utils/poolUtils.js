@@ -27,3 +27,7 @@ export const getPoolLtoContractAddress = (currentNetwork = "Goerli") => {
 export const getPoolTokenAddresses = (currentNetwork = "Goerli") => {
   return getPoolTokens(currentNetwork).map((item) => item.address);
 };
+
+export const getPoolBlockInterval = (currentNetwork = "Goerli") => {
+  return getPoolConfig(currentNetwork)?.blockInterval;
+};
