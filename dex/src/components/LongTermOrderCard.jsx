@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { LongSwapContext, ShortSwapContext } from "../providers";
 import CircularProgressBar from "./alerts/CircularProgressBar";
 import LongTermOrderSingleCard from "./LongTermOrderSingleCard";
+import styles from "../css/LongTermOrderCard.module.css";
 
 const LongTermOrderCard = () => {
   const { isWalletConnected } = useContext(ShortSwapContext);
@@ -9,30 +10,14 @@ const LongTermOrderCard = () => {
 
   return !isWalletConnected ? (
     <>
-      <p
-        style={{
-          fontFamily: "Open Sans",
-          marginBottom: "0px",
-          fontSize: "14px",
-          padding: "0 5px",
-        }}
-      >
-        Connet wallet to view placed orders{" "}
-      </p>
+      <p className={styles.ptext}>Connet wallet to view placed orders </p>
     </>
   ) : orderLogsLoading ? (
     <CircularProgressBar></CircularProgressBar>
   ) : (
     <>
       {orderLogsDecoded?.length === 0 ? (
-        <p
-          style={{
-            fontFamily: "Open Sans",
-            marginBottom: "0px",
-            fontSize: "14px",
-            padding: "0 5px",
-          }}
-        >
+        <p className={styles.ptext}>
           No long term orders placed for this address{" "}
         </p>
       ) : (

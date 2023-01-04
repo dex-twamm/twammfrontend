@@ -99,20 +99,7 @@ const Navbar = () => {
               width="20px"
             />
           </Link>
-          <p
-            className={styles.longswap}
-            style={{
-              fontFamily: "Futura",
-              fontWeight: "700",
-              fontSize: "18px",
-              lineHeight: "24px",
-              letterSpacing: "0.4px",
-
-              color: "#554994",
-            }}
-          >
-            Longswap
-          </p>
+          <p className={styles.longSwap}>Longswap</p>
         </div>
         <div className={styles.tabContainerRight}>
           {isWalletConnected && (
@@ -162,7 +149,8 @@ const Navbar = () => {
               </button>
             )}
           </div>
-          <div
+          {/* Not used currently */}
+          {/* <div
             onClick={(e) => e.stopPropagation()}
             className={styles.menuOption}
           >
@@ -189,7 +177,7 @@ const Navbar = () => {
                 {<NavOptionDropdwon />}
               </span>
             )}
-          </div>
+          </div> */}
         </div>
       </div>
     </header>

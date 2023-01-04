@@ -13,7 +13,7 @@ export const _placeLongTermOrders = async (
   account,
   setTransactionHash,
   setLoading,
-  setIsPlacedLongTermOrder,
+  setMessage,
   setOrderLogsDecoded,
   setError,
   currentNetwork
@@ -52,19 +52,23 @@ export const _placeLongTermOrders = async (
           const result = await res.wait();
           return result;
         };
-        placeLtoTxResult(res).then((response) => {
-          if (response.status === 1) setIsPlacedLongTermOrder(true);
+        placeLtoTxResult(res).then(async (response) => {
+          if (response.status === 1) {
+            await getEthLogs(signer, walletAddress, currentNetwork).then(
+              (res) => {
+                const resArray = Array.from(res.values());
+                setOrderLogsDecoded(resArray);
+              }
+            );
+            setMessage(POPUP_MESSAGE.ltoPlaced);
+          } else setMessage(POPUP_MESSAGE.ltoPlaceFailed);
         });
       })
       .catch((err) => {
         console.error(err);
-        setIsPlacedLongTermOrder(false);
+        setMessage(POPUP_MESSAGE.ltoPlaceFailed);
       })
       .finally(setLoading(false));
-    await getEthLogs(signer, walletAddress, currentNetwork).then((res) => {
-      const resArray = Array.from(res.values());
-      setOrderLogsDecoded(resArray);
-    });
   } catch (err) {
     console.error(err);
     setLoading(false);

@@ -3,6 +3,7 @@ import { Alert, Box, CircularProgress, Skeleton } from "@mui/material";
 import classNames from "classnames";
 import React, { useContext, useState } from "react";
 import styles from "../css/AddLiquidity.module.css";
+import lsStyles from "../css/LongSwap.module.css";
 
 import { LongSwapContext } from "../providers";
 import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
@@ -119,40 +120,11 @@ const Swap = (props) => {
     };
   }, [setFormErrors, setTransactionHash]);
 
-  //for switching the input sectons in short swap
-
-  // useEffect(() => {
-  //   return () => {
-  //     setTargetDate("");
-  //     setTransactionHash(undefined);
-  //     setIsPlacedLongTermOrder && setIsPlacedLongTermOrder();
-  //   };
-  // });
-
   return (
     <>
       <form onSubmit={handleSubmit} className={styles.form}>
-        <div
-          style={{
-            width: "96%",
-            height: "2px",
-            background: "#f0f0f0",
-            display: "flex",
-            justifyContent: "center",
-            margin: "auto",
-            marginBottom: "0px",
-          }}
-        />
-
-        <Box
-          padding={"6px 8px"}
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "5px",
-            boxSizing: "border-box",
-          }}
-        >
+        <div className={lsStyles.main} />
+        <Box className={lsStyles.mainBox}>
           <Input
             id={1}
             input={swapAmount ? swapAmount : ""}
@@ -199,19 +171,14 @@ const Swap = (props) => {
             <>
               <Box
                 sx={{
-                  boxSizing: "border-box",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  width: "100%",
                   padding: { xs: "0px 4px", sm: "4px 8px" },
                 }}
-                className={open && styles.swapunit}
+                className={(open && styles.swapunit, styles.spotPriceBox)}
               >
                 {!formErrors.balError ? (
                   <Box
+                    className={styles.spotBox}
                     sx={{
-                      display: "flex",
                       alignItems: {
                         xs: "flex-start ",
                         sm: "center",
@@ -223,8 +190,6 @@ const Swap = (props) => {
                         md: "fit-content",
                       },
 
-                      boxSizing: "border-box",
-                      fontFamily: "Open Sans",
                       gap: { xs: "2px", sm: "4px" },
                     }}
                   >
@@ -234,15 +199,9 @@ const Swap = (props) => {
                       <p></p>
                     ) : (
                       <p
+                        className={lsStyles.spotPrice}
                         style={{
-                          cursor: "pointer",
-                          boxSizing: "border-box",
                           padding: { xs: "0px", sm: "8px 0px" },
-                          color: "black",
-                          fontFamily: "Open Sans",
-                          fontSize: "16px",
-                          fontWeight: 500,
-                          display: "flex",
                         }}
                         onClick={handleClose}
                       >
@@ -261,16 +220,10 @@ const Swap = (props) => {
                     )}
                   </Box>
                 ) : null}
-
                 <Box
+                  className={lsStyles.extraBox}
                   sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    boxSizing: "border-box",
-                    color: "#333333",
-                    fontFamily: "Open Sans",
                     gap: { xs: "0px", sm: "5px" },
-                    padding: "4px",
                   }}
                 ></Box>
               </Box>
@@ -282,12 +235,11 @@ const Swap = (props) => {
           tokenA.tokenIsSet &&
           tokenB.tokenIsSet ? (
             <button
-              className={classNames(styles.btn, styles.btnConnect)}
-              style={{
-                background: "#554994",
-                borderRadius: "17px",
-                color: "white",
-              }}
+              className={classNames(
+                styles.btn,
+                styles.btnConnect,
+                styles.btnBtn
+              )}
               onClick={() => {
                 handleApproveButton();
               }}
@@ -302,12 +254,11 @@ const Swap = (props) => {
           )}
           {isWalletConnected ? (
             <button
-              className={classNames(styles.btn, styles.btnConnect)}
-              style={{
-                background: "#554994",
-                borderRadius: "17px",
-                color: "white",
-              }}
+              className={classNames(
+                styles.btn,
+                styles.btnConnect,
+                styles.btnBtn
+              )}
               onClick={handleClick}
               disabled={
                 !tokenA.tokenIsSet ||

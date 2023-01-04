@@ -10,6 +10,7 @@ import { _cancelLTO } from "../utils/_cancelLto";
 import { LongSwapContext, ShortSwapContext } from "../providers";
 import { ethers } from "ethers";
 import { getPoolConfig } from "../utils/poolUtils";
+import { getBlockExplorerTransactionUrl } from "../utils/networkUtils";
 
 const LongTermOrderSingleCard = ({ it }) => {
   const {
@@ -171,7 +172,9 @@ const LongTermOrderSingleCard = ({ it }) => {
             className={styles.iconExternalLink}
             onClick={() =>
               window.open(
-                `${poolConfig?.transactionUrl}${it.transactionHash}`,
+                `${getBlockExplorerTransactionUrl(selectedNetwork?.network)}${
+                  it.transactionHash
+                }`,
                 "_blank"
               )
             }

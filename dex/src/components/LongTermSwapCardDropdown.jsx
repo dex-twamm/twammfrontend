@@ -1,4 +1,4 @@
-import { Box, IconButton, Typography } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import React, { useContext, useState } from "react";
 import LaunchIcon from "@mui/icons-material/Launch";
 import CircleIcon from "@mui/icons-material/Circle";
@@ -7,6 +7,7 @@ import { FiChevronDown } from "react-icons/fi";
 import { bigToStr } from "../utils";
 import { UIContext } from "../providers";
 import { getBlockExplorerTransactionUrl } from "../utils/networkUtils";
+import styles from "../css/LongTermSwapCardDropDown.module.css";
 
 const LongTermSwapCardDropdown = (props) => {
   const { withdrawals } = props;
@@ -25,75 +26,32 @@ const LongTermSwapCardDropdown = (props) => {
             "aria-labelledby": "basic-button",
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "100%",
-              borderRadius: "24px",
-              minHeight: "100px",
-            }}
-          >
+          <Box className={styles.mainBox}>
             <Box
+              className={styles.contentBox}
               sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "space-between",
-                width: "95%",
                 p: { xs: "5px 2px", sm: "10px 14px" },
-                border: "2px solid #f1f1f1",
-                borderRadius: "24px",
-                gap: "5px",
-                m: "16px 0",
               }}
             >
               <Box
+                className={styles.insideContentBox}
                 sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  boxSizing: "border-box",
-                  color: "#333333",
-                  fontFamily: "Open Sans",
                   gap: { xs: "0px", sm: "5px" },
-                  padding: "4px",
                 }}
               >
-                <Typography
-                  onClick={handleClose}
-                  sx={{
-                    width: "100%",
-                    display: "flex",
-                    alignItems: "center",
-                    color: "#333333",
-                    fontSize: "18px",
-                    fontFamily: "Open Sans",
-                    fontWeight: 600,
-                  }}
-                >
+                <span onClick={handleClose} className={styles.withdraw} sx={{}}>
                   Withdrawals
-                </Typography>
+                </span>
 
                 {open ? (
                   <KeyboardArrowUpOutlinedIcon
-                    sx={{
-                      fontSize: "24px",
-                      color: "#333333",
-                      cursor: "pointer",
-                      mr: "10px",
-                    }}
+                    className={styles.arrowIconStyle}
                     onClick={handleClose}
                   />
                 ) : (
                   <FiChevronDown
                     fontSize={"24px"}
-                    style={{
-                      color: "#333333",
-                      cursor: "pointer",
-                      marginRight: "10px",
-                    }}
+                    className={styles.chevronStyle}
                     onClick={handleClose}
                   />
                 )}
@@ -113,19 +71,14 @@ const LongTermSwapCardDropdown = (props) => {
                     };
                     return (
                       <Box
+                        className={styles.withdrawlBox}
                         key={transactionHash}
                         sx={{
-                          width: "100%",
-                          display: "flex",
                           alignItems: {
                             xs: "flex-start",
                             sm: "flex-start",
                             md: "flex-start",
                           },
-                          justifyContent: "center",
-                          padding: "5px",
-                          paddingLeft: "0px",
-                          marginLeft: "0px",
                         }}
                       >
                         <CircleIcon
@@ -138,25 +91,19 @@ const LongTermSwapCardDropdown = (props) => {
                           }}
                         />
                         <Box
+                          className={styles.infoBox}
                           sx={{
-                            display: "flex",
                             alignItems: { xs: "flex-start", sm: "center" },
-                            marginLeft: "10px",
-                            color: "#333333",
-                            width: "90%",
                           }}
                         >
-                          <Typography
+                          <span
+                            className={styles.infoSpan}
                             sx={{
-                              display: "flex",
                               alignItems: {
                                 xs: "flex-start",
                                 sm: "flex-start",
                               },
-                              fontFamily: "Open Sans",
                               fontSize: { xs: "14px", sm: "16px" },
-                              color: "#333333",
-                              width: "100%",
                               ml: { xs: "5px", sm: "0px" },
                             }}
                           >
@@ -164,15 +111,13 @@ const LongTermSwapCardDropdown = (props) => {
                             <IconButton onClick={handleClick}>
                               <LaunchIcon
                                 fontSize="medium"
+                                className={styles.launchIconStyle}
                                 sx={{
                                   display: { xs: "inline-block" },
-                                  boxSizing: "border-box",
-                                  fontSize: "15px",
-                                  cursor: "pointer",
                                 }}
                               ></LaunchIcon>
                             </IconButton>
-                          </Typography>
+                          </span>
                         </Box>
                       </Box>
                     );
