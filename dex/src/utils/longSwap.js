@@ -1,9 +1,5 @@
 import { BigNumber, Contract, ethers } from "ethers";
-import {
-  GAS_OVERAGE_FACTOR,
-  LONGTERM_ABI,
-  VAULT_CONTRACT_ABI,
-} from "../constants";
+import { LONGTERM_ABI } from "../constants";
 import { MAX_UINT256 } from ".";
 import {
   getPoolId,
@@ -11,27 +7,18 @@ import {
   getPoolLtoContractAddress,
   getPoolTokenAddresses,
 } from "./poolUtils";
-import { getVaultContractAddress } from "./networkUtils";
+import { getExchangeContract } from "./getContracts";
+import { getGasLimit } from "./getGasLimit";
 
-export async function placeLongTermOrder(
+const getLongSwapEncodedRequest = (
   tokenInIndex,
   tokenOutIndex,
   amountIn,
-  numberOfBlockIntervals,
-  signer,
-  walletAddress,
-  setTransactionHash,
-  currentNetwork
-) {
-  let txHash;
-
-  const exchangeContract = new Contract(
-    getVaultContractAddress(currentNetwork),
-    VAULT_CONTRACT_ABI,
-    signer
-  );
+  numberOfBlockIntervals
+) => {
   const abiCoder = ethers.utils.defaultAbiCoder;
-  const encodedRequest = abiCoder.encode(
+
+  return abiCoder.encode(
     ["uint256", "uint256", "uint256", "uint256", "uint256"],
     [
       4,
@@ -40,6 +27,48 @@ export async function placeLongTermOrder(
       amountIn,
       BigNumber.from(numberOfBlockIntervals),
     ]
+  );
+};
+
+export const verifyLongSwapTxn = async (
+  tokenInIndex,
+  tokenOutIndex,
+  amountIn,
+  numberOfBlockIntervals,
+  signer,
+  walletAddress,
+  currentNetwork
+) => {
+  const verifyLongSwapTxnResult = await placeLongTermOrder(
+    tokenInIndex,
+    tokenOutIndex,
+    amountIn,
+    numberOfBlockIntervals,
+    signer,
+    walletAddress,
+    currentNetwork,
+    true
+  );
+  return verifyLongSwapTxnResult;
+};
+
+export async function placeLongTermOrder(
+  tokenInIndex,
+  tokenOutIndex,
+  amountIn,
+  numberOfBlockIntervals,
+  signer,
+  walletAddress,
+  currentNetwork,
+  isVerifyOnly
+) {
+  const exchangeContract = getExchangeContract(currentNetwork, signer);
+
+  const encodedRequest = getLongSwapEncodedRequest(
+    tokenInIndex,
+    tokenOutIndex,
+    amountIn,
+    numberOfBlockIntervals
   );
 
   const swapData = [
@@ -54,12 +83,16 @@ export async function placeLongTermOrder(
     },
   ];
 
-  const gasEstimate = await exchangeContract.estimateGas.joinPool(...swapData);
-
-  const placeLtoTx = await exchangeContract.joinPool(...swapData, {
-    gasLimit: Math.floor(gasEstimate.toNumber() * GAS_OVERAGE_FACTOR),
-  });
-
+  let placeLtoTx;
+  if (isVerifyOnly) {
+    placeLtoTx = await exchangeContract.callStatic.joinPool(...swapData, {
+      gasLimit: getGasLimit(exchangeContract, swapData, "joinPool"),
+    });
+  } else {
+    placeLtoTx = await exchangeContract.joinPool(...swapData, {
+      gasLimit: getGasLimit(exchangeContract, swapData, "joinPool"),
+    });
+  }
   return placeLtoTx;
 }
 

@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import { POPUP_MESSAGE } from "../constants";
-import { getEstimatedConvertedToken } from "./batchSwap";
 import { getPoolConfig } from "./poolUtils";
+import { swapTokens, verifySwapTokens } from "./swap";
 
 // Spot Prices
 export const spotPrice = async (
@@ -38,7 +38,7 @@ export const spotPrice = async (
 
     //for shortswap
     try {
-      await getEstimatedConvertedToken(
+      await verifySwapTokens(
         signer,
         swapAmountWei,
         tokenIn.address,

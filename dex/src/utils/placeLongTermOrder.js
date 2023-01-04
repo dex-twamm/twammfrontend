@@ -44,7 +44,6 @@ export const _placeLongTermOrders = async (
       blockIntervals,
       signer,
       walletAddress,
-      setTransactionHash,
       currentNetwork
     )
       .then((res) => {

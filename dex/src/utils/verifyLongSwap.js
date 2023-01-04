@@ -1,58 +1,7 @@
-import { BigNumber, Contract, ethers } from "ethers";
-import { MAX_UINT256 } from ".";
-import {
-  GAS_OVERAGE_FACTOR,
-  POPUP_MESSAGE,
-  VAULT_CONTRACT_ABI,
-} from "../constants";
-import { getVaultContractAddress } from "./networkUtils";
-import { getPoolId, getPoolConfig, getPoolTokenAddresses } from "./poolUtils";
-
-export const verifyLongSwapTxn = async (
-  tokenInIndex,
-  tokenOutIndex,
-  amountIn,
-  numberOfBlockIntervals,
-  signer,
-  walletAddress,
-  currentNetwork
-) => {
-  const vaultContract = new Contract(
-    getVaultContractAddress(currentNetwork),
-    VAULT_CONTRACT_ABI,
-    signer
-  );
-  const abiCoder = ethers.utils.defaultAbiCoder;
-  const encodedRequest = abiCoder.encode(
-    ["uint256", "uint256", "uint256", "uint256", "uint256"],
-    [
-      4,
-      tokenInIndex,
-      tokenOutIndex,
-      amountIn,
-      BigNumber.from(numberOfBlockIntervals),
-    ]
-  );
-
-  const swapData = [
-    getPoolId(currentNetwork),
-    walletAddress,
-    walletAddress,
-    {
-      assets: getPoolTokenAddresses(currentNetwork),
-      maxAmountsIn: [MAX_UINT256, MAX_UINT256],
-      fromInternalBalance: false,
-      userData: encodedRequest,
-    },
-  ];
-
-  const gasEstimate = await vaultContract.estimateGas.joinPool(...swapData);
-
-  const placeLtoTx = await vaultContract.callStatic.joinPool(...swapData, {
-    gasLimit: Math.floor(gasEstimate.toNumber() * GAS_OVERAGE_FACTOR),
-  });
-  return placeLtoTx;
-};
+import { ethers } from "ethers";
+import { POPUP_MESSAGE } from "../constants";
+import { verifyLongSwapTxn } from "./longSwap";
+import { getPoolConfig } from "./poolUtils";
 
 export const verifyLongSwap = async (
   swapAmount,
