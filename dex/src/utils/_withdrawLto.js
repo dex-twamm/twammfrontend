@@ -50,16 +50,20 @@ export const _withdrawLTO = async (
         const result = await res.wait();
         return result;
       };
-      withdrawLTOResult(res).then((response) => {
-        if (response.status === 1) setMessage(POPUP_MESSAGE.ltoWithdrawn);
+      withdrawLTOResult(res).then(async (response) => {
+        if (response.status === 1) {
+          await getEthLogs(signer, walletAddress, currentNetwork).then(
+            (res) => {
+              const resArray = Array.from(res.values());
+              setOrderLogsDecoded(resArray);
+            }
+          );
+          setMessage(POPUP_MESSAGE.ltoWithdrawn);
+        } else setMessage(POPUP_MESSAGE.ltoWithdrawFailed);
       });
     });
     setLoading(false);
     setDisableActionBtn(false);
-    await getEthLogs(signer, walletAddress, currentNetwork).then((res) => {
-      const resArray = Array.from(res.values());
-      setOrderLogsDecoded(resArray);
-    });
   } catch (e) {
     console.log(e);
     setMessage(POPUP_MESSAGE.ltoWithdrawFailed);

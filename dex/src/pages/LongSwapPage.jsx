@@ -18,8 +18,6 @@ import LongSwap from "../components/LongSwap";
 import { verifyLongSwap } from "../utils/verifyLongSwap";
 
 const LongSwapPage = () => {
-  const [isPlacedLongTermOrder, setIsPlacedLongTermOrder] = useState();
-
   const {
     orderLogsDecoded,
     numberOfBlockIntervals,
@@ -27,6 +25,7 @@ const LongSwapPage = () => {
     setLongSwapFormErrors,
     longSwapVerifyLoading,
     setLongSwapVerifyLoading,
+    setMessage,
     tokenA,
     tokenB,
   } = useContext(LongSwapContext);
@@ -102,7 +101,7 @@ const LongSwapPage = () => {
         account,
         setTransactionHash,
         setLoading,
-        setIsPlacedLongTermOrder,
+        setMessage,
         setOrderLogsDecoded,
         setError,
         selectedNetwork?.network
@@ -141,13 +140,9 @@ const LongSwapPage = () => {
           <LongSwap
             handleLongSwapAction={LongSwapButtonClick}
             longSwapVerifyLoading={longSwapVerifyLoading}
-            setIsPlacedLongTermOrder={setIsPlacedLongTermOrder}
           />
         </div>
-        <PopupModal
-          isPlacedLongTermOrder={isPlacedLongTermOrder}
-          setIsPlacedLongTermOrder={setIsPlacedLongTermOrder}
-        />
+        <PopupModal />
 
         <div className={lsStyles.ordersWrapper}>
           <h4 className={lsStyles.longTermText}>Your Long Term Orders</h4>

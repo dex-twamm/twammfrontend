@@ -24,11 +24,7 @@ import { approveMaxAllowance } from "../utils/getApproval";
 import { UIContext } from "../providers/context/UIProvider";
 
 const LongSwap = (props) => {
-  const {
-    handleLongSwapAction,
-    longSwapVerifyLoading,
-    setIsPlacedLongTermOrder,
-  } = props;
+  const { handleLongSwapAction, longSwapVerifyLoading } = props;
 
   const [display, setDisplay] = useState(false);
   const [value, setValue] = useState(0.0);
@@ -60,6 +56,7 @@ const LongSwap = (props) => {
     allowance,
     setLongSwapFormErrors,
     longSwapFormErrors,
+    setMessage,
   } = useContext(LongSwapContext);
 
   const { selectedNetwork } = useContext(UIContext);
@@ -156,7 +153,7 @@ const LongSwap = (props) => {
       setTargetDate("");
       setExecutionTIme("");
       setTransactionHash(undefined);
-      setIsPlacedLongTermOrder && setIsPlacedLongTermOrder();
+      setMessage();
     };
   }, []);
 
