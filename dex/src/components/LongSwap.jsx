@@ -10,6 +10,7 @@ import classNames from "classnames";
 import React, { useContext, useState } from "react";
 import lsStyles from "../css/LongSwap.module.css";
 import styles from "../css/AddLiquidity.module.css";
+import { bigToStr } from "../utils";
 
 import {
   calculateNumBlockIntervals,
@@ -20,7 +21,7 @@ import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
 import Input from "./Input";
 import { FiChevronDown } from "react-icons/fi";
 
-import { getApproval } from "../utils/getApproval";
+import {getAllowance, getApproval } from "../utils/getApproval";
 import { UIContext } from "../providers/context/UIProvider";
 
 const LongSwap = (props) => {
@@ -32,6 +33,7 @@ const LongSwap = (props) => {
   const [disableAllowBtn, setDisableAllowBtn] = useState(true);
 
   const {
+    account,
     swapAmount,
     setSwapAmount,
     selectToken,
@@ -56,6 +58,7 @@ const LongSwap = (props) => {
     setNumberOfBlockIntervals,
     numberOfBlockIntervals,
     allowance,
+    setAllowance,
     setLongSwapFormErrors,
     longSwapFormErrors,
   } = useContext(LongSwapContext);
@@ -102,6 +105,14 @@ const LongSwap = (props) => {
         selectedNetwork?.network
       );
       setTransactionHash(approval.hash);
+      await getAllowance(
+        web3provider?.getSigner(),
+        account,
+        srcAddress,
+        selectedNetwork?.network
+      ).then((res) => {
+        setAllowance(bigToStr(res));
+      });
     } catch (e) {
       setAllowTwammErrorMessage(e?.message);
     }
