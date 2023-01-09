@@ -1,15 +1,15 @@
 import { POOLS } from "./pool";
 
-export const getPoolId = (currentNetwork = "Goerli") => {
-  return Object.keys(POOLS[currentNetwork])?.[0];
-};
-
 export const getAllPool = (currentNetwork = "Goerli") => {
   return Object.values(POOLS?.[currentNetwork]);
 };
 
+export const getPoolId = (currentNetwork = "Goerli") => {
+  return Object.keys(POOLS[currentNetwork])?.[1];
+};
+
 export const getPoolConfig = (currentNetwork = "Goerli") => {
-  return Object.values(POOLS?.[currentNetwork])?.[0];
+  return Object.values(POOLS?.[currentNetwork])?.[1];
 };
 
 export const getPoolTokens = (currentNetwork = "Goerli") => {

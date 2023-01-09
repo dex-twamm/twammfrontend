@@ -142,18 +142,20 @@ const LongSwapPage = () => {
                 Long Term Swap
               </a>
               <div className={styles.poolAndIcon}>
-                <Select
-                  className={styles.poolBox}
-                  inputProps={{ "aria-label": "Without label" }}
-                  value={poolNumber}
-                  onChange={handlePoolChange}
-                  variant="outlined"
-                  sx={{ outline: "none" }}
-                >
-                  {getAllPool(selectedNetwork?.network)?.map((el, idx) => {
-                    return <MenuItem value={idx}>Pool {idx}</MenuItem>;
-                  })}
-                </Select>
+                {getAllPool(selectedNetwork?.network).length > 1 && (
+                  <Select
+                    className={styles.poolBox}
+                    inputProps={{ "aria-label": "Without label" }}
+                    value={poolNumber}
+                    onChange={handlePoolChange}
+                    variant="outlined"
+                    sx={{ outline: "none" }}
+                  >
+                    {getAllPool(selectedNetwork?.network)?.map((el, idx) => {
+                      return <MenuItem value={idx}>Pool {idx}</MenuItem>;
+                    })}
+                  </Select>
+                )}
                 <FontAwesomeIcon
                   className={styles.settingsIcon}
                   icon={faGear}
