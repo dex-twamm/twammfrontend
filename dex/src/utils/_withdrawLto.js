@@ -60,10 +60,10 @@ export const _withdrawLTO = async (
           );
           setMessage(POPUP_MESSAGE.ltoWithdrawn);
         } else setMessage(POPUP_MESSAGE.ltoWithdrawFailed);
+        setDisableActionBtn(false);
       });
     });
     setLoading(false);
-    setDisableActionBtn(false);
   } catch (e) {
     console.log(e);
     setMessage(POPUP_MESSAGE.ltoWithdrawFailed);

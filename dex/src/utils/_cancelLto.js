@@ -60,10 +60,10 @@ export const _cancelLTO = async (
           );
           setMessage(POPUP_MESSAGE.ltoCancelSuccess);
         } else setMessage(POPUP_MESSAGE.ltoCancelFailed);
+        setDisableActionBtn(false);
       });
     });
     setLoading(false);
-    setDisableActionBtn(false);
   } catch (e) {
     console.log(e);
     setMessage(POPUP_MESSAGE.ltoCancelFailed);
