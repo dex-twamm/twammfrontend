@@ -11,7 +11,8 @@ export async function cancelLTO(
   orderId,
   orderHash,
   setTransactionHash,
-  currentNetwork
+  currentNetwork,
+  poolNumber
 ) {
   const vaultContract = getExchangeContract(currentNetwork, signer);
   // bptAmountIn As User Input
@@ -21,11 +22,11 @@ export async function cancelLTO(
   );
 
   const data = [
-    getPoolId(currentNetwork),
+    getPoolId(currentNetwork, poolNumber),
     walletAddress,
     walletAddress,
     {
-      assets: getPoolTokenAddresses(currentNetwork),
+      assets: getPoolTokenAddresses(currentNetwork, poolNumber),
       minAmountsOut: [0, 0],
       userData: encodedRequest,
       toInternalBalance: false,
@@ -46,7 +47,8 @@ export async function withdrawLTO(
   orderId,
   orderHash,
   setTransactionHash,
-  currentNetwork
+  currentNetwork,
+  poolNumber
 ) {
   const vaultContract = getExchangeContract(currentNetwork, signer);
   // bptAmountIn As User Input
@@ -56,11 +58,11 @@ export async function withdrawLTO(
   );
 
   const data = [
-    getPoolId(currentNetwork),
+    getPoolId(currentNetwork, poolNumber),
     walletAddress,
     walletAddress,
     {
-      assets: getPoolTokenAddresses(currentNetwork),
+      assets: getPoolTokenAddresses(currentNetwork, poolNumber),
       minAmountsOut: [0, 0],
       userData: encodedRequest,
       toInternalBalance: false,
@@ -75,15 +77,20 @@ export async function withdrawLTO(
   return withdrawLTOTx;
 }
 
-export async function getPoolBalance(signer, tokenAddress, currentNetwork) {
-  const tokenIndex = getPoolTokens(currentNetwork).filter(
+export async function getPoolBalance(
+  signer,
+  tokenAddress,
+  currentNetwork,
+  poolNumber
+) {
+  const tokenIndex = getPoolTokens(currentNetwork, poolNumber).filter(
     (item) => item.address === tokenAddress
   );
 
   const vaultContract = getExchangeContract(currentNetwork, signer);
 
   const poolBalance = await vaultContract.getPoolTokenInfo(
-    getPoolId(currentNetwork),
+    getPoolId(currentNetwork, poolNumber),
     tokenAddress
   );
   const cash = poolBalance.cash._hex;

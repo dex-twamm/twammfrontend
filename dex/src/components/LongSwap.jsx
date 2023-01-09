@@ -60,7 +60,7 @@ const LongSwap = (props) => {
     setMessage,
   } = useContext(LongSwapContext);
 
-  const { selectedNetwork } = useContext(UIContext);
+  const { selectedNetwork, poolNumber } = useContext(UIContext);
 
   const handleDisplay = (event) => {
     setSelectToken(event.currentTarget.id);
@@ -124,14 +124,16 @@ const LongSwap = (props) => {
         valueLabel(
           calculateNumBlockIntervals(newValue),
           currentBlock,
-          selectedNetwork?.network
+          selectedNetwork?.network,
+          poolNumber
         ).targetDate
       );
       setExecutionTIme(
         valueLabel(
           calculateNumBlockIntervals(newValue),
           currentBlock,
-          selectedNetwork?.network
+          selectedNetwork?.network,
+          poolNumber
         ).executionTime
       );
     }

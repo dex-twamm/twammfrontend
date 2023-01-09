@@ -42,7 +42,8 @@ function App() {
     setOrderLogsLoading,
   } = useContext(LongSwapContext);
 
-  const { setSelectedNetwork, selectedNetwork } = useContext(UIContext);
+  const { setSelectedNetwork, selectedNetwork, poolNumber } =
+    useContext(UIContext);
 
   // Connect cached Wallet as early as possible in cycle.
   useEffect(() => {
@@ -86,7 +87,8 @@ function App() {
         await getPoolBalance(
           web3provider?.getSigner(),
           tokenAddress,
-          selectedNetwork?.network
+          selectedNetwork?.network,
+          poolNumber
         ).then((res) => {
           setPoolCash(res);
         });
@@ -108,21 +110,24 @@ function App() {
         await getTokensBalance(
           web3provider?.getSigner(),
           account,
-          selectedNetwork?.network
+          selectedNetwork?.network,
+          poolNumber
         ).then((res) => {
           setTokenBalances(res);
         });
 
         await getLastVirtualOrderBlock(
           web3provider?.getSigner(),
-          selectedNetwork?.network
+          selectedNetwork?.network,
+          poolNumber
         ).then((res) => {
           setLastVirtualOrderBlock(res);
         });
         await getEthLogs(
           web3provider?.getSigner(),
           walletAddress,
-          selectedNetwork?.network
+          selectedNetwork?.network,
+          poolNumber
         ).then((res) => {
           const resArray = Array.from(res.values());
           setOrderLogsDecoded(resArray);
@@ -132,7 +137,8 @@ function App() {
         await getLPTokensBalance(
           web3provider?.getSigner(),
           walletAddress,
-          selectedNetwork?.network
+          selectedNetwork?.network,
+          poolNumber
         ).then((res) => {
           setLPTokenBalance(res);
         });
@@ -209,6 +215,8 @@ function App() {
       setSelectedNetwork
     );
   }, [account]);
+
+  console.log("pool number value", poolNumber);
 
   return (
     <>

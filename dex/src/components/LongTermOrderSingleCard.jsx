@@ -34,14 +34,18 @@ const LongTermOrderSingleCard = ({ it }) => {
     setOrderLogsDecoded,
     setMessage,
   } = useContext(LongSwapContext);
-  const { selectedNetwork, setSelectedNetwork, nId } = useContext(UIContext);
+  const { selectedNetwork, setSelectedNetwork, nId, poolNumber } =
+    useContext(UIContext);
 
   const [orderStatus, setOrderStatus] = useState();
   const [newTime, setNewTime] = useState(
     (it.expirationBlock - currentBlock.number) * 12
   );
 
-  const poolConfig = getPoolConfig(selectedNetwork?.network ?? "Goerli");
+  const poolConfig = getPoolConfig(
+    selectedNetwork?.network ?? "Goerli",
+    poolNumber
+  );
 
   const tokenIn = poolConfig.tokens[it.sellTokenIndex];
   const tokenOut = poolConfig.tokens[it.buyTokenIndex];
@@ -100,7 +104,7 @@ const LongTermOrderSingleCard = ({ it }) => {
       setTransactionHash,
       selectedNetwork?.network,
       setSelectedNetwork,
-      nId
+      poolNumber
     );
   };
 
@@ -123,7 +127,7 @@ const LongTermOrderSingleCard = ({ it }) => {
       setTransactionHash,
       selectedNetwork?.network,
       setSelectedNetwork,
-      nId
+      poolNumber
     );
   };
 

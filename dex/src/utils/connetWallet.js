@@ -56,7 +56,8 @@ export const connectWalletAndGetEthLogs = async (
   setSelectedNetwork,
   web3provider,
   account,
-  selectedNetwork
+  selectedNetwork,
+  poolNumber
 ) => {
   await connectWallet(
     setweb3provider,
@@ -66,5 +67,5 @@ export const connectWalletAndGetEthLogs = async (
     setWalletConnected,
     setSelectedNetwork
   );
-  await getEthLogs(web3provider, account, selectedNetwork);
+  await getEthLogs(web3provider, account, selectedNetwork, poolNumber);
 };

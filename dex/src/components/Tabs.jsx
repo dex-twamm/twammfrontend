@@ -24,12 +24,12 @@ const tabOptions = [
 const Tabs = () => {
   const location = useLocation();
   const currentPath = location.pathname;
-  const { selectedNetwork } = useContext(UIContext);
+  const { selectedNetwork, poolNumber } = useContext(UIContext);
 
   const { tokenA, setTokenA, tokenB, setTokenB } = useContext(LongSwapContext);
   const { setSwapAmount } = useContext(ShortSwapContext);
   const onNavLinkClick = () => {
-    const poolConfig = getPoolConfig(selectedNetwork?.network);
+    const poolConfig = getPoolConfig(selectedNetwork?.network, poolNumber);
     setSwapAmount("");
     if (!tokenA.tokenIsSet) {
       setTokenA({

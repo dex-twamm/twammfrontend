@@ -60,7 +60,8 @@ const ShortSwap = () => {
           setFormErrors,
           setSpotPrice,
           setExpectedSwapOut,
-          selectedNetwork?.network
+          selectedNetwork?.network,
+          poolNumber
         );
       }, 500);
       // Update price every 12 seconds.
@@ -76,7 +77,8 @@ const ShortSwap = () => {
           setFormErrors,
           setSpotPrice,
           setExpectedSwapOut,
-          selectedNetwork?.network
+          selectedNetwork?.network,
+          poolNumber
         );
       }, 12000);
     }
@@ -100,7 +102,8 @@ const ShortSwap = () => {
           setSelectedNetwork,
           web3provider,
           account,
-          selectedNetwork?.network
+          selectedNetwork?.network,
+          poolNumber
         );
       } else {
         await _swapTokens(
@@ -116,7 +119,8 @@ const ShortSwap = () => {
           setSuccess,
           setError,
           setLoading,
-          selectedNetwork?.network
+          selectedNetwork?.network,
+          poolNumber
         );
 
         setSwapAmount(0);

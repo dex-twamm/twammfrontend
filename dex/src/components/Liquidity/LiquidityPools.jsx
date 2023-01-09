@@ -11,7 +11,7 @@ import { Avatar, Box, Typography } from "@mui/material";
 const LiquidityPools = () => {
   const { LPTokenBalance, loading, isWalletConnected } =
     useContext(ShortSwapContext);
-  const { selectedNetwork } = useContext(UIContext);
+  const { selectedNetwork, poolNumber } = useContext(UIContext);
 
   return (
     <Box className={styles.rootBox}>
@@ -75,13 +75,19 @@ const LiquidityPools = () => {
                         sx={{ fontSize: { xs: 16 } }}
                       >
                         {`${
-                          getPoolTokens(selectedNetwork?.network)?.[0].symbol
+                          getPoolTokens(
+                            selectedNetwork?.network,
+                            poolNumber
+                          )?.[0].symbol
                         } / ${
-                          getPoolTokens(selectedNetwork?.network)?.[1].symbol
+                          getPoolTokens(
+                            selectedNetwork?.network,
+                            poolNumber
+                          )?.[1].symbol
                         }`}
                       </span>
                       <span className={styles.feeTypography}>
-                        {getPoolFees(selectedNetwork?.network)}
+                        {getPoolFees(selectedNetwork?.network, poolNumber)}
                       </span>
                     </Box>
                   </Box>
@@ -116,7 +122,8 @@ const LiquidityPools = () => {
                     onClick={() =>
                       window.open(
                         `https://app.balancer.fi/#/pool/${getPoolId(
-                          selectedNetwork?.network
+                          selectedNetwork?.network,
+                          poolNumber
                         )}/invest`,
                         "_blank"
                       )

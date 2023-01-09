@@ -68,14 +68,13 @@ const LongSwapPage = () => {
         swapAmount,
         setLongSwapVerifyLoading,
         tokenA?.address,
-
         tokenB?.address,
-
         web3provider,
         account,
         setLongSwapFormErrors,
         selectedNetwork?.network,
-        numberOfBlockIntervals
+        numberOfBlockIntervals,
+        poolNumber
       );
     }, 500);
 
@@ -96,7 +95,8 @@ const LongSwapPage = () => {
           setSelectedNetwork,
           web3provider,
           account,
-          selectedNetwork?.network
+          selectedNetwork?.network,
+          poolNumber
         );
       } else {
         console.log(web3provider, web3provider.getSigner());
@@ -112,7 +112,8 @@ const LongSwapPage = () => {
           setMessage,
           setOrderLogsDecoded,
           setError,
-          selectedNetwork?.network
+          selectedNetwork?.network,
+          poolNumber
         );
         setSwapAmount(0);
       }

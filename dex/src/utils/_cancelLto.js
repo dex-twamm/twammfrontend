@@ -21,7 +21,8 @@ export const _cancelLTO = async (
   setMessage,
   setTransactionHash,
   currentNetwork,
-  setSelectedNetwork
+  setSelectedNetwork,
+  poolNumber
 ) => {
   setLoading(true);
   setDisableActionBtn(true);
@@ -44,7 +45,8 @@ export const _cancelLTO = async (
       orderId,
       orderHash,
       setTransactionHash,
-      currentNetwork
+      currentNetwork,
+      poolNumber
     ).then((res) => {
       const exitPoolResult = async (res) => {
         const result = await res.wait();
@@ -52,12 +54,15 @@ export const _cancelLTO = async (
       };
       exitPoolResult(res).then(async (response) => {
         if (response.status === 1) {
-          await getEthLogs(signer, walletAddress, currentNetwork).then(
-            (res) => {
-              const resArray = Array.from(res.values());
-              setOrderLogsDecoded(resArray);
-            }
-          );
+          await getEthLogs(
+            signer,
+            walletAddress,
+            currentNetwork,
+            poolNumber
+          ).then((res) => {
+            const resArray = Array.from(res.values());
+            setOrderLogsDecoded(resArray);
+          });
           setMessage(POPUP_MESSAGE.ltoCancelSuccess);
         } else setMessage(POPUP_MESSAGE.ltoCancelFailed);
         setDisableActionBtn(false);

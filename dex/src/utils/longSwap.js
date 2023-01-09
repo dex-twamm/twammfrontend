@@ -60,6 +60,7 @@ export async function placeLongTermOrder(
   signer,
   walletAddress,
   currentNetwork,
+  poolNumber,
   isVerifyOnly
 ) {
   const exchangeContract = getExchangeContract(currentNetwork, signer);
@@ -72,11 +73,11 @@ export async function placeLongTermOrder(
   );
 
   const swapData = [
-    getPoolId(currentNetwork),
+    getPoolId(currentNetwork, poolNumber),
     walletAddress,
     walletAddress,
     {
-      assets: getPoolTokenAddresses(currentNetwork),
+      assets: getPoolTokenAddresses(currentNetwork, poolNumber),
       maxAmountsIn: [MAX_UINT256, MAX_UINT256],
       fromInternalBalance: false,
       userData: encodedRequest,
@@ -96,9 +97,14 @@ export async function placeLongTermOrder(
   return placeLtoTx;
 }
 
-export async function getLongTermOrder(signer, orderId, currentNetwork) {
+export async function getLongTermOrder(
+  signer,
+  orderId,
+  currentNetwork,
+  poolNumber
+) {
   const contract = new Contract(
-    getPoolContractAddress(currentNetwork),
+    getPoolContractAddress(currentNetwork, poolNumber),
     LONGTERM_ABI,
     signer
   );
@@ -107,9 +113,13 @@ export async function getLongTermOrder(signer, orderId, currentNetwork) {
   return orderDetails;
 }
 
-export async function getLastVirtualOrderBlock(signer, currentNetwork) {
+export async function getLastVirtualOrderBlock(
+  signer,
+  currentNetwork,
+  poolNumber
+) {
   const contract = new Contract(
-    getPoolLtoContractAddress(currentNetwork),
+    getPoolLtoContractAddress(currentNetwork, poolNumber),
     LONGTERM_ABI,
     signer
   );

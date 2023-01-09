@@ -16,9 +16,10 @@ export const _placeLongTermOrders = async (
   setMessage,
   setOrderLogsDecoded,
   setError,
-  currentNetwork
+  currentNetwork,
+  poolNumber
 ) => {
-  const poolConfig = getPoolConfig(currentNetwork);
+  const poolConfig = getPoolConfig(currentNetwork, poolNumber);
 
   try {
     const tokenInIndex = poolConfig.tokens.findIndex(
@@ -44,7 +45,8 @@ export const _placeLongTermOrders = async (
       blockIntervals,
       signer,
       walletAddress,
-      currentNetwork
+      currentNetwork,
+      poolNumber
     )
       .then((res) => {
         setTransactionHash(res.hash);
@@ -54,12 +56,15 @@ export const _placeLongTermOrders = async (
         };
         placeLtoTxResult(res).then(async (response) => {
           if (response.status === 1) {
-            await getEthLogs(signer, walletAddress, currentNetwork).then(
-              (res) => {
-                const resArray = Array.from(res.values());
-                setOrderLogsDecoded(resArray);
-              }
-            );
+            await getEthLogs(
+              signer,
+              walletAddress,
+              currentNetwork,
+              poolNumber
+            ).then((res) => {
+              const resArray = Array.from(res.values());
+              setOrderLogsDecoded(resArray);
+            });
             setMessage(POPUP_MESSAGE.ltoPlaced);
           } else setMessage(POPUP_MESSAGE.ltoPlaceFailed);
         });

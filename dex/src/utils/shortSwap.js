@@ -16,9 +16,10 @@ export const _swapTokens = async (
   setSuccess,
   setError,
   setLoading,
-  currentNetwork
+  currentNetwork,
+  poolNumber
 ) => {
-  const poolConfig = getPoolConfig(currentNetwork);
+  const poolConfig = getPoolConfig(currentNetwork, poolNumber);
   const tokenIn = poolConfig.tokens.find((token) => token.address === tokenA);
 
   const swapAmountWei = ethers.utils.parseUnits(swapAmount, tokenIn.decimals);
@@ -43,7 +44,8 @@ export const _swapTokens = async (
         assetOut,
         walletAddress,
         deadline,
-        currentNetwork
+        currentNetwork,
+        poolNumber
       )
         .then((res) => {
           setTransactionHash(res.hash);

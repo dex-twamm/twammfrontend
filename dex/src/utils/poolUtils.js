@@ -4,34 +4,44 @@ export const getAllPool = (currentNetwork = "Goerli") => {
   return Object.values(POOLS?.[currentNetwork]);
 };
 
-export const getPoolId = (currentNetwork = "Goerli") => {
-  return Object.keys(POOLS[currentNetwork])?.[1];
+export const getPoolId = (currentNetwork = "Goerli", poolNumber) => {
+  console.log("jaksdhajkshdkjasdn", poolNumber);
+  return Object.keys(POOLS[currentNetwork])?.[poolNumber];
 };
 
-export const getPoolConfig = (currentNetwork = "Goerli") => {
-  return Object.values(POOLS?.[currentNetwork])?.[1];
+export const getPoolConfig = (currentNetwork = "Goerli", poolNumber) => {
+  return Object.values(POOLS?.[currentNetwork])?.[poolNumber];
 };
 
-export const getPoolTokens = (currentNetwork = "Goerli") => {
-  return getPoolConfig(currentNetwork)?.tokens;
+export const getPoolTokens = (currentNetwork = "Goerli", poolNumber) => {
+  return getPoolConfig(currentNetwork, poolNumber)?.tokens;
 };
 
-export const getPoolFees = (currentNetwork = "Goerli") => {
-  return getPoolConfig(currentNetwork)?.fees;
+export const getPoolFees = (currentNetwork = "Goerli", poolNumber) => {
+  return getPoolConfig(currentNetwork, poolNumber)?.fees;
 };
 
-export const getPoolContractAddress = (currentNetwork = "Goerli") => {
-  return getPoolConfig(currentNetwork)?.address;
+export const getPoolContractAddress = (
+  currentNetwork = "Goerli",
+  poolNumber
+) => {
+  return getPoolConfig(currentNetwork, poolNumber)?.address;
 };
 
-export const getPoolLtoContractAddress = (currentNetwork = "Goerli") => {
-  return getPoolConfig(currentNetwork)?.LTOContract;
+export const getPoolLtoContractAddress = (
+  currentNetwork = "Goerli",
+  poolNumber
+) => {
+  return getPoolConfig(currentNetwork, poolNumber)?.LTOContract;
 };
 
-export const getPoolTokenAddresses = (currentNetwork = "Goerli") => {
-  return getPoolTokens(currentNetwork).map((item) => item.address);
+export const getPoolTokenAddresses = (
+  currentNetwork = "Goerli",
+  poolNumber
+) => {
+  return getPoolTokens(currentNetwork, poolNumber).map((item) => item.address);
 };
 
-export const getPoolBlockInterval = (currentNetwork = "Goerli") => {
-  return getPoolConfig(currentNetwork)?.blockInterval;
+export const getPoolBlockInterval = (currentNetwork = "Goerli", poolNumber) => {
+  return getPoolConfig(currentNetwork, poolNumber)?.blockInterval;
 };

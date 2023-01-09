@@ -19,10 +19,10 @@ export const LongSwapProvider = ({ children }) => {
   const [tokenA, setTokenA] = useState();
   const [tokenB, setTokenB] = useState();
 
-  const { selectedNetwork } = useContext(UIContext);
+  const { selectedNetwork, poolNumber } = useContext(UIContext);
 
   useEffect(() => {
-    const poolConfig = getPoolConfig(selectedNetwork?.network);
+    const poolConfig = getPoolConfig(selectedNetwork?.network, poolNumber);
     setTokenA({
       ...poolConfig?.tokens[0],
       balance: 0,

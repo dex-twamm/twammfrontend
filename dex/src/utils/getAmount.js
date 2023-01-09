@@ -11,10 +11,11 @@ import {
 export const getTokensBalance = async (
   signer,
   walletAddress,
-  currentNetwork
+  currentNetwork,
+  poolNumber
 ) => {
-  const poolConfig = getPoolConfig(currentNetwork);
-  var tokenAddress = getPoolTokenAddresses(currentNetwork);
+  const poolConfig = getPoolConfig(currentNetwork, poolNumber);
+  var tokenAddress = getPoolTokenAddresses(currentNetwork, poolNumber);
 
   const newBalance = [];
   for (let index = 0; index < tokenAddress.length; index++) {
@@ -41,11 +42,11 @@ export const getTokensBalance = async (
 export const getLPTokensBalance = async (
   signer,
   walletAddress,
-  currentNetwork
+  currentNetwork,
+  poolNumber
 ) => {
-  console.log("getLPTokensBalance", signer, walletAddress, currentNetwork);
   const poolContract = new Contract(
-    getPoolContractAddress(currentNetwork),
+    getPoolContractAddress(currentNetwork, poolNumber),
     TWAMM_POOL_ABI,
     signer
   );

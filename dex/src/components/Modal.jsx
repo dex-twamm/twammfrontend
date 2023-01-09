@@ -19,10 +19,10 @@ const Modal = ({
   const { tokenA, tokenB } = useContext(LongSwapContext);
   const [tokenDetails, setTokenDetails] = useState();
 
-  const { selectedNetwork } = useContext(UIContext);
+  const { selectedNetwork, poolNumber } = useContext(UIContext);
 
   useEffect(() => {
-    const tokenDetail = getPoolTokens(selectedNetwork?.network);
+    const tokenDetail = getPoolTokens(selectedNetwork?.network, poolNumber);
     setTokenDetails(tokenDetail);
   }, []);
 

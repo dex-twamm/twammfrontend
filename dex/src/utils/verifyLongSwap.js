@@ -12,12 +12,13 @@ export const verifyLongSwap = async (
   account,
   setLongSwapFormErrors,
   currentNetwork,
-  numberOfBlockIntervals
+  numberOfBlockIntervals,
+  poolNumber
 ) => {
   if (swapAmount && numberOfBlockIntervals) {
     setLongSwapVerifyLoading(true);
 
-    const poolConfig = getPoolConfig(currentNetwork);
+    const poolConfig = getPoolConfig(currentNetwork, poolNumber);
 
     const errors = {};
 

@@ -20,7 +20,8 @@ export const _withdrawLTO = async (
   setMessage,
   setTransactionHash,
   currentNetwork,
-  setSelectedNetwork
+  setSelectedNetwork,
+  poolNumber
 ) => {
   setDisableActionBtn(true);
   setLoading(true);
@@ -44,7 +45,8 @@ export const _withdrawLTO = async (
       orderId,
       orderHash,
       setTransactionHash,
-      currentNetwork
+      currentNetwork,
+      poolNumber
     ).then((res) => {
       const withdrawLTOResult = async (res) => {
         const result = await res.wait();
@@ -52,12 +54,15 @@ export const _withdrawLTO = async (
       };
       withdrawLTOResult(res).then(async (response) => {
         if (response.status === 1) {
-          await getEthLogs(signer, walletAddress, currentNetwork).then(
-            (res) => {
-              const resArray = Array.from(res.values());
-              setOrderLogsDecoded(resArray);
-            }
-          );
+          await getEthLogs(
+            signer,
+            walletAddress,
+            currentNetwork,
+            poolNumber
+          ).then((res) => {
+            const resArray = Array.from(res.values());
+            setOrderLogsDecoded(resArray);
+          });
           setMessage(POPUP_MESSAGE.ltoWithdrawn);
         } else setMessage(POPUP_MESSAGE.ltoWithdrawFailed);
         setDisableActionBtn(false);
