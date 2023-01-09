@@ -81,7 +81,7 @@ const LongSwapPage = () => {
     return () => {
       clearTimeout(verifyLongSwapInterval);
     };
-  }, [swapAmount, tokenB, tokenA, numberOfBlockIntervals]);
+  }, [swapAmount, tokenB, tokenA, numberOfBlockIntervals, poolNumber]);
 
   async function LongSwapButtonClick() {
     try {

@@ -34,7 +34,7 @@ export const LongSwapProvider = ({ children }) => {
       balance: 0,
       tokenIsSet: poolConfig?.tokens[1].address ? true : false,
     });
-  }, [selectedNetwork]);
+  }, [selectedNetwork, poolNumber]);
 
   return (
     <LongSwapContext.Provider

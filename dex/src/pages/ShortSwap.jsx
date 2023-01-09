@@ -86,7 +86,7 @@ const ShortSwap = () => {
       clearTimeout(interval1);
       clearTimeout(interval2);
     };
-  }, [swapAmount, tokenB, tokenA, allowance]);
+  }, [swapAmount, tokenB, tokenA, allowance, poolNumber]);
 
   const [showSettings, setShowSettings] = useState(false);
 

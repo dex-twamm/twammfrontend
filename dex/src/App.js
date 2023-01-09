@@ -95,7 +95,7 @@ function App() {
       }
     };
     allowance();
-  }, [tokenA, transactionHash]);
+  }, [tokenA, transactionHash, poolNumber]);
 
   // Getting Each Token Balances
   const tokenBalance = useCallback(async () => {
@@ -150,7 +150,7 @@ function App() {
         setOrderLogsLoading(false);
       }
     }
-  }, [account, web3provider]);
+  }, [account, web3provider, poolNumber]);
 
   useEffect(() => {
     tokenBalance();

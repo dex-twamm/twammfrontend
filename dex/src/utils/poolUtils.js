@@ -5,7 +5,6 @@ export const getAllPool = (currentNetwork = "Goerli") => {
 };
 
 export const getPoolId = (currentNetwork = "Goerli", poolNumber) => {
-  console.log("jaksdhajkshdkjasdn", poolNumber);
   return Object.keys(POOLS[currentNetwork])?.[poolNumber];
 };
 

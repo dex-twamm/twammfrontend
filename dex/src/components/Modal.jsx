@@ -24,7 +24,7 @@ const Modal = ({
   useEffect(() => {
     const tokenDetail = getPoolTokens(selectedNetwork?.network, poolNumber);
     setTokenDetails(tokenDetail);
-  }, []);
+  }, [poolNumber]);
 
   // Handle Modal Close
   const handleModalClose = () => {
