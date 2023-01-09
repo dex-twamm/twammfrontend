@@ -1,5 +1,6 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { MenuItem, Select } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import PopupModal from "../components/alerts/PopupModal";
 import PopupSettings from "../components/PopupSettings";
@@ -10,6 +11,7 @@ import { LongSwapContext, ShortSwapContext } from "../providers";
 import { UIContext } from "../providers/context/UIProvider";
 import { connectWalletAndGetEthLogs } from "../utils/connetWallet";
 import { spotPrice } from "../utils/getSpotPrice";
+import { getAllPool } from "../utils/poolUtils";
 import { _swapTokens } from "../utils/shortSwap";
 
 const ShortSwap = () => {
@@ -37,7 +39,8 @@ const ShortSwap = () => {
     spotPriceLoading,
     setSpotPriceLoading,
   } = useContext(ShortSwapContext);
-  const { selectedNetwork, setSelectedNetwork } = useContext(UIContext);
+  const { selectedNetwork, setSelectedNetwork, poolNumber, setPoolNumber } =
+    useContext(UIContext);
   const { allowance, tokenA, tokenB } = useContext(LongSwapContext);
 
   useEffect(() => {
@@ -130,6 +133,10 @@ const ShortSwap = () => {
     };
   });
 
+  const handlePoolChange = (e) => {
+    setPoolNumber(e.target.value);
+  };
+
   return (
     <>
       <div className={styles.container}>
@@ -141,14 +148,28 @@ const ShortSwap = () => {
               <a className={styles.textLink} href="/">
                 Swap
               </a>
-              <FontAwesomeIcon
-                className={styles.settingsIcon}
-                icon={faGear}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setShowSettings(!showSettings);
-                }}
-              />
+              <div className={styles.poolAndIcon}>
+                <Select
+                  className={styles.poolBox}
+                  inputProps={{ "aria-label": "Without label" }}
+                  value={poolNumber}
+                  onChange={handlePoolChange}
+                  variant="outlined"
+                  sx={{ outline: "none" }}
+                >
+                  {getAllPool(selectedNetwork?.network)?.map((el, idx) => {
+                    return <MenuItem value={idx}>Pool {idx}</MenuItem>;
+                  })}
+                </Select>
+                <FontAwesomeIcon
+                  className={styles.settingsIcon}
+                  icon={faGear}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowSettings(!showSettings);
+                  }}
+                />
+              </div>
             </div>
             {showSettings && <PopupSettings />}
           </div>

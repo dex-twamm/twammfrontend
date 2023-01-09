@@ -10,12 +10,13 @@ import { LongSwapContext, ShortSwapContext } from "../providers";
 import Tabs from "../components/Tabs";
 import PopupModal from "../components/alerts/PopupModal";
 import { _placeLongTermOrders } from "../utils/placeLongTermOrder";
-import { connectWallet } from "../utils/connetWallet";
 import { connectWalletAndGetEthLogs } from "../utils/connetWallet";
 
 import { UIContext } from "../providers/context/UIProvider";
 import LongSwap from "../components/LongSwap";
 import { verifyLongSwap } from "../utils/verifyLongSwap";
+import { getAllPool } from "../utils/poolUtils";
+import { MenuItem, Select } from "@mui/material";
 
 const LongSwapPage = () => {
   const {
@@ -28,7 +29,6 @@ const LongSwapPage = () => {
     setMessage,
     tokenA,
     tokenB,
-    allowance,
   } = useContext(LongSwapContext);
 
   const {
@@ -41,8 +41,6 @@ const LongSwapPage = () => {
     setWalletConnected,
     swapAmount,
     setSwapAmount,
-    srcAddress,
-    destAddress,
     account,
     setTransactionHash,
     setLoading,
@@ -51,7 +49,8 @@ const LongSwapPage = () => {
 
   const [showSettings, setShowSettings] = useState(false);
 
-  const { selectedNetwork, setSelectedNetwork } = useContext(UIContext);
+  const { selectedNetwork, setSelectedNetwork, poolNumber, setPoolNumber } =
+    useContext(UIContext);
 
   const ethLogsCount = orderLogsDecoded
     ? Object.keys(orderLogsDecoded).length
@@ -128,6 +127,10 @@ const LongSwapPage = () => {
     };
   });
 
+  const handlePoolChange = (e) => {
+    setPoolNumber(e.target.value);
+  };
+
   return (
     <>
       <div className={styles.container}>
@@ -138,14 +141,28 @@ const LongSwapPage = () => {
               <a className={styles.textLink} href="/">
                 Long Term Swap
               </a>
-              <FontAwesomeIcon
-                className={styles.settingsIcon}
-                icon={faGear}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setShowSettings(!showSettings);
-                }}
-              />
+              <div className={styles.poolAndIcon}>
+                <Select
+                  className={styles.poolBox}
+                  inputProps={{ "aria-label": "Without label" }}
+                  value={poolNumber}
+                  onChange={handlePoolChange}
+                  variant="outlined"
+                  sx={{ outline: "none" }}
+                >
+                  {getAllPool(selectedNetwork?.network)?.map((el, idx) => {
+                    return <MenuItem value={idx}>Pool {idx}</MenuItem>;
+                  })}
+                </Select>
+                <FontAwesomeIcon
+                  className={styles.settingsIcon}
+                  icon={faGear}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowSettings(!showSettings);
+                  }}
+                />
+              </div>
             </div>
 
             {showSettings && <PopupSettings swapType="long" />}

@@ -7,6 +7,7 @@ const UIContext = createContext(null);
 const UIProvider = ({ children }) => {
   const [selectedNetwork, setSelectedNetwork] = useState();
   const [nId, setNetId] = useState();
+  const [poolNumber, setPoolNumber] = useState(0);
 
   useEffect(() => {
     window.ethereum?.request({ method: "net_version" }).then((net_version) => {
@@ -26,6 +27,8 @@ const UIProvider = ({ children }) => {
         selectedNetwork,
         setSelectedNetwork,
         nId,
+        poolNumber,
+        setPoolNumber,
       }}
     >
       {children}

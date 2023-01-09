@@ -25,6 +25,27 @@ export const POOLS = {
         },
       ],
     },
+    "0x028e3e920996e443d12e410d62874cebdd3618070002000000000000000003eb": {
+      address: "0x028e3e920996e443d12e410d62874cebdd361807",
+      fees: "0.3%",
+      LTOContract: "0xB9d9e972100a1dD01cd441774b45b5821e136043",
+      tokens: [
+        {
+          symbol: "DAI",
+          name: "Dai",
+          decimals: 18,
+          address: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+          logo: ethLogo,
+        },
+        {
+          symbol: "USDC",
+          name: "USDC",
+          decimals: 6,
+          address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+          logo: maticLogo,
+        },
+      ],
+    },
   },
   Ethereum: {
     "0xf7a3ffd8d6ae4b2564a18591d6f3783ec5f79d3a000200000000000000000417": {
