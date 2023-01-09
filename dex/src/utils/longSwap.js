@@ -37,7 +37,8 @@ export const verifyLongSwapTxn = async (
   numberOfBlockIntervals,
   signer,
   walletAddress,
-  currentNetwork
+  currentNetwork,
+  poolNumber
 ) => {
   const verifyLongSwapTxnResult = await placeLongTermOrder(
     tokenInIndex,
@@ -47,6 +48,7 @@ export const verifyLongSwapTxn = async (
     signer,
     walletAddress,
     currentNetwork,
+    poolNumber,
     true
   );
   return verifyLongSwapTxnResult;
