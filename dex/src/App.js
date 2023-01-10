@@ -156,7 +156,7 @@ function App() {
 
   useEffect(() => {
     tokenBalance();
-  }, [tokenBalance]);
+  }, [tokenBalance, poolNumber]);
 
   useEffect(() => {
     tokenBalance();
