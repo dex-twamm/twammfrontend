@@ -4,7 +4,12 @@ import { useContext } from "react";
 import { ShortSwapContext } from "../../providers";
 import CircularProgressBar from "../alerts/CircularProgressBar";
 import Tabs from "../Tabs";
-import { getPoolFees, getPoolId, getPoolTokens } from "../../utils/poolUtils";
+import {
+  getPoolFees,
+  getPoolId,
+  getPoolTokens,
+  getPoolTokenSymbol,
+} from "../../utils/poolUtils";
 import { UIContext } from "../../providers/context/UIProvider";
 import { Avatar, Box, Typography } from "@mui/material";
 
@@ -75,15 +80,15 @@ const LiquidityPools = () => {
                         sx={{ fontSize: { xs: 16 } }}
                       >
                         {`${
-                          getPoolTokens(
+                          getPoolTokenSymbol(
                             selectedNetwork?.network,
                             poolNumber
-                          )?.[0].symbol
+                          )?.[0]
                         } / ${
-                          getPoolTokens(
+                          getPoolTokenSymbol(
                             selectedNetwork?.network,
                             poolNumber
-                          )?.[1].symbol
+                          )?.[1]
                         }`}
                       </span>
                       <span className={styles.feeTypography}>

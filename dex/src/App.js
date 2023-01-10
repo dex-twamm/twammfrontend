@@ -216,8 +216,6 @@ function App() {
     );
   }, [account]);
 
-  console.log("pool number value", poolNumber);
-
   return (
     <>
       <div className="main">

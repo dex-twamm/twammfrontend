@@ -16,6 +16,15 @@ export const getPoolTokens = (currentNetwork = "Goerli", poolNumber) => {
   return getPoolConfig(currentNetwork, poolNumber)?.tokens;
 };
 
+export const getPoolTokenSymbol = (currentNetwork = "Goerli", poolNumber) => {
+  const symbols = [
+    getPoolTokens(currentNetwork, poolNumber)?.[0]?.symbol,
+    getPoolTokens(currentNetwork, poolNumber)?.[1]?.symbol,
+  ];
+
+  return symbols;
+};
+
 export const getPoolFees = (currentNetwork = "Goerli", poolNumber) => {
   return getPoolConfig(currentNetwork, poolNumber)?.fees;
 };
