@@ -29,6 +29,7 @@ const LongSwapPage = () => {
     setMessage,
     tokenA,
     tokenB,
+    allowance,
   } = useContext(LongSwapContext);
 
   const {
@@ -74,6 +75,7 @@ const LongSwapPage = () => {
         setLongSwapFormErrors,
         selectedNetwork?.network,
         numberOfBlockIntervals,
+        allowance,
         poolNumber
       );
     }, 500);
