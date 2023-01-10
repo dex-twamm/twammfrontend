@@ -5,6 +5,8 @@ import styles from "../css/Modal.module.css";
 import { LongSwapContext, ShortSwapContext, UIContext } from "../providers";
 import { getPoolTokens } from "../utils/poolUtils";
 
+import { getAllowance } from "../utils/getApproval";
+
 const Modal = ({
   display,
   setDisplay,
@@ -13,10 +15,19 @@ const Modal = ({
   tokenBalances,
 }) => {
   // useContext To Retrieve The Source and Destination Address of The Token
-  const { isWalletConnected, selectToken, setEthBalance } =
-    useContext(ShortSwapContext);
+
+  const {
+    isWalletConnected,
+    selectToken,
+    setEthBalance,
+    setFormErrors,
+    swapAmount,
+    account,
+    web3provider,
+  } = useContext(ShortSwapContext);
 
   const { tokenA, tokenB } = useContext(LongSwapContext);
+
   const [tokenDetails, setTokenDetails] = useState();
 
   const { selectedNetwork } = useContext(UIContext);
@@ -46,7 +57,9 @@ const Modal = ({
     if (selectToken === "1") {
       //set tokenFrom
       setEthBalance(chosenTokenBalance);
-      if (chosenToken.symbol === tokenB.symbol) {
+      if (chosenToken.symbol === tokenA.symbol) {
+        return <></>;
+      } else if (chosenToken.symbol === tokenB.symbol) {
         setTokenB({
           ...tokenA,
           tokenIsSet: true,
@@ -69,6 +82,17 @@ const Modal = ({
     }
     handleModalClose();
   };
+
+  useEffect(() => {
+    setFormErrors({ balError: undefined });
+    if (swapAmount && swapAmount !== "0")
+      getAllowance(
+        web3provider?.getSigner(),
+        account,
+        tokenA?.address,
+        selectedNetwork?.network
+      );
+  }, [tokenA, setFormErrors]);
 
   let tokensList;
   let tokensDetail = tokenDetails;

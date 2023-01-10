@@ -11,7 +11,8 @@ import Input from "./Input";
 
 import { BigNumber } from "ethers";
 import { bigToStr } from "../utils";
-import { approveMaxAllowance } from "../utils/getApproval";
+import { approveMaxAllowance, getAllowance } from "../utils/getApproval";
+
 import { UIContext } from "../providers/context/UIProvider";
 
 const Swap = (props) => {
@@ -25,6 +26,7 @@ const Swap = (props) => {
   const handleClose = () => setOpen((state) => !state);
 
   const {
+    account,
     swapAmount,
     setSwapAmount,
     selectToken,
@@ -41,7 +43,7 @@ const Swap = (props) => {
     setAllowTwammErrorMessage,
   } = useContext(ShortSwapContext);
 
-  const { tokenA, tokenB, setTokenA, setTokenB, allowance } =
+  const { tokenA, tokenB, setTokenA, setTokenB, allowance, setAllowance } =
     useContext(LongSwapContext);
 
   const { web3provider } = useContext(ShortSwapContext);
@@ -87,6 +89,15 @@ const Swap = (props) => {
         selectedNetwork?.network
       );
       setTransactionHash(approval.hash);
+
+      await getAllowance(
+        web3provider?.getSigner(),
+        account,
+        tokenA?.address,
+        selectedNetwork?.network
+      ).then((res) => {
+        setAllowance(bigToStr(res));
+      });
     } catch (e) {
       console.log(e);
       setAllowTwammErrorMessage(e?.message);
