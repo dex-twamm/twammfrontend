@@ -33,6 +33,8 @@ function App() {
     setLPTokenBalance,
     setBalance,
     web3provider,
+    setFormErrors,
+    setSpotPrice,
   } = useContext(ShortSwapContext);
   const {
     tokenA,
@@ -215,6 +217,13 @@ function App() {
       setSelectedNetwork
     );
   }, [account]);
+
+  useEffect(() => {
+    setSwapAmount();
+    setExpectedSwapOut();
+    setFormErrors({ balError: "" });
+    setSpotPrice();
+  }, [poolNumber]);
 
   return (
     <>
