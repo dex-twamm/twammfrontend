@@ -41,8 +41,6 @@ const LongSwapPage = () => {
     setWalletConnected,
     swapAmount,
     setSwapAmount,
-    srcAddress,
-    destAddress,
     account,
     setTransactionHash,
     setLoading,
@@ -69,14 +67,13 @@ const LongSwapPage = () => {
         swapAmount,
         setLongSwapVerifyLoading,
         tokenA?.address,
-
         tokenB?.address,
-
         web3provider,
         account,
         setLongSwapFormErrors,
         selectedNetwork?.network,
-        numberOfBlockIntervals
+        numberOfBlockIntervals,
+        allowance
       );
     }, 500);
 
