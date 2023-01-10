@@ -13,6 +13,7 @@ export const verifyLongSwap = async (
   setLongSwapFormErrors,
   currentNetwork,
   numberOfBlockIntervals,
+  allowance,
   poolNumber
 ) => {
   if (swapAmount && numberOfBlockIntervals) {
@@ -36,20 +37,25 @@ export const verifyLongSwap = async (
         swapAmount,
         poolConfig.tokens[tokenInIndex].decimals
       );
-      await verifyLongSwapTxn(
-        tokenInIndex,
-        tokenOutIndex,
-        amountIn,
-        numberOfBlockIntervals,
-        signer,
-        walletAddress,
-        currentNetwork,
-        poolNumber
-      ).then((res) => {
-        errors.balError = undefined;
-        setLongSwapFormErrors(errors ?? "");
-        setLongSwapVerifyLoading(false);
-      });
+
+      if (amountIn < parseFloat(allowance)) {
+        setLongSwapVerifyLoading(true);
+        await verifyLongSwapTxn(
+          tokenInIndex,
+          tokenOutIndex,
+          amountIn,
+          numberOfBlockIntervals,
+          signer,
+          walletAddress,
+          currentNetwork,
+          poolNumber
+        ).then((res) => {
+          console.log("Response From Verify Long Swap", res);
+          errors.balError = undefined;
+          setLongSwapFormErrors(errors ?? "");
+          setLongSwapVerifyLoading(false);
+        });
+      }
     } catch (e) {
       setLongSwapVerifyLoading(false);
       if (e.reason) {
