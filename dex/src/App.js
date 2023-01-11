@@ -44,8 +44,7 @@ function App() {
     setOrderLogsLoading,
   } = useContext(LongSwapContext);
 
-  const { setSelectedNetwork, selectedNetwork, poolNumber } =
-    useContext(UIContext);
+  const { setSelectedNetwork, selectedNetwork } = useContext(UIContext);
 
   // Connect cached Wallet as early as possible in cycle.
   useEffect(() => {
@@ -81,7 +80,7 @@ function App() {
           web3provider?.getSigner(),
           walletAddress,
           tokenAddress,
-          selectedNetwork?.network
+          selectedNetwork
         ).then((res) => {
           setAllowance(bigToStr(res));
         });
@@ -89,15 +88,14 @@ function App() {
         await getPoolBalance(
           web3provider?.getSigner(),
           tokenAddress,
-          selectedNetwork?.network,
-          poolNumber
+          selectedNetwork
         ).then((res) => {
           setPoolCash(res);
         });
       }
     };
     allowance();
-  }, [tokenA, transactionHash, poolNumber]);
+  }, [tokenA, transactionHash, selectedNetwork]);
 
   // Getting Each Token Balances
   const tokenBalance = useCallback(async () => {
@@ -112,24 +110,21 @@ function App() {
         await getTokensBalance(
           web3provider?.getSigner(),
           account,
-          selectedNetwork?.network,
-          poolNumber
+          selectedNetwork
         ).then((res) => {
           setTokenBalances(res);
         });
 
         await getLastVirtualOrderBlock(
           web3provider?.getSigner(),
-          selectedNetwork?.network,
-          poolNumber
+          selectedNetwork
         ).then((res) => {
           setLastVirtualOrderBlock(res);
         });
         await getEthLogs(
           web3provider?.getSigner(),
           walletAddress,
-          selectedNetwork?.network,
-          poolNumber
+          selectedNetwork
         ).then((res) => {
           const resArray = Array.from(res.values());
           setOrderLogsDecoded(resArray);
@@ -139,8 +134,7 @@ function App() {
         await getLPTokensBalance(
           web3provider?.getSigner(),
           walletAddress,
-          selectedNetwork?.network,
-          poolNumber
+          selectedNetwork
         ).then((res) => {
           setLPTokenBalance(res);
         });
@@ -152,11 +146,11 @@ function App() {
         setOrderLogsLoading(false);
       }
     }
-  }, [account, web3provider, poolNumber]);
+  }, [account, web3provider, selectedNetwork]);
 
   useEffect(() => {
     tokenBalance();
-  }, [tokenBalance, poolNumber]);
+  }, [tokenBalance, selectedNetwork]);
 
   useEffect(() => {
     tokenBalance();
@@ -223,7 +217,7 @@ function App() {
     setExpectedSwapOut();
     setFormErrors({ balError: "" });
     setSpotPrice();
-  }, [poolNumber]);
+  }, [selectedNetwork]);
 
   return (
     <>

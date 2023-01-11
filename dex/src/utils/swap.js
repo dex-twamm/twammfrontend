@@ -11,8 +11,7 @@ export const verifySwapTokens = async (
   assetOut,
   walletAddress,
   deadline,
-  currentNetwork,
-  poolNumber
+  currentNetwork
 ) => {
   const verifyResult = await swapTokens(
     signer,
@@ -22,7 +21,6 @@ export const verifySwapTokens = async (
     walletAddress,
     deadline,
     currentNetwork,
-    poolNumber,
     true
   );
   return verifyResult;
@@ -48,7 +46,6 @@ export const swapTokens = async (
   walletAddress,
   deadline,
   currentNetwork,
-  poolNumber,
   hasCallStatic
 ) => {
   const exchangeContract = getExchangeContract(currentNetwork, signer);
@@ -56,7 +53,7 @@ export const swapTokens = async (
 
   const swapData = [
     {
-      poolId: getPoolId(currentNetwork, poolNumber),
+      poolId: getPoolId(currentNetwork),
       kind: kind,
       assetIn: assetIn,
       assetOut: assetOut,

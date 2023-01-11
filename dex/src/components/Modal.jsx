@@ -30,12 +30,12 @@ const Modal = ({
 
   const [tokenDetails, setTokenDetails] = useState();
 
-  const { selectedNetwork, poolNumber } = useContext(UIContext);
+  const { selectedNetwork } = useContext(UIContext);
 
   useEffect(() => {
-    const tokenDetail = getPoolTokens(selectedNetwork?.network, poolNumber);
+    const tokenDetail = getPoolTokens(selectedNetwork);
     setTokenDetails(tokenDetail);
-  }, [poolNumber]);
+  }, [selectedNetwork]);
 
   // Handle Modal Close
   const handleModalClose = () => {
@@ -90,7 +90,7 @@ const Modal = ({
         web3provider?.getSigner(),
         account,
         tokenA?.address,
-        selectedNetwork?.network
+        selectedNetwork
       );
   }, [tokenA, setFormErrors]);
 

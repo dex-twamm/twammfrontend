@@ -13,13 +13,12 @@ export const verifyLongSwap = async (
   setLongSwapFormErrors,
   currentNetwork,
   numberOfBlockIntervals,
-  allowance,
-  poolNumber
+  allowance
 ) => {
   if (swapAmount && numberOfBlockIntervals) {
     setLongSwapVerifyLoading(true);
 
-    const poolConfig = getPoolConfig(currentNetwork, poolNumber);
+    const poolConfig = getPoolConfig(currentNetwork);
 
     const errors = {};
 
@@ -47,8 +46,7 @@ export const verifyLongSwap = async (
           numberOfBlockIntervals,
           signer,
           walletAddress,
-          currentNetwork,
-          poolNumber
+          currentNetwork
         ).then((res) => {
           console.log("Response From Verify Long Swap", res);
           errors.balError = undefined;

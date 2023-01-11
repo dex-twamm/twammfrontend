@@ -40,6 +40,7 @@ export const connectWallet = async (
         network: initialNetwork?.name,
         logo: initialNetwork?.logo,
         chainId: initialNetwork?.chainId,
+        poolId: 0,
       });
     });
   } catch (err) {
@@ -56,8 +57,7 @@ export const connectWalletAndGetEthLogs = async (
   setSelectedNetwork,
   web3provider,
   account,
-  selectedNetwork,
-  poolNumber
+  selectedNetwork
 ) => {
   await connectWallet(
     setweb3provider,
@@ -67,5 +67,5 @@ export const connectWalletAndGetEthLogs = async (
     setWalletConnected,
     setSelectedNetwork
   );
-  await getEthLogs(web3provider, account, selectedNetwork, poolNumber);
+  await getEthLogs(web3provider, account, selectedNetwork);
 };

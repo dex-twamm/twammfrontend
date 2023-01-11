@@ -15,13 +15,12 @@ export const spotPrice = async (
   setFormErrors,
   setSpotPrice,
   setExpectedSwapOut,
-  currentNetwork,
-  poolNumber
+  currentNetwork
 ) => {
   if (swapAmount) {
     setSpotPriceLoading(true);
 
-    const poolConfig = getPoolConfig(currentNetwork, poolNumber);
+    const poolConfig = getPoolConfig(currentNetwork);
     const tokenIn = poolConfig?.tokens.find(
       (token) => token.address === tokenA
     );
@@ -46,8 +45,7 @@ export const spotPrice = async (
         tokenOut.address,
         walletAddress,
         deadline,
-        currentNetwork,
-        poolNumber
+        currentNetwork
       ).then((res) => {
         errors.balError = undefined;
         setFormErrors(errors ?? "");

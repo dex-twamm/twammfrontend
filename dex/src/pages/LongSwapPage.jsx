@@ -50,8 +50,7 @@ const LongSwapPage = () => {
 
   const [showSettings, setShowSettings] = useState(false);
 
-  const { selectedNetwork, setSelectedNetwork, poolNumber, setPoolNumber } =
-    useContext(UIContext);
+  const { selectedNetwork, setSelectedNetwork } = useContext(UIContext);
 
   const ethLogsCount = orderLogsDecoded
     ? Object.keys(orderLogsDecoded).length
@@ -73,17 +72,16 @@ const LongSwapPage = () => {
         web3provider,
         account,
         setLongSwapFormErrors,
-        selectedNetwork?.network,
+        selectedNetwork,
         numberOfBlockIntervals,
-        allowance,
-        poolNumber
+        allowance
       );
     }, 500);
 
     return () => {
       clearTimeout(verifyLongSwapInterval);
     };
-  }, [swapAmount, tokenB, tokenA, numberOfBlockIntervals, poolNumber]);
+  }, [swapAmount, tokenB, tokenA, numberOfBlockIntervals, selectedNetwork]);
 
   async function LongSwapButtonClick() {
     try {
@@ -97,8 +95,7 @@ const LongSwapPage = () => {
           setSelectedNetwork,
           web3provider,
           account,
-          selectedNetwork?.network,
-          poolNumber
+          selectedNetwork
         );
       } else {
         console.log(web3provider, web3provider.getSigner());
@@ -114,8 +111,7 @@ const LongSwapPage = () => {
           setMessage,
           setOrderLogsDecoded,
           setError,
-          selectedNetwork?.network,
-          poolNumber
+          selectedNetwork
         );
         setSwapAmount(0);
       }
@@ -131,7 +127,7 @@ const LongSwapPage = () => {
   });
 
   const handlePoolChange = (e) => {
-    setPoolNumber(e.target.value);
+    setSelectedNetwork({ ...selectedNetwork, poolId: e.target.value });
   };
 
   return (
@@ -145,16 +141,16 @@ const LongSwapPage = () => {
                 Long Term Swap
               </a>
               <div className={styles.poolAndIcon}>
-                {getAllPool(selectedNetwork?.network)?.length > 1 && (
+                {getAllPool(selectedNetwork)?.length > 1 && (
                   <Select
                     className={styles.poolBox}
                     inputProps={{ "aria-label": "Without label" }}
-                    value={poolNumber}
+                    value={selectedNetwork?.poolId}
                     onChange={handlePoolChange}
                     variant="outlined"
                     sx={{ outline: "none" }}
                   >
-                    {getAllPool(selectedNetwork?.network)?.map((el, idx) => {
+                    {getAllPool(selectedNetwork)?.map((el, idx) => {
                       return (
                         <MenuItem key={idx} value={idx}>
                           Pool {idx}

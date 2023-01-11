@@ -39,8 +39,7 @@ const ShortSwap = () => {
     spotPriceLoading,
     setSpotPriceLoading,
   } = useContext(ShortSwapContext);
-  const { selectedNetwork, setSelectedNetwork, poolNumber, setPoolNumber } =
-    useContext(UIContext);
+  const { selectedNetwork, setSelectedNetwork } = useContext(UIContext);
   const { allowance, tokenA, tokenB } = useContext(LongSwapContext);
 
   useEffect(() => {
@@ -60,8 +59,7 @@ const ShortSwap = () => {
           setFormErrors,
           setSpotPrice,
           setExpectedSwapOut,
-          selectedNetwork?.network,
-          poolNumber
+          selectedNetwork
         );
       }, 500);
       // Update price every 12 seconds.
@@ -77,8 +75,7 @@ const ShortSwap = () => {
           setFormErrors,
           setSpotPrice,
           setExpectedSwapOut,
-          selectedNetwork?.network,
-          poolNumber
+          selectedNetwork
         );
       }, 12000);
     }
@@ -86,7 +83,7 @@ const ShortSwap = () => {
       clearTimeout(interval1);
       clearTimeout(interval2);
     };
-  }, [swapAmount, tokenB, tokenA, allowance, poolNumber]);
+  }, [swapAmount, tokenB, tokenA, allowance, selectedNetwork]);
 
   const [showSettings, setShowSettings] = useState(false);
 
@@ -102,8 +99,7 @@ const ShortSwap = () => {
           setSelectedNetwork,
           web3provider,
           account,
-          selectedNetwork?.network,
-          poolNumber
+          selectedNetwork
         );
       } else {
         await _swapTokens(
@@ -119,8 +115,7 @@ const ShortSwap = () => {
           setSuccess,
           setError,
           setLoading,
-          selectedNetwork?.network,
-          poolNumber
+          selectedNetwork
         );
 
         setSwapAmount(0);
@@ -138,7 +133,7 @@ const ShortSwap = () => {
   });
 
   const handlePoolChange = (e) => {
-    setPoolNumber(e.target.value);
+    setSelectedNetwork({ ...selectedNetwork, poolId: e.target.value });
   };
 
   return (
@@ -153,16 +148,16 @@ const ShortSwap = () => {
                 Swap
               </a>
               <div className={styles.poolAndIcon}>
-                {getAllPool(selectedNetwork?.network)?.length > 1 && (
+                {getAllPool(selectedNetwork)?.length > 1 && (
                   <Select
                     className={styles.poolBox}
                     inputProps={{ "aria-label": "Without label" }}
-                    value={poolNumber}
+                    value={selectedNetwork?.poolId}
                     onChange={handlePoolChange}
                     variant="outlined"
                     sx={{ outline: "none" }}
                   >
-                    {getAllPool(selectedNetwork?.network)?.map((el, idx) => {
+                    {getAllPool(selectedNetwork)?.map((el, idx) => {
                       return (
                         <MenuItem key={idx} value={idx}>
                           Pool {idx}

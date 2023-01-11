@@ -1,55 +1,56 @@
 import { POOLS } from "./pool";
 
-export const getAllPool = (currentNetwork = "Goerli") => {
-  return Object.values(POOLS?.[currentNetwork]);
+export const getAllPool = (currentNetwork) => {
+  if (currentNetwork) return Object.values(POOLS?.[currentNetwork?.network]);
 };
 
-export const getPoolId = (currentNetwork = "Goerli", poolNumber) => {
-  return Object.keys(POOLS[currentNetwork])?.[poolNumber];
+export const getPoolId = (currentNetwork) => {
+  if (currentNetwork)
+    return Object.keys(POOLS[currentNetwork?.network])?.[
+      currentNetwork?.poolId
+    ];
 };
 
-export const getPoolConfig = (currentNetwork = "Goerli", poolNumber) => {
-  return Object.values(POOLS?.[currentNetwork])?.[poolNumber];
-};
-
-export const getPoolTokens = (currentNetwork = "Goerli", poolNumber) => {
-  return getPoolConfig(currentNetwork, poolNumber)?.tokens;
-};
-
-export const getPoolTokenSymbol = (currentNetwork = "Goerli", poolNumber) => {
-  const symbols = [
-    getPoolTokens(currentNetwork, poolNumber)?.[0]?.symbol,
-    getPoolTokens(currentNetwork, poolNumber)?.[1]?.symbol,
+export const getPoolConfig = (currentNetwork) => {
+  if (currentNetwork);
+  return Object.values(POOLS?.[currentNetwork?.network])?.[
+    currentNetwork?.poolId
   ];
-
-  return symbols;
 };
 
-export const getPoolFees = (currentNetwork = "Goerli", poolNumber) => {
-  return getPoolConfig(currentNetwork, poolNumber)?.fees;
+export const getPoolTokens = (currentNetwork) => {
+  return getPoolConfig(currentNetwork, currentNetwork?.poolId)?.tokens;
 };
 
-export const getPoolContractAddress = (
-  currentNetwork = "Goerli",
-  poolNumber
-) => {
-  return getPoolConfig(currentNetwork, poolNumber)?.address;
+export const getPoolTokenSymbol = (currentNetwork) => {
+  if (currentNetwork) {
+    const symbols = [
+      getPoolTokens(currentNetwork, currentNetwork?.poolId)?.[0]?.symbol,
+      getPoolTokens(currentNetwork, currentNetwork?.poolId)?.[1]?.symbol,
+    ];
+
+    return symbols;
+  }
 };
 
-export const getPoolLtoContractAddress = (
-  currentNetwork = "Goerli",
-  poolNumber
-) => {
-  return getPoolConfig(currentNetwork, poolNumber)?.LTOContract;
+export const getPoolFees = (currentNetwork) => {
+  return getPoolConfig(currentNetwork, currentNetwork?.poolId)?.fees;
 };
 
-export const getPoolTokenAddresses = (
-  currentNetwork = "Goerli",
-  poolNumber
-) => {
-  return getPoolTokens(currentNetwork, poolNumber).map((item) => item.address);
+export const getPoolContractAddress = (currentNetwork) => {
+  return getPoolConfig(currentNetwork, currentNetwork?.poolId)?.address;
 };
 
-export const getPoolBlockInterval = (currentNetwork = "Goerli", poolNumber) => {
-  return getPoolConfig(currentNetwork, poolNumber)?.blockInterval;
+export const getPoolLtoContractAddress = (currentNetwork) => {
+  return getPoolConfig(currentNetwork, currentNetwork?.poolId)?.LTOContract;
+};
+
+export const getPoolTokenAddresses = (currentNetwork) => {
+  return getPoolTokens(currentNetwork, currentNetwork?.poolId).map(
+    (item) => item.address
+  );
+};
+
+export const getPoolBlockInterval = (currentNetwork) => {
+  return getPoolConfig(currentNetwork, currentNetwork?.poolId)?.blockInterval;
 };

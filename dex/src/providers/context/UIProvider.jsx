@@ -7,7 +7,6 @@ const UIContext = createContext(null);
 const UIProvider = ({ children }) => {
   const [selectedNetwork, setSelectedNetwork] = useState();
   const [nId, setNetId] = useState();
-  const [poolNumber, setPoolNumber] = useState(0);
 
   useEffect(() => {
     window.ethereum?.request({ method: "net_version" }).then((net_version) => {
@@ -17,23 +16,23 @@ const UIProvider = ({ children }) => {
         network: initialNetwork?.name,
         logo: initialNetwork?.logo,
         chainId: initialNetwork?.chainId,
+        poolId: 0,
       });
     });
   }, []);
 
-  return (
-    <UIContext.Provider
-      value={{
-        selectedNetwork,
-        setSelectedNetwork,
-        nId,
-        poolNumber,
-        setPoolNumber,
-      }}
-    >
-      {children}
-    </UIContext.Provider>
-  );
+  if (selectedNetwork)
+    return (
+      <UIContext.Provider
+        value={{
+          selectedNetwork,
+          setSelectedNetwork,
+          nId,
+        }}
+      >
+        {children}
+      </UIContext.Provider>
+    );
 };
 
 export { UIProvider, UIContext };

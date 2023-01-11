@@ -64,7 +64,7 @@ const LongSwap = (props) => {
     setMessage,
   } = useContext(LongSwapContext);
 
-  const { selectedNetwork, poolNumber } = useContext(UIContext);
+  const { selectedNetwork } = useContext(UIContext);
 
   const handleDisplay = (event) => {
     setSelectToken(event.currentTarget.id);
@@ -102,7 +102,7 @@ const LongSwap = (props) => {
       const approval = await approveMaxAllowance(
         web3provider,
         tokenA?.address,
-        selectedNetwork?.network
+        selectedNetwork
       );
       setTransactionHash(approval.hash);
 
@@ -110,7 +110,7 @@ const LongSwap = (props) => {
         web3provider?.getSigner(),
         account,
         tokenA?.address,
-        selectedNetwork?.network
+        selectedNetwork
       ).then((res) => {
         setAllowance(bigToStr(res));
       });
@@ -137,16 +137,14 @@ const LongSwap = (props) => {
         valueLabel(
           calculateNumBlockIntervals(newValue),
           currentBlock,
-          selectedNetwork?.network,
-          poolNumber
+          selectedNetwork
         ).targetDate
       );
       setExecutionTIme(
         valueLabel(
           calculateNumBlockIntervals(newValue),
           currentBlock,
-          selectedNetwork?.network,
-          poolNumber
+          selectedNetwork
         ).executionTime
       );
     }

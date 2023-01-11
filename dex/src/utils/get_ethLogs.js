@@ -3,14 +3,9 @@ import { TWAMM_POOL_ABI } from "../constants";
 import { getLongTermOrder } from "./longSwap";
 import { getPoolContractAddress } from "./poolUtils";
 
-export async function getEthLogs(
-  signer,
-  walletAddress,
-  currentNetwork,
-  poolNumber
-) {
+export async function getEthLogs(signer, walletAddress, currentNetwork) {
   const poolContract = new Contract(
-    getPoolContractAddress(currentNetwork, poolNumber),
+    getPoolContractAddress(currentNetwork),
     TWAMM_POOL_ABI,
     signer
   );
@@ -50,12 +45,7 @@ export async function getEthLogs(
       ["uint256", "uint256", "uint256"],
       eventsPlaced[i].data
     );
-    const orderDetails = await getLongTermOrder(
-      signer,
-      log[0],
-      currentNetwork,
-      poolNumber
-    );
+    const orderDetails = await getLongTermOrder(signer, log[0], currentNetwork);
     placedEventsDecoded.set(log[0].toNumber(), {
       orderId: log[0],
       salesRate: log[1],
