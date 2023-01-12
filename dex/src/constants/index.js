@@ -3433,7 +3433,7 @@ export const LONGTERM_ABI = [
   },
 ];
 
-export const GAS_OVERAGE_FACTOR = 1.2;
+export const GAS_OVERAGE_FACTOR = 1.05;
 
 export const POPUP_MESSAGE = {
   networkSwitchFailed: "Failed to switch network!",
