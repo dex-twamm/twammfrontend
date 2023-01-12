@@ -160,6 +160,7 @@ const LongTermOrderSingleCard = ({ it }) => {
     return () => clearInterval(timer);
   }, [newTime]);
 
+  console.log("ittttttttttttttt", it);
   return (
     <>
       <div className={styles.container} key={it.transactionHash}>
@@ -258,7 +259,7 @@ const LongTermOrderSingleCard = ({ it }) => {
             )}
           </div>
 
-          {it.hasPartialWithdrawals && (
+          {it.withdrawals.length > 0 && (
             <LongTermSwapCardDropdown withdrawals={it.withdrawals} />
           )}
 
