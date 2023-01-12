@@ -7,6 +7,8 @@ import Tabs from "../Tabs";
 import { getPoolFees, getPoolId, getPoolTokens } from "../../utils/poolUtils";
 import { UIContext } from "../../providers/context/UIProvider";
 import { Avatar, Box, Typography } from "@mui/material";
+import ethLogo from "../../images/ethereum.svg";
+import maticLogo from "../../images/Testv4.svg";
 
 const LiquidityPools = () => {
   const { LPTokenBalance, loading, isWalletConnected } =
@@ -56,33 +58,34 @@ const LiquidityPools = () => {
                 <Box className={styles.styledBoxTwo}>
                   <Box className={styles.styledBoxThree}>
                     <Box className={styles.styledBoxFour}>
-                      <Box className={styles.styledBoxFive}>
-                        <Avatar
-                          className={styles.styledAvatarOne}
-                          alt="Testv4"
-                          src="Testv4.jpeg"
-                        />
-                        <Avatar
-                          className={styles.styledAvatarTwo}
-                          sizes="small"
-                          alt="Faucet"
-                          src="ethereum.png"
-                        />
+                      <Box className={styles.logoAndName}>
+                        <Box className={styles.styledBoxFive}>
+                          <Avatar
+                            className={styles.styledAvatarOne}
+                            alt="Testv4"
+                            src={maticLogo}
+                          />
+                          <Avatar
+                            className={styles.styledAvatarTwo}
+                            sizes="small"
+                            alt="Faucet"
+                            src={ethLogo}
+                          />
+                        </Box>
+                        <span
+                          className={styles.tokensTypography}
+                          style={{ fontSize: { xs: 16 } }}
+                        >
+                          {`${
+                            getPoolTokens(selectedNetwork?.network)?.[0].symbol
+                          } / ${
+                            getPoolTokens(selectedNetwork?.network)?.[1].symbol
+                          }`}
+                        </span>
                       </Box>
-
-                      <span
-                        className={styles.tokensTypography}
-                        sx={{ fontSize: { xs: 16 } }}
-                      >
-                        {`${
-                          getPoolTokens(selectedNetwork?.network)?.[0].symbol
-                        } / ${
-                          getPoolTokens(selectedNetwork?.network)?.[1].symbol
-                        }`}
-                      </span>
-                      <span className={styles.feeTypography}>
+                      <div className={styles.feeTypography}>
                         {getPoolFees(selectedNetwork?.network)}
-                      </span>
+                      </div>
                     </Box>
                   </Box>
                 </Box>
