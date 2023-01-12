@@ -218,11 +218,8 @@ const Swap = (props) => {
                         }}
                         onClick={handleClose}
                       >
-                        {" "}
-                        {` 1 ${tokenA.symbol} = ${" "}`}
-                        {"  "}
-                        <label>
-                          {" "}
+                        {` 1 ${tokenA.symbol} = ${"  "}`}
+                        <label style={{ marginLeft: "4px" }}>
                           {spotPriceLoading ? (
                             <Skeleton width={"100px"} />
                           ) : (

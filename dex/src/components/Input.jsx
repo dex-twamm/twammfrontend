@@ -101,12 +101,13 @@ const Input = (props) => {
           </button>
         </div>
         <div className={styles.balance}>
+          Balance:
           {!isWalletConnected ? (
             "N/A"
           ) : tokenBalances ? (
             id === 1 ? (
-              <p>
-                Balance: {parseFloat(tokenA?.balance)?.toFixed(2)}{" "}
+              <p className={styles.balanceText}>
+                {parseFloat(tokenA?.balance)?.toFixed(2)}{" "}
                 <span
                   className={styles.maxInput}
                   onClick={() => {
@@ -117,7 +118,9 @@ const Input = (props) => {
                 </span>
               </p>
             ) : (
-              <p>Balance: {parseFloat(tokenB?.balance)?.toFixed(2)}</p>
+              <p className={styles.balanceText}>
+                {parseFloat(tokenB?.balance)?.toFixed(2)}
+              </p>
             )
           ) : (
             <Skeleton width={60} />
