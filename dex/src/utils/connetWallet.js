@@ -40,6 +40,9 @@ export const connectWallet = async (
         network: initialNetwork?.name,
         logo: initialNetwork?.logo,
         chainId: initialNetwork?.chainId,
+        poolId: localStorage.getItem("poolId")
+          ? localStorage.getItem("poolId")
+          : 0,
       });
     });
   } catch (err) {

@@ -10,12 +10,13 @@ import { LongSwapContext, ShortSwapContext } from "../providers";
 import Tabs from "../components/Tabs";
 import PopupModal from "../components/alerts/PopupModal";
 import { _placeLongTermOrders } from "../utils/placeLongTermOrder";
-import { connectWallet } from "../utils/connetWallet";
 import { connectWalletAndGetEthLogs } from "../utils/connetWallet";
 
 import { UIContext } from "../providers/context/UIProvider";
 import LongSwap from "../components/LongSwap";
 import { verifyLongSwap } from "../utils/verifyLongSwap";
+import { getAllPool } from "../utils/poolUtils";
+import { MenuItem, Select } from "@mui/material";
 
 const LongSwapPage = () => {
   const {
@@ -71,7 +72,7 @@ const LongSwapPage = () => {
         web3provider,
         account,
         setLongSwapFormErrors,
-        selectedNetwork?.network,
+        selectedNetwork,
         numberOfBlockIntervals,
         allowance
       );
@@ -80,7 +81,7 @@ const LongSwapPage = () => {
     return () => {
       clearTimeout(verifyLongSwapInterval);
     };
-  }, [swapAmount, tokenB, tokenA, numberOfBlockIntervals]);
+  }, [swapAmount, tokenB, tokenA, numberOfBlockIntervals, selectedNetwork]);
 
   async function LongSwapButtonClick() {
     try {
@@ -94,7 +95,7 @@ const LongSwapPage = () => {
           setSelectedNetwork,
           web3provider,
           account,
-          selectedNetwork?.network
+          selectedNetwork
         );
       } else {
         console.log(web3provider, web3provider.getSigner());
@@ -110,7 +111,7 @@ const LongSwapPage = () => {
           setMessage,
           setOrderLogsDecoded,
           setError,
-          selectedNetwork?.network
+          selectedNetwork
         );
         setSwapAmount(0);
       }
@@ -125,6 +126,11 @@ const LongSwapPage = () => {
     };
   });
 
+  const handlePoolChange = (e) => {
+    setSelectedNetwork({ ...selectedNetwork, poolId: e.target.value });
+    localStorage.setItem("poolId", e.target.value);
+  };
+
   return (
     <>
       <div className={styles.container}>
@@ -135,14 +141,34 @@ const LongSwapPage = () => {
               <a className={styles.textLink} href="/">
                 Long Term Swap
               </a>
-              <FontAwesomeIcon
-                className={styles.settingsIcon}
-                icon={faGear}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setShowSettings(!showSettings);
-                }}
-              />
+              <div className={styles.poolAndIcon}>
+                {getAllPool(selectedNetwork)?.length > 1 && (
+                  <Select
+                    className={styles.poolBox}
+                    inputProps={{ "aria-label": "Without label" }}
+                    value={selectedNetwork?.poolId}
+                    onChange={handlePoolChange}
+                    variant="outlined"
+                    sx={{ outline: "none" }}
+                  >
+                    {getAllPool(selectedNetwork)?.map((el, idx) => {
+                      return (
+                        <MenuItem key={idx} value={idx}>
+                          {el.poolName}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                )}
+                <FontAwesomeIcon
+                  className={styles.settingsIcon}
+                  icon={faGear}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowSettings(!showSettings);
+                  }}
+                />
+              </div>
             </div>
 
             {showSettings && <PopupSettings swapType="long" />}

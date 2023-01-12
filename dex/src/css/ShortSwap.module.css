@@ -112,3 +112,16 @@
 
   overflow: hidden;
 }
+
+.poolAndIcon {
+  display: flex;
+  align-items: center;
+  column-gap: 15px;
+}
+
+.poolBox {
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(2px);
+  border-radius: 5px !important;
+  height: 40px;
+}

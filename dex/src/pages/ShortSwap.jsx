@@ -1,5 +1,6 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { MenuItem, Select } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import PopupModal from "../components/alerts/PopupModal";
 import PopupSettings from "../components/PopupSettings";
@@ -10,6 +11,7 @@ import { LongSwapContext, ShortSwapContext } from "../providers";
 import { UIContext } from "../providers/context/UIProvider";
 import { connectWalletAndGetEthLogs } from "../utils/connetWallet";
 import { spotPrice } from "../utils/getSpotPrice";
+import { getAllPool } from "../utils/poolUtils";
 import { _swapTokens } from "../utils/shortSwap";
 
 const ShortSwap = () => {
@@ -29,7 +31,6 @@ const ShortSwap = () => {
     setError,
     deadline,
     ethBalance,
-    poolCash,
     setSuccess,
     setFormErrors,
     setSpotPrice,
@@ -57,7 +58,7 @@ const ShortSwap = () => {
           setFormErrors,
           setSpotPrice,
           setExpectedSwapOut,
-          selectedNetwork?.network
+          selectedNetwork
         );
       }, 500);
       // Update price every 12 seconds.
@@ -73,7 +74,7 @@ const ShortSwap = () => {
           setFormErrors,
           setSpotPrice,
           setExpectedSwapOut,
-          selectedNetwork?.network
+          selectedNetwork
         );
       }, 12000);
     }
@@ -81,7 +82,7 @@ const ShortSwap = () => {
       clearTimeout(interval1);
       clearTimeout(interval2);
     };
-  }, [swapAmount, tokenB, tokenA, allowance]);
+  }, [swapAmount, tokenB, tokenA, allowance, selectedNetwork]);
 
   const [showSettings, setShowSettings] = useState(false);
 
@@ -97,12 +98,11 @@ const ShortSwap = () => {
           setSelectedNetwork,
           web3provider,
           account,
-          selectedNetwork?.network
+          selectedNetwork
         );
       } else {
         await _swapTokens(
           ethBalance,
-          poolCash,
           swapAmount,
           web3provider,
           tokenA?.address,
@@ -113,7 +113,7 @@ const ShortSwap = () => {
           setSuccess,
           setError,
           setLoading,
-          selectedNetwork?.network
+          selectedNetwork
         );
 
         setSwapAmount(0);
@@ -130,6 +130,11 @@ const ShortSwap = () => {
     };
   });
 
+  const handlePoolChange = (e) => {
+    setSelectedNetwork({ ...selectedNetwork, poolId: e.target.value });
+    localStorage.setItem("poolId", e.target.value);
+  };
+
   return (
     <>
       <div className={styles.container}>
@@ -141,14 +146,34 @@ const ShortSwap = () => {
               <a className={styles.textLink} href="/">
                 Swap
               </a>
-              <FontAwesomeIcon
-                className={styles.settingsIcon}
-                icon={faGear}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setShowSettings(!showSettings);
-                }}
-              />
+              <div className={styles.poolAndIcon}>
+                {getAllPool(selectedNetwork)?.length > 1 && (
+                  <Select
+                    className={styles.poolBox}
+                    inputProps={{ "aria-label": "Without label" }}
+                    value={selectedNetwork?.poolId}
+                    onChange={handlePoolChange}
+                    variant="outlined"
+                    sx={{ outline: "none" }}
+                  >
+                    {getAllPool(selectedNetwork)?.map((el, idx) => {
+                      return (
+                        <MenuItem key={idx} value={idx}>
+                          {el.poolName}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                )}
+                <FontAwesomeIcon
+                  className={styles.settingsIcon}
+                  icon={faGear}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowSettings(!showSettings);
+                  }}
+                />
+              </div>
             </div>
             {showSettings && <PopupSettings />}
           </div>

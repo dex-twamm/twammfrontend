@@ -108,9 +108,7 @@ const DisconnectWalletOption = ({ showDisconnect, setShowDisconnect }) => {
               <Button
                 onClick={() =>
                   window.open(
-                    `${getBlockExplorerAddressUrl(
-                      selectedNetwork?.network
-                    )}${account}`,
+                    `${getBlockExplorerAddressUrl(selectedNetwork)}${account}`,
                     "_blank"
                   )
                 }

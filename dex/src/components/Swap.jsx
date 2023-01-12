@@ -86,7 +86,7 @@ const Swap = (props) => {
       const approval = await approveMaxAllowance(
         web3provider,
         tokenA?.address,
-        selectedNetwork?.network
+        selectedNetwork
       );
       setTransactionHash(approval.hash);
 
@@ -94,7 +94,7 @@ const Swap = (props) => {
         web3provider?.getSigner(),
         account,
         tokenA?.address,
-        selectedNetwork?.network
+        selectedNetwork
       ).then((res) => {
         setAllowance(bigToStr(res));
       });
@@ -218,11 +218,8 @@ const Swap = (props) => {
                         }}
                         onClick={handleClose}
                       >
-                        {" "}
-                        {` 1 ${tokenA.symbol} = ${" "}`}
-                        {"  "}
-                        <label>
-                          {" "}
+                        {` 1 ${tokenA.symbol} = ${"  "}`}
+                        <label style={{ marginLeft: "4px" }}>
                           {spotPriceLoading ? (
                             <Skeleton width={"100px"} />
                           ) : (

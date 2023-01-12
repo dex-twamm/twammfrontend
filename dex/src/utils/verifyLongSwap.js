@@ -16,6 +16,8 @@ export const verifyLongSwap = async (
   allowance
 ) => {
   if (swapAmount && numberOfBlockIntervals) {
+    setLongSwapVerifyLoading(true);
+
     const poolConfig = getPoolConfig(currentNetwork);
 
     const errors = {};
@@ -34,6 +36,7 @@ export const verifyLongSwap = async (
         swapAmount,
         poolConfig.tokens[tokenInIndex].decimals
       );
+
       if (amountIn < parseFloat(allowance)) {
         setLongSwapVerifyLoading(true);
         await verifyLongSwapTxn(

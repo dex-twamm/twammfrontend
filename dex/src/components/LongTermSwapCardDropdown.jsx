@@ -65,7 +65,7 @@ const LongTermSwapCardDropdown = (props) => {
                     const handleClick = () => {
                       window.open(
                         `${getBlockExplorerTransactionUrl(
-                          selectedNetwork?.network
+                          selectedNetwork
                         )}${transactionHash}`
                       );
                     };
