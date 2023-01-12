@@ -158,7 +158,7 @@ const ShortSwap = () => {
                     {getAllPool(selectedNetwork)?.map((el, idx) => {
                       return (
                         <MenuItem key={idx} value={idx}>
-                          Pool {idx}
+                          {el.poolName}
                         </MenuItem>
                       );
                     })}

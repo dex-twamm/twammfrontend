@@ -4,6 +4,7 @@ import maticLogo from "../images/Testv4.svg";
 export const POOLS = {
   Goerli: {
     "0xdab1b8c505867ec1e7292b17d7a4b42b6e1626680002000000000000000002c1": {
+      poolName: "MATIC/FAU",
       address: "0xdab1b8c505867ec1e7292b17d7a4b42b6e162668",
       fees: "0.3%",
       LTOContract: "0x04143AA32FB58bcB943dfF29C3aad9C51FcF9630",
@@ -26,6 +27,7 @@ export const POOLS = {
       ],
     },
     "0x20c0b25ace39df183b9ccbbd1d575764544aeb190002000000000000000001f8": {
+      poolName: "DAI/FAU",
       address: "0x20c0b25ace39df183b9ccbbd1d575764544aeb19",
       fees: "0.5%",
       LTOContract: "0xC392dF9Ee383d6Bce110757FdE7762f0372f6A5D",
@@ -50,6 +52,7 @@ export const POOLS = {
   },
   Ethereum: {
     "0xf7a3ffd8d6ae4b2564a18591d6f3783ec5f79d3a000200000000000000000417": {
+      poolName: "USDC/WETH",
       address: "0xF7A3Ffd8d6aE4B2564A18591D6F3783ec5F79D3a",
       fees: "0.3%",
       LTOContract: "0x9D3f9803826EB51B046D4366a5cf7313308E7CDC",
