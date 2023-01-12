@@ -81,9 +81,11 @@ function App() {
           walletAddress,
           tokenAddress,
           selectedNetwork
-        ).then((res) => {
-          setAllowance(bigToStr(res));
-        });
+        )
+          .then((res) => {
+            setAllowance(bigToStr(res));
+          })
+          .catch((err) => console.log(err));
         // Pool Balance
         await getPoolBalance(
           web3provider?.getSigner(),
