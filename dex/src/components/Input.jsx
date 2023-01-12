@@ -19,8 +19,13 @@ const Input = (props) => {
     setTokenB,
     placeholder,
   } = props;
-  const { tokenBalances, selectToken, setEthBalance, isWalletConnected } =
-    useContext(ShortSwapContext);
+  const {
+    tokenBalances,
+    selectToken,
+    setEthBalance,
+    isWalletConnected,
+    setSwapAmount,
+  } = useContext(ShortSwapContext);
   const { tokenA, tokenB } = useContext(LongSwapContext);
 
   const { setSelectedNetwork } = useContext(UIContext);
@@ -92,14 +97,23 @@ const Input = (props) => {
           </button>
         </div>
         <div className={styles.balance}>
-          Balance :{" "}
           {!isWalletConnected ? (
             "N/A"
           ) : tokenBalances ? (
             id === 1 ? (
-              parseFloat(tokenA?.balance)?.toFixed(2)
+              <p>
+                Balance: {parseFloat(tokenA?.balance)?.toFixed(2)}{" "}
+                <span
+                  className={styles.maxInput}
+                  onClick={() => {
+                    setSwapAmount(parseFloat(tokenA?.balance)?.toFixed(2));
+                  }}
+                >
+                  Max
+                </span>
+              </p>
             ) : (
-              parseFloat(tokenB?.balance)?.toFixed(2)
+              <p>Balance: {parseFloat(tokenB?.balance)?.toFixed(2)}</p>
             )
           ) : (
             <Skeleton width={60} />
