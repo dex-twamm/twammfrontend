@@ -132,6 +132,7 @@ const ShortSwap = () => {
 
   const handlePoolChange = (e) => {
     setSelectedNetwork({ ...selectedNetwork, poolId: e.target.value });
+    localStorage.setItem("poolId", e.target.value);
   };
 
   return (

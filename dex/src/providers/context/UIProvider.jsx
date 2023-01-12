@@ -16,7 +16,9 @@ const UIProvider = ({ children }) => {
         network: initialNetwork?.name,
         logo: initialNetwork?.logo,
         chainId: initialNetwork?.chainId,
-        poolId: 0,
+        poolId: localStorage.getItem("poolId")
+          ? localStorage.getItem("poolId")
+          : 0,
       });
     });
   }, []);
