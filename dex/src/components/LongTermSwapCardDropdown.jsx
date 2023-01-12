@@ -39,20 +39,32 @@ const LongTermSwapCardDropdown = (props) => {
                   gap: { xs: "0px", sm: "5px" },
                 }}
               >
-                <span onClick={handleClose} className={styles.withdraw} sx={{}}>
+                <span
+                  className={styles.withdraw}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleClose();
+                  }}
+                >
                   Withdrawals
                 </span>
 
                 {open ? (
                   <KeyboardArrowUpOutlinedIcon
                     className={styles.arrowIconStyle}
-                    onClick={handleClose}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleClose();
+                    }}
                   />
                 ) : (
                   <FiChevronDown
                     fontSize={"24px"}
                     className={styles.chevronStyle}
-                    onClick={handleClose}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleClose();
+                    }}
                   />
                 )}
               </Box>
@@ -73,48 +85,21 @@ const LongTermSwapCardDropdown = (props) => {
                       <Box
                         className={styles.withdrawlBox}
                         key={transactionHash}
-                        sx={{
-                          alignItems: {
-                            xs: "flex-start",
-                            sm: "flex-start",
-                            md: "flex-start",
-                          },
-                        }}
                       >
                         <CircleIcon
                           fontSize="small"
                           sx={{
                             color: "#808080",
                             fontSize: "12px",
-                            ml: { xs: "5px", sm: 0, md: 0 },
-                            mt: { xs: "7px", sm: "7px", md: "7px" },
                           }}
                         />
-                        <Box
-                          className={styles.infoBox}
-                          sx={{
-                            alignItems: { xs: "flex-start", sm: "center" },
-                          }}
-                        >
-                          <span
-                            className={styles.infoSpan}
-                            sx={{
-                              alignItems: {
-                                xs: "flex-start",
-                                sm: "flex-start",
-                              },
-                              fontSize: { xs: "14px", sm: "16px" },
-                              ml: { xs: "5px", sm: "0px" },
-                            }}
-                          >
+                        <Box className={styles.infoBox}>
+                          <span className={styles.infoSpan}>
                             {`Token withdrawal of ${withdrawnAmount} `}
                             <IconButton onClick={handleClick}>
                               <LaunchIcon
                                 fontSize="medium"
                                 className={styles.launchIconStyle}
-                                sx={{
-                                  display: { xs: "inline-block" },
-                                }}
                               ></LaunchIcon>
                             </IconButton>
                           </span>
