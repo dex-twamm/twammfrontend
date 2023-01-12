@@ -46,6 +46,10 @@ const Input = (props) => {
     });
     // TODO: Rename this to TokenInBalance.
     setEthBalance(balanceA?.[0]?.[tokenA?.address]);
+
+    return () => {
+      setSwapAmount();
+    };
   }, [setTokenA, setTokenB, tokenBalances, setSelectedNetwork]);
 
   return (
