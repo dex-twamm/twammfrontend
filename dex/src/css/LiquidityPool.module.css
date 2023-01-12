@@ -127,7 +127,7 @@
 
 .balanceInfoTypography {
   font-weight: 500;
-  display: inline;
+  display: flex;
   color: grey;
   font-family: Open Sans;
 }
@@ -137,6 +137,7 @@
   display: inline;
   color: #333333;
   font-family: Open Sans;
+  margin-left: 5px;
 }
 
 .buttonsBox {
