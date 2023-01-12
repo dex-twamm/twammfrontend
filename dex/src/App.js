@@ -22,7 +22,6 @@ function App() {
     setLoading,
     setTokenBalances,
     transactionHash,
-    setPoolCash,
     account,
     setAccount,
     isWalletConnected,
@@ -86,14 +85,6 @@ function App() {
             setAllowance(bigToStr(res));
           })
           .catch((err) => console.log(err));
-        // Pool Balance
-        await getPoolBalance(
-          web3provider?.getSigner(),
-          tokenAddress,
-          selectedNetwork
-        ).then((res) => {
-          setPoolCash(res);
-        });
       }
     };
     allowance();

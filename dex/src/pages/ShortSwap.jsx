@@ -31,7 +31,6 @@ const ShortSwap = () => {
     setError,
     deadline,
     ethBalance,
-    poolCash,
     setSuccess,
     setFormErrors,
     setSpotPrice,
@@ -104,7 +103,6 @@ const ShortSwap = () => {
       } else {
         await _swapTokens(
           ethBalance,
-          poolCash,
           swapAmount,
           web3provider,
           tokenA?.address,
