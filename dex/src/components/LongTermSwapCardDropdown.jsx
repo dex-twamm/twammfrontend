@@ -10,11 +10,17 @@ import { getBlockExplorerTransactionUrl } from "../utils/networkUtils";
 import styles from "../css/LongTermSwapCardDropDown.module.css";
 
 const LongTermSwapCardDropdown = (props) => {
-  const { withdrawals } = props;
+  const { item } = props;
   const { selectedNetwork } = useContext(UIContext);
   const [open, setOpen] = useState(false);
 
   const handleClose = () => setOpen((state) => !state);
+
+  const handleExplorer = (transactionHash) => {
+    window.open(
+      `${getBlockExplorerTransactionUrl(selectedNetwork)}${transactionHash}`
+    );
+  };
 
   return (
     <>
@@ -46,7 +52,7 @@ const LongTermSwapCardDropdown = (props) => {
                     handleClose();
                   }}
                 >
-                  Withdrawals
+                  Withdrawals {item?.unsoldAmount && "and Cancelled"}
                 </span>
 
                 {open ? (
@@ -71,42 +77,68 @@ const LongTermSwapCardDropdown = (props) => {
 
               {open && (
                 <>
-                  {withdrawals.map((items) => {
-                    const withdrawnAmount = bigToStr(items.proceeds, 18);
-                    const transactionHash = items.transactionHash;
-                    const handleClick = () => {
-                      window.open(
-                        `${getBlockExplorerTransactionUrl(
-                          selectedNetwork
-                        )}${transactionHash}`
-                      );
-                    };
-                    return (
-                      <Box
-                        className={styles.withdrawlBox}
-                        key={transactionHash}
-                      >
-                        <CircleIcon
-                          fontSize="small"
-                          sx={{
-                            color: "#808080",
-                            fontSize: "12px",
-                          }}
-                        />
-                        <Box className={styles.infoBox}>
-                          <span className={styles.infoSpan}>
-                            {`Token withdrawal of ${withdrawnAmount} `}
-                            <IconButton onClick={handleClick}>
-                              <LaunchIcon
-                                fontSize="medium"
-                                className={styles.launchIconStyle}
-                              ></LaunchIcon>
-                            </IconButton>
-                          </span>
-                        </Box>
+                  {item?.withdrawals.map((items) => (
+                    <Box
+                      className={styles.withdrawlBox}
+                      key={items?.transactionHash}
+                    >
+                      <CircleIcon
+                        fontSize="small"
+                        sx={{
+                          color: "#808080",
+                          fontSize: "12px",
+                        }}
+                      />
+                      <Box className={styles.infoBox}>
+                        <span className={styles.infoSpan}>
+                          {`Token withdrawal of ${bigToStr(
+                            items.proceeds,
+                            18
+                          )} `}
+                          <IconButton
+                            onClick={() =>
+                              handleExplorer(items.transactionHash)
+                            }
+                          >
+                            <LaunchIcon
+                              fontSize="medium"
+                              className={styles.launchIconStyle}
+                            ></LaunchIcon>
+                          </IconButton>
+                        </span>
                       </Box>
-                    );
-                  })}
+                    </Box>
+                  ))}
+                  {item?.unsoldAmount && (
+                    <Box
+                      className={styles.withdrawlBox}
+                      key={item?.transactionHash}
+                    >
+                      <CircleIcon
+                        fontSize="small"
+                        sx={{
+                          color: "#808080",
+                          fontSize: "12px",
+                        }}
+                      />
+                      <Box className={styles.infoBox}>
+                        <span className={styles.infoSpan}>
+                          {`Token cancelled of ${bigToStr(
+                            item.unsoldAmount,
+                            18
+                          )} `}
+                          <IconButton
+                            onClick={() => handleExplorer(item.transactionHash)}
+                          >
+                            <LaunchIcon
+                              fontSize="medium"
+                              className={styles.launchIconStyle}
+                            ></LaunchIcon>
+                          </IconButton>
+                        </span>
+                      </Box>
+                    </Box>
+                  )}
                 </>
               )}
             </Box>

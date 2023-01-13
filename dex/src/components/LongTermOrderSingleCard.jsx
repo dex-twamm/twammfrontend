@@ -271,9 +271,7 @@ const LongTermOrderSingleCard = ({ it }) => {
             </div>
           </div>
 
-          {it.withdrawals.length > 0 && (
-            <LongTermSwapCardDropdown withdrawals={it.withdrawals} />
-          )}
+          {it.withdrawals.length > 0 && <LongTermSwapCardDropdown item={it} />}
 
           <div className={styles.buttonContainer}>
             <button
