@@ -158,8 +158,9 @@ const LongTermOrderSingleCard = ({ it }) => {
     return () => clearInterval(timer);
   }, [newTime]);
 
-  const startTime = new Date(it.startBlock * 1000).toLocaleString();
-  const completionTime = new Date(it.expirationBlock * 1000).toLocaleString();
+  const startTime = new Date(stBlock * 1000).toLocaleString();
+  const completionTime = new Date(expBlock * 1000).toLocaleString();
+
   return (
     <>
       <div className={styles.container} key={it.transactionHash}>
@@ -249,7 +250,13 @@ const LongTermOrderSingleCard = ({ it }) => {
             </div>
           </div>
 
-          <div className={styles.extrasContainer}>
+          <div
+            className={
+              bigToFloat(soldToken) !== 0
+                ? styles.extrasContainer
+                : styles.extrasContainerOne
+            }
+          >
             <div className={styles.feesAndPrice}>
               <div className={styles.fees}>{poolConfig?.fees} fees</div>
               {bigToFloat(soldToken) !== 0 && (
