@@ -151,3 +151,13 @@
   font-weight: 400;
   font-size: 16px;
 }
+
+.maxInput {
+  cursor: pointer;
+  color: blueviolet;
+  font-weight: 800;
+}
+
+.balanceText {
+  margin-left: 4px;
+}

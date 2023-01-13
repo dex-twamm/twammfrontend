@@ -1,7 +1,9 @@
 import { NETWORKS } from "./networks";
 
 export const getActiveNetwork = (currentNetwork) => {
-  const network = NETWORKS.filter((item) => item?.name === currentNetwork);
+  const network = NETWORKS.filter(
+    (item) => item?.name === currentNetwork?.network
+  );
   return network?.[0];
 };
 

@@ -9,7 +9,6 @@ export const ShortSwapProvider = ({ children }) => {
   const [transactionHash, setTransactionHash] = useState();
   const [selectToken, setSelectToken] = useState("");
   const [ethBalance, setEthBalance] = useState("");
-  const [poolCash, setPoolCash] = useState("");
   const [account, setAccount] = useState("");
   const [isWalletConnected, setWalletConnected] = useState(false);
   const [expectedSwapOut, setExpectedSwapOut] = useState(0);
@@ -43,8 +42,6 @@ export const ShortSwapProvider = ({ children }) => {
         setSelectToken,
         ethBalance,
         setEthBalance,
-        poolCash,
-        setPoolCash,
         account,
         setAccount,
         isWalletConnected,

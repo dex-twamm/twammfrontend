@@ -49,9 +49,7 @@ const PopupModal = () => {
 
   const handleButtonClick = () => {
     window.open(
-      `${getBlockExplorerTransactionUrl(
-        selectedNetwork?.network
-      )}${transactionHash}`
+      `${getBlockExplorerTransactionUrl(selectedNetwork)}${transactionHash}`
     );
   };
 
