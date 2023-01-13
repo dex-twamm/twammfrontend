@@ -112,6 +112,13 @@
   gap: 10px;
 }
 
+.feesAndPrice,
+.times {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
 .fees,
 .averagePrice {
   color: black;
