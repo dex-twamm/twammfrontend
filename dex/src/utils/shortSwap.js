@@ -5,7 +5,6 @@ import { swapTokens } from "./swap";
 
 export const _swapTokens = async (
   ethBalance,
-  poolCash,
   swapAmount,
   web3provider,
   tokenA,
@@ -26,7 +25,6 @@ export const _swapTokens = async (
     ethBalance,
     tokenIn.decimals
   );
-  const pCash = ethers.utils.parseUnits(poolCash, tokenIn.decimals);
 
   if (swapAmountWei.lte(walletBalanceWei)) {
     try {

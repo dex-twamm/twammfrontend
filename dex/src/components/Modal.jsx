@@ -33,9 +33,9 @@ const Modal = ({
   const { selectedNetwork } = useContext(UIContext);
 
   useEffect(() => {
-    const tokenDetail = getPoolTokens(selectedNetwork?.network);
+    const tokenDetail = getPoolTokens(selectedNetwork);
     setTokenDetails(tokenDetail);
-  }, []);
+  }, [selectedNetwork]);
 
   // Handle Modal Close
   const handleModalClose = () => {
@@ -90,7 +90,7 @@ const Modal = ({
         web3provider?.getSigner(),
         account,
         tokenA?.address,
-        selectedNetwork?.network
+        selectedNetwork
       );
   }, [tokenA, setFormErrors]);
 

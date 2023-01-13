@@ -16,21 +16,25 @@ const UIProvider = ({ children }) => {
         network: initialNetwork?.name,
         logo: initialNetwork?.logo,
         chainId: initialNetwork?.chainId,
+        poolId: localStorage.getItem("poolId")
+          ? localStorage.getItem("poolId")
+          : 0,
       });
     });
   }, []);
 
-  return (
-    <UIContext.Provider
-      value={{
-        selectedNetwork,
-        setSelectedNetwork,
-        nId,
-      }}
-    >
-      {children}
-    </UIContext.Provider>
-  );
+  if (selectedNetwork)
+    return (
+      <UIContext.Provider
+        value={{
+          selectedNetwork,
+          setSelectedNetwork,
+          nId,
+        }}
+      >
+        {children}
+      </UIContext.Provider>
+    );
 };
 
 export { UIProvider, UIContext };

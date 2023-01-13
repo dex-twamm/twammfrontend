@@ -43,7 +43,6 @@ export const getLPTokensBalance = async (
   walletAddress,
   currentNetwork
 ) => {
-  console.log("getLPTokensBalance", signer, walletAddress, currentNetwork);
   const poolContract = new Contract(
     getPoolContractAddress(currentNetwork),
     TWAMM_POOL_ABI,

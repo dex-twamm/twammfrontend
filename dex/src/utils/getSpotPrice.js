@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import { POPUP_MESSAGE } from "../constants";
 import { getPoolConfig } from "./poolUtils";
-import { swapTokens, verifySwapTokens } from "./swap";
+import { verifySwapTokens } from "./swap";
 
 // Spot Prices
 export const spotPrice = async (

@@ -34,14 +34,14 @@ const LongTermOrderSingleCard = ({ it }) => {
     setOrderLogsDecoded,
     setMessage,
   } = useContext(LongSwapContext);
-  const { selectedNetwork, setSelectedNetwork, nId } = useContext(UIContext);
+  const { selectedNetwork, setSelectedNetwork } = useContext(UIContext);
 
   const [orderStatus, setOrderStatus] = useState();
   const [newTime, setNewTime] = useState(
     (it.expirationBlock - currentBlock.number) * 12
   );
 
-  const poolConfig = getPoolConfig(selectedNetwork?.network ?? "Goerli");
+  const poolConfig = getPoolConfig(selectedNetwork);
 
   const tokenIn = poolConfig.tokens[it.sellTokenIndex];
   const tokenOut = poolConfig.tokens[it.buyTokenIndex];
@@ -98,9 +98,8 @@ const LongTermOrderSingleCard = ({ it }) => {
       setOrderLogsDecoded,
       setMessage,
       setTransactionHash,
-      selectedNetwork?.network,
-      setSelectedNetwork,
-      nId
+      selectedNetwork,
+      setSelectedNetwork
     );
   };
 
@@ -121,9 +120,8 @@ const LongTermOrderSingleCard = ({ it }) => {
       setOrderLogsDecoded,
       setMessage,
       setTransactionHash,
-      selectedNetwork?.network,
-      setSelectedNetwork,
-      nId
+      selectedNetwork,
+      setSelectedNetwork
     );
   };
 
@@ -173,7 +171,7 @@ const LongTermOrderSingleCard = ({ it }) => {
             className={styles.iconExternalLink}
             onClick={() =>
               window.open(
-                `${getBlockExplorerTransactionUrl(selectedNetwork?.network)}${
+                `${getBlockExplorerTransactionUrl(selectedNetwork)}${
                   it.transactionHash
                 }`,
                 "_blank"
