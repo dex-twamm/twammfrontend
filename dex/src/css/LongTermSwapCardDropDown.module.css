@@ -37,6 +37,7 @@
   font-size: 18px;
   font-family: Open Sans;
   font-weight: 600;
+  cursor: pointer;
 }
 
 .arrowIconStyle {
@@ -56,6 +57,7 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
   padding: 5px;
   padding-left: 0px;
   margin-left: 0px;
@@ -63,20 +65,29 @@
 
 .infoBox {
   display: flex;
+  align-items: center;
   margin-left: 10px;
   color: #333333;
-  width: 90%;
+  width: 100%;
 }
 
 .infoSpan {
   display: flex;
   font-family: Open Sans;
+  align-items: center;
   color: #333333;
   width: 100%;
+  margin-left: 10px;
 }
 
 .launchIconStyle {
   box-sizing: border-box;
   font-size: 15px;
   cursor: pointer;
+}
+
+@media (max-width: 520px) {
+  .infoSpan {
+    font-size: 14px;
+  }
 }
