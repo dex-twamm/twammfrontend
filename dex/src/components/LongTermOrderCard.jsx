@@ -22,10 +22,10 @@ const LongTermOrderCard = () => {
         </p>
       ) : (
         orderLogsDecoded
-          .map((it, index) => {
+          .map((orderLog, index) => {
             return (
               <div key={index}>
-                <LongTermOrderSingleCard it={it} />
+                <LongTermOrderSingleCard orderLog={orderLog} />
               </div>
             );
           })

@@ -109,7 +109,7 @@ const LiquidityPools = () => {
                 },
               }}
             >
-              {LPTokenBalance != 0 && (
+              {LPTokenBalance !== 0 && (
                 <button className={styles.removeLiquidityButton}>
                   Remove Liquidity
                 </button>

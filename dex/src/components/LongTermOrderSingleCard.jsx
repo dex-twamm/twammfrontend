@@ -12,7 +12,7 @@ import { ethers } from "ethers";
 import { getPoolConfig } from "../utils/poolUtils";
 import { getBlockExplorerTransactionUrl } from "../utils/networkUtils";
 
-const LongTermOrderSingleCard = ({ it }) => {
+const LongTermOrderSingleCard = ({ orderLog }) => {
   const {
     currentBlock,
     isWalletConnected,
@@ -38,43 +38,43 @@ const LongTermOrderSingleCard = ({ it }) => {
 
   const [orderStatus, setOrderStatus] = useState();
   const [newTime, setNewTime] = useState(
-    (it.expirationBlock - currentBlock.number) * 12
+    (orderLog.expirationBlock - currentBlock.number) * 12
   );
 
   const poolConfig = getPoolConfig(selectedNetwork);
 
-  const tokenIn = poolConfig.tokens[it.sellTokenIndex];
-  const tokenOut = poolConfig.tokens[it.buyTokenIndex];
+  const tokenIn = poolConfig.tokens[orderLog.sellTokenIndex];
+  const tokenOut = poolConfig.tokens[orderLog.buyTokenIndex];
 
   const remainingTimeRef = useRef();
 
   let convertedAmount = ethers.constants.Zero;
-  if (it.state === "completed" || it.state === "cancelled") {
+  if (orderLog.state === "completed" || orderLog.state === "cancelled") {
     // Order Completed and Deleted
-    convertedAmount = it.withdrawals.reduce((total, withdrawal) => {
+    convertedAmount = orderLog.withdrawals.reduce((total, withdrawal) => {
       return total.add(withdrawal.proceeds);
     }, ethers.constants.Zero);
   } else {
     // Order Still In Progress
-    let withdrawals = it.withdrawals.reduce((total, withdrawal) => {
+    let withdrawals = orderLog.withdrawals.reduce((total, withdrawal) => {
       return total.add(withdrawal.proceeds);
     }, ethers.constants.Zero);
 
-    convertedAmount = it.convertedValue.add(withdrawals);
+    convertedAmount = orderLog.convertedValue.add(withdrawals);
   }
 
-  const stBlock = it.startBlock;
-  const expBlock = it.expirationBlock;
-  const amountOf = expBlock?.sub(stBlock)?.mul(it?.salesRate);
+  const stBlock = orderLog.startBlock;
+  const expBlock = orderLog.expirationBlock;
+  const amountOf = expBlock?.sub(stBlock)?.mul(orderLog?.salesRate);
 
   let soldToken;
-  if (it.state === "cancelled") {
-    soldToken = amountOf?.sub(it?.unsoldAmount);
+  if (orderLog.state === "cancelled") {
+    soldToken = amountOf?.sub(orderLog?.unsoldAmount);
   } else {
     soldToken =
       lastVirtualOrderBlock > expBlock
         ? amountOf
-        : lastVirtualOrderBlock?.sub(stBlock)?.mul(it.salesRate);
+        : lastVirtualOrderBlock?.sub(stBlock)?.mul(orderLog.salesRate);
   }
 
   const averagePrice =
@@ -126,28 +126,28 @@ const LongTermOrderSingleCard = ({ it }) => {
   };
 
   useEffect(() => {
-    if (it?.state === "completed") {
+    if (orderLog?.state === "completed") {
       setOrderStatus({ status: "Completed", progress: 100 });
-    } else if (it?.state === "cancelled") {
+    } else if (orderLog?.state === "cancelled") {
       setOrderStatus({ status: "Cancelled", progress: 100 });
-    } else if (lastVirtualOrderBlock >= it.expirationBlock) {
+    } else if (lastVirtualOrderBlock >= orderLog.expirationBlock) {
       setOrderStatus({ status: "Execution Completed", progress: 100 });
     } else {
-      if (it.expirationBlock > currentBlock.number) {
+      if (orderLog.expirationBlock > currentBlock.number) {
         let date = new Date(0);
         date.setSeconds(newTime); // specify value for SECONDS here
         const timeString = date.toISOString().substring(11, 16);
         setOrderStatus({
           status: `Time Remaining: ${timeString}`,
           progress:
-            ((lastVirtualOrderBlock - it?.startBlock) * 100) /
-            (it?.expirationBlock - it?.startBlock),
+            ((lastVirtualOrderBlock - orderLog?.startBlock) * 100) /
+            (orderLog?.expirationBlock - orderLog?.startBlock),
         });
       } else {
         setOrderStatus({ status: "Execution Completed", progress: 100 });
       }
     }
-  }, [it, currentBlock, lastVirtualOrderBlock, newTime]);
+  }, [orderLog, currentBlock, lastVirtualOrderBlock, newTime]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -163,10 +163,10 @@ const LongTermOrderSingleCard = ({ it }) => {
 
   return (
     <>
-      <div className={styles.container} key={it.transactionHash}>
+      <div className={styles.container} key={orderLog.transactionHash}>
         <div className={styles.topSection}>
-          <p className={styles.orderId} key={it?.orderId?.toNumber()}>
-            {it?.orderId?.toNumber()}
+          <p className={styles.orderId} key={orderLog?.orderId?.toNumber()}>
+            {orderLog?.orderId?.toNumber()}
           </p>
 
           <HiExternalLink
@@ -174,7 +174,7 @@ const LongTermOrderSingleCard = ({ it }) => {
             onClick={() =>
               window.open(
                 `${getBlockExplorerTransactionUrl(selectedNetwork)}${
-                  it.transactionHash
+                  orderLog.transactionHash
                 }`,
                 "_blank"
               )
@@ -250,28 +250,18 @@ const LongTermOrderSingleCard = ({ it }) => {
             </div>
           </div>
 
-          <div
-            className={
-              bigToFloat(soldToken) !== 0
-                ? styles.extrasContainer
-                : styles.extrasContainerOne
-            }
-          >
-            <div className={styles.feesAndPrice}>
-              <div className={styles.fees}>{poolConfig?.fees} fees</div>
-              {bigToFloat(soldToken) !== 0 && (
-                <div className={styles.averagePrice}>
-                  {averagePrice.toFixed(4)} Average Price
-                </div>
-              )}
-            </div>
-            <div className={styles.times}>
-              <div className={styles.fees}>Initiated On: {startTime}</div>
-              <div className={styles.fees}>Completed On: {completionTime}</div>
-            </div>
+          <div className={styles.extrasContainer}>
+            <div className={styles.fees}>{poolConfig?.fees} fees</div>
+            {bigToFloat(soldToken) !== 0 && (
+              <div className={styles.averagePrice}>
+                {averagePrice.toFixed(4)} Average Price
+              </div>
+            )}
           </div>
 
-          {it.withdrawals.length > 0 && <LongTermSwapCardDropdown item={it} />}
+          {orderLog.withdrawals.length > 0 && (
+            <LongTermSwapCardDropdown item={orderLog} />
+          )}
 
           <div className={styles.buttonContainer}>
             <button
@@ -288,7 +278,10 @@ const LongTermOrderSingleCard = ({ it }) => {
                 disableActionBtn
               }
               onClick={() => {
-                handleCancel(it?.orderId?.toNumber(), it?.transactionHash);
+                handleCancel(
+                  orderLog?.orderId?.toNumber(),
+                  orderLog?.transactionHash
+                );
               }}
             >
               {orderStatus?.status === "Completed"
@@ -303,8 +296,8 @@ const LongTermOrderSingleCard = ({ it }) => {
                   className={classNames(styles.button, styles.withdrawButton)}
                   onClick={() => {
                     handleWithDraw(
-                      it?.orderId?.toNumber(),
-                      it?.transactionHash
+                      orderLog?.orderId?.toNumber(),
+                      orderLog?.transactionHash
                     );
                   }}
                   disabled={disableActionBtn}

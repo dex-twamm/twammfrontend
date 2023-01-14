@@ -6,7 +6,6 @@ import LongSwapPage from "./pages/LongSwapPage";
 import ShortSwap from "./pages/ShortSwap";
 import { LongSwapContext, ShortSwapContext, UIContext } from "./providers";
 import { bigToStr } from "./utils";
-import { getPoolBalance } from "./utils/addLiquidity";
 import { connectWallet } from "./utils/connetWallet";
 import { getLPTokensBalance, getTokensBalance } from "./utils/getAmount";
 import { getAllowance } from "./utils/getApproval";
@@ -114,6 +113,7 @@ function App() {
         ).then((res) => {
           setLastVirtualOrderBlock(res);
         });
+
         await getEthLogs(
           web3provider?.getSigner(),
           walletAddress,
