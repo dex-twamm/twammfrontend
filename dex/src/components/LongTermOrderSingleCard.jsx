@@ -4,15 +4,15 @@ import styles from "../css/LongTermOrderCard.module.css";
 import { UIContext } from "../providers/context/UIProvider";
 import { bigToFloat, bigToStr } from "../utils";
 import classNames from "classnames";
-import { POOLS } from "../utils/pool";
-
 import LongTermSwapCardDropdown from "./LongTermSwapCardDropdown";
 import { _withdrawLTO } from "../utils/_withdrawLto";
 import { _cancelLTO } from "../utils/_cancelLto";
 import { LongSwapContext, ShortSwapContext } from "../providers";
 import { ethers } from "ethers";
+import { getPoolConfig } from "../utils/poolUtils";
+import { getBlockExplorerTransactionUrl } from "../utils/networkUtils";
 
-const LongTermOrderSingleCard = ({ it }) => {
+const LongTermOrderSingleCard = ({ orderLog }) => {
   const {
     currentBlock,
     isWalletConnected,
@@ -34,47 +34,47 @@ const LongTermOrderSingleCard = ({ it }) => {
     setOrderLogsDecoded,
     setMessage,
   } = useContext(LongSwapContext);
-  const { selectedNetwork, setSelectedNetwork, nId } = useContext(UIContext);
+  const { selectedNetwork, setSelectedNetwork } = useContext(UIContext);
 
   const [orderStatus, setOrderStatus] = useState();
   const [newTime, setNewTime] = useState(
-    (it.expirationBlock - currentBlock.number) * 12
+    (orderLog.expirationBlock - currentBlock.number) * 12
   );
 
-  const poolConfig = Object.values(
-    POOLS[selectedNetwork?.network ?? "Goerli"]
-  )[0];
-  const tokenIn = poolConfig.tokens[it.sellTokenIndex];
-  const tokenOut = poolConfig.tokens[it.buyTokenIndex];
+  const poolConfig = getPoolConfig(selectedNetwork);
+
+  const tokenIn = poolConfig.tokens[orderLog.sellTokenIndex];
+  const tokenOut = poolConfig.tokens[orderLog.buyTokenIndex];
 
   const remainingTimeRef = useRef();
+
   let convertedAmount = ethers.constants.Zero;
-  if (it.state === "completed" || it.state === "cancelled") {
+  if (orderLog.state === "completed" || orderLog.state === "cancelled") {
     // Order Completed and Deleted
-    convertedAmount = it.withdrawals.reduce((total, withdrawal) => {
+    convertedAmount = orderLog.withdrawals.reduce((total, withdrawal) => {
       return total.add(withdrawal.proceeds);
     }, ethers.constants.Zero);
   } else {
     // Order Still In Progress
-    let withdrawals = it.withdrawals.reduce((total, withdrawal) => {
+    let withdrawals = orderLog.withdrawals.reduce((total, withdrawal) => {
       return total.add(withdrawal.proceeds);
     }, ethers.constants.Zero);
 
-    convertedAmount = it.convertedValue.add(withdrawals);
+    convertedAmount = orderLog.convertedValue.add(withdrawals);
   }
 
-  const stBlock = it.startBlock;
-  const expBlock = it.expirationBlock;
-  const amountOf = expBlock?.sub(stBlock)?.mul(it?.salesRate);
+  const stBlock = orderLog.startBlock;
+  const expBlock = orderLog.expirationBlock;
+  const amountOf = expBlock?.sub(stBlock)?.mul(orderLog?.salesRate);
 
   let soldToken;
-  if (it.state === "cancelled") {
-    soldToken = amountOf?.sub(it?.unsoldAmount);
+  if (orderLog.state === "cancelled") {
+    soldToken = amountOf?.sub(orderLog?.unsoldAmount);
   } else {
     soldToken =
       lastVirtualOrderBlock > expBlock
         ? amountOf
-        : lastVirtualOrderBlock?.sub(stBlock)?.mul(it.salesRate);
+        : lastVirtualOrderBlock?.sub(stBlock)?.mul(orderLog.salesRate);
   }
 
   const averagePrice =
@@ -98,9 +98,8 @@ const LongTermOrderSingleCard = ({ it }) => {
       setOrderLogsDecoded,
       setMessage,
       setTransactionHash,
-      selectedNetwork?.network,
-      setSelectedNetwork,
-      nId
+      selectedNetwork,
+      setSelectedNetwork
     );
   };
 
@@ -121,35 +120,34 @@ const LongTermOrderSingleCard = ({ it }) => {
       setOrderLogsDecoded,
       setMessage,
       setTransactionHash,
-      selectedNetwork?.network,
-      setSelectedNetwork,
-      nId
+      selectedNetwork,
+      setSelectedNetwork
     );
   };
 
   useEffect(() => {
-    if (it?.state === "completed") {
+    if (orderLog?.state === "completed") {
       setOrderStatus({ status: "Completed", progress: 100 });
-    } else if (it?.state === "cancelled") {
+    } else if (orderLog?.state === "cancelled") {
       setOrderStatus({ status: "Cancelled", progress: 100 });
-    } else if (lastVirtualOrderBlock >= it.expirationBlock) {
+    } else if (lastVirtualOrderBlock >= orderLog.expirationBlock) {
       setOrderStatus({ status: "Execution Completed", progress: 100 });
     } else {
-      if (it.expirationBlock > currentBlock.number) {
+      if (orderLog.expirationBlock > currentBlock.number) {
         let date = new Date(0);
         date.setSeconds(newTime); // specify value for SECONDS here
         const timeString = date.toISOString().substring(11, 16);
         setOrderStatus({
           status: `Time Remaining: ${timeString}`,
           progress:
-            ((lastVirtualOrderBlock - it?.startBlock) * 100) /
-            (it?.expirationBlock - it?.startBlock),
+            ((lastVirtualOrderBlock - orderLog?.startBlock) * 100) /
+            (orderLog?.expirationBlock - orderLog?.startBlock),
         });
       } else {
         setOrderStatus({ status: "Execution Completed", progress: 100 });
       }
     }
-  }, [it, currentBlock, lastVirtualOrderBlock, newTime]);
+  }, [orderLog, currentBlock, lastVirtualOrderBlock, newTime]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -160,19 +158,24 @@ const LongTermOrderSingleCard = ({ it }) => {
     return () => clearInterval(timer);
   }, [newTime]);
 
+  const startTime = new Date(stBlock * 1000).toLocaleString();
+  const completionTime = new Date(expBlock * 1000).toLocaleString();
+
   return (
     <>
-      <div className={styles.container} key={it.transactionHash}>
+      <div className={styles.container} key={orderLog.transactionHash}>
         <div className={styles.topSection}>
-          <p className={styles.orderId} key={it?.orderId?.toNumber()}>
-            {it?.orderId?.toNumber()}
+          <p className={styles.orderId} key={orderLog?.orderId?.toNumber()}>
+            {orderLog?.orderId?.toNumber()}
           </p>
 
           <HiExternalLink
             className={styles.iconExternalLink}
             onClick={() =>
               window.open(
-                `${poolConfig?.transactionUrl}${it.transactionHash}`,
+                `${getBlockExplorerTransactionUrl(selectedNetwork)}${
+                  orderLog.transactionHash
+                }`,
                 "_blank"
               )
             }
@@ -249,15 +252,15 @@ const LongTermOrderSingleCard = ({ it }) => {
 
           <div className={styles.extrasContainer}>
             <div className={styles.fees}>{poolConfig?.fees} fees</div>
-            {soldToken != 0 && (
+            {bigToFloat(soldToken) !== 0 && (
               <div className={styles.averagePrice}>
                 {averagePrice.toFixed(4)} Average Price
               </div>
             )}
           </div>
 
-          {it.hasPartialWithdrawals && (
-            <LongTermSwapCardDropdown withdrawals={it.withdrawals} />
+          {orderLog.withdrawals.length > 0 && (
+            <LongTermSwapCardDropdown item={orderLog} />
           )}
 
           <div className={styles.buttonContainer}>
@@ -275,7 +278,10 @@ const LongTermOrderSingleCard = ({ it }) => {
                 disableActionBtn
               }
               onClick={() => {
-                handleCancel(it?.orderId?.toNumber(), it?.transactionHash);
+                handleCancel(
+                  orderLog?.orderId?.toNumber(),
+                  orderLog?.transactionHash
+                );
               }}
             >
               {orderStatus?.status === "Completed"
@@ -290,8 +296,8 @@ const LongTermOrderSingleCard = ({ it }) => {
                   className={classNames(styles.button, styles.withdrawButton)}
                   onClick={() => {
                     handleWithDraw(
-                      it?.orderId?.toNumber(),
-                      it?.transactionHash
+                      orderLog?.orderId?.toNumber(),
+                      orderLog?.transactionHash
                     );
                   }}
                   disabled={disableActionBtn}

@@ -1,0 +1,93 @@
+.mainBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  border-radius: 24px;
+  min-height: 100px;
+}
+
+.contentBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: space-between;
+  width: 95%;
+  border: 2px solid #f1f1f1;
+  border-radius: 24px;
+  gap: 5px;
+  margin: 16px 0;
+}
+
+.insideContentBox {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  color: #333333;
+  font-family: Open Sans;
+  padding: 4px;
+}
+
+.withdraw {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  color: #333333;
+  font-size: 18px;
+  font-family: Open Sans;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.arrowIconStyle {
+  font-size: 24px;
+  color: #333333;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.chevronStyle {
+  color: #333333;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.withdrawlBox {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  padding-left: 0px;
+  margin-left: 0px;
+}
+
+.infoBox {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  color: #333333;
+  width: 100%;
+}
+
+.infoSpan {
+  display: flex;
+  font-family: Open Sans;
+  align-items: center;
+  color: #333333;
+  width: 100%;
+  margin-left: 10px;
+}
+
+.launchIconStyle {
+  box-sizing: border-box;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+@media (max-width: 520px) {
+  .infoSpan {
+    font-size: 14px;
+  }
+}

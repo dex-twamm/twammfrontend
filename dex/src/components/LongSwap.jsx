@@ -21,11 +21,12 @@ import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
 import Input from "./Input";
 import { FiChevronDown } from "react-icons/fi";
 
-import {getAllowance, getApproval } from "../utils/getApproval";
+import { approveMaxAllowance, getAllowance } from "../utils/getApproval";
+
 import { UIContext } from "../providers/context/UIProvider";
 
 const LongSwap = (props) => {
-  const { connectWallet, buttonText, swapType, longSwapVerifyLoading } = props;
+  const { handleLongSwapAction, longSwapVerifyLoading } = props;
 
   const [display, setDisplay] = useState(false);
   const [value, setValue] = useState(0.0);
@@ -41,7 +42,6 @@ const LongSwap = (props) => {
     setExpectedSwapOut,
     error,
     currentBlock,
-    srcAddress,
     setTransactionHash,
     isWalletConnected,
     web3provider,
@@ -61,6 +61,7 @@ const LongSwap = (props) => {
     setAllowance,
     setLongSwapFormErrors,
     longSwapFormErrors,
+    setMessage,
   } = useContext(LongSwapContext);
 
   const { selectedNetwork } = useContext(UIContext);
@@ -68,7 +69,6 @@ const LongSwap = (props) => {
   const handleDisplay = (event) => {
     setSelectToken(event.currentTarget.id);
     setDisplay(!display);
-    // setSpotPrice(0);
     setExpectedSwapOut(0.0);
   };
 
@@ -93,23 +93,24 @@ const LongSwap = (props) => {
   };
 
   const handleClick = () => {
-    buttonText === "Swap" && setLongSwapFormErrors(validate(swapAmount));
-    connectWallet();
+    isWalletConnected && setLongSwapFormErrors(validate(swapAmount));
+    handleLongSwapAction();
   };
 
   const handleApproveButton = async () => {
     try {
-      const approval = await getApproval(
+      const approval = await approveMaxAllowance(
         web3provider,
-        srcAddress,
-        selectedNetwork?.network
+        tokenA?.address,
+        selectedNetwork
       );
       setTransactionHash(approval.hash);
+
       await getAllowance(
         web3provider?.getSigner(),
         account,
-        srcAddress,
-        selectedNetwork?.network
+        tokenA?.address,
+        selectedNetwork
       ).then((res) => {
         setAllowance(bigToStr(res));
       });
@@ -136,14 +137,14 @@ const LongSwap = (props) => {
         valueLabel(
           calculateNumBlockIntervals(newValue),
           currentBlock,
-          selectedNetwork?.network
+          selectedNetwork
         ).targetDate
       );
       setExecutionTIme(
         valueLabel(
           calculateNumBlockIntervals(newValue),
           currentBlock,
-          selectedNetwork?.network
+          selectedNetwork
         ).executionTime
       );
     }
@@ -167,32 +168,20 @@ const LongSwap = (props) => {
     };
   }, [setLongSwapFormErrors]);
 
-  console.log("Form errororororor", longSwapFormErrors);
+  useEffect(() => {
+    return () => {
+      setTargetDate("");
+      setExecutionTIme("");
+      setTransactionHash(undefined);
+      setMessage();
+    };
+  }, []);
 
   return (
     <>
       <form onSubmit={handleSubmit} className={styles.form}>
-        <div
-          style={{
-            width: "96%",
-            height: "2px",
-            background: "#f0f0f0",
-            display: "flex",
-            justifyContent: "center",
-            margin: "auto",
-            marginBottom: "0px",
-          }}
-        />
-
-        <Box
-          padding={"6px 8px"}
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "5px",
-            boxSizing: "border-box",
-          }}
-        >
+        <div className={lsStyles.main} />
+        <Box className={lsStyles.mainBox}>
           <Box
             className={styles.mainContent}
             style={{ marginTop: "0px", paddingTop: "0px" }}
@@ -207,7 +196,6 @@ const LongSwap = (props) => {
               <div className={styles.pairContainer}>
                 <div
                   onClick={() => {
-                    // setShowModal(true);
                     setDisplay(true);
                     setSelectToken("1");
                   }}
@@ -270,7 +258,6 @@ const LongSwap = (props) => {
             setDisplay={setDisplay}
             setTokenA={setTokenA}
             setTokenB={setTokenB}
-            swapType={swapType}
           />
 
           {longSwapFormErrors?.balError && (
@@ -282,64 +269,20 @@ const LongSwap = (props) => {
           )}
 
           <div className={lsStyles.rangeSelect}>
-            <Box
-              sx={{
-                margin: "0 auto",
-              }}
-            >
+            <Box className={lsStyles.rangeSelectBox}>
               <Typography
                 component={"span"}
                 fontWeight={600}
                 id="non-linear-slider"
                 gutterBottom
               >
-                <Box
-                  sx={{
-                    float: "right",
-                    display: "flex",
-                    fontSize: { xs: "14px", sm: "15px", md: "16px" },
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    fontFamily: "Open Sans",
-                  }}
-                >
+                <Box className={lsStyles.dateBox}>
                   {`${targetDate} `.substring(0, 17)}
                 </Box>
 
-                <Box
-                  sx={{
-                    fontSize: { xs: "14px", sm: "15px", md: "16px" },
-                    paddingLeft: "10px",
-                    fontFamily: "Open Sans",
-                  }}
-                >
-                  {executionTime}
-                </Box>
-                <Box
-                  sx={{
-                    float: "left",
-                    display: "flex",
-                    fontFamily: "Open Sans",
-                    fontWeight: "600",
-                    fontSize: { xs: "14px", sm: "15px", md: "16px" },
-                    lineHeight: "22px",
-                    color: "#000000",
-                  }}
-                >
-                  Execution Time
-                </Box>
-                <Box
-                  sx={{
-                    float: "right",
-                    display: "flex",
-                    fontFamily: "Open Sans",
-                    fontWeight: "600",
-                    fontSize: { xs: "14px", sm: "15px", md: "16px" },
-                    lineHeight: "22px",
-                    color: "#000000",
-                    paddingRight: "2px",
-                  }}
-                >
+                <Box className={lsStyles.timeBox}>{executionTime}</Box>
+                <Box className={lsStyles.executionTime}>Execution Time</Box>
+                <Box className={lsStyles.completionDate}>
                   Order Completion Date
                 </Box>
               </Typography>
@@ -372,12 +315,11 @@ const LongSwap = (props) => {
           tokenA.tokenIsSet &&
           tokenB.tokenIsSet ? (
             <button
-              className={classNames(styles.btn, styles.btnConnect)}
-              style={{
-                background: "#554994",
-                borderRadius: "17px",
-                color: "white",
-              }}
+              className={classNames(
+                styles.btn,
+                styles.btnConnect,
+                styles.btnBtn
+              )}
               onClick={() => {
                 handleApproveButton();
               }}
@@ -392,12 +334,11 @@ const LongSwap = (props) => {
           )}
           {isWalletConnected && allowance ? (
             <button
-              className={classNames(styles.btn, styles.btnConnect)}
-              style={{
-                background: "#554994",
-                borderRadius: "17px",
-                color: "white",
-              }}
+              className={classNames(
+                styles.btn,
+                styles.btnConnect,
+                styles.btnBtn
+              )}
               onClick={handleClick}
               disabled={
                 !tokenA.tokenIsSet ||
@@ -418,7 +359,7 @@ const LongSwap = (props) => {
               ) : longSwapVerifyLoading ? (
                 <CircularProgress sx={{ color: "white" }} />
               ) : (
-                buttonText
+                "Swap"
               )}
             </button>
           ) : !isWalletConnected ? (

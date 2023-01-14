@@ -1,0 +1,181 @@
+.rootBox {
+  width: fit-content;
+  padding: 8px;
+  border-radius: 20px;
+  margin: auto;
+  font-family: Open Sans;
+}
+
+.containerBox {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.styledTypography {
+  font-size: 22px;
+  color: #333333;
+  font-weight: 600;
+}
+
+.headingBox {
+  display: flex;
+  padding: 24px 0;
+}
+
+.poolTypography {
+  font-size: 22px;
+  font-family: Open Sans;
+  color: #333333;
+  font-weight: 600;
+}
+
+.contentBox {
+  display: flex;
+  align-items: center;
+}
+
+.insideContentBox {
+  background-color: white;
+  width: 100%;
+  padding: 8px;
+  border-radius: 20px;
+  background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0) 100%
+    ),
+    rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(2px);
+
+  border: 1px solid white;
+}
+
+.styledBoxOne {
+  margin-top: 5px;
+}
+
+.styledBoxTwo {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 4px;
+  min-width: 100%;
+  height: auto;
+}
+
+.styledBoxThree {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  height: 2%;
+}
+
+.logoAndName {
+  display: flex;
+  align-items: center;
+}
+
+.styledBoxFour {
+  display: flex;
+  align-items: center;
+  margin: 14px;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.styledBoxFive {
+  display: flex;
+  align-items: center;
+}
+
+.styledAvatarOne {
+  height: 40px;
+  width: 40px;
+}
+
+.styledAvatarTwo {
+  left: -10px;
+  height: 40px;
+  width: 40px;
+}
+
+.tokensTypography {
+  margin-right: 4px;
+  font-weight: 500;
+  color: #333333;
+  font-family: Open Sans;
+}
+
+.feeTypography {
+  padding: 8px 24px;
+  border: 1px solid #fdeaf1;
+  color: red;
+  font-family: Open Sans;
+  font-weight: 500;
+  background: #ee4d3745;
+  border-radius: 17px;
+  justify-content: flex-end;
+}
+
+.balanceInfoBox {
+  display: flex;
+  align-items: center;
+  margin: 8px;
+  width: fit-content;
+  padding-bottom: 20px;
+}
+
+.balanceInfoTypography {
+  font-weight: 500;
+  display: flex;
+  color: grey;
+  font-family: Open Sans;
+}
+
+.balanceTypography {
+  font-weight: 400;
+  display: inline;
+  color: #333333;
+  font-family: Open Sans;
+  margin-left: 5px;
+}
+
+.buttonsBox {
+  margin: 8px;
+  display: flex;
+  flex-direction: column-reverse;
+  row-gap: 10px;
+  align-items: center;
+}
+
+.removeLiquidityButton {
+  font-family: Open Sans;
+  padding: 12px 100px;
+  outline: none;
+  color: white;
+  font-weight: 400;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #ff6969;
+  border-radius: 17px;
+  width: 100%;
+}
+
+.addLiquidityButton {
+  font-family: Open Sans;
+  padding: 12px 100px;
+  outline: none;
+  color: white;
+  font-weight: 400;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #554994;
+  border-radius: 17px;
+  width: 100%;
+}

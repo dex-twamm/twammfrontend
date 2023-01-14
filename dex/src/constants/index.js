@@ -3433,6 +3433,8 @@ export const LONGTERM_ABI = [
   },
 ];
 
+export const GAS_OVERAGE_FACTOR = 1.05;
+
 export const POPUP_MESSAGE = {
   networkSwitchFailed: "Failed to switch network!",
 
@@ -3452,11 +3454,20 @@ export const POPUP_MESSAGE = {
   ltoWithdrawn: "Long term order withdrawn!",
   ltoWithdrawFailed: "Long term order withdraw failed!",
 
-  insufficientBalance: "Balance insufficient for transation!",
+  insufficientBalance: "Balance insufficient for transaction!",
 
   "BAL#304": "Try Giving Lesser Amount",
   "BAL#510": "Invalid Amount!",
   "BAL#347": "Try Giving Lesser Amount",
   "BAL#346": "Try Giving Smaller Duration or Higher Amount",
   unknown: "Unknown error!",
+};
+
+export const BalancerErrors = {
+  "BAL#304": "Try Giving Lesser Amount",
+  "BAL#510": "Invalid Amount!",
+  "BAL#347": "Try Giving Lesser Amount",
+  "BAL#346": "Try Giving Smaller Duration or Higher Amount",
+  unknown: "Unknown error!",
+  underflow: "Underflow!",
 };

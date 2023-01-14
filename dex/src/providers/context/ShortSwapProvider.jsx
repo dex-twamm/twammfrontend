@@ -2,10 +2,6 @@ import { createContext, useState } from "react";
 
 export const ShortSwapProvider = ({ children }) => {
   const [swapAmount, setSwapAmount] = useState(0);
-  const [srcAddress, setSrcAddress] = useState("");
-  const [destAddress, setDestAddress] = useState("");
-  const [equivalentAmount, setEquivalentAmount] = useState("");
-  const [networkId, setNetworkId] = useState();
   const [error, setError] = useState();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState();
@@ -13,10 +9,8 @@ export const ShortSwapProvider = ({ children }) => {
   const [transactionHash, setTransactionHash] = useState();
   const [selectToken, setSelectToken] = useState("");
   const [ethBalance, setEthBalance] = useState("");
-  const [poolCash, setPoolCash] = useState("");
   const [account, setAccount] = useState("");
   const [isWalletConnected, setWalletConnected] = useState(false);
-  const [orderId, setOrderId] = useState();
   const [expectedSwapOut, setExpectedSwapOut] = useState(0);
   const [tolerance, setTolerance] = useState(0.5);
   const [deadline, setDeadline] = useState(30);
@@ -34,14 +28,6 @@ export const ShortSwapProvider = ({ children }) => {
       value={{
         swapAmount,
         setSwapAmount,
-        equivalentAmount,
-        setEquivalentAmount,
-        srcAddress,
-        setSrcAddress,
-        destAddress,
-        setDestAddress,
-        networkId,
-        setNetworkId,
         error,
         setError,
         setLoading,
@@ -56,14 +42,10 @@ export const ShortSwapProvider = ({ children }) => {
         setSelectToken,
         ethBalance,
         setEthBalance,
-        poolCash,
-        setPoolCash,
         account,
         setAccount,
         isWalletConnected,
         setWalletConnected,
-        orderId,
-        setOrderId,
         expectedSwapOut,
         setExpectedSwapOut,
         tolerance,

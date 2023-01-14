@@ -23,15 +23,12 @@ const Input = (props) => {
     tokenBalances,
     selectToken,
     setEthBalance,
-    setSrcAddress,
-    setDestAddress,
     isWalletConnected,
+    setSwapAmount,
   } = useContext(ShortSwapContext);
   const { tokenA, tokenB } = useContext(LongSwapContext);
 
   const { setSelectedNetwork } = useContext(UIContext);
-
-  console.log("swap token", tokenA, tokenB);
 
   useEffect(() => {
     const balanceA =
@@ -49,8 +46,10 @@ const Input = (props) => {
     });
     // TODO: Rename this to TokenInBalance.
     setEthBalance(balanceA?.[0]?.[tokenA?.address]);
-    setSrcAddress(tokenA?.address);
-    setDestAddress(tokenB?.address);
+
+    return () => {
+      setSwapAmount();
+    };
   }, [setTokenA, setTokenB, tokenBalances, setSelectedNetwork]);
 
   return (
@@ -102,14 +101,26 @@ const Input = (props) => {
           </button>
         </div>
         <div className={styles.balance}>
-          Balance :{" "}
+          Balance:
           {!isWalletConnected ? (
             "N/A"
           ) : tokenBalances ? (
             id === 1 ? (
-              parseFloat(tokenA?.balance)?.toFixed(2)
+              <p className={styles.balanceText}>
+                {parseFloat(tokenA?.balance)?.toFixed(2)}{" "}
+                <span
+                  className={styles.maxInput}
+                  onClick={() => {
+                    setSwapAmount(parseFloat(tokenA?.balance)?.toFixed(2));
+                  }}
+                >
+                  Max
+                </span>
+              </p>
             ) : (
-              parseFloat(tokenB?.balance)?.toFixed(2)
+              <p className={styles.balanceText}>
+                {parseFloat(tokenB?.balance)?.toFixed(2)}
+              </p>
             )
           ) : (
             <Skeleton width={60} />

@@ -1,7 +1,7 @@
 import { Contract } from "ethers";
 import { MAX_UINT256 } from ".";
 import { ERC20_TOKEN_CONTRACT_ABI } from "../constants";
-import { POOLS } from "./pool";
+import { getVaultContractAddress } from "./networkUtils";
 
 export const getAllowance = async (
   signer,
@@ -9,34 +9,31 @@ export const getAllowance = async (
   tokenAddress,
   currentNetwork
 ) => {
-  console.log("Allowance Input provider", signer);
-  console.log("Allowance Input walletAddress", walletAddress);
-  console.log("Allowance Input tokenAddress", tokenAddress);
   const ERC20Contract = new Contract(
     tokenAddress,
     ERC20_TOKEN_CONTRACT_ABI,
     signer
   );
 
-  const allowance = await ERC20Contract.allowance(
+  return await ERC20Contract.allowance(
     walletAddress,
-    Object.values(POOLS?.[currentNetwork])?.[0].VAULT_CONTRACT_ADDRESS
+    getVaultContractAddress(currentNetwork)
   );
-  console.log("Allowance---->", allowance);
-  return allowance;
 };
 
-export const getApproval = async (provider, tokenAddress, currentNetwork) => {
+export const approveMaxAllowance = async (
+  provider,
+  tokenAddress,
+  currentNetwork
+) => {
   const ERC20Contract = new Contract(
     tokenAddress,
     ERC20_TOKEN_CONTRACT_ABI,
     provider.getSigner()
   );
 
-  const allowance = await ERC20Contract.approve(
-    Object.values(POOLS?.[currentNetwork])?.[0].VAULT_CONTRACT_ADDRESS,
+  return await ERC20Contract.approve(
+    getVaultContractAddress(currentNetwork),
     MAX_UINT256
   );
-  console.log("Allowanc-->", allowance);
-  return allowance;
 };

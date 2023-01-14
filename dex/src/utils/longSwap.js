@@ -1,32 +1,24 @@
 import { BigNumber, Contract, ethers } from "ethers";
+import { LONGTERM_ABI } from "../constants";
+import { MAX_UINT256 } from ".";
 import {
-  LONGTERM_ABI,
-  VAULT_CONTRACT_ABI,
-} from "../constants";
-import {
-  MAX_UINT256,
-} from ".";
-import { POOLS } from "./pool";
+  getPoolId,
+  getPoolContractAddress,
+  getPoolLtoContractAddress,
+  getPoolTokenAddresses,
+} from "./poolUtils";
+import { getExchangeContract } from "./getContracts";
+import { getGasLimit } from "./getGasLimit";
 
-export async function placeLongTermOrder(
+const getLongSwapEncodedRequest = (
   tokenInIndex,
   tokenOutIndex,
   amountIn,
-  numberOfBlockIntervals,
-  signer,
-  walletAddress,
-  setTransactionHash,
-  currentNetwork
-) {
-  let txHash;
-
-  const exchangeContract = new Contract(
-    Object.values(POOLS[currentNetwork])[0].VAULT_CONTRACT_ADDRESS,
-    VAULT_CONTRACT_ABI,
-    signer
-  );
+  numberOfBlockIntervals
+) => {
   const abiCoder = ethers.utils.defaultAbiCoder;
-  const encodedRequest = abiCoder.encode(
+
+  return abiCoder.encode(
     ["uint256", "uint256", "uint256", "uint256", "uint256"],
     [
       4,
@@ -36,73 +28,93 @@ export async function placeLongTermOrder(
       BigNumber.from(numberOfBlockIntervals),
     ]
   );
+};
 
-  const gasEstimate = await exchangeContract.estimateGas.joinPool(
-    Object.keys(POOLS[currentNetwork])[0],
+export const verifyLongSwapTxn = async (
+  tokenInIndex,
+  tokenOutIndex,
+  amountIn,
+  numberOfBlockIntervals,
+  signer,
+  walletAddress,
+  currentNetwork
+) => {
+  const verifyLongSwapTxnResult = await placeLongTermOrder(
+    tokenInIndex,
+    tokenOutIndex,
+    amountIn,
+    numberOfBlockIntervals,
+    signer,
     walletAddress,
-    walletAddress,
-    {
-      assets: [
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
-      ],
-      maxAmountsIn: [MAX_UINT256, MAX_UINT256],
-      fromInternalBalance: false,
-      userData: encodedRequest,
-    }
+    currentNetwork,
+    true
+  );
+  return verifyLongSwapTxnResult;
+};
+
+export async function placeLongTermOrder(
+  tokenInIndex,
+  tokenOutIndex,
+  amountIn,
+  numberOfBlockIntervals,
+  signer,
+  walletAddress,
+  currentNetwork,
+  isVerifyOnly
+) {
+  const exchangeContract = getExchangeContract(currentNetwork, signer);
+
+  const encodedRequest = getLongSwapEncodedRequest(
+    tokenInIndex,
+    tokenOutIndex,
+    amountIn,
+    numberOfBlockIntervals
   );
 
-  const placeLtoTx = await exchangeContract.joinPool(
-    Object.keys(POOLS[currentNetwork])[0],
+  const swapData = [
+    getPoolId(currentNetwork),
     walletAddress,
     walletAddress,
     {
-      assets: [
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_ONE_ADDRESS,
-        Object.values(POOLS?.[currentNetwork])?.[0]?.TOKEN_TWO_ADDRESS,
-      ],
+      assets: getPoolTokenAddresses(currentNetwork),
       maxAmountsIn: [MAX_UINT256, MAX_UINT256],
       fromInternalBalance: false,
       userData: encodedRequest,
     },
-    {
-      gasLimit: Math.floor(gasEstimate.toNumber() * 1.2),
-    }
-  );
-  console.log("===LongTerm Placed====", placeLtoTx);
-  txHash = placeLtoTx.hash;
-  setTransactionHash(placeLtoTx.hash);
+  ];
 
-  console.log("====Swap Results After Placed=====", await placeLtoTx.wait());
-  console.log(txHash);
-  return txHash;
+  let placeLtoTx;
+  if (isVerifyOnly) {
+    placeLtoTx = await exchangeContract.callStatic.joinPool(...swapData, {
+      gasLimit: getGasLimit(exchangeContract, swapData, "joinPool"),
+    });
+  } else {
+    placeLtoTx = await exchangeContract.joinPool(...swapData, {
+      gasLimit: getGasLimit(exchangeContract, swapData, "joinPool"),
+    });
+  }
+  return placeLtoTx;
 }
 
 export async function getLongTermOrder(signer, orderId, currentNetwork) {
   const contract = new Contract(
-    Object.values(POOLS?.[currentNetwork])?.[0].address,
+    getPoolContractAddress(currentNetwork),
     LONGTERM_ABI,
     signer
   );
   const getOrderDetails = await contract.getLongTermOrder(orderId);
   const orderDetails = await getOrderDetails;
-  console.log("==== ORDER DETAILS=====", orderDetails);
   return orderDetails;
 }
 
 export async function getLastVirtualOrderBlock(signer, currentNetwork) {
   const contract = new Contract(
-    Object.values(POOLS?.[currentNetwork])?.[0].LTOContract,
+    getPoolLtoContractAddress(currentNetwork),
     LONGTERM_ABI,
     signer
   );
 
   const longterm = await contract.longTermOrders();
   const lastVirtualOrderBlock = longterm.lastVirtualOrderBlock;
-
-  console.log(
-    "====GET Long Term DETAILS=====",
-    longterm.lastVirtualOrderBlock.toNumber()
-  );
   return lastVirtualOrderBlock;
 }

@@ -110,6 +110,22 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  width: 100%;
+}
+
+.extrasContainerOne {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 5px;
+}
+
+.feesAndPrice,
+.times {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: fit-content;
 }
 
 .fees,
@@ -205,6 +221,12 @@
   /* opacity: 0.5; */
 }
 
+.ptext {
+  font-family: Open Sans;
+  margin-bottom: 0px;
+  font-size: "14px";
+  padding: 0 5px;
+}
 @media (max-width: 520px) {
   .tokenText {
     font-size: 14px;

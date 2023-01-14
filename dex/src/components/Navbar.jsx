@@ -1,36 +1,24 @@
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { POPUP_MESSAGE } from "../constants";
 import styles from "../css/Navbar.module.css";
 import { ShortSwapContext, UIContext } from "../providers";
-import { toHex } from "../utils";
+import { toHex, truncateAddress } from "../utils";
 import { connectWallet } from "../utils/connetWallet";
 import { DisconnectWalletOption } from "./DisconnectWalletOption";
 import NavOptionDropdwon from "./navbarDropdown/NavOptionDropdwon";
 import { NETWORKS } from "../utils/networks";
 
-const Navbar = (props) => {
-  const {
-    showDropdown,
-    setShowDropdown,
-    selectedNetwork,
-    setSelectedNetwork,
-    nId,
-  } = useContext(UIContext);
+const Navbar = () => {
+  const [showDisconnect, setShowDisconnect] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
 
-  const {
-    walletBalance,
-    walletAddress,
-    accountStatus,
-    disconnectWallet,
-    change,
-    showDisconnect,
-    setShowDisconnect,
-  } = props;
+  const { selectedNetwork, setSelectedNetwork } = useContext(UIContext);
+
   const {
     setError,
     isWalletConnected,
@@ -38,54 +26,12 @@ const Navbar = (props) => {
     setCurrentBlock,
     setBalance,
     setAccount,
+    account,
+    balance,
     setWalletConnected,
   } = useContext(ShortSwapContext);
 
-  let initialNetwork = {};
-
-  if(typeof nId === 'undefined' || nId === 'undefined') {
-    initialNetwork = NETWORKS[1];
-  } else {
-    initialNetwork = NETWORKS.find((id) => id.chainId === nId);
-  }
-
-  useEffect(() => {
-    if (
-      !localStorage.getItem("network_name") ||
-      localStorage.getItem("network_name") === "undefined"
-    ) {
-      localStorage.setItem("network_name", initialNetwork?.name);
-      localStorage.setItem("network_logo", initialNetwork?.logo);
-      localStorage.setItem("chainId", initialNetwork?.chainId);
-    } else if (localStorage.getItem("chainId") === nId) {
-      const network = NETWORKS.find((nw) => nw.chainId === nId);
-      localStorage.setItem("network_name", network?.name);
-      localStorage.setItem("network_logo", network?.logo);
-      localStorage.setItem("chainId", network?.chainId);
-    }
-  }, [initialNetwork]);
-
-  const network_name = localStorage.getItem("network_name");
-  const network_logo = localStorage.getItem("network_logo");
-  const network_id = localStorage.getItem("chainId");
-
-  useEffect(() => {
-    if (typeof network_name !== "undefined" && network_name !== "undefined") {
-      setSelectedNetwork({
-        network: network_name,
-        logo: network_logo,
-        chainId: network_id,
-      });
-    } else {
-      setSelectedNetwork({
-        network: initialNetwork?.[0]?.name,
-        logo: initialNetwork?.[0]?.logo,
-        chainId: initialNetwork?.[0]?.chainId,
-      });
-    }
-  }, [network_name]);
-
-  const handleSelect = async (networkName, logo, chainId) => {
+  const handleSelect = async (chainId) => {
     const id = chainId;
     if (isWalletConnected) {
       try {
@@ -93,15 +39,6 @@ const Navbar = (props) => {
           method: "wallet_switchEthereumChain",
           params: [{ chainId: toHex(id) }],
         });
-        setSelectedNetwork({
-          network: networkName,
-          logo: logo,
-          chainId: chainId,
-        });
-        localStorage.setItem("network_name", networkName);
-        localStorage.setItem("network_logo", logo);
-        localStorage.setItem("chainId", id);
-
         window.location.reload();
       } catch (err) {
         console.error(err);
@@ -116,9 +53,7 @@ const Navbar = (props) => {
         key={index}
         className={styles.networkName}
         value={network.chainId}
-        onClick={() =>
-          handleSelect(network.name, network.logo, network.chainId)
-        }
+        onClick={() => handleSelect(network.chainId)}
       >
         {network.name}
       </p>
@@ -126,7 +61,7 @@ const Navbar = (props) => {
   });
 
   const handleDisconnect = () => {
-    walletAddress && setShowDisconnect(true);
+    account && setShowDisconnect(true);
   };
 
   const walletConnect = async () => {
@@ -140,14 +75,18 @@ const Navbar = (props) => {
     );
   };
 
+  useEffect(() => {
+    document.body.onclick = () => {
+      setShowDropdown(false);
+    };
+  });
+
   return (
     <header className={styles.header} id="header">
       {showDisconnect && (
         <DisconnectWalletOption
-          setOpen={setShowDisconnect}
-          change={change}
-          disconnectWallet={disconnectWallet}
-          open={showDisconnect}
+          setShowDisconnect={setShowDisconnect}
+          showDisconnect={showDisconnect}
         />
       )}
       <div className={styles.row}>
@@ -160,20 +99,7 @@ const Navbar = (props) => {
               width="20px"
             />
           </Link>
-          <p
-            className={styles.longswap}
-            style={{
-              fontFamily: "Futura",
-              fontWeight: "700",
-              fontSize: "18px",
-              lineHeight: "24px",
-              letterSpacing: "0.4px",
-
-              color: "#554994",
-            }}
-          >
-            Longswap
-          </p>
+          <p className={styles.longSwap}>Longswap</p>
         </div>
         <div className={styles.tabContainerRight}>
           {isWalletConnected && (
@@ -200,18 +126,18 @@ const Navbar = (props) => {
           )}
 
           <div className={styles.walletBalance}>
-            {accountStatus ? (
+            {isWalletConnected ? (
               <>
                 <button
                   className={classNames(styles.btnWallet, styles.leftRadius)}
                 >
-                  {walletBalance}
+                  {balance}
                 </button>
                 <button
                   onClick={handleDisconnect}
                   className={classNames(styles.btnWallet, styles.rightRadius)}
                 >
-                  {walletAddress}
+                  {truncateAddress(account)}
                 </button>
               </>
             ) : (
@@ -223,7 +149,8 @@ const Navbar = (props) => {
               </button>
             )}
           </div>
-          <div
+          {/* Not used currently */}
+          {/* <div
             onClick={(e) => e.stopPropagation()}
             className={styles.menuOption}
           >
@@ -250,7 +177,7 @@ const Navbar = (props) => {
                 {<NavOptionDropdwon />}
               </span>
             )}
-          </div>
+          </div> */}
         </div>
       </div>
     </header>

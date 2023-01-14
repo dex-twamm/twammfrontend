@@ -3,6 +3,7 @@ import { Alert, Box, CircularProgress, Skeleton } from "@mui/material";
 import classNames from "classnames";
 import React, { useContext, useState } from "react";
 import styles from "../css/AddLiquidity.module.css";
+import lsStyles from "../css/LongSwap.module.css";
 
 import { LongSwapContext } from "../providers";
 import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
@@ -10,13 +11,15 @@ import Input from "./Input";
 
 import { BigNumber } from "ethers";
 import { bigToStr } from "../utils";
-import { getAllowance, getApproval } from "../utils/getApproval";
+import { approveMaxAllowance, getAllowance } from "../utils/getApproval";
+
 import { UIContext } from "../providers/context/UIProvider";
 
 const Swap = (props) => {
-  const { handleButtonClick, buttonText, swapType, spotPriceLoading } = props;
+  const { handleSwapAction, spotPriceLoading } = props;
 
   const [display, setDisplay] = useState(false);
+
   const [open, setOpen] = useState(false);
   const [disableAllowBtn, setDisableAllowBtn] = useState(true);
 
@@ -35,7 +38,6 @@ const Swap = (props) => {
     error,
     setSpotPrice,
     spotPrice,
-    srcAddress,
     setTransactionHash,
     isWalletConnected,
     setAllowTwammErrorMessage,
@@ -51,8 +53,14 @@ const Swap = (props) => {
     setSelectToken(event.currentTarget.id);
     setDisplay(!display);
     setSpotPrice(0);
-    setExpectedSwapOut(0.0);
   };
+
+  useEffect(() => {
+    return () => {
+      setExpectedSwapOut();
+      setSpotPrice();
+    };
+  }, []);
 
   useEffect(() => {
     if (tokenA?.symbol === tokenB?.symbol)
@@ -69,23 +77,24 @@ const Swap = (props) => {
   };
 
   const handleClick = () => {
-    buttonText === "Swap" && setFormErrors(validate(swapAmount));
-    handleButtonClick();
+    isWalletConnected && setFormErrors(validate(swapAmount));
+    handleSwapAction();
   };
 
   const handleApproveButton = async () => {
     try {
-      const approval = await getApproval(
+      const approval = await approveMaxAllowance(
         web3provider,
-        srcAddress,
-        selectedNetwork?.network
+        tokenA?.address,
+        selectedNetwork
       );
       setTransactionHash(approval.hash);
+
       await getAllowance(
         web3provider?.getSigner(),
         account,
-        srcAddress,
-        selectedNetwork?.network
+        tokenA?.address,
+        selectedNetwork
       ).then((res) => {
         setAllowance(bigToStr(res));
       });
@@ -120,43 +129,15 @@ const Swap = (props) => {
   useEffect(() => {
     return () => {
       setFormErrors({ balError: undefined });
+      setTransactionHash(undefined);
     };
-  }, [setFormErrors]);
-
-  // useEffect(() => {
-  //   return () => {
-  //     setTargetDate("");
-  //     setTransactionHash(undefined);
-  //     setIsPlacedLongTermOrder && setIsPlacedLongTermOrder();
-  //   };
-  // });
-
-  console.log("spotPrice", spotPrice);
+  }, [setFormErrors, setTransactionHash]);
 
   return (
     <>
       <form onSubmit={handleSubmit} className={styles.form}>
-        <div
-          style={{
-            width: "96%",
-            height: "2px",
-            background: "#f0f0f0",
-            display: "flex",
-            justifyContent: "center",
-            margin: "auto",
-            marginBottom: "0px",
-          }}
-        />
-
-        <Box
-          padding={"6px 8px"}
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "5px",
-            boxSizing: "border-box",
-          }}
-        >
+        <div className={lsStyles.main} />
+        <Box className={lsStyles.mainBox}>
           <Input
             id={1}
             input={swapAmount ? swapAmount : ""}
@@ -172,7 +153,6 @@ const Swap = (props) => {
             setDisplay={setDisplay}
             setTokenA={setTokenA}
             setTokenB={setTokenB}
-            swapType={swapType}
           />
           <Input
             id={2}
@@ -204,19 +184,14 @@ const Swap = (props) => {
             <>
               <Box
                 sx={{
-                  boxSizing: "border-box",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  width: "100%",
                   padding: { xs: "0px 4px", sm: "4px 8px" },
                 }}
-                className={open && styles.swapunit}
+                className={(open && styles.swapunit, styles.spotPriceBox)}
               >
                 {!formErrors.balError ? (
                   <Box
+                    className={styles.spotBox}
                     sx={{
-                      display: "flex",
                       alignItems: {
                         xs: "flex-start ",
                         sm: "center",
@@ -228,8 +203,6 @@ const Swap = (props) => {
                         md: "fit-content",
                       },
 
-                      boxSizing: "border-box",
-                      fontFamily: "Open Sans",
                       gap: { xs: "2px", sm: "4px" },
                     }}
                   >
@@ -239,23 +212,14 @@ const Swap = (props) => {
                       <p></p>
                     ) : (
                       <p
+                        className={lsStyles.spotPrice}
                         style={{
-                          cursor: "pointer",
-                          boxSizing: "border-box",
                           padding: { xs: "0px", sm: "8px 0px" },
-                          color: "black",
-                          fontFamily: "Open Sans",
-                          fontSize: "16px",
-                          fontWeight: 500,
-                          display: "flex",
                         }}
                         onClick={handleClose}
                       >
-                        {" "}
-                        {` 1 ${tokenA.symbol} = ${" "}`}
-                        {"  "}
-                        <label>
-                          {" "}
+                        {` 1 ${tokenA.symbol} = ${"  "}`}
+                        <label style={{ marginLeft: "4px" }}>
                           {spotPriceLoading ? (
                             <Skeleton width={"100px"} />
                           ) : (
@@ -266,16 +230,10 @@ const Swap = (props) => {
                     )}
                   </Box>
                 ) : null}
-
                 <Box
+                  className={lsStyles.extraBox}
                   sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    boxSizing: "border-box",
-                    color: "#333333",
-                    fontFamily: "Open Sans",
                     gap: { xs: "0px", sm: "5px" },
-                    padding: "4px",
                   }}
                 ></Box>
               </Box>
@@ -287,12 +245,11 @@ const Swap = (props) => {
           tokenA.tokenIsSet &&
           tokenB.tokenIsSet ? (
             <button
-              className={classNames(styles.btn, styles.btnConnect)}
-              style={{
-                background: "#554994",
-                borderRadius: "17px",
-                color: "white",
-              }}
+              className={classNames(
+                styles.btn,
+                styles.btnConnect,
+                styles.btnBtn
+              )}
               onClick={() => {
                 handleApproveButton();
               }}
@@ -307,12 +264,11 @@ const Swap = (props) => {
           )}
           {isWalletConnected && allowance ? (
             <button
-              className={classNames(styles.btn, styles.btnConnect)}
-              style={{
-                background: "#554994",
-                borderRadius: "17px",
-                color: "white",
-              }}
+              className={classNames(
+                styles.btn,
+                styles.btnConnect,
+                styles.btnBtn
+              )}
               onClick={handleClick}
               disabled={
                 !tokenA.tokenIsSet ||
@@ -332,7 +288,7 @@ const Swap = (props) => {
               ) : spotPriceLoading ? (
                 <CircularProgress sx={{ color: "white" }} />
               ) : (
-                buttonText
+                "Swap"
               )}
             </button>
           ) : !isWalletConnected ? (

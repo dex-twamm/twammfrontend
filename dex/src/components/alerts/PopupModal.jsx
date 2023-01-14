@@ -2,16 +2,11 @@ import { Alert, Backdrop, Button } from "@mui/material";
 import { useEffect } from "react";
 import { useContext } from "react";
 import { POPUP_MESSAGE } from "../../constants";
-import { ShortSwapContext } from "../../providers";
+import { LongSwapContext, ShortSwapContext } from "../../providers";
 import { UIContext } from "../../providers/context/UIProvider";
-import { POOLS } from "../../utils/pool";
+import { getBlockExplorerTransactionUrl } from "../../utils/networkUtils";
 
-const PopupModal = ({
-  isPlacedLongTermOrder,
-  setIsPlacedLongTermOrder,
-  message,
-  setMessage,
-}) => {
+const PopupModal = () => {
   const {
     error,
     setError,
@@ -22,6 +17,8 @@ const PopupModal = ({
     allowTwammErrorMessage,
     setAllowTwammErrorMessage,
   } = useContext(ShortSwapContext);
+
+  const { message, setMessage } = useContext(LongSwapContext);
 
   const { selectedNetwork } = useContext(UIContext);
 
@@ -42,7 +39,6 @@ const PopupModal = ({
     setError("");
     setSuccess("");
     setTransactionHash("");
-    setIsPlacedLongTermOrder && setIsPlacedLongTermOrder();
     setMessage("");
     setAllowTwammErrorMessage("");
   };
@@ -52,32 +48,18 @@ const PopupModal = ({
   };
 
   const handleButtonClick = () => {
-    console.log(
-      "links",
-      Object.values(POOLS?.[selectedNetwork?.network])?.[0].transactionUrl,
-      `${
-        Object.values(POOLS?.[selectedNetwork?.network])?.[0]?.transactonUrl
-      }${transactionHash}`
-    );
     window.open(
-      `${
-        Object.values(POOLS?.[selectedNetwork?.network])?.[0].transactionUrl
-      }${transactionHash}`
+      `${getBlockExplorerTransactionUrl(selectedNetwork)}${transactionHash}`
     );
   };
 
   const buttonAction = <Button onClick={handleButtonClick}>View</Button>;
-
-  console.log("<---Transaction hash--->", transactionHash);
-
-  console.log("successs", message ? true : false, message);
 
   const AlertStyle = {
     margin: "5px",
     background: "rgba(255, 255, 255, 0.5)",
   };
 
-  console.log("hajsdhkajsdhkajsd", error);
   return (
     <>
       <div style={AlertStyle}>
@@ -116,39 +98,6 @@ const PopupModal = ({
             View Your Tx Progress
           </Alert>
         )}
-        {isPlacedLongTermOrder && (
-          <Backdrop
-            open={isPlacedLongTermOrder ? true || false : undefined}
-            onClose={handleClose}
-          >
-            <Alert
-              severity={isPlacedLongTermOrder === true ? "success" : "error"}
-              onClose={() => {
-                handleClose();
-                isPlacedLongTermOrder === true && window.location.reload();
-              }}
-            >
-              {isPlacedLongTermOrder === true
-                ? POPUP_MESSAGE.ltoPlaced
-                : POPUP_MESSAGE.ltoPlaceFailed}
-            </Alert>
-          </Backdrop>
-        )}
-        {allowTwammErrorMessage && (
-          <Backdrop
-            open={allowTwammErrorMessage ? true : false}
-            onClose={handleClose}
-          >
-            <Alert
-              severity={"error"}
-              onClose={() => {
-                handleClose();
-              }}
-            >
-              {allowTwammErrorMessage}
-            </Alert>
-          </Backdrop>
-        )}
         {message && (
           <Backdrop
             open={
@@ -159,14 +108,16 @@ const PopupModal = ({
             <Alert
               severity={
                 message === POPUP_MESSAGE.ltoCancelFailed ||
-                message === POPUP_MESSAGE.ltoWithdrawFailed
+                message === POPUP_MESSAGE.ltoWithdrawFailed ||
+                message === POPUP_MESSAGE.ltoPlaceFailed
                   ? "error"
                   : "success"
               }
               onClose={() => {
                 if (
                   message === POPUP_MESSAGE.ltoCancelSuccess ||
-                  message === POPUP_MESSAGE.ltoWithdrawn
+                  message === POPUP_MESSAGE.ltoWithdrawn ||
+                  message === POPUP_MESSAGE.ltoPlaced
                 ) {
                   handleClose();
                   window.location.reload();

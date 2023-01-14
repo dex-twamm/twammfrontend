@@ -1,10 +1,11 @@
-import { Alert, Backdrop, Skeleton } from "@mui/material";
+import { Skeleton } from "@mui/material";
 import classNames from "classnames";
 import React, { useContext, useEffect, useState } from "react";
 import styles from "../css/Modal.module.css";
 import { LongSwapContext, ShortSwapContext, UIContext } from "../providers";
+import { getPoolTokens } from "../utils/poolUtils";
+
 import { getAllowance } from "../utils/getApproval";
-import { POOLS } from "../utils/pool";
 
 const Modal = ({
   display,
@@ -14,12 +15,9 @@ const Modal = ({
   tokenBalances,
 }) => {
   // useContext To Retrieve The Source and Destination Address of The Token
+
   const {
     isWalletConnected,
-    srcAddress,
-    destAddress,
-    setSrcAddress,
-    setDestAddress,
     selectToken,
     setEthBalance,
     setFormErrors,
@@ -28,16 +26,16 @@ const Modal = ({
     web3provider,
   } = useContext(ShortSwapContext);
 
-  const { tokenA, tokenB, allowance } = useContext(LongSwapContext);
+  const { tokenA, tokenB } = useContext(LongSwapContext);
+
   const [tokenDetails, setTokenDetails] = useState();
 
   const { selectedNetwork } = useContext(UIContext);
 
   useEffect(() => {
-    const tokenDetail = Object.values(POOLS?.[selectedNetwork?.network])?.[0]
-      ?.tokens;
+    const tokenDetail = getPoolTokens(selectedNetwork);
     setTokenDetails(tokenDetail);
-  }, []);
+  }, [selectedNetwork]);
 
   // Handle Modal Close
   const handleModalClose = () => {
@@ -46,9 +44,7 @@ const Modal = ({
 
   // Handle Select Token Modal display
   const handleTokenSelection = (token) => {
-    console.log("TokenSelected Prabin", selectToken);
     const chosenToken = tokenDetails?.find((x) => x.symbol === token.symbol);
-    console.log("Chosen Token", chosenToken);
 
     let balances = tokenBalances.map((obj) => ({
       address: Object.keys(obj)[0],
@@ -61,7 +57,6 @@ const Modal = ({
     if (selectToken === "1") {
       //set tokenFrom
       setEthBalance(chosenTokenBalance);
-      setSrcAddress(chosenToken.address);
       if (chosenToken.symbol === tokenA.symbol) {
         return <></>;
       } else if (chosenToken.symbol === tokenB.symbol) {
@@ -69,7 +64,6 @@ const Modal = ({
           ...tokenA,
           tokenIsSet: true,
         });
-        setDestAddress(tokenA.address);
       }
       setTokenA({
         ...chosenToken,
@@ -77,8 +71,6 @@ const Modal = ({
         tokenIsSet: true,
       });
     } else if (selectToken === "2") {
-      //setTokenTo
-      setDestAddress(chosenToken.address);
       if (chosenToken.symbol === tokenA.symbol) {
         return <></>;
       } else
@@ -98,7 +90,7 @@ const Modal = ({
         web3provider?.getSigner(),
         account,
         tokenA?.address,
-        selectedNetwork?.network
+        selectedNetwork
       );
   }, [tokenA, setFormErrors]);
 
@@ -128,8 +120,6 @@ const Modal = ({
           ) : (
             <Skeleton width={100} />
           )}
-
-          {/* {parseFloat(token.balance).toFixed(2)} */}
         </p>
         {token.type === "coming_soon" && (
           <div className={styles.comingSoon}>
@@ -140,13 +130,8 @@ const Modal = ({
     );
   };
   if (selectToken === "2") {
-    // tokensDetail = tokenDetails.filter(
-    //     token => token.name !== tokenA.symbol
-    // );
-
     tokensList = tokensDetail?.map((token) => {
       if (token.name === tokenA.symbol) {
-        console.log("Here");
         return (
           <div
             className={classNames(styles.modalToken, styles.modalTokenDisabled)}

@@ -11,32 +11,24 @@ import Tabs from "../components/Tabs";
 import PopupModal from "../components/alerts/PopupModal";
 import { _placeLongTermOrders } from "../utils/placeLongTermOrder";
 import { connectWalletAndGetEthLogs } from "../utils/connetWallet";
+
 import { UIContext } from "../providers/context/UIProvider";
 import LongSwap from "../components/LongSwap";
 import { verifyLongSwap } from "../utils/verifyLongSwap";
+import { getAllPool } from "../utils/poolUtils";
+import { MenuItem, Select } from "@mui/material";
 
-const LongSwapPage = (props) => {
-  const {
-    tokenSymbol,
-    tokenImage,
-    buttonText,
-    cancelPool,
-    withdrawPool,
-    isPlacedLongTermOrder,
-    setIsPlacedLongTermOrder,
-  } = props;
-
-  const [showSettings, setShowSettings] = useState(false);
-
+const LongSwapPage = () => {
   const {
     orderLogsDecoded,
-    message,
-    setMessage,
     numberOfBlockIntervals,
     setOrderLogsDecoded,
     setLongSwapFormErrors,
     longSwapVerifyLoading,
     setLongSwapVerifyLoading,
+    setMessage,
+    tokenA,
+    tokenB,
     allowance,
   } = useContext(LongSwapContext);
 
@@ -50,13 +42,13 @@ const LongSwapPage = (props) => {
     setWalletConnected,
     swapAmount,
     setSwapAmount,
-    srcAddress,
-    destAddress,
     account,
     setTransactionHash,
     setLoading,
     setError,
   } = useContext(ShortSwapContext);
+
+  const [showSettings, setShowSettings] = useState(false);
 
   const { selectedNetwork, setSelectedNetwork } = useContext(UIContext);
 
@@ -66,42 +58,32 @@ const LongSwapPage = (props) => {
 
   const cardListCount = ethLogsCount;
 
-  console.log("Logs Count", ethLogsCount, cardListCount);
-
-  console.log("Is long term order placed", isPlacedLongTermOrder);
-
   useEffect(() => {
-    console.log(
-      "Long Swap ----",
-      selectedNetwork?.network,
-      swapAmount,
-      destAddress,
-      srcAddress
-    );
     let verifyLongSwapInterval;
+
     // Wait for 0.5 second before fetching price.
-    if (parseFloat(allowance) > swapAmount) {
-      verifyLongSwapInterval = setTimeout(() => {
-        verifyLongSwap(
-          swapAmount,
-          setLongSwapVerifyLoading,
-          srcAddress,
-          destAddress,
-          web3provider,
-          account,
-          setLongSwapFormErrors,
-          selectedNetwork?.network,
-          numberOfBlockIntervals
-        );
-      }, 500);
-    }
+
+    verifyLongSwapInterval = setTimeout(() => {
+      verifyLongSwap(
+        swapAmount,
+        setLongSwapVerifyLoading,
+        tokenA?.address,
+        tokenB?.address,
+        web3provider,
+        account,
+        setLongSwapFormErrors,
+        selectedNetwork,
+        numberOfBlockIntervals,
+        allowance
+      );
+    }, 500);
+
     return () => {
       clearTimeout(verifyLongSwapInterval);
     };
-  }, [swapAmount, destAddress, srcAddress, numberOfBlockIntervals]);
+  }, [swapAmount, tokenB, tokenA, numberOfBlockIntervals, selectedNetwork]);
 
   async function LongSwapButtonClick() {
-    console.log("Wallet", isWalletConnected);
     try {
       if (!isWalletConnected) {
         await connectWalletAndGetEthLogs(
@@ -113,23 +95,23 @@ const LongSwapPage = (props) => {
           setSelectedNetwork,
           web3provider,
           account,
-          selectedNetwork?.network
+          selectedNetwork
         );
       } else {
         console.log(web3provider, web3provider.getSigner());
         await _placeLongTermOrders(
           swapAmount,
-          srcAddress,
-          destAddress,
+          tokenA?.address,
+          tokenB?.address,
           numberOfBlockIntervals,
           web3provider,
           account,
           setTransactionHash,
           setLoading,
-          setIsPlacedLongTermOrder,
+          setMessage,
           setOrderLogsDecoded,
           setError,
-          selectedNetwork?.network
+          selectedNetwork
         );
         setSwapAmount(0);
       }
@@ -138,14 +120,16 @@ const LongSwapPage = (props) => {
     }
   }
 
-  // useEffect(() => {
-  //   if (swapAmount && swapAmount > tokenA.balance) {
-  //     setFormErrors({ balError: "Invalid AMt" });
-  //   }
-  //   return () => {
-  //     setFormErrors("");
-  //   };
-  // }, [swapAmount, tokenA, setFormErrors]);
+  useEffect(() => {
+    document.body.onclick = () => {
+      setShowSettings(false);
+    };
+  });
+
+  const handlePoolChange = (e) => {
+    setSelectedNetwork({ ...selectedNetwork, poolId: e.target.value });
+    localStorage.setItem("poolId", e.target.value);
+  };
 
   return (
     <>
@@ -157,31 +141,44 @@ const LongSwapPage = (props) => {
               <a className={styles.textLink} href="/">
                 Long Term Swap
               </a>
-              <FontAwesomeIcon
-                className={styles.settingsIcon}
-                icon={faGear}
-                onClick={() => setShowSettings(!showSettings)}
-              />
+              <div className={styles.poolAndIcon}>
+                {getAllPool(selectedNetwork)?.length > 1 && (
+                  <Select
+                    className={styles.poolBox}
+                    inputProps={{ "aria-label": "Without label" }}
+                    value={selectedNetwork?.poolId}
+                    onChange={handlePoolChange}
+                    variant="outlined"
+                    sx={{ outline: "none" }}
+                  >
+                    {getAllPool(selectedNetwork)?.map((el, idx) => {
+                      return (
+                        <MenuItem key={idx} value={idx}>
+                          {el.poolName}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                )}
+                <FontAwesomeIcon
+                  className={styles.settingsIcon}
+                  icon={faGear}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowSettings(!showSettings);
+                  }}
+                />
+              </div>
             </div>
 
             {showSettings && <PopupSettings swapType="long" />}
           </div>
           <LongSwap
-            swapType="long"
-            tokenSymbol={tokenSymbol}
-            tokenImage={tokenImage}
-            connectWallet={LongSwapButtonClick}
-            buttonText={buttonText}
+            handleLongSwapAction={LongSwapButtonClick}
             longSwapVerifyLoading={longSwapVerifyLoading}
-            setIsPlacedLongTermOrder={setIsPlacedLongTermOrder}
           />
         </div>
-        <PopupModal
-          isPlacedLongTermOrder={isPlacedLongTermOrder}
-          setIsPlacedLongTermOrder={setIsPlacedLongTermOrder}
-          message={message}
-          setMessage={setMessage}
-        ></PopupModal>
+        <PopupModal />
 
         <div className={lsStyles.ordersWrapper}>
           <h4 className={lsStyles.longTermText}>Your Long Term Orders</h4>
@@ -192,14 +189,7 @@ const LongSwapPage = (props) => {
                 cardListCount > 2 && lsStyles.scrollable
               )}
             >
-              <LongTermOrderCard
-                cancelPool={cancelPool}
-                withdrawPool={withdrawPool}
-              ></LongTermOrderCard>
-
-              {/* <div style={{ with: "100%", height:"auto" }}>
-              <LongTermSwapCardDropdown tokenB={tokenB} />
-            </div> */}
+              <LongTermOrderCard />
             </div>
           </div>
         </div>

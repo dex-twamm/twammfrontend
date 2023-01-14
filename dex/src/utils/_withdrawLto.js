@@ -1,6 +1,7 @@
 import { POPUP_MESSAGE } from "../constants";
 import { withdrawLTO } from "./addLiquidity";
 import { connectWallet } from "./connetWallet";
+import { getEthLogs } from "./get_ethLogs";
 
 export const _withdrawLTO = async (
   orderId,
@@ -19,8 +20,7 @@ export const _withdrawLTO = async (
   setMessage,
   setTransactionHash,
   currentNetwork,
-  setSelectedNetwork,
-  nId
+  setSelectedNetwork
 ) => {
   setDisableActionBtn(true);
   setLoading(true);
@@ -44,13 +44,26 @@ export const _withdrawLTO = async (
       orderId,
       orderHash,
       setTransactionHash,
-      setOrderLogsDecoded,
-      setMessage,
-      web3provider,
       currentNetwork
-    );
+    ).then((res) => {
+      const withdrawLTOResult = async (res) => {
+        const result = await res.wait();
+        return result;
+      };
+      withdrawLTOResult(res).then(async (response) => {
+        if (response.status === 1) {
+          await getEthLogs(signer, walletAddress, currentNetwork).then(
+            (res) => {
+              const resArray = Array.from(res.values());
+              setOrderLogsDecoded(resArray);
+            }
+          );
+          setMessage(POPUP_MESSAGE.ltoWithdrawn);
+        } else setMessage(POPUP_MESSAGE.ltoWithdrawFailed);
+        setDisableActionBtn(false);
+      });
+    });
     setLoading(false);
-    setDisableActionBtn(false);
   } catch (e) {
     console.log(e);
     setMessage(POPUP_MESSAGE.ltoWithdrawFailed);

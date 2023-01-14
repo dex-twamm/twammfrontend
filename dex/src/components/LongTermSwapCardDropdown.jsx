@@ -1,22 +1,26 @@
-import { Box, IconButton, Typography } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import React, { useContext, useState } from "react";
 import LaunchIcon from "@mui/icons-material/Launch";
 import CircleIcon from "@mui/icons-material/Circle";
 import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutlined";
 import { FiChevronDown } from "react-icons/fi";
 import { bigToStr } from "../utils";
-import { POOLS } from "../utils/pool";
 import { UIContext } from "../providers";
+import { getBlockExplorerTransactionUrl } from "../utils/networkUtils";
+import styles from "../css/LongTermSwapCardDropDown.module.css";
 
 const LongTermSwapCardDropdown = (props) => {
+  const { item } = props;
   const { selectedNetwork } = useContext(UIContext);
-
   const [open, setOpen] = useState(false);
 
-  // const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen((state) => !state);
 
-  const { withdrawals } = props;
+  const handleExplorer = (transactionHash) => {
+    window.open(
+      `${getBlockExplorerTransactionUrl(selectedNetwork)}${transactionHash}`
+    );
+  };
 
   return (
     <>
@@ -28,163 +32,113 @@ const LongTermSwapCardDropdown = (props) => {
             "aria-labelledby": "basic-button",
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "100%",
-              // p:'10px',
-              borderRadius: "24px",
-              minHeight: "100px",
-              // border:'1px solid red'
-            }}
-          >
+          <Box className={styles.mainBox}>
             <Box
+              className={styles.contentBox}
               sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "space-between",
-                width: "95%",
                 p: { xs: "5px 2px", sm: "10px 14px" },
-                border: "2px solid #f1f1f1",
-                borderRadius: "24px",
-                gap: "5px",
-                m: "16px 0",
               }}
             >
               <Box
+                className={styles.insideContentBox}
                 sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  boxSizing: "border-box",
-                  color: "#333333",
-                  fontFamily: "Open Sans",
                   gap: { xs: "0px", sm: "5px" },
-                  padding: "4px",
                 }}
               >
-                <Typography
-                  onClick={handleClose}
-                  sx={{
-                    width: "100%",
-                    display: "flex",
-                    alignItems: "center",
-                    // justifyContent: "center",
-                    color: "#333333",
-                    fontSize: "18px",
-                    fontFamily: "Open Sans",
-                    fontWeight: 600,
+                <span
+                  className={styles.withdraw}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleClose();
                   }}
                 >
-                  Withdrawals
-                </Typography>
+                  Withdrawals {item?.unsoldAmount && "and Cancelled"}
+                </span>
 
                 {open ? (
                   <KeyboardArrowUpOutlinedIcon
-                    sx={{
-                      fontSize: "24px",
-                      color: "#333333",
-                      cursor: "pointer",
-                      mr: "10px",
+                    className={styles.arrowIconStyle}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleClose();
                     }}
-                    onClick={handleClose}
                   />
                 ) : (
                   <FiChevronDown
                     fontSize={"24px"}
-                    style={{
-                      color: "#333333",
-                      cursor: "pointer",
-                      marginRight: "10px",
+                    className={styles.chevronStyle}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleClose();
                     }}
-                    onClick={handleClose}
                   />
                 )}
               </Box>
 
               {open && (
                 <>
-                  {withdrawals.map((items) => {
-                    const withdrawnAmount = bigToStr(items.proceeds, 18);
-                    const transactionHash = items.transactionHash;
-                    const handleClick = () => {
-                      window.open(
-                        `${
-                          Object.values(POOLS[selectedNetwork?.network])[0]
-                            ?.transactionUrl
-                        }${transactionHash}`
-                      );
-                    };
-                    return (
-                      <Box
-                        key={transactionHash}
+                  {item?.withdrawals.map((items) => (
+                    <Box
+                      className={styles.withdrawlBox}
+                      key={items?.transactionHash}
+                    >
+                      <CircleIcon
+                        fontSize="small"
                         sx={{
-                          width: "100%",
-                          display: "flex",
-                          alignItems: {
-                            xs: "flex-start",
-                            sm: "flex-start",
-                            md: "flex-start",
-                          },
-                          justifyContent: "center",
-                          // border:'1px solid red',
-                          padding: "5px",
-                          paddingLeft: "0px",
-                          marginLeft: "0px",
+                          color: "#808080",
+                          fontSize: "12px",
                         }}
-                      >
-                        <CircleIcon
-                          fontSize="small"
-                          sx={{
-                            color: "#808080",
-                            fontSize: "12px",
-                            ml: { xs: "5px", sm: 0, md: 0 },
-                            mt: { xs: "7px", sm: "7px", md: "7px" },
-                          }}
-                        />
-                        <Box
-                          sx={{
-                            display: "flex",
-                            alignItems: { xs: "flex-start", sm: "center" },
-                            marginLeft: "10px",
-                            color: "#333333",
-                            width: "90%",
-                          }}
-                        >
-                          <Typography
-                            sx={{
-                              display: "flex",
-                              alignItems: {
-                                xs: "flex-start",
-                                sm: "flex-start",
-                              },
-                              fontFamily: "Open Sans",
-                              fontSize: { xs: "14px", sm: "16px" },
-                              color: "#333333",
-                              width: "100%",
-                              ml: { xs: "5px", sm: "0px" },
-                            }}
+                      />
+                      <Box className={styles.infoBox}>
+                        <span className={styles.infoSpan}>
+                          {`Token withdrawal of ${bigToStr(
+                            items.proceeds,
+                            18
+                          )} `}
+                          <IconButton
+                            onClick={() =>
+                              handleExplorer(items.transactionHash)
+                            }
                           >
-                            {`Token withdrawal of ${withdrawnAmount} `}
-                            <IconButton onClick={handleClick}>
-                              <LaunchIcon
-                                fontSize="medium"
-                                sx={{
-                                  display: { xs: "inline-block" },
-                                  boxSizing: "border-box",
-                                  fontSize: "15px",
-                                  cursor: "pointer",
-                                }}
-                              ></LaunchIcon>
-                            </IconButton>
-                          </Typography>
-                        </Box>
+                            <LaunchIcon
+                              fontSize="medium"
+                              className={styles.launchIconStyle}
+                            ></LaunchIcon>
+                          </IconButton>
+                        </span>
                       </Box>
-                    );
-                  })}
+                    </Box>
+                  ))}
+                  {item?.unsoldAmount && (
+                    <Box
+                      className={styles.withdrawlBox}
+                      key={item?.transactionHash}
+                    >
+                      <CircleIcon
+                        fontSize="small"
+                        sx={{
+                          color: "#808080",
+                          fontSize: "12px",
+                        }}
+                      />
+                      <Box className={styles.infoBox}>
+                        <span className={styles.infoSpan}>
+                          {`Token cancelled of ${bigToStr(
+                            item.unsoldAmount,
+                            18
+                          )} `}
+                          <IconButton
+                            onClick={() => handleExplorer(item.transactionHash)}
+                          >
+                            <LaunchIcon
+                              fontSize="medium"
+                              className={styles.launchIconStyle}
+                            ></LaunchIcon>
+                          </IconButton>
+                        </span>
+                      </Box>
+                    </Box>
+                  )}
                 </>
               )}
             </Box>

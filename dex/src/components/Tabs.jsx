@@ -1,11 +1,7 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import classNames from "classnames";
 import styles from "../css/Navbar.module.css";
-import { LongSwapContext, ShortSwapContext } from "../providers";
-import { FAUCET_TOKEN_ADDRESS, MATIC_TOKEN_ADDRESS } from "../utils";
-import { POOLS, POOL_ID } from "../utils/pool";
-import { UIContext, useNetwork } from "../providers/context/UIProvider";
 
 const tabOptions = [
   {
@@ -25,32 +21,10 @@ const tabOptions = [
 const Tabs = () => {
   const location = useLocation();
   const currentPath = location.pathname;
-  const { selectedNetwork } = useContext(UIContext);
 
-  const { tokenA, setTokenA, tokenB, setTokenB } = useContext(LongSwapContext);
-  const { setSwapAmount } = useContext(ShortSwapContext);
-  const onNavLinkClick = () => {
-    const poolConfig = Object.values(POOLS?.[selectedNetwork?.network])?.[0];
-    setSwapAmount("");
-    if (!tokenA.tokenIsSet) {
-      setTokenA({
-        ...poolConfig?.tokens[0],
-        balance: 0,
-        tokenIsSet: true,
-      });
-    }
-    if (!tokenB.tokenIsSet) {
-      setTokenB({
-        ...poolConfig?.tokens[1],
-        balance: 0,
-        tokenIsSet: true,
-      });
-    }
-  };
   const tabList = tabOptions.map((option, index) => (
     <Link to={option.path} key={index}>
       <div
-        onClick={onNavLinkClick}
         key={index}
         className={classNames(
           styles.tabButton,

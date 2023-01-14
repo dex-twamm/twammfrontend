@@ -1,6 +1,7 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useContext, useEffect } from "react";
+import { MenuItem, Select } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
 import PopupModal from "../components/alerts/PopupModal";
 import PopupSettings from "../components/PopupSettings";
 import Swap from "../components/Swap";
@@ -10,17 +11,10 @@ import { LongSwapContext, ShortSwapContext } from "../providers";
 import { UIContext } from "../providers/context/UIProvider";
 import { connectWalletAndGetEthLogs } from "../utils/connetWallet";
 import { spotPrice } from "../utils/getSpotPrice";
+import { getAllPool } from "../utils/poolUtils";
 import { _swapTokens } from "../utils/shortSwap";
 
-const ShortSwap = ({
-  tokenSymbol,
-  tokenImage,
-  buttonText,
-  showSettings,
-  setShowSettings,
-  message,
-  setMessage,
-}) => {
+const ShortSwap = () => {
   const {
     isWalletConnected,
     setweb3provider,
@@ -31,17 +25,12 @@ const ShortSwap = ({
     setWalletConnected,
     swapAmount,
     setSwapAmount,
-    srcAddress,
-    destAddress,
     account,
     setTransactionHash,
     setLoading,
     setError,
-    expectedSwapOut,
-    tolerance,
     deadline,
     ethBalance,
-    poolCash,
     setSuccess,
     setFormErrors,
     setSpotPrice,
@@ -50,7 +39,7 @@ const ShortSwap = ({
     setSpotPriceLoading,
   } = useContext(ShortSwapContext);
   const { selectedNetwork, setSelectedNetwork } = useContext(UIContext);
-  const { allowance } = useContext(LongSwapContext);
+  const { allowance, tokenA, tokenB } = useContext(LongSwapContext);
 
   useEffect(() => {
     let interval1, interval2;
@@ -61,17 +50,15 @@ const ShortSwap = ({
         spotPrice(
           swapAmount,
           setSpotPriceLoading,
-          srcAddress,
-          destAddress,
+          tokenA?.address,
+          tokenB?.address,
           web3provider,
           account,
-          expectedSwapOut,
-          tolerance,
           deadline,
           setFormErrors,
           setSpotPrice,
           setExpectedSwapOut,
-          selectedNetwork?.network
+          selectedNetwork
         );
       }, 500);
       // Update price every 12 seconds.
@@ -79,17 +66,15 @@ const ShortSwap = ({
         spotPrice(
           swapAmount,
           setSpotPriceLoading,
-          srcAddress,
-          destAddress,
+          tokenA?.address,
+          tokenB?.address,
           web3provider,
           account,
-          expectedSwapOut,
-          tolerance,
           deadline,
           setFormErrors,
           setSpotPrice,
           setExpectedSwapOut,
-          selectedNetwork?.network
+          selectedNetwork
         );
       }, 12000);
     }
@@ -97,7 +82,9 @@ const ShortSwap = ({
       clearTimeout(interval1);
       clearTimeout(interval2);
     };
-  }, [swapAmount, destAddress, srcAddress, allowance]);
+  }, [swapAmount, tokenB, tokenA, allowance, selectedNetwork]);
+
+  const [showSettings, setShowSettings] = useState(false);
 
   async function ShortSwapButtonClick() {
     try {
@@ -111,25 +98,22 @@ const ShortSwap = ({
           setSelectedNetwork,
           web3provider,
           account,
-          selectedNetwork?.network
+          selectedNetwork
         );
       } else {
         await _swapTokens(
           ethBalance,
-          poolCash,
           swapAmount,
           web3provider,
-          srcAddress,
-          destAddress,
+          tokenA?.address,
+          tokenB?.address,
           account,
-          expectedSwapOut,
-          tolerance,
           deadline,
           setTransactionHash,
           setSuccess,
           setError,
           setLoading,
-          selectedNetwork?.network
+          selectedNetwork
         );
 
         setSwapAmount(0);
@@ -139,6 +123,17 @@ const ShortSwap = ({
       console.error(err);
     }
   }
+
+  useEffect(() => {
+    document.body.onclick = () => {
+      setShowSettings(false);
+    };
+  });
+
+  const handlePoolChange = (e) => {
+    setSelectedNetwork({ ...selectedNetwork, poolId: e.target.value });
+    localStorage.setItem("poolId", e.target.value);
+  };
 
   return (
     <>
@@ -151,26 +146,43 @@ const ShortSwap = ({
               <a className={styles.textLink} href="/">
                 Swap
               </a>
-              <FontAwesomeIcon
-                className={styles.settingsIcon}
-                icon={faGear}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setShowSettings(!showSettings);
-                }}
-              />
+              <div className={styles.poolAndIcon}>
+                {getAllPool(selectedNetwork)?.length > 1 && (
+                  <Select
+                    className={styles.poolBox}
+                    inputProps={{ "aria-label": "Without label" }}
+                    value={selectedNetwork?.poolId}
+                    onChange={handlePoolChange}
+                    variant="outlined"
+                    sx={{ outline: "none" }}
+                  >
+                    {getAllPool(selectedNetwork)?.map((el, idx) => {
+                      return (
+                        <MenuItem key={idx} value={idx}>
+                          {el.poolName}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                )}
+                <FontAwesomeIcon
+                  className={styles.settingsIcon}
+                  icon={faGear}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowSettings(!showSettings);
+                  }}
+                />
+              </div>
             </div>
             {showSettings && <PopupSettings />}
           </div>
           <Swap
-            tokenSymbol={tokenSymbol}
-            tokenImage={tokenImage}
-            handleButtonClick={ShortSwapButtonClick}
-            buttonText={buttonText}
+            handleSwapAction={ShortSwapButtonClick}
             spotPriceLoading={spotPriceLoading}
           />
         </div>
-        <PopupModal message={message} setMessage={setMessage}></PopupModal>
+        <PopupModal />
       </div>
     </>
   );

@@ -2,30 +2,30 @@ import { ethers } from "ethers";
 import { POPUP_MESSAGE } from "../constants";
 import { getEthLogs } from "./get_ethLogs";
 import { placeLongTermOrder } from "./longSwap";
-import { POOLS } from "./pool";
+import { getPoolConfig } from "./poolUtils";
 
 export const _placeLongTermOrders = async (
   swapAmount,
-  srcAddress,
-  destAddress,
+  tokenA,
+  tokenB,
   numberOfBlockIntervals,
   web3provider,
   account,
   setTransactionHash,
   setLoading,
-  setIsPlacedLongTermOrder,
+  setMessage,
   setOrderLogsDecoded,
   setError,
   currentNetwork
 ) => {
-  const poolConfig = Object.values(POOLS[currentNetwork])[0];
+  const poolConfig = getPoolConfig(currentNetwork);
 
   try {
     const tokenInIndex = poolConfig.tokens.findIndex(
-      (object) => srcAddress === object.address
+      (object) => tokenA === object.address
     );
     const tokenOutIndex = poolConfig.tokens.findIndex(
-      (object) => destAddress === object.address
+      (object) => tokenB === object.address
     );
     const amountIn = ethers.utils.parseUnits(
       swapAmount,
@@ -44,22 +44,31 @@ export const _placeLongTermOrders = async (
       blockIntervals,
       signer,
       walletAddress,
-      setTransactionHash,
       currentNetwork
     )
       .then((res) => {
-        setTransactionHash(res);
-        setIsPlacedLongTermOrder(true);
+        setTransactionHash(res.hash);
+        const placeLtoTxResult = async (res) => {
+          const result = await res.wait();
+          return result;
+        };
+        placeLtoTxResult(res).then(async (response) => {
+          if (response.status === 1) {
+            await getEthLogs(signer, walletAddress, currentNetwork).then(
+              (res) => {
+                const resArray = Array.from(res.values());
+                setOrderLogsDecoded(resArray);
+              }
+            );
+            setMessage(POPUP_MESSAGE.ltoPlaced);
+          } else setMessage(POPUP_MESSAGE.ltoPlaceFailed);
+        });
       })
       .catch((err) => {
-        console.log(err);
-        setIsPlacedLongTermOrder(false);
+        console.error(err);
+        setMessage(POPUP_MESSAGE.ltoPlaceFailed);
       })
       .finally(setLoading(false));
-    await getEthLogs(signer, walletAddress, currentNetwork).then((res) => {
-      const resArray = Array.from(res.values());
-      setOrderLogsDecoded(resArray);
-    });
   } catch (err) {
     console.error(err);
     setLoading(false);
