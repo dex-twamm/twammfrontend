@@ -41,6 +41,9 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
     (orderLog.expirationBlock - currentBlock.number) * 12
   );
 
+  const [orderStartTime, setOrderStartTime] = useState();
+  const [orderCompletionTime, setOrderCompletionTime] = useState();
+
   const poolConfig = getPoolConfig(selectedNetwork);
 
   const tokenIn = poolConfig.tokens[orderLog.sellTokenIndex];
@@ -158,8 +161,20 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
     return () => clearInterval(timer);
   }, [newTime]);
 
-  const startTime = new Date(stBlock * 1000).toLocaleString();
-  const completionTime = new Date(expBlock * 1000).toLocaleString();
+  const getTime = async () => {
+    const startTime = await web3provider.getBlock(stBlock);
+    setOrderStartTime(new Date(startTime.timestamp * 1000).toLocaleString());
+    const completionTime = await web3provider.getBlock(
+      parseFloat(expBlock.toString())
+    );
+    setOrderCompletionTime(
+      new Date(completionTime.timestamp * 1000).toLocaleString()
+    );
+  };
+
+  useEffect(() => {
+    getTime();
+  }, []);
 
   return (
     <>
@@ -229,7 +244,14 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
           </div>
 
           <div>
-            <p className={styles.timeRemaining} ref={remainingTimeRef}>
+            <p
+              className={
+                orderStatus?.status === "Cancelled"
+                  ? styles.cancelled
+                  : styles.timeRemaining
+              }
+              ref={remainingTimeRef}
+            >
               {orderStatus?.status}
             </p>
             <div className={styles.progress}>
@@ -250,17 +272,38 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
             </div>
           </div>
 
-          <div className={styles.extrasContainer}>
-            <div className={styles.fees}>{poolConfig?.fees} fees</div>
-            {bigToFloat(soldToken) !== 0 && (
-              <div className={styles.averagePrice}>
-                {averagePrice.toFixed(4)} Average Price
+          <div
+            className={
+              bigToFloat(soldToken) !== 0
+                ? styles.extrasContainer
+                : styles.extrasContainerOne
+            }
+          >
+            <div className={styles.feesAndPrice}>
+              <div className={styles.fees}>Fees: {poolConfig?.fees}</div>
+              {bigToFloat(soldToken) !== 0 && (
+                <div className={styles.averagePrice}>
+                  Average Price: {averagePrice.toFixed(4)}
+                </div>
+              )}
+            </div>
+            <div className={styles.times}>
+              <div className={styles.fees}>Initiated On: {orderStartTime}</div>
+              <div className={styles.fees}>
+                {orderStatus?.status.includes("Time Remaining")
+                  ? "Completes On:"
+                  : "Completed On:"}{" "}
+                {orderCompletionTime}
               </div>
-            )}
+            </div>
           </div>
 
           {orderLog.withdrawals.length > 0 && (
-            <LongTermSwapCardDropdown item={orderLog} />
+            <LongTermSwapCardDropdown
+              item={orderLog}
+              tokenIn={tokenIn}
+              tokenOut={tokenOut}
+            />
           )}
 
           <div className={styles.buttonContainer}>

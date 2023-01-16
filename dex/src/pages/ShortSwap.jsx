@@ -143,9 +143,7 @@ const ShortSwap = () => {
         <div className={styles.mainBody}>
           <div className={styles.swap}>
             <div className={styles.swapOptions}>
-              <a className={styles.textLink} href="/">
-                Swap
-              </a>
+              <p className={styles.textLink}>Swap</p>
               <div className={styles.poolAndIcon}>
                 {getAllPool(selectedNetwork)?.length > 1 && (
                   <Select
