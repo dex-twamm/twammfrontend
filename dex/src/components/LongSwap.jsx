@@ -177,6 +177,8 @@ const LongSwap = (props) => {
     };
   }, []);
 
+  console.log("Longswap verify loading", longSwapVerifyLoading);
+
   return (
     <>
       <form onSubmit={handleSubmit} className={styles.form}>
@@ -323,7 +325,12 @@ const LongSwap = (props) => {
               onClick={() => {
                 handleApproveButton();
               }}
-              disabled={disableAllowBtn || executionTime === ""}
+              disabled={
+                disableAllowBtn ||
+                executionTime === "" ||
+                swapAmount == 0 ||
+                swapAmount > tokenA?.balance
+              }
             >
               {`Allow TWAMM Protocol to use your ${
                 tokenA.symbol ?? tokenB.symbol

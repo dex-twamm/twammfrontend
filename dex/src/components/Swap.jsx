@@ -253,7 +253,11 @@ const Swap = (props) => {
               onClick={() => {
                 handleApproveButton();
               }}
-              disabled={disableAllowBtn}
+              disabled={
+                disableAllowBtn ||
+                swapAmount == 0 ||
+                swapAmount > tokenA?.balance
+              }
             >
               {`Allow TWAMM Protocol to use your ${
                 tokenA.symbol ?? tokenB.symbol
