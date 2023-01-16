@@ -118,7 +118,7 @@ const LongTermSwapCardDropdown = (props) => {
                         fontSize="small"
                         sx={{
                           color: "#808080",
-                          fontSize: "12px",
+                          fontSize: "8px",
                         }}
                       />
                       <Box className={styles.infoBox}>
