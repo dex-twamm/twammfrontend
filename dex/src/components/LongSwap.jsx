@@ -177,8 +177,6 @@ const LongSwap = (props) => {
     };
   }, []);
 
-  console.log("Longswap verify loading", longSwapVerifyLoading);
-
   return (
     <>
       <form onSubmit={handleSubmit} className={styles.form}>
