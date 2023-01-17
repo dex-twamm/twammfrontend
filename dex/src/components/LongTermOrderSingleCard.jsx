@@ -172,7 +172,6 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
         new Date(completionTime?.timestamp * 1000).toLocaleString()
       );
     };
-
     getTime();
   }, [expBlock, stBlock, web3provider]);
 
