@@ -161,20 +161,20 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
     return () => clearInterval(timer);
   }, [newTime]);
 
-  const getTime = async () => {
-    const startTime = await web3provider.getBlock(stBlock);
-    setOrderStartTime(new Date(startTime.timestamp * 1000).toLocaleString());
-    const completionTime = await web3provider.getBlock(
-      parseFloat(expBlock.toString())
-    );
-    setOrderCompletionTime(
-      new Date(completionTime.timestamp * 1000).toLocaleString()
-    );
-  };
-
   useEffect(() => {
+    const getTime = async () => {
+      const startTime = await web3provider.getBlock(stBlock);
+      setOrderStartTime(new Date(startTime?.timestamp * 1000).toLocaleString());
+      const completionTime = await web3provider.getBlock(
+        parseFloat(expBlock.toString())
+      );
+      setOrderCompletionTime(
+        new Date(completionTime?.timestamp * 1000).toLocaleString()
+      );
+    };
+
     getTime();
-  }, []);
+  }, [expBlock, stBlock, web3provider]);
 
   return (
     <>
