@@ -274,9 +274,10 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
 
           <div
             className={
-              bigToFloat(soldToken) !== 0
-                ? styles.extrasContainer
-                : styles.extrasContainerOne
+              bigToFloat(soldToken) === 0 ||
+              orderStatus?.status.includes("Time Remaining")
+                ? styles.extrasContainerOne
+                : styles.extrasContainer
             }
           >
             <div className={styles.feesAndPrice}>
@@ -289,12 +290,11 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
             </div>
             <div className={styles.times}>
               <div className={styles.fees}>Initiated On: {orderStartTime}</div>
-              <div className={styles.fees}>
-                {orderStatus?.status.includes("Time Remaining")
-                  ? "Completes On:"
-                  : "Completed On:"}{" "}
-                {orderCompletionTime}
-              </div>
+              {!orderStatus?.status.includes("Time Remaining") && (
+                <div className={styles.fees}>
+                  Completed On: {orderCompletionTime}
+                </div>
+              )}
             </div>
           </div>
 
