@@ -36,6 +36,11 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
   } = useContext(LongSwapContext);
   const { selectedNetwork, setSelectedNetwork } = useContext(UIContext);
 
+  const orderStatusCompleted = "Completed";
+  const orderStatusCancelled = "Cancelled";
+  const orderStatusExecuted = "Execution Completed";
+  const orderExecutionTimeRemaining = "Time Remaining";
+
   const [orderStatus, setOrderStatus] = useState();
   const [newTime, setNewTime] = useState(
     (orderLog.expirationBlock - currentBlock.number) * 12
@@ -130,24 +135,24 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
 
   useEffect(() => {
     if (orderLog?.state === "completed") {
-      setOrderStatus({ status: "Completed", progress: 100 });
+      setOrderStatus({ status: orderStatusCompleted, progress: 100 });
     } else if (orderLog?.state === "cancelled") {
-      setOrderStatus({ status: "Cancelled", progress: 100 });
+      setOrderStatus({ status: orderStatusCancelled, progress: 100 });
     } else if (lastVirtualOrderBlock >= orderLog.expirationBlock) {
-      setOrderStatus({ status: "Execution Completed", progress: 100 });
+      setOrderStatus({ status: orderStatusExecuted, progress: 100 });
     } else {
       if (orderLog.expirationBlock > currentBlock.number) {
         let date = new Date(0);
         date.setSeconds(newTime); // specify value for SECONDS here
         const timeString = date.toISOString().substring(11, 16);
         setOrderStatus({
-          status: `Time Remaining: ${timeString}`,
+          status: `${orderExecutionTimeRemaining}: ${timeString}`,
           progress:
             ((lastVirtualOrderBlock - orderLog?.startBlock) * 100) /
             (orderLog?.expirationBlock - orderLog?.startBlock),
         });
       } else {
-        setOrderStatus({ status: "Execution Completed", progress: 100 });
+        setOrderStatus({ status: orderStatusExecuted, progress: 100 });
       }
     }
   }, [orderLog, currentBlock, lastVirtualOrderBlock, newTime]);
@@ -161,19 +166,27 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
     return () => clearInterval(timer);
   }, [newTime]);
 
+  const executeCompletionTime = () => {
+    if (orderStatus?.status.includes(orderExecutionTimeRemaining)) return false;
+    else return true;
+  };
+
   useEffect(() => {
     const getTime = async () => {
       const startTime = await web3provider.getBlock(stBlock);
       setOrderStartTime(new Date(startTime?.timestamp * 1000).toLocaleString());
-      const completionTime = await web3provider.getBlock(
-        parseFloat(expBlock.toString())
-      );
-      setOrderCompletionTime(
-        new Date(completionTime?.timestamp * 1000).toLocaleString()
-      );
+
+      if (executeCompletionTime()) {
+        const completionTime = await web3provider.getBlock(
+          parseFloat(expBlock.toString())
+        );
+        setOrderCompletionTime(
+          new Date(completionTime?.timestamp * 1000).toLocaleString()
+        );
+      }
     };
     getTime();
-  }, [expBlock, stBlock, web3provider]);
+  }, [expBlock, stBlock, web3provider, orderStatus]);
 
   return (
     <>
@@ -245,7 +258,7 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
           <div>
             <p
               className={
-                orderStatus?.status === "Cancelled"
+                orderStatus?.status === orderStatusCancelled
                   ? styles.cancelled
                   : styles.timeRemaining
               }
@@ -258,12 +271,11 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
                 style={{ width: `${orderStatus?.progress}%` }}
                 className={classNames(
                   styles.activeProgress,
-
-                  orderStatus?.status === "Completed"
+                  orderStatus?.status === orderStatusCompleted
                     ? styles.greenProgress
-                    : orderStatus?.status === "Execution Completed"
+                    : orderStatus?.status === orderStatusExecuted
                     ? styles.greenProgress
-                    : orderStatus?.status === "Cancelled"
+                    : orderStatus?.status === orderStatusCancelled
                     ? styles.redProgress
                     : styles.activeProgress
                 )}
@@ -273,8 +285,7 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
 
           <div
             className={
-              bigToFloat(soldToken) === 0 ||
-              orderStatus?.status.includes("Time Remaining")
+              bigToFloat(soldToken) === 0 || !executeCompletionTime()
                 ? styles.extrasContainerOne
                 : styles.extrasContainer
             }
@@ -289,7 +300,7 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
             </div>
             <div className={styles.times}>
               <div className={styles.fees}>Initiated On: {orderStartTime}</div>
-              {!orderStatus?.status.includes("Time Remaining") && (
+              {executeCompletionTime() && (
                 <div className={styles.fees}>
                   Completed On: {orderCompletionTime}
                 </div>
@@ -309,14 +320,14 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
             <button
               className={classNames(
                 styles.button,
-                orderStatus?.status !== "Completed"
+                orderStatus?.status !== orderStatusCompleted
                   ? styles.cancelButton
                   : styles.successButton
               )}
               disabled={
-                orderStatus?.status === "Cancelled" ||
-                orderStatus?.status === "Completed" ||
-                orderStatus?.status === "Execution Completed" ||
+                orderStatus?.status === orderStatusCancelled ||
+                orderStatus?.status === orderStatusCompleted ||
+                orderStatus?.status === orderStatusExecuted ||
                 disableActionBtn
               }
               onClick={() => {
@@ -326,14 +337,14 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
                 );
               }}
             >
-              {orderStatus?.status === "Completed"
-                ? "Completed"
-                : orderStatus?.status === "Cancelled"
-                ? "Cancelled"
+              {orderStatus?.status === orderStatusCompleted
+                ? orderStatusCompleted
+                : orderStatus?.status === orderStatusCancelled
+                ? orderStatusCancelled
                 : "Cancel"}
             </button>
-            {orderStatus?.status !== "Cancelled" &&
-              orderStatus?.status !== "Completed" && (
+            {orderStatus?.status !== orderStatusCancelled &&
+              orderStatus?.status !== orderStatusCompleted && (
                 <button
                   className={classNames(styles.button, styles.withdrawButton)}
                   onClick={() => {
