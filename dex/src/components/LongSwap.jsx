@@ -31,7 +31,7 @@ const LongSwap = (props) => {
   const [display, setDisplay] = useState(false);
   const [value, setValue] = useState(0.0);
   const [executionTime, setExecutionTIme] = useState("");
-  const [disableAllowBtn, setDisableAllowBtn] = useState(true);
+  const [hasError, setHasError] = useState(true);
 
   const {
     account,
@@ -152,15 +152,15 @@ const LongSwap = (props) => {
 
   useEffect(() => {
     longSwapFormErrors?.balError !== undefined
-      ? setDisableAllowBtn(true)
-      : setDisableAllowBtn(false);
+      ? setHasError(true)
+      : setHasError(false);
   }, [longSwapFormErrors]);
 
   useEffect(() => {
     if (error === "Transaction Error" || error === "Transaction Cancelled") {
-      setDisableAllowBtn(false);
+      setHasError(false);
     }
-  }, [error, setDisableAllowBtn]);
+  }, [error, setHasError]);
 
   useEffect(() => {
     return () => {
@@ -324,7 +324,7 @@ const LongSwap = (props) => {
                 handleApproveButton();
               }}
               disabled={
-                disableAllowBtn ||
+                hasError ||
                 executionTime === "" ||
                 swapAmount == 0 ||
                 swapAmount > tokenA?.balance
@@ -350,7 +350,7 @@ const LongSwap = (props) => {
                 !tokenB.tokenIsSet ||
                 !swapAmount ||
                 !numberOfBlockIntervals ||
-                disableAllowBtn ||
+                hasError ||
                 longSwapVerifyLoading ||
                 parseFloat(allowance) <= swapAmount
                   ? true
