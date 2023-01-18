@@ -11,6 +11,9 @@ import { getBlockExplorerAddressUrl } from "../utils/networkUtils";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import LaunchIcon from "@mui/icons-material/Launch";
 
+import metaMaskLogo from "../images/metamask.svg";
+import coinbaseLogo from "../images/coinbase.svg";
+
 import styles from "../css/DisconnectWalletOption.module.css";
 
 const DisconnectWalletOption = ({ showDisconnect, setShowDisconnect }) => {
@@ -25,8 +28,8 @@ const DisconnectWalletOption = ({ showDisconnect, setShowDisconnect }) => {
   };
   const getConnectedWalletIcon = () => {
     const wallet = localStorage.getItem("walletConnection");
-    if (wallet.includes("metamask")) return "/metaMask.svg";
-    else if (wallet.includes("coinbase")) return "/coinbase.svg";
+    if (wallet.includes("metamask")) return metaMaskLogo;
+    else if (wallet.includes("coinbase")) return coinbaseLogo;
   };
 
   return (
