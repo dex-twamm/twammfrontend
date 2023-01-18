@@ -123,7 +123,7 @@ const LongTermSwapCardDropdown = (props) => {
                       />
                       <Box className={styles.infoBox}>
                         <span className={styles.infoSpan}>
-                          {`Cancelled token of ${bigToStr(
+                          {`Unconverted token withdrawl of ${bigToStr(
                             item.unsoldAmount,
                             18
                           )} ${tokenIn.symbol}`}
