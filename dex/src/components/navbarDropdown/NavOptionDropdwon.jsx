@@ -8,11 +8,15 @@ import ImportContactsOutlinedIcon from "@mui/icons-material/ImportContactsOutlin
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import FreeBreakfastOutlinedIcon from "@mui/icons-material/FreeBreakfastOutlined";
 import "./navbarDropdown.css";
+import { Link } from "react-router-dom";
 
 const NavOptionDropdwon = () => {
   return (
     <>
-      <div className="container">
+      <div
+        className="container"
+        style={{ background: "rgb(242 242 252 / 94%)" }}
+      >
         <div
           className="subcls"
           style={{
@@ -33,8 +37,12 @@ const NavOptionDropdwon = () => {
               fontFamily: "Open Sans",
             }}
           >
-            <p>About</p>
-            <InfoOutlinedIcon sx={{ fontSize: 19, color: "#565A69" }} />
+            <Link to="/contact">
+              <p>Contact Us</p>
+            </Link>
+            <ChatBubbleOutlineTwoToneIcon
+              sx={{ fontSize: 19, color: "#565A69" }}
+            />
           </div>
           {/* <div
 						style={{

@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useMemo } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import LongSwapPage from "./pages/LongSwapPage";
@@ -14,6 +14,7 @@ import { getLastVirtualOrderBlock } from "./utils/longSwap";
 import { web3Modal } from "./utils/providerOptions";
 import LiquidityPage from "./pages/LiquidityPage";
 import { disconnect } from "./utils/disconnectWallet";
+import ContactPage from "./pages/ContactPage";
 
 function App() {
   const {
@@ -43,6 +44,7 @@ function App() {
   } = useContext(LongSwapContext);
 
   const { setSelectedNetwork, selectedNetwork } = useContext(UIContext);
+  const location = useLocation();
 
   // Connect cached Wallet as early as possible in cycle.
   useEffect(() => {
@@ -215,8 +217,9 @@ function App() {
   return (
     <>
       <div className="main">
-        <Navbar />
+        {location.pathname !== "/contact" && <Navbar />}
         <Routes>
+          <Route path="/contact" element={<ContactPage />}></Route>
           <Route path="/shortswap" element={<ShortSwap />} />
           <Route path="/" element={<LongSwapPage />} />
           <Route path="/liquidity" element={<LiquidityPage />} />
