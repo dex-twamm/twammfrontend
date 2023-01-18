@@ -20,10 +20,8 @@ const Swap = (props) => {
 
   const [display, setDisplay] = useState(false);
 
-  const [open, setOpen] = useState(false);
+  const [tokenRateSwitch, setTokenRateSwitch] = useState(false);
   const [disableAllowBtn, setDisableAllowBtn] = useState(true);
-
-  const handleClose = () => setOpen((state) => !state);
 
   const {
     account,
@@ -74,6 +72,10 @@ const Swap = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+  };
+
+  const handleTokenRateSwitch = () => {
+    setTokenRateSwitch((state) => !state);
   };
 
   const handleClick = () => {
@@ -186,7 +188,9 @@ const Swap = (props) => {
                 sx={{
                   padding: { xs: "0px 4px", sm: "4px 8px" },
                 }}
-                className={(open && styles.swapunit, styles.spotPriceBox)}
+                className={
+                  (tokenRateSwitch && styles.swapunit, styles.spotPriceBox)
+                }
               >
                 {!formErrors.balError ? (
                   <Box
@@ -216,16 +220,38 @@ const Swap = (props) => {
                         style={{
                           padding: { xs: "0px", sm: "8px 0px" },
                         }}
-                        onClick={handleClose}
+                        onClick={handleTokenRateSwitch}
                       >
-                        {` 1 ${tokenA.symbol} = ${"  "}`}
-                        <label style={{ marginLeft: "4px" }}>
-                          {spotPriceLoading ? (
-                            <Skeleton width={"100px"} />
-                          ) : (
-                            ` ${spotPrice?.toFixed(4)} ${tokenB.symbol}`
-                          )}
-                        </label>
+                        {!tokenRateSwitch && (
+                          <>
+                            {` 1 ${tokenA.symbol} = ${"  "}`}
+                            <label
+                              style={{ marginLeft: "4px", cursor: "pointer" }}
+                            >
+                              {spotPriceLoading ? (
+                                <Skeleton width={"100px"} />
+                              ) : (
+                                ` ${spotPrice?.toFixed(4)} ${tokenB.symbol}`
+                              )}
+                            </label>
+                          </>
+                        )}
+                        {tokenRateSwitch && (
+                          <>
+                            {` 1 ${tokenB.symbol} = ${"  "}`}
+                            <label
+                              style={{ marginLeft: "4px", cursor: "pointer" }}
+                            >
+                              {spotPriceLoading ? (
+                                <Skeleton width={"100px"} />
+                              ) : (
+                                ` ${(1 / spotPrice).toFixed(4)} ${
+                                  tokenA.symbol
+                                }`
+                              )}
+                            </label>
+                          </>
+                        )}
                       </p>
                     )}
                   </Box>
