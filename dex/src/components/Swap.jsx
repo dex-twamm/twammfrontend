@@ -10,7 +10,7 @@ import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
 import Input from "./Input";
 
 import { BigNumber } from "ethers";
-import { bigToStr } from "../utils";
+import { bigToStr, getProperFixedValue } from "../utils";
 import { approveMaxAllowance, getAllowance } from "../utils/getApproval";
 
 import { UIContext } from "../providers/context/UIProvider";
@@ -231,7 +231,9 @@ const Swap = (props) => {
                               {spotPriceLoading ? (
                                 <Skeleton width={"100px"} />
                               ) : (
-                                ` ${spotPrice?.toFixed(4)} ${tokenB.symbol}`
+                                ` ${getProperFixedValue(spotPrice)} ${
+                                  tokenB.symbol
+                                }`
                               )}
                             </label>
                           </>
@@ -245,7 +247,7 @@ const Swap = (props) => {
                               {spotPriceLoading ? (
                                 <Skeleton width={"100px"} />
                               ) : (
-                                ` ${(1 / spotPrice).toFixed(4)} ${
+                                ` ${getProperFixedValue(1 / spotPrice)} ${
                                   tokenA.symbol
                                 }`
                               )}
