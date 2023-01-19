@@ -217,7 +217,7 @@ function App() {
   return (
     <>
       <div className="main">
-        {location.pathname !== "/contact" && <Navbar />}
+        <Navbar />
         <Routes>
           <Route path="/contact" element={<ContactPage />}></Route>
           <Route path="/shortswap" element={<ShortSwap />} />

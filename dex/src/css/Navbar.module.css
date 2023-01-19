@@ -8,7 +8,7 @@
   align-items: center;
 }
 
-.tabContainerLeft {
+.tabContainerLeft a {
   display: flex;
   align-items: center;
   justify-content: space-between;

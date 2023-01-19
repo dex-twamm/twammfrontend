@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import React, { useContext, useEffect, useState } from "react";
 import { RiArrowDropDownLine } from "react-icons/ri";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { POPUP_MESSAGE } from "../constants";
 import styles from "../css/Navbar.module.css";
 import { ShortSwapContext, UIContext } from "../providers";
@@ -16,6 +16,7 @@ import { NETWORKS } from "../utils/networks";
 const Navbar = () => {
   const [showDisconnect, setShowDisconnect] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
+  const location = useLocation();
 
   const { selectedNetwork, setSelectedNetwork } = useContext(UIContext);
 
@@ -98,87 +99,89 @@ const Navbar = () => {
               alt="logo"
               width="20px"
             />
+            <p className={styles.longSwap}>Longswap</p>
           </Link>
-          <p className={styles.longSwap}>Longswap</p>
         </div>
-        <div className={styles.tabContainerRight}>
-          {isWalletConnected && (
-            <div className={styles.dropdown}>
-              <div className={styles.container}>
-                <div id="networkType" className={styles.dropdownContainer}>
-                  <img
-                    src={selectedNetwork?.logo}
-                    className={styles.networkIcon}
-                    alt=""
-                  />
-                  <span>{selectedNetwork?.network}</span>
-                  <RiArrowDropDownLine className={styles.dropdownIcon} />
-                </div>
+        {location.pathname !== "/contact" && (
+          <div className={styles.tabContainerRight}>
+            {isWalletConnected && (
+              <div className={styles.dropdown}>
+                <div className={styles.container}>
+                  <div id="networkType" className={styles.dropdownContainer}>
+                    <img
+                      src={selectedNetwork?.logo}
+                      className={styles.networkIcon}
+                      alt=""
+                    />
+                    <span>{selectedNetwork?.network}</span>
+                    <RiArrowDropDownLine className={styles.dropdownIcon} />
+                  </div>
 
-                <div className={styles.currency}>
-                  <div className={styles.list}>
-                    <p>Select a network</p>
-                    <div className={styles.networkList}>{networkList}</div>
+                  <div className={styles.currency}>
+                    <div className={styles.list}>
+                      <p>Select a network</p>
+                      <div className={styles.networkList}>{networkList}</div>
+                    </div>
                   </div>
                 </div>
               </div>
+            )}
+
+            <div className={styles.walletBalance}>
+              {isWalletConnected ? (
+                <>
+                  <button
+                    className={classNames(styles.btnWallet, styles.leftRadius)}
+                  >
+                    {balance}
+                  </button>
+                  <button
+                    onClick={handleDisconnect}
+                    className={classNames(styles.btnWallet, styles.rightRadius)}
+                  >
+                    {truncateAddress(account)}
+                  </button>
+                </>
+              ) : (
+                <button
+                  className={classNames(styles.btn, styles.btnConnect)}
+                  onClick={walletConnect}
+                >
+                  Connect Wallet
+                </button>
+              )}
             </div>
-          )}
-
-          <div className={styles.walletBalance}>
-            {isWalletConnected ? (
-              <>
-                <button
-                  className={classNames(styles.btnWallet, styles.leftRadius)}
-                >
-                  {balance}
-                </button>
-                <button
-                  onClick={handleDisconnect}
-                  className={classNames(styles.btnWallet, styles.rightRadius)}
-                >
-                  {truncateAddress(account)}
-                </button>
-              </>
-            ) : (
-              <button
-                className={classNames(styles.btn, styles.btnConnect)}
-                onClick={walletConnect}
-              >
-                Connect Wallet
-              </button>
-            )}
-          </div>
-          {/* Not used currently */}
-          <div
-            onClick={(e) => e.stopPropagation()}
-            className={styles.menuOption}
-          >
-            <button
-              className={styles.menuThreeDot}
-              onClick={() => setShowDropdown((state) => !state)}
+            {/* Not used currently */}
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className={styles.menuOption}
             >
-              <FontAwesomeIcon
-                style={{
-                  background: "transparent",
-                }}
-                icon={faEllipsis}
-              />
-            </button>
-
-            {showDropdown && (
-              <span
-                className={classNames(
-                  styles.menuList,
-                  showDropdown && styles.show
-                )}
-                id="menu-dropdown"
+              <button
+                className={styles.menuThreeDot}
+                onClick={() => setShowDropdown((state) => !state)}
               >
-                {<NavOptionDropdwon />}
-              </span>
-            )}
+                <FontAwesomeIcon
+                  style={{
+                    background: "transparent",
+                  }}
+                  icon={faEllipsis}
+                />
+              </button>
+
+              {showDropdown && (
+                <span
+                  className={classNames(
+                    styles.menuList,
+                    showDropdown && styles.show
+                  )}
+                  id="menu-dropdown"
+                >
+                  {<NavOptionDropdwon />}
+                </span>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </header>
   );
