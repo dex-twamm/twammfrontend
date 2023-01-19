@@ -14,15 +14,18 @@
 .h5Text {
   text-transform: uppercase;
   margin-bottom: 5px;
+  color: #554994;
 }
 
 .h1Text {
   margin-bottom: 20px;
+  color: #554994;
 }
 
 .para {
   font-size: 16px;
   margin-bottom: 30px;
+  letter-spacing: 0.5px;
 }
 
 .mediums {
@@ -63,6 +66,7 @@
   font-size: 14px;
   text-transform: uppercase;
   font-weight: 700;
+  color: #554994;
 }
 
 .info {
