@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useMemo } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import LongSwapPage from "./pages/LongSwapPage";
@@ -44,7 +44,6 @@ function App() {
   } = useContext(LongSwapContext);
 
   const { setSelectedNetwork, selectedNetwork } = useContext(UIContext);
-  const location = useLocation();
 
   // Connect cached Wallet as early as possible in cycle.
   useEffect(() => {
@@ -219,7 +218,7 @@ function App() {
       <div className="main">
         <Navbar />
         <Routes>
-          <Route path="/contact" element={<ContactPage />}></Route>
+          <Route path="/contact" element={<ContactPage />} />
           <Route path="/shortswap" element={<ShortSwap />} />
           <Route path="/" element={<LongSwapPage />} />
           <Route path="/liquidity" element={<LiquidityPage />} />
