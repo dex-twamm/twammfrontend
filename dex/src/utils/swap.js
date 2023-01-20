@@ -46,10 +46,20 @@ export const swapTokens = async (
   walletAddress,
   deadline,
   currentNetwork,
-  hasCallStatic
+  hasCallStatic,
+  expectedSwapOut,
+  tolerance
 ) => {
   const exchangeContract = getExchangeContract(currentNetwork, signer);
   const deadlineTimestamp = getDeadlineStamp(deadline);
+
+  let expectedSwapOutAfterTolerance;
+
+  if (!hasCallStatic) {
+    expectedSwapOutAfterTolerance = BigNumber.from(expectedSwapOut)
+      .mul(1000 - 10 * tolerance)
+      .div(1000);
+  }
 
   const swapData = [
     {
@@ -66,12 +76,14 @@ export const swapTokens = async (
       recipient: walletAddress,
       toInternalBalance: false,
     },
-    // expectedSwapOutAfterTolerance,
+    ...(expectedSwapOut ? [expectedSwapOutAfterTolerance] : []),
     kind === 0 ? 0 : MAX_UINT256, // 0 if given in, infinite if given out.  // Slippage  // TODO // Need To QueryBatchSwap Price - 1%
     // swapAmountWei * SpotPrice *( 1- Slippage can be 0.005, 0.01, 0.02) Type Big Number
 
     BigNumber.from(Math.floor(deadlineTimestamp / 1000)), // Deadline // Minutes Into Seconds Then Type BigNumber
   ];
+
+  console.log(swapData);
 
   let swapTx;
 

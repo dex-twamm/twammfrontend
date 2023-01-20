@@ -15,7 +15,10 @@ export const _swapTokens = async (
   setSuccess,
   setError,
   setLoading,
-  currentNetwork
+  currentNetwork,
+  hasCallStatic,
+  expectedSwapOut,
+  tolerance
 ) => {
   const poolConfig = getPoolConfig(currentNetwork);
   const tokenIn = poolConfig.tokens.find((token) => token.address === tokenA);
@@ -41,7 +44,10 @@ export const _swapTokens = async (
         assetOut,
         walletAddress,
         deadline,
-        currentNetwork
+        currentNetwork,
+        hasCallStatic,
+        expectedSwapOut,
+        tolerance
       )
         .then((res) => {
           setTransactionHash(res.hash);

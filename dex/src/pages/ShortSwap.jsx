@@ -37,6 +37,8 @@ const ShortSwap = () => {
     setExpectedSwapOut,
     spotPriceLoading,
     setSpotPriceLoading,
+    expectedSwapOut,
+    tolerance,
   } = useContext(ShortSwapContext);
   const { selectedNetwork, setSelectedNetwork } = useContext(UIContext);
   const { allowance, tokenA, tokenB } = useContext(LongSwapContext);
@@ -113,7 +115,10 @@ const ShortSwap = () => {
           setSuccess,
           setError,
           setLoading,
-          selectedNetwork
+          selectedNetwork,
+          false,
+          expectedSwapOut,
+          tolerance
         );
 
         setSwapAmount(0);
