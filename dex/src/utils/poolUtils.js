@@ -1,19 +1,24 @@
 import { POOLS } from "./pool";
 
+export const getCurrentNetwork = (currentNetwork) => {
+  return currentNetwork?.network ?? "Ethereum";
+};
+
 export const getAllPool = (currentNetwork) => {
-  if (currentNetwork) return Object.values(POOLS?.[currentNetwork?.network]);
+  if (currentNetwork)
+    return Object.values(POOLS?.[getCurrentNetwork(currentNetwork)]);
 };
 
 export const getPoolId = (currentNetwork) => {
   if (currentNetwork)
-    return Object.keys(POOLS[currentNetwork?.network])?.[
+    return Object.keys(POOLS[getCurrentNetwork(currentNetwork)])?.[
       currentNetwork?.poolId
     ];
 };
 
 export const getPoolConfig = (currentNetwork) => {
   if (currentNetwork);
-  return Object.values(POOLS?.[currentNetwork?.network])?.[
+  return Object.values(POOLS?.[getCurrentNetwork(currentNetwork)])?.[
     currentNetwork?.poolId
   ];
 };
