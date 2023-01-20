@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { HiExternalLink } from "react-icons/hi";
 import styles from "../css/LongTermOrderCard.module.css";
 import { UIContext } from "../providers/context/UIProvider";
-import { bigToFloat, bigToStr } from "../utils";
+import { bigToFloat, bigToStr, getProperFixedValue } from "../utils";
 import classNames from "classnames";
 import LongTermSwapCardDropdown from "./LongTermSwapCardDropdown";
 import { _withdrawLTO } from "../utils/_withdrawLto";
@@ -158,9 +158,6 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
     return () => clearInterval(timer);
   }, [newTime]);
 
-  const startTime = new Date(stBlock * 1000).toLocaleString();
-  const completionTime = new Date(expBlock * 1000).toLocaleString();
-
   return (
     <>
       <div className={styles.container} key={orderLog.transactionHash}>
@@ -254,7 +251,7 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
             <div className={styles.fees}>{poolConfig?.fees} fees</div>
             {bigToFloat(soldToken) !== 0 && (
               <div className={styles.averagePrice}>
-                {averagePrice.toFixed(4)} Average Price
+                {getProperFixedValue(averagePrice)} Average Price
               </div>
             )}
           </div>

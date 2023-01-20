@@ -18,8 +18,20 @@ export const toHex = (num) => {
   return "0x" + val.toString(16);
 };
 
+//This function returns the few number after trailing of zeroes in decimals
+export const getProperFixedValue = (num) => {
+  let number = parseFloat(num);
+  let str = num?.toString();
+  let decimalIndex = str.indexOf(".");
+  if (decimalIndex === -1) return number?.toFixed(4);
+  let trailingZeroes = str.slice(decimalIndex).replace(/[1-9]/g, "").length;
+  return number?.toFixed(trailingZeroes > 2 ? trailingZeroes : 2);
+};
+
 export const bigToStr = (bigNum, decimalPlaces) => {
-  return parseFloat(ethers.utils.formatUnits(bigNum, decimalPlaces)).toFixed(4);
+  return getProperFixedValue(
+    parseFloat(ethers.utils.formatUnits(bigNum, decimalPlaces))
+  );
 };
 
 export const bigToFloat = (bigNum, decimalPlaces) => {
