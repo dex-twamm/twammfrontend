@@ -23,25 +23,25 @@ const ContactPage = () => {
             to hearing from you.
           </p>
           <div className={styles.mediums}>
-            <div className={styles.details}>
+            {/* <div className={styles.details}>
               <div className={styles.icon}>
                 <EmailIcon />{" "}
               </div>
               <div className={styles.contents}>
                 <p className={styles.item}>Email Address</p>
-                <p className={styles.info}>info@longswap.com</p>
+                <p className={styles.info}>codesherpa.xs@gmail.com</p>
               </div>
-            </div>
+            </div> */}
             <div className={styles.details}>
               <div className={styles.icon}>
                 <TwitterIcon />
               </div>
               <div className={styles.contents}>
                 <p className={styles.item}>Twitter</p>
-                <p className={styles.info}>@longswap</p>
+                <p className={styles.info}>https://twitter.com/financexs</p>
               </div>
             </div>
-            <div className={styles.details}>
+            {/* <div className={styles.details}>
               <div className={styles.icon}>
                 <FontAwesomeIcon icon={faMessage} />
               </div>
@@ -49,7 +49,7 @@ const ContactPage = () => {
                 <p className={styles.item}>Discord</p>
                 <p className={styles.info}>https://discord.com/channels/@me</p>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className={styles.rightSection}>
@@ -61,7 +61,7 @@ const ContactPage = () => {
           <input
             className={styles.textInput}
             type="email"
-            placeholder="Your Email"
+            placeholder="Your Email*"
           />
           <input
             className={styles.textInput}
@@ -71,7 +71,7 @@ const ContactPage = () => {
           <textarea
             className={styles.textAreaInput}
             rows="5"
-            placeholder="Your Message"
+            placeholder="Your Message*"
           ></textarea>
           <button className={styles.sendButton}>Send Message</button>
         </div>
