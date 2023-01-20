@@ -19,7 +19,8 @@ const Swap = (props) => {
   const { handleSwapAction, spotPriceLoading } = props;
 
   const [display, setDisplay] = useState(false);
-  const [hasError, setHasError] = useState(true);
+  const [hasBalancerOrTransactionError, setHasBalancerOrTransactionError] =
+    useState(true);
 
   const [tokenRateSwitch, setTokenRateSwitch] = useState(false);
 
@@ -117,14 +118,16 @@ const Swap = (props) => {
   };
 
   useEffect(() => {
-    formErrors.balError !== undefined ? setHasError(true) : setHasError(false);
+    formErrors.balError !== undefined
+      ? setHasBalancerOrTransactionError(true)
+      : setHasBalancerOrTransactionError(false);
   }, [formErrors]);
 
   useEffect(() => {
     if (error === "Transaction Error" || error === "Transaction Cancelled") {
-      setHasError(false);
+      setHasBalancerOrTransactionError(false);
     }
-  }, [error, setHasError]);
+  }, [error, setHasBalancerOrTransactionError]);
 
   useEffect(() => {
     return () => {
@@ -278,7 +281,9 @@ const Swap = (props) => {
                 handleApproveButton();
               }}
               disabled={
-                hasError || swapAmount == 0 || swapAmount > tokenA?.balance
+                hasBalancerOrTransactionError ||
+                swapAmount == 0 ||
+                swapAmount > tokenA?.balance
               }
             >
               {`Allow TWAMM Protocol to use your ${
@@ -300,7 +305,7 @@ const Swap = (props) => {
                 !tokenA.tokenIsSet ||
                 !tokenB.tokenIsSet ||
                 !swapAmount ||
-                hasError ||
+                hasBalancerOrTransactionError ||
                 spotPriceLoading ||
                 parseFloat(allowance) <= swapAmount
                   ? true
