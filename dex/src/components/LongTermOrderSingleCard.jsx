@@ -166,7 +166,7 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
     return () => clearInterval(timer);
   }, [newTime]);
 
-  const executeCompletionTime = () => {
+  const isExecuteTimeCompleted = () => {
     if (orderStatus?.status.includes(orderExecutionTimeRemaining)) return false;
     else return true;
   };
@@ -176,7 +176,7 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
       const startTime = await web3provider.getBlock(stBlock);
       setOrderStartTime(new Date(startTime?.timestamp * 1000).toLocaleString());
 
-      if (executeCompletionTime()) {
+      if (isExecuteTimeCompleted()) {
         const completionTime = await web3provider.getBlock(
           parseFloat(expBlock.toString())
         );
@@ -285,7 +285,7 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
 
           <div
             className={
-              bigToFloat(soldToken) === 0 || !executeCompletionTime()
+              bigToFloat(soldToken) === 0 || !isExecuteTimeCompleted()
                 ? styles.extrasContainerOne
                 : styles.extrasContainer
             }
@@ -300,7 +300,7 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
             </div>
             <div className={styles.times}>
               <div className={styles.fees}>Initiated On: {orderStartTime}</div>
-              {executeCompletionTime() && (
+              {isExecuteTimeCompleted() && (
                 <div className={styles.fees}>
                   Completed On: {orderCompletionTime}
                 </div>
