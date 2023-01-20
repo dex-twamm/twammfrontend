@@ -2,10 +2,55 @@ import { faMessage } from "@fortawesome/free-solid-svg-icons";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import EmailIcon from "@mui/icons-material/Email";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import React, { useState } from "react";
 import styles from "../css/Contact.module.css";
 
 const ContactPage = () => {
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [name, setName] = useState("");
+  const [message, setMessage] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [messageError, setMessageError] = useState("");
+  const [status, setStatus] = useState();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    let emailValid = true;
+    let commentValid = true;
+
+    if (!email) {
+      setEmailError("Email is required!");
+      emailValid = false;
+    } else if (!isEmail(email)) {
+      setEmailError("Invalid email format!");
+      emailValid = false;
+    } else {
+      setEmailError("");
+    }
+
+    if (!message) {
+      setMessageError("Message is required!");
+      commentValid = false;
+    } else {
+      setMessageError("");
+    }
+    if (emailValid && commentValid) {
+      const formData = {
+        name: name,
+        email: email,
+        phone: phone,
+        message: message,
+      };
+    }
+  };
+
+  const isEmail = (email) => {
+    var regexEmail =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return regexEmail.test(String(email).toLowerCase());
+  };
+
   return (
     <>
       <div className={styles.container}>
@@ -52,29 +97,54 @@ const ContactPage = () => {
             </div> */}
           </div>
         </div>
-        <div className={styles.rightSection}>
+        <form className={styles.rightSection} onSubmit={handleSubmit}>
           <input
             className={styles.textInput}
             type="text"
             placeholder="Your Name"
+            onChange={(e) => setName(e.target.value)}
           />
+          <div>
+            <input
+              name="email"
+              className={styles.textInput}
+              type="email"
+              placeholder="Your Email *"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            {emailError && (
+              <span style={{ color: "red", fontSize: "12px" }}>
+                {emailError}
+              </span>
+            )}
+          </div>
+
           <input
-            className={styles.textInput}
-            type="email"
-            placeholder="Your Email*"
-          />
-          <input
+            name="number"
             className={styles.textInput}
             type="number"
             placeholder="Your Phone"
+            onChange={(e) => setPhone(e.target.value)}
           />
-          <textarea
-            className={styles.textAreaInput}
-            rows="5"
-            placeholder="Your Message*"
-          ></textarea>
-          <button className={styles.sendButton}>Send Message</button>
-        </div>
+          <div className="">
+            <textarea
+              name="message"
+              className={styles.textAreaInput}
+              rows="5"
+              placeholder="Your Message *"
+              onChange={(e) => setMessage(e.target.value)}
+            ></textarea>
+            {messageError && (
+              <span style={{ color: "red", fontSize: "12px" }}>
+                {messageError}
+              </span>
+            )}
+          </div>
+
+          <button className={styles.sendButton} type="submit">
+            Send Message
+          </button>
+        </form>
       </div>
     </>
   );
