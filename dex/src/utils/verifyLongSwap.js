@@ -94,5 +94,6 @@ export const verifyLongSwap = async (
       }
       setLongSwapVerifyLoading(false);
     }
+    setLongSwapVerifyLoading(false);
   }
 };

@@ -60,6 +60,12 @@
   font-weight: 600;
 }
 
+@media (max-width: 520px) {
+  .textLink {
+    font-size: 18px;
+  }
+}
+
 .settingsIcon {
   cursor: pointer;
   font-size: 20px;

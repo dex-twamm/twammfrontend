@@ -10,7 +10,7 @@ import { getBlockExplorerTransactionUrl } from "../utils/networkUtils";
 import styles from "../css/LongTermSwapCardDropDown.module.css";
 
 const LongTermSwapCardDropdown = (props) => {
-  const { item } = props;
+  const { item, tokenIn, tokenOut } = props;
   const { selectedNetwork } = useContext(UIContext);
   const [open, setOpen] = useState(false);
 
@@ -52,7 +52,7 @@ const LongTermSwapCardDropdown = (props) => {
                     handleClose();
                   }}
                 >
-                  Withdrawals {item?.unsoldAmount && "and Cancelled"}
+                  Withdrawals {item?.unsoldAmount && "and Cancellation"}
                 </span>
 
                 {open ? (
@@ -86,22 +86,22 @@ const LongTermSwapCardDropdown = (props) => {
                         fontSize="small"
                         sx={{
                           color: "#808080",
-                          fontSize: "12px",
+                          fontSize: "8px",
                         }}
                       />
                       <Box className={styles.infoBox}>
                         <span className={styles.infoSpan}>
-                          {`Token withdrawal of ${bigToStr(
+                          {`Converted token withdrawal of ${bigToStr(
                             items.proceeds,
                             18
-                          )} `}
+                          )} ${tokenOut.symbol}`}
                           <IconButton
                             onClick={() =>
                               handleExplorer(items.transactionHash)
                             }
                           >
                             <LaunchIcon
-                              fontSize="medium"
+                              fontSize="small"
                               className={styles.launchIconStyle}
                             ></LaunchIcon>
                           </IconButton>
@@ -118,20 +118,20 @@ const LongTermSwapCardDropdown = (props) => {
                         fontSize="small"
                         sx={{
                           color: "#808080",
-                          fontSize: "12px",
+                          fontSize: "8px",
                         }}
                       />
                       <Box className={styles.infoBox}>
                         <span className={styles.infoSpan}>
-                          {`Token cancelled of ${bigToStr(
+                          {`Unconverted token withdrawl of ${bigToStr(
                             item.unsoldAmount,
                             18
-                          )} `}
+                          )} ${tokenIn.symbol}`}
                           <IconButton
                             onClick={() => handleExplorer(item.transactionHash)}
                           >
                             <LaunchIcon
-                              fontSize="medium"
+                              fontSize="small"
                               className={styles.launchIconStyle}
                             ></LaunchIcon>
                           </IconButton>
