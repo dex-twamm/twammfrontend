@@ -4,10 +4,10 @@ import EmailIcon from "@mui/icons-material/Email";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import styles from "../css/Contact.module.css";
+import { Axios } from "../firebase/firebaseConfig";
 
 const ContactPage = () => {
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -39,10 +39,23 @@ const ContactPage = () => {
       const formData = {
         name: name,
         email: email,
-        phone: phone,
         message: message,
       };
+      sendEmail(formData);
     }
+  };
+
+  const sendEmail = (formData) => {
+    Axios.post(
+      "https://us-central1-longswap-prod.cloudfunctions.net/submit",
+      formData
+    )
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log("hello", error);
+      });
   };
 
   const isEmail = (email) => {
@@ -119,13 +132,13 @@ const ContactPage = () => {
             )}
           </div>
 
-          <input
+          {/* <input
             name="number"
             className={styles.textInput}
             type="number"
             placeholder="Your Phone"
             onChange={(e) => setPhone(e.target.value)}
-          />
+          /> */}
           <div className="">
             <textarea
               name="message"

@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "longswap-prod"
-  }
+    "default": "longswap-prod",
+    "contact-emails": "longswap-prod"
+  },
+  "targets": {},
+  "etags": {}
 }
