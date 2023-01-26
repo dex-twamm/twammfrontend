@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../../css/LiquidityPool.module.css";
 import { useContext } from "react";
-import { ShortSwapContext } from "../../providers";
+import { LongSwapContext, ShortSwapContext } from "../../providers";
 import Tabs from "../Tabs";
 import {
   getPoolFees,
@@ -9,19 +9,85 @@ import {
   getPoolTokenSymbol,
 } from "../../utils/poolUtils";
 import { UIContext } from "../../providers/context/UIProvider";
-import { Avatar, Box, Skeleton } from "@mui/material";
+import { Avatar, Box, Button, Skeleton } from "@mui/material";
 import ethLogo from "../../images/ethereum.svg";
 import maticLogo from "../../images/Testv4.svg";
+import Input from "../Input";
+import classNames from "classnames";
+import lsStyles from "../../css/LongSwap.module.css";
+import bstyles from "../../css/AddLiquidity.module.css";
+import { getLiquidityInfo, joinPool } from "../../utils/checkLiquidity";
+import { spotPrice } from "../../utils/getSpotPrice";
+import { BigNumber } from "ethers";
+import { bigToStr } from "../../utils";
 
 const LiquidityPools = () => {
-  const { LPTokenBalance, loading, isWalletConnected } =
-    useContext(ShortSwapContext);
+  // const { LPTokenBalance, loading, isWalletConnected } =
+  //   useContext(ShortSwapContext);
+  // const { selectedNetwork } = useContext(UIContext);
+
+  const [display, setDisplay] = useState(false);
+
+  const {
+    selectToken,
+    setSelectToken,
+    account,
+    setSpotPriceLoading,
+    deadline,
+    setFormErrors,
+    setSpotPrice,
+    setExpectedSwapOut,
+    expectedSwapOut,
+  } = useContext(ShortSwapContext);
+
+  const { tokenA, tokenB, setTokenA, setTokenB } = useContext(LongSwapContext);
+
+  const { web3provider } = useContext(ShortSwapContext);
   const { selectedNetwork } = useContext(UIContext);
+
+  const [tokenAAmountForPool, setTokenAAmountForPool] = useState();
+  const [tokenBAmountForPool, setTokenBAmountForPool] = useState();
+
+  const handleDisplay = (event) => {
+    setSelectToken(event.currentTarget.id);
+    setDisplay(!display);
+  };
+
+  useEffect(() => {
+    const interval1 = setTimeout(() => {
+      spotPrice(
+        tokenAAmountForPool,
+        setSpotPriceLoading,
+        tokenA?.address,
+        tokenB?.address,
+        web3provider,
+        account,
+        deadline,
+        setFormErrors,
+        setSpotPrice,
+        setExpectedSwapOut,
+        selectedNetwork
+      );
+    }, 500);
+    return () => {
+      clearTimeout(interval1);
+    };
+  }, [tokenAAmountForPool, tokenB, tokenA, selectedNetwork]);
+
+  const handleAddLiquidity = async () => {
+    const amountsIn = [tokenAAmountForPool, expectedSwapOut];
+    await getLiquidityInfo(
+      selectedNetwork,
+      web3provider,
+      account,
+      amountsIn
+    ).then((res) => console.log(res));
+  };
 
   return (
     <Box className={styles.rootBox}>
       <Tabs />
-      <Box
+      {/* <Box
         className={styles.headingBox}
         sx={{
           alignItems: {
@@ -130,7 +196,49 @@ const LiquidityPools = () => {
             </Box>
           </Box>
         </Box>
-      </Box>{" "}
+      </Box>{" "} */}
+      <Box className={lsStyles.mainBox}>
+        <Input
+          id={1}
+          input={tokenAAmountForPool ? tokenAAmountForPool : ""}
+          placeholder="0.0"
+          onChange={(e) => {
+            setTokenAAmountForPool(e.target.value);
+          }}
+          imgSrc={tokenA?.logo}
+          symbol={tokenA?.symbol}
+          handleDisplay={handleDisplay}
+          selectToken={selectToken}
+          display={display}
+          setDisplay={setDisplay}
+          setTokenA={setTokenA}
+          setTokenB={setTokenB}
+        />
+        <Input
+          id={2}
+          input={
+            expectedSwapOut
+              ? bigToStr(BigNumber.from(expectedSwapOut), tokenB.decimals)
+              : ""
+          }
+          placeholder=""
+          imgSrc={tokenB?.logo}
+          symbol={tokenB?.symbol}
+          onChange={(e) => setTokenBAmountForPool(e.target.value)}
+          handleDisplay={handleDisplay}
+          selectToken={selectToken}
+          display={display}
+          setDisplay={setDisplay}
+          setTokenA={setTokenA}
+          setTokenB={setTokenB}
+        />
+        <button
+          className={classNames(bstyles.btn, bstyles.btnConnect)}
+          onClick={handleAddLiquidity}
+        >
+          Add Liquidity
+        </button>
+      </Box>
     </Box>
   );
 };

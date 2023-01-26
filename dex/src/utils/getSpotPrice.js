@@ -35,7 +35,6 @@ export const spotPrice = async (
 
     const signer = web3provider.getSigner();
     const walletAddress = account;
-
     //for shortswap
     try {
       await verifySwapTokens(

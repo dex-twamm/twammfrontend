@@ -26,6 +26,8 @@ export const _swapTokens = async (
     tokenIn.decimals
   );
 
+  console.log(swapAmount, swapAmountWei);
+
   if (swapAmountWei.lte(walletBalanceWei)) {
     try {
       const signer = web3provider.getSigner();

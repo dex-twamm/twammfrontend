@@ -24,6 +24,8 @@ export const _placeLongTermOrders = async (
     const tokenInIndex = poolConfig.tokens.findIndex(
       (object) => tokenA === object.address
     );
+
+    console.log(tokenInIndex);
     const tokenOutIndex = poolConfig.tokens.findIndex(
       (object) => tokenB === object.address
     );
