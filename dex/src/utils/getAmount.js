@@ -17,7 +17,7 @@ export const getTokensBalance = async (
   var tokenAddress = getPoolTokenAddresses(currentNetwork);
 
   const newBalance = [];
-  for (let index = 0; index < tokenAddress.length; index++) {
+  for (let index = 0; index < tokenAddress?.length; index++) {
     const address = tokenAddress[index];
     const balances = await balanceContract(address);
     const readableBalance = ethers.utils.formatUnits(

@@ -82,19 +82,18 @@ const Navbar = () => {
     };
   });
 
+  const networkId = selectedNetwork?.network.toLowerCase();
+
   useEffect(() => {
     const getLogo = async () => {
-      if (selectedNetwork) {
-        const networkId = selectedNetwork?.network.toLowerCase();
-        const logo = await getTokenLogo(networkId);
-        setSelectedNetwork({
-          ...selectedNetwork,
-          logo: logo,
-        });
-      }
+      const logo = await getTokenLogo(networkId);
+      setSelectedNetwork({
+        ...selectedNetwork,
+        logo: logo,
+      });
     };
     getLogo();
-  }, [selectedNetwork?.network]);
+  }, [networkId, setSelectedNetwork]);
 
   return (
     <header className={styles.header} id="header">
