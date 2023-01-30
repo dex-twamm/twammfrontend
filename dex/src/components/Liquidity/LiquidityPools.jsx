@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "../../css/LiquidityPool.module.css";
 import { useContext } from "react";
-import { ShortSwapContext } from "../../providers";
+import { LongSwapContext, ShortSwapContext } from "../../providers";
 import Tabs from "../Tabs";
 import {
   getPoolFees,
@@ -10,12 +10,11 @@ import {
 } from "../../utils/poolUtils";
 import { UIContext } from "../../providers/context/UIProvider";
 import { Avatar, Box, Skeleton } from "@mui/material";
-import ethLogo from "../../images/ethereum.svg";
-import maticLogo from "../../images/Testv4.svg";
 
 const LiquidityPools = () => {
   const { LPTokenBalance, loading, isWalletConnected } =
     useContext(ShortSwapContext);
+  const { tokenA, tokenB } = useContext(LongSwapContext);
   const { selectedNetwork } = useContext(UIContext);
 
   return (
@@ -57,13 +56,13 @@ const LiquidityPools = () => {
                       <Avatar
                         className={styles.styledAvatarOne}
                         alt="Testv4"
-                        src={maticLogo}
+                        src={tokenA?.logo}
                       />
                       <Avatar
                         className={styles.styledAvatarTwo}
                         sizes="small"
                         alt="Faucet"
-                        src={ethLogo}
+                        src={tokenB?.logo}
                       />
                       <span
                         className={styles.tokensTypography}
