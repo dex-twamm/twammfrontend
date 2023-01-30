@@ -133,4 +133,4 @@ const LiquidityPools = () => {
     </Box>
   );
 };
-export { LiquidityPools };
+export default LiquidityPools;

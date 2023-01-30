@@ -1,5 +1,8 @@
 import ethLogo from "../images/ethereum.svg";
-import maticLogo from "../images/Testv4.svg";
+import daiLogo from "../images/daiIcon.png";
+import maticLogo from "../images/maticIcon.png";
+import usdLogo from "../images/usdIcon.png";
+import wethLogo from "../images/wethIcon.png";
 
 export const POOLS = {
   Goerli: {
@@ -15,6 +18,7 @@ export const POOLS = {
           name: "matic-network",
           decimals: 18,
           address: "0x499d11E0b6eAC7c0593d8Fb292DCBbF815Fb29Ae",
+          logo: maticLogo,
         },
         {
           symbol: "FAU",
@@ -37,6 +41,7 @@ export const POOLS = {
           name: "Dai",
           decimals: 18,
           address: "0x499d11E0b6eAC7c0593d8Fb292DCBbF815Fb29Ae",
+          logo: daiLogo,
         },
         {
           symbol: "FAU",
@@ -61,12 +66,14 @@ export const POOLS = {
           name: "USD",
           decimals: 6,
           address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+          logo: usdLogo,
         },
         {
           symbol: "WETH",
           name: "WETH",
           decimals: 18,
           address: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+          logo: wethLogo,
         },
       ],
     },

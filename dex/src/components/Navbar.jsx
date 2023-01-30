@@ -82,18 +82,18 @@ const Navbar = () => {
     };
   });
 
-  const networkId = selectedNetwork?.id;
+  // const networkId = selectedNetwork?.id;
 
-  useEffect(() => {
-    const getLogo = async () => {
-      const logo = await getTokenLogo(networkId);
-      setSelectedNetwork({
-        ...selectedNetwork,
-        logo: logo,
-      });
-    };
-    getLogo();
-  }, [networkId, setSelectedNetwork]);
+  // useEffect(() => {
+  //   const getLogo = async () => {
+  //     const logo = await getTokenLogo(networkId);
+  //     setSelectedNetwork({
+  //       ...selectedNetwork,
+  //       logo: logo,
+  //     });
+  //   };
+  //   getLogo();
+  // }, [networkId, setSelectedNetwork]);
 
   return (
     <header className={styles.header} id="header">
