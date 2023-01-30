@@ -12,7 +12,6 @@ import { connectWallet } from "../utils/connetWallet";
 import { DisconnectWalletOption } from "./DisconnectWalletOption";
 import NavOptionDropdwon from "./navbarDropdown/NavOptionDropdwon";
 import { NETWORKS } from "../utils/networks";
-import { getTokenLogo } from "../utils/api";
 
 const Navbar = () => {
   const [showDisconnect, setShowDisconnect] = useState(false);
@@ -81,19 +80,6 @@ const Navbar = () => {
       setShowDropdown(false);
     };
   });
-
-  // const networkId = selectedNetwork?.id;
-
-  // useEffect(() => {
-  //   const getLogo = async () => {
-  //     const logo = await getTokenLogo(networkId);
-  //     setSelectedNetwork({
-  //       ...selectedNetwork,
-  //       logo: logo,
-  //     });
-  //   };
-  //   getLogo();
-  // }, [networkId, setSelectedNetwork]);
 
   return (
     <header className={styles.header} id="header">

@@ -1,4 +1,4 @@
-import ethLogo from "../images/ethereum.svg";
+import faucetLogo from "../images/faucetIcon.png";
 import daiLogo from "../images/daiIcon.png";
 import maticLogo from "../images/maticIcon.png";
 import usdLogo from "../images/usdIcon.png";
@@ -25,7 +25,7 @@ export const POOLS = {
           name: "Faucet",
           decimals: 18,
           address: "0xBA62BCfcAaFc6622853cca2BE6Ac7d845BC0f2Dc",
-          logo: ethLogo,
+          logo: faucetLogo,
         },
       ],
     },
@@ -48,7 +48,7 @@ export const POOLS = {
           name: "Faucet",
           decimals: 18,
           address: "0xBA62BCfcAaFc6622853cca2BE6Ac7d845BC0f2Dc",
-          logo: ethLogo,
+          logo: faucetLogo,
         },
       ],
     },

@@ -34,17 +34,17 @@ export const connectWallet = async (
     setCurrentBlock(await web3Provider.getBlock("latest"));
     setBalance(humanFriendlyBalance);
 
-    // window.ethereum?.request({ method: "net_version" }).then((net_version) => {
-    //   const initialNetwork = NETWORKS.find((nw) => nw.chainId === net_version);
-    //   setSelectedNetwork({
-    //     network: initialNetwork?.name,
-    //     // logo: initialNetwork?.logo,
-    //     chainId: initialNetwork?.chainId,
-    //     poolId: localStorage.getItem("poolId")
-    //       ? localStorage.getItem("poolId")
-    //       : 0,
-    //   });
-    // });
+    window.ethereum?.request({ method: "net_version" }).then((net_version) => {
+      const initialNetwork = NETWORKS.find((nw) => nw.chainId === net_version);
+      setSelectedNetwork({
+        network: initialNetwork?.name,
+        logo: initialNetwork?.logo,
+        chainId: initialNetwork?.chainId,
+        poolId: localStorage.getItem("poolId")
+          ? localStorage.getItem("poolId")
+          : 0,
+      });
+    });
   } catch (err) {
     console.error(err);
   }

@@ -1,5 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { getTokenLogo } from "../../utils/api";
+import { createContext, useContext, useEffect, useState } from "react";
 
 import { getPoolConfig } from "../../utils/poolUtils";
 
@@ -35,22 +34,6 @@ export const LongSwapProvider = ({ children }) => {
       tokenIsSet: poolConfig?.tokens[1].address ? true : false,
     });
   }, [selectedNetwork]);
-
-  const tokenAId = tokenA?.name?.toLowerCase();
-  const tokenBId = tokenB?.name?.toLowerCase();
-
-  useEffect(() => {
-    const getTokenALogo = async () => {
-      const logo = await getTokenLogo(tokenAId);
-      setTokenA({ ...tokenA, logo: logo });
-    };
-    const getTokenBLogo = async () => {
-      const logo = await getTokenLogo(tokenBId);
-      setTokenB({ ...tokenB, logo: logo });
-    };
-    if (tokenAId) getTokenALogo();
-    if (tokenBId) getTokenBLogo();
-  }, [tokenAId, tokenBId]);
 
   return (
     <LongSwapContext.Provider
