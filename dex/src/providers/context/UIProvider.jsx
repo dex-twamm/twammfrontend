@@ -23,18 +23,18 @@ const UIProvider = ({ children }) => {
     });
   }, []);
 
-  if (selectedNetwork)
-    return (
-      <UIContext.Provider
-        value={{
-          selectedNetwork,
-          setSelectedNetwork,
-          nId,
-        }}
-      >
-        {children}
-      </UIContext.Provider>
-    );
+  // if (selectedNetwork)
+  return (
+    <UIContext.Provider
+      value={{
+        selectedNetwork,
+        setSelectedNetwork,
+        nId,
+      }}
+    >
+      {children}
+    </UIContext.Provider>
+  );
 };
 
 export { UIProvider, UIContext };

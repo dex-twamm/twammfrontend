@@ -156,3 +156,10 @@ html {
   font-weight: 500;
   display: flex;
 }
+
+@media (max-width: 420px) {
+  .executionTime,
+  .completionDate {
+    font-size: 14px;
+  }
+}
