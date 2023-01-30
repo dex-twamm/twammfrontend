@@ -109,7 +109,7 @@ const Modal = ({
           src={tokenLogo}
           style={{ width: "25px" }}
         />
-        <p>{token.name}</p>
+        <p>{token.symbol}</p>
         <p className={styles.tokenAddress} style={{ display: "none" }}>
           {token.address}
         </p>

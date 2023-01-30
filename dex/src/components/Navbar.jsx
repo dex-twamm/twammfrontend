@@ -82,7 +82,7 @@ const Navbar = () => {
     };
   });
 
-  const networkId = selectedNetwork?.network.toLowerCase();
+  const networkId = selectedNetwork?.id;
 
   useEffect(() => {
     const getLogo = async () => {

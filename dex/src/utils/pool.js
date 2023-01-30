@@ -12,10 +12,9 @@ export const POOLS = {
       tokens: [
         {
           symbol: "MATIC",
-          name: "Matic",
+          name: "matic-network",
           decimals: 18,
           address: "0x499d11E0b6eAC7c0593d8Fb292DCBbF815Fb29Ae",
-          logo: maticLogo,
         },
         {
           symbol: "FAU",
@@ -38,7 +37,6 @@ export const POOLS = {
           name: "Dai",
           decimals: 18,
           address: "0x499d11E0b6eAC7c0593d8Fb292DCBbF815Fb29Ae",
-          // logo: maticLogo,
         },
         {
           symbol: "FAU",
