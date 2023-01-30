@@ -1,5 +1,5 @@
 import ethLogo from "../images/ethereumIcon.png";
-import goerliLogo from "../images/Testv4.svg";
+import goerliLogo from "../images/maticIcon.png";
 
 export const NETWORKS = [
   {
