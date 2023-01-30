@@ -100,12 +100,13 @@ const Modal = ({
     const balance =
       tokenBalances && tokenBalances?.filter((item) => item[token.address]);
 
+    const tokenLogo = token.name === tokenA.name ? tokenA.logo : tokenB.logo;
     return (
       <>
         <img
           className={styles.modalTokenImg}
           alt="ETH logo"
-          src={token.logo}
+          src={tokenLogo}
           style={{ width: "25px" }}
         />
         <p>{token.name}</p>

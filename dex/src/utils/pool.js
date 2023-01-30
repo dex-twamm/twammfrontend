@@ -38,7 +38,7 @@ export const POOLS = {
           name: "Dai",
           decimals: 18,
           address: "0x499d11E0b6eAC7c0593d8Fb292DCBbF815Fb29Ae",
-          logo: maticLogo,
+          // logo: maticLogo,
         },
         {
           symbol: "FAU",
@@ -60,17 +60,15 @@ export const POOLS = {
       tokens: [
         {
           symbol: "USDC",
-          name: "USDC",
+          name: "USD",
           decimals: 6,
           address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-          logo: maticLogo,
         },
         {
           symbol: "WETH",
           name: "WETH",
           decimals: 18,
           address: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-          logo: ethLogo,
         },
       ],
     },
