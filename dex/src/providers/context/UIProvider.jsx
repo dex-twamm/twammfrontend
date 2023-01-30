@@ -15,7 +15,6 @@ const UIProvider = ({ children }) => {
       setSelectedNetwork({
         network: initialNetwork?.name,
         logo: initialNetwork?.logo,
-        id: initialNetwork?.id,
         chainId: initialNetwork?.chainId,
         poolId: localStorage.getItem("poolId")
           ? localStorage.getItem("poolId")
