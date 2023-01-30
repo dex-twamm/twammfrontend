@@ -15,7 +15,7 @@ export const POOLS = {
       tokens: [
         {
           symbol: "MATIC",
-          name: "matic-network",
+          name: "Matic",
           decimals: 18,
           address: "0x499d11E0b6eAC7c0593d8Fb292DCBbF815Fb29Ae",
           logo: maticLogo,
