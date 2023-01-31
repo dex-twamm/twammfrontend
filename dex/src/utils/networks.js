@@ -1,5 +1,5 @@
-import ethLogo from "../images/ethereum.svg";
-import goerliLogo from "../images/Testv4.svg";
+import ethLogo from "../images/ethereumIcon.png";
+import goerliLogo from "../images/maticIcon.png";
 
 export const NETWORKS = [
   {
@@ -13,9 +13,9 @@ export const NETWORKS = [
   {
     name: "Goerli",
     chainId: "5",
-    logo: goerliLogo,
     vaultAddress: "0xBA12222222228d8Ba445958a75a0704d566BF2C8",
     blockExplorerUrl: "https://goerli.etherscan.io/address/",
     transactionUrl: "https://goerli.etherscan.io/tx/",
+    logo: goerliLogo,
   },
 ];

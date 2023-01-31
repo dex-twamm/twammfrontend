@@ -1,5 +1,5 @@
 import React from "react";
-import { LiquidityPools } from "../components/Liquidity";
+import LiquidityPools from "../components/Liquidity/LiquidityPools";
 
 const LiquidityPage = () => {
   return (

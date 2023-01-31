@@ -51,7 +51,7 @@ export const getPoolLtoContractAddress = (currentNetwork) => {
 };
 
 export const getPoolTokenAddresses = (currentNetwork) => {
-  return getPoolTokens(currentNetwork, currentNetwork?.poolId).map(
+  return getPoolTokens(currentNetwork, currentNetwork?.poolId)?.map(
     (item) => item.address
   );
 };
