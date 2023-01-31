@@ -23,7 +23,6 @@ const UIProvider = ({ children }) => {
     });
   }, []);
 
-  // if (selectedNetwork)
   return (
     <UIContext.Provider
       value={{
