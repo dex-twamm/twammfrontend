@@ -1,11 +1,17 @@
 import { useEffect } from "react";
 import { createContext, useState } from "react";
 import { NETWORKS } from "../../utils/networks";
+import ethLogo from "../../images/ethereum.svg";
 
 const UIContext = createContext(null);
 
 const UIProvider = ({ children }) => {
-  const [selectedNetwork, setSelectedNetwork] = useState();
+  const [selectedNetwork, setSelectedNetwork] = useState({
+    network: "Ethereum",
+    logo: ethLogo,
+    chainId: 1,
+    poolId: 0,
+  });
   const [nId, setNetId] = useState();
 
   useEffect(() => {
@@ -23,18 +29,17 @@ const UIProvider = ({ children }) => {
     });
   }, []);
 
-  if (selectedNetwork)
-    return (
-      <UIContext.Provider
-        value={{
-          selectedNetwork,
-          setSelectedNetwork,
-          nId,
-        }}
-      >
-        {children}
-      </UIContext.Provider>
-    );
+  return (
+    <UIContext.Provider
+      value={{
+        selectedNetwork,
+        setSelectedNetwork,
+        nId,
+      }}
+    >
+      {children}
+    </UIContext.Provider>
+  );
 };
 
 export { UIProvider, UIContext };
