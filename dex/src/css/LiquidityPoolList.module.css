@@ -1,0 +1,161 @@
+.rootBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: fit-content;
+  margin: auto;
+}
+
+.tableBox {
+  margin-top: 24px;
+  width: 100%;
+  background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0) 100%
+    ),
+    rgba(255, 255, 255, 0.3);
+  border: 1px solid white;
+  backdrop-filter: blur(2px);
+  border-radius: 16px;
+}
+
+.tableColumnLabel {
+  font-size: 16px;
+}
+
+.styledBoxFive {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.styledAvatarOne {
+  height: 35px;
+  width: 35px;
+}
+
+.styledAvatarTwo {
+  left: -10px;
+  height: 35px;
+  width: 35px;
+}
+
+.symbolBox {
+  display: flex;
+  gap: 5px;
+}
+
+.symbolBox p {
+  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid white;
+  padding: 10px 0;
+  width: 90px;
+  display: flex;
+  gap: 3px;
+  justify-content: center;
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.symbolBox p span {
+  font-size: 12px;
+  align-self: flex-end;
+}
+
+.buttonBox {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.dataRow:hover {
+  /* cursor: pointer; */
+  background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0) 100%
+    ),
+    rgba(255, 255, 255, 0.2);
+  transition: all 0.5s ease-in;
+}
+
+.removeLiquidityButton {
+  font-family: Open Sans;
+  outline: none;
+  color: white !important;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #ff6969 !important;
+  border-radius: 8px;
+}
+
+.addLiquidityButton {
+  font-family: Open Sans;
+  outline: none;
+  color: white !important;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #554994 !important;
+  border-radius: 8px;
+}
+
+.addLiquidityButton:hover {
+  background-color: #554994;
+}
+
+.removeLiquidityButton:hover {
+  background-color: #ff6969;
+}
+
+@media (max-width: 968px) {
+  .tableColumnCell:nth-child(4) {
+    display: none;
+  }
+
+  .dataRow td:nth-child(4) {
+    display: none;
+  }
+
+  .removeLiquidityButton,
+  .addLiquidityButton {
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .apr {
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 920px) {
+  .tableColumnCell:nth-child(3),
+  .tableColumnCell:nth-child(4) {
+    display: none;
+  }
+
+  .dataRow td:nth-child(3),
+  .dataRow td:nth-child(4) {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .tableColumnCell:nth-child(5) {
+    display: none;
+  }
+
+  .dataRow td:nth-child(5) {
+    display: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .rootBox {
+    width: 100%;
+    padding: 0 5px;
+  }
+}

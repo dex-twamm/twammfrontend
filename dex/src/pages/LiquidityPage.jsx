@@ -1,10 +1,10 @@
 import React from "react";
-import LiquidityPools from "../components/Liquidity/LiquidityPools";
+import LiquidityPoolLists from "../components/Liquidity/LiquidityPoolLists";
 
 const LiquidityPage = () => {
   return (
     <div>
-      <LiquidityPools />
+      <LiquidityPoolLists />
     </div>
   );
 };
