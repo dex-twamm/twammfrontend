@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { getPoolTokens } from "../../utils/poolUtils";
 import { Box } from "@mui/system";
+import { useNavigate } from "react-router-dom";
 
 const tableColumns = [
   {
@@ -53,6 +54,7 @@ const tableColumns = [
 ];
 
 const LiquidityPoolLists = () => {
+  const navigate = useNavigate();
   const networks = [
     {
       network: "Goerli",
@@ -73,6 +75,10 @@ const LiquidityPoolLists = () => {
     getPoolTokens(networks[2]),
   ];
 
+  const handleAddLiquidity = () => {
+    navigate("/liquidity/add");
+  };
+  const handleRemoveLiquidity = () => {};
   return (
     <>
       <Box className={styles.rootBox}>
@@ -158,11 +164,15 @@ const LiquidityPoolLists = () => {
                           return (
                             <TableCell key={idx} align={column.align}>
                               <Box className={styles.buttonBox}>
-                                <Button className={styles.addLiquidityButton}>
+                                <Button
+                                  className={styles.addLiquidityButton}
+                                  onClick={handleAddLiquidity}
+                                >
                                   Add Liquidity
                                 </Button>
                                 <Button
                                   className={styles.removeLiquidityButton}
+                                  onClick={handleRemoveLiquidity}
                                 >
                                   Remove Liquidity
                                 </Button>

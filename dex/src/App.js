@@ -14,6 +14,8 @@ import { getLastVirtualOrderBlock } from "./utils/longSwap";
 import { web3Modal } from "./utils/providerOptions";
 import LiquidityPage from "./pages/LiquidityPage";
 import { disconnect } from "./utils/disconnectWallet";
+import LiquidityPools from "./components/Liquidity/LiquidityPools";
+import AddLiquidity from "./components/Liquidity/AddLiquidity";
 
 function App() {
   const {
@@ -222,6 +224,7 @@ function App() {
           <Route path="/shortswap" element={<ShortSwap />} />
           <Route path="/" element={<LongSwapPage />} />
           <Route path="/liquidity" element={<LiquidityPage />} />
+          <Route path="/liquidity/add" element={<AddLiquidity />} />
         </Routes>
       </div>
     </>
