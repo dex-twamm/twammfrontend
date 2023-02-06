@@ -4,9 +4,12 @@ import { Box } from "@mui/material";
 import React, { useState } from "react";
 import styles from "../../css/ShortSwap.module.css";
 import lsStyles from "../../css/LongSwap.module.css";
+import bStyles from "../../css/AddLiquidity.module.css";
 
 import PopupSettings from "../PopupSettings";
 import Tabs from "../Tabs";
+import classNames from "classnames";
+import LiquidityInput from "./LiquidityInput";
 
 const AddLiquidity = () => {
   const [showSettings, setShowSettings] = useState(false);
@@ -32,45 +35,19 @@ const AddLiquidity = () => {
             </div>
             {showSettings && <PopupSettings />}
           </div>
-          <form onSubmit={handleSubmit} className={styles.form}>
+          <div className={styles.form}>
             <div className={lsStyles.main} />
             <Box className={lsStyles.mainBox}>
-              <Input
-                id={1}
-                input={swapAmount ? swapAmount : ""}
-                placeholder="0.0"
-                onChange={(e) => {
-                  setSwapAmount(e.target.value);
-                }}
-                imgSrc={tokenA?.logo}
-                symbol={tokenA?.symbol}
-                handleDisplay={handleDisplay}
-                selectToken={selectToken}
-                display={display}
-                setDisplay={setDisplay}
-                setTokenA={setTokenA}
-                setTokenB={setTokenB}
-              />
-              <Input
-                id={2}
-                input={
-                  expectedSwapOut
-                    ? bigToStr(BigNumber.from(expectedSwapOut), tokenB.decimals)
-                    : ""
-                }
-                placeholder=""
-                imgSrc={tokenB?.logo}
-                symbol={tokenB?.symbol}
-                onChange={(e) => e.target.value}
-                handleDisplay={handleDisplay}
-                selectToken={selectToken}
-                display={display}
-                setDisplay={setDisplay}
-                setTokenA={setTokenA}
-                setTokenB={setTokenB}
-              />
+              <LiquidityInput />
+              <LiquidityInput />
+              <button
+                className={classNames(bStyles.btn, bStyles.btnConnect)}
+                // onClick={handleClick}
+              >
+                Add Liquidity
+              </button>
             </Box>
-          </form>
+          </div>
         </div>
         {/* <PopupModal /> */}
       </div>
