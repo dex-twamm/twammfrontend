@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "../../css/LiquidityPoolList.module.css";
 import Tabs from "../Tabs";
 import TokenIcon from "@mui/icons-material/Token";
@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { getPoolTokens } from "../../utils/poolUtils";
 import { Box } from "@mui/system";
-import { useNavigate } from "react-router-dom";
+import AddLiquidity from "./AddLiquidity";
 
 const tableColumns = [
   {
@@ -54,7 +54,8 @@ const tableColumns = [
 ];
 
 const LiquidityPoolLists = () => {
-  const navigate = useNavigate();
+  const [selectedTokenPair, setSelectedTokenPair] = useState();
+  const [isAddLiquidity, setIsAddLiquidity] = useState(false);
   const networks = [
     {
       network: "Goerli",
@@ -75,121 +76,126 @@ const LiquidityPoolLists = () => {
     getPoolTokens(networks[2]),
   ];
 
-  const handleAddLiquidity = () => {
-    navigate("/liquidity/add");
+  const handleAddLiquidity = (item) => {
+    setIsAddLiquidity(true);
+    setSelectedTokenPair(item);
   };
   const handleRemoveLiquidity = () => {};
   return (
     <>
-      <Box className={styles.rootBox}>
-        <Tabs />
-        <Box className={styles.tableBox}>
-          <TableContainer>
-            <Table className={styles.poolTable}>
-              <TableHead>
-                <TableRow>
-                  {tableColumns?.map((column, idx) => (
-                    <TableCell
-                      key={idx}
-                      align={column.align}
-                      className={styles.tableColumnCell}
-                    >
-                      <span className={styles.tableColumnLabel}>
-                        {column?.label}
-                      </span>
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {tableData?.map((item, index) => {
-                  return (
-                    <TableRow key={index} className={styles.dataRow}>
-                      {tableColumns?.map((column, idx) => {
-                        if (column.id === "tokens") {
-                          return (
-                            <TableCell key={idx}>
-                              <Box className={styles.styledBoxFive}>
-                                <Avatar
-                                  className={styles.styledAvatarOne}
-                                  alt="Testv4"
-                                  src={item[0]?.logo}
-                                />
-                                <Avatar
-                                  className={styles.styledAvatarTwo}
-                                  sizes="small"
-                                  alt="Faucet"
-                                  src={item[1]?.logo}
-                                />
-                              </Box>
-                            </TableCell>
-                          );
-                        }
-                        if (column.id === "composition") {
-                          return (
-                            <TableCell key={idx}>
-                              <Box className={styles.symbolBox}>
-                                <p>
-                                  {item[0]?.symbol} <span>50%</span>
-                                </p>
-                                <p>
-                                  {item[1]?.symbol} <span>50%</span>
-                                </p>
-                              </Box>
-                            </TableCell>
-                          );
-                        }
-                        if (column.id === "pool_value") {
-                          return (
-                            <TableCell key={idx}>
-                              <p>$245,667,690</p>
-                            </TableCell>
-                          );
-                        }
-                        if (column.id === "volume") {
-                          return (
-                            <TableCell key={idx}>
-                              <p>$33,725,975</p>
-                            </TableCell>
-                          );
-                        }
-                        if (column.id === "apr") {
-                          return (
-                            <TableCell key={idx}>
-                              <p className={styles.apr}>1.28% - 2.19%</p>
-                            </TableCell>
-                          );
-                        }
-                        if (column.id === "action") {
-                          return (
-                            <TableCell key={idx} align={column.align}>
-                              <Box className={styles.buttonBox}>
-                                <Button
-                                  className={styles.addLiquidityButton}
-                                  onClick={handleAddLiquidity}
-                                >
-                                  Add Liquidity
-                                </Button>
-                                <Button
-                                  className={styles.removeLiquidityButton}
-                                  onClick={handleRemoveLiquidity}
-                                >
-                                  Remove Liquidity
-                                </Button>
-                              </Box>
-                            </TableCell>
-                          );
-                        }
-                        return <TableCell key={idx} />;
-                      })}
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
+      {!isAddLiquidity ? (
+        <Box className={styles.rootBox}>
+          <Tabs />
+          <Box className={styles.tableBox}>
+            <TableContainer>
+              <Table className={styles.poolTable}>
+                <TableHead>
+                  <TableRow>
+                    {tableColumns?.map((column, idx) => (
+                      <TableCell
+                        key={idx}
+                        align={column.align}
+                        className={styles.tableColumnCell}
+                      >
+                        <span className={styles.tableColumnLabel}>
+                          {column?.label}
+                        </span>
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {tableData?.map((item, index) => {
+                    return (
+                      <TableRow key={index} className={styles.dataRow}>
+                        {tableColumns?.map((column, idx) => {
+                          if (column.id === "tokens") {
+                            return (
+                              <TableCell key={idx}>
+                                <Box className={styles.styledBoxFive}>
+                                  <Avatar
+                                    className={styles.styledAvatarOne}
+                                    alt="Testv4"
+                                    src={item[0]?.logo}
+                                  />
+                                  <Avatar
+                                    className={styles.styledAvatarTwo}
+                                    sizes="small"
+                                    alt="Faucet"
+                                    src={item[1]?.logo}
+                                  />
+                                </Box>
+                              </TableCell>
+                            );
+                          }
+                          if (column.id === "composition") {
+                            return (
+                              <TableCell key={idx}>
+                                <Box className={styles.symbolBox}>
+                                  <p>
+                                    {item[0]?.symbol} <span>50%</span>
+                                  </p>
+                                  <p>
+                                    {item[1]?.symbol} <span>50%</span>
+                                  </p>
+                                </Box>
+                              </TableCell>
+                            );
+                          }
+                          if (column.id === "pool_value") {
+                            return (
+                              <TableCell key={idx}>
+                                <p>$245,667,690</p>
+                              </TableCell>
+                            );
+                          }
+                          if (column.id === "volume") {
+                            return (
+                              <TableCell key={idx}>
+                                <p>$33,725,975</p>
+                              </TableCell>
+                            );
+                          }
+                          if (column.id === "apr") {
+                            return (
+                              <TableCell key={idx}>
+                                <p className={styles.apr}>1.28% - 2.19%</p>
+                              </TableCell>
+                            );
+                          }
+                          if (column.id === "action") {
+                            return (
+                              <TableCell key={idx} align={column.align}>
+                                <Box className={styles.buttonBox}>
+                                  <Button
+                                    className={styles.addLiquidityButton}
+                                    onClick={() => handleAddLiquidity(item)}
+                                  >
+                                    Add Liquidity
+                                  </Button>
+                                  <Button
+                                    className={styles.removeLiquidityButton}
+                                    onClick={handleRemoveLiquidity}
+                                  >
+                                    Remove Liquidity
+                                  </Button>
+                                </Box>
+                              </TableCell>
+                            );
+                          }
+                          return <TableCell key={idx} />;
+                        })}
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
         </Box>
-      </Box>
+      ) : (
+        <AddLiquidity selectedTokenPair={selectedTokenPair} />
+      )}
     </>
   );
 };

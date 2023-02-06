@@ -1,8 +1,24 @@
-import React from "react";
+import { Skeleton } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import iStyles from "../../css/Input.module.css";
-import maticLogo from "../../images/maticIcon.png";
 
-const LiquidityInput = () => {
+const LiquidityInput = ({ tokenData, balances }) => {
+  const [input, setInput] = useState();
+  const [balance, setBalance] = useState();
+
+  useEffect(() => {
+    const tokenBalance = balances?.filter((item) => {
+      return item[tokenData?.address];
+    });
+    setBalance(tokenBalance?.[0]?.[tokenData?.address]);
+  }, [balances]);
+
+  console.log("balance", balance);
+
+  const handleInputChange = (e) => {
+    setInput(e.target.value);
+  };
+
   return (
     <div className={iStyles.textInput}>
       <div className={iStyles.inputSelectContainer}>
@@ -10,19 +26,19 @@ const LiquidityInput = () => {
           className={iStyles.textField}
           min={0}
           placeholder="0.0"
-          // value={input}
-          // onChange={onChange}
+          value={input ? input : ""}
+          onChange={handleInputChange}
         />
         <div>
           <span className={iStyles.spnCurrency}>
             <div className={iStyles.currency}>
               <img
                 className={iStyles.tokenImage}
-                src={maticLogo}
+                src={tokenData?.logo}
                 alt="tokenImage"
               />
 
-              <p className={iStyles.tokenContainer}>hello</p>
+              <p className={iStyles.tokenContainer}>{tokenData?.symbol}</p>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -42,7 +58,13 @@ const LiquidityInput = () => {
       </div>
       <div className={iStyles.balance}>
         Balance:
-        <p className={iStyles.balanceText}>0.0</p>
+        {balance ? (
+          <p className={iStyles.balanceText}>
+            {parseFloat(balance).toFixed(2)}
+          </p>
+        ) : (
+          <Skeleton width={60} />
+        )}
       </div>
     </div>
   );

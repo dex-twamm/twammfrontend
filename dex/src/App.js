@@ -224,7 +224,6 @@ function App() {
           <Route path="/shortswap" element={<ShortSwap />} />
           <Route path="/" element={<LongSwapPage />} />
           <Route path="/liquidity" element={<LiquidityPage />} />
-          <Route path="/liquidity/add" element={<AddLiquidity />} />
         </Routes>
       </div>
     </>

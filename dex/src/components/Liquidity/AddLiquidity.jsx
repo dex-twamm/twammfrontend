@@ -1,7 +1,7 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box } from "@mui/material";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "../../css/ShortSwap.module.css";
 import lsStyles from "../../css/LongSwap.module.css";
 import bStyles from "../../css/AddLiquidity.module.css";
@@ -10,9 +10,29 @@ import PopupSettings from "../PopupSettings";
 import Tabs from "../Tabs";
 import classNames from "classnames";
 import LiquidityInput from "./LiquidityInput";
+import { getTokensBalance } from "../../utils/getAmount";
+import { ShortSwapContext } from "../../providers";
 
-const AddLiquidity = () => {
+const AddLiquidity = ({ selectedTokenPair }) => {
+  const { account, web3provider } = useContext(ShortSwapContext);
   const [showSettings, setShowSettings] = useState(false);
+  const [balanceOfToken, setBalanceOfToken] = useState();
+
+  useEffect(() => {
+    const selectedNetwork = {
+      network: selectedTokenPair[0]?.network,
+      poolId: selectedTokenPair[0]?.poolId,
+    };
+    const getTokenBalance = async () => {
+      const tokenBalance = await getTokensBalance(
+        web3provider?.getSigner(),
+        account,
+        selectedNetwork
+      );
+      setBalanceOfToken(tokenBalance);
+    };
+    getTokenBalance();
+  }, [account, web3provider, selectedTokenPair]);
 
   return (
     <>
@@ -37,9 +57,16 @@ const AddLiquidity = () => {
           </div>
           <div className={styles.form}>
             <div className={lsStyles.main} />
+            {/* {balanceOfToken && ( */}
             <Box className={lsStyles.mainBox}>
-              <LiquidityInput />
-              <LiquidityInput />
+              <LiquidityInput
+                tokenData={selectedTokenPair[0]}
+                balances={balanceOfToken}
+              />
+              <LiquidityInput
+                tokenData={selectedTokenPair[1]}
+                balances={balanceOfToken}
+              />
               <button
                 className={classNames(bStyles.btn, bStyles.btnConnect)}
                 // onClick={handleClick}
@@ -47,6 +74,7 @@ const AddLiquidity = () => {
                 Add Liquidity
               </button>
             </Box>
+            {/* )} */}
           </div>
         </div>
         {/* <PopupModal /> */}
