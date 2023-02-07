@@ -1,10 +1,12 @@
 import { Skeleton } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import iStyles from "../../css/Input.module.css";
+import { ShortSwapContext } from "../../providers";
 
 const LiquidityInput = ({ tokenData, balances }) => {
   const [input, setInput] = useState();
   const [balance, setBalance] = useState();
+  const { isWalletConnected } = useContext(ShortSwapContext);
 
   useEffect(() => {
     const tokenBalance = balances?.filter((item) => {
@@ -58,7 +60,9 @@ const LiquidityInput = ({ tokenData, balances }) => {
       </div>
       <div className={iStyles.balance}>
         Balance:
-        {balance ? (
+        {!isWalletConnected ? (
+          "N/A"
+        ) : balance ? (
           <p className={iStyles.balanceText}>
             {parseFloat(balance).toFixed(2)}
           </p>
