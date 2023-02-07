@@ -12,11 +12,14 @@ import classNames from "classnames";
 import LiquidityInput from "./LiquidityInput";
 import { getTokensBalance } from "../../utils/getAmount";
 import { ShortSwapContext } from "../../providers";
+import AddLiquidityPreview from "./AddLiquidityPreview";
 
 const AddLiquidity = ({ selectedTokenPair }) => {
-  const { account, web3provider } = useContext(ShortSwapContext);
+  const { account, web3provider, isWalletConnected } =
+    useContext(ShortSwapContext);
   const [showSettings, setShowSettings] = useState(false);
   const [balanceOfToken, setBalanceOfToken] = useState();
+  const [showPreviewModal, setShowPreviewModal] = useState(false);
 
   useEffect(() => {
     const selectedNetwork = {
@@ -33,6 +36,10 @@ const AddLiquidity = ({ selectedTokenPair }) => {
     };
     getTokenBalance();
   }, [account, web3provider, selectedTokenPair]);
+
+  const handlePreviewClick = () => {
+    setShowPreviewModal(true);
+  };
 
   return (
     <>
@@ -57,7 +64,6 @@ const AddLiquidity = ({ selectedTokenPair }) => {
           </div>
           <div className={styles.form}>
             <div className={lsStyles.main} />
-            {/* {balanceOfToken && ( */}
             <Box className={lsStyles.mainBox}>
               <LiquidityInput
                 tokenData={selectedTokenPair[0]}
@@ -69,14 +75,19 @@ const AddLiquidity = ({ selectedTokenPair }) => {
               />
               <button
                 className={classNames(bStyles.btn, bStyles.btnConnect)}
-                // onClick={handleClick}
+                onClick={handlePreviewClick}
               >
-                Add Liquidity
+                {!isWalletConnected ? "Connect Wallet" : "Preview"}
               </button>
             </Box>
-            {/* )} */}
           </div>
+
+          <AddLiquidityPreview
+            showPreviewModal={showPreviewModal}
+            setShowPreviewModal={setShowPreviewModal}
+          />
         </div>
+
         {/* <PopupModal /> */}
       </div>
     </>

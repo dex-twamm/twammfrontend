@@ -15,8 +15,6 @@ const LiquidityInput = ({ tokenData, balances }) => {
     setBalance(tokenBalance?.[0]?.[tokenData?.address]);
   }, [balances]);
 
-  console.log("balance", balance);
-
   const handleInputChange = (e) => {
     setInput(e.target.value);
   };
@@ -64,7 +62,15 @@ const LiquidityInput = ({ tokenData, balances }) => {
           "N/A"
         ) : balance ? (
           <p className={iStyles.balanceText}>
-            {parseFloat(balance).toFixed(2)}
+            {parseFloat(balance).toFixed(2)}{" "}
+            <span
+              className={iStyles.maxInput}
+              onClick={() => {
+                setInput(parseFloat(balance).toFixed(2));
+              }}
+            >
+              Max
+            </span>
           </p>
         ) : (
           <Skeleton width={60} />
