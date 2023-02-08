@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styles from "../../css/LiquidityPoolList.module.css";
 import Tabs from "../Tabs";
 import TokenIcon from "@mui/icons-material/Token";
@@ -16,6 +16,8 @@ import { getPoolTokens } from "../../utils/poolUtils";
 import { Box } from "@mui/system";
 import AddLiquidity from "./AddLiquidity";
 import WithdrawLiquidity from "./WithdrawLiquidity";
+import { POOLS } from "../../utils/pool";
+import { UIContext } from "../../providers";
 
 const tableColumns = [
   {
@@ -55,28 +57,21 @@ const tableColumns = [
 ];
 
 const LiquidityPoolLists = () => {
+  const { selectedNetwork } = useContext(UIContext);
+
   const [selectedTokenPair, setSelectedTokenPair] = useState();
   const [isAddLiquidity, setIsAddLiquidity] = useState(false);
   const [isWithdrawLiquidity, setIsWithdrawLiquidity] = useState(false);
-  const networks = [
-    {
-      network: "Goerli",
-      poolId: 0,
-    },
-    {
-      network: "Goerli",
-      poolId: 1,
-    },
-    {
-      network: "Ethereum",
-      poolId: 0,
-    },
-  ];
-  const tableData = [
-    getPoolTokens(networks[0]),
-    getPoolTokens(networks[1]),
-    getPoolTokens(networks[2]),
-  ];
+
+  const getTableData = () => {
+    const poolLength = Object.keys(POOLS[selectedNetwork?.network]).length;
+    let tableData = [];
+    for (let i = 0; i < poolLength; i++) {
+      const networkData = { ...selectedNetwork, poolId: i };
+      tableData.push(getPoolTokens(networkData));
+    }
+    return tableData;
+  };
 
   const handleAddLiquidity = (item) => {
     setIsAddLiquidity(true);
@@ -115,7 +110,7 @@ const LiquidityPoolLists = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {tableData?.map((item, index) => {
+                  {getTableData()?.map((item, index) => {
                     return (
                       <TableRow key={index} className={styles.dataRow}>
                         {tableColumns?.map((column, idx) => {
