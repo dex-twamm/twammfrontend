@@ -15,6 +15,7 @@ import {
 import { getPoolTokens } from "../../utils/poolUtils";
 import { Box } from "@mui/system";
 import AddLiquidity from "./AddLiquidity";
+import WithdrawLiquidity from "./WithdrawLiquidity";
 
 const tableColumns = [
   {
@@ -56,6 +57,7 @@ const tableColumns = [
 const LiquidityPoolLists = () => {
   const [selectedTokenPair, setSelectedTokenPair] = useState();
   const [isAddLiquidity, setIsAddLiquidity] = useState(false);
+  const [isWithdrawLiquidity, setIsWithdrawLiquidity] = useState(false);
   const networks = [
     {
       network: "Goerli",
@@ -80,10 +82,18 @@ const LiquidityPoolLists = () => {
     setIsAddLiquidity(true);
     setSelectedTokenPair(item);
   };
-  const handleRemoveLiquidity = () => {};
+
+  const handleWithdrawLiquidity = (item) => {
+    setIsWithdrawLiquidity(true);
+    setSelectedTokenPair(item);
+  };
   return (
     <>
-      {!isAddLiquidity ? (
+      {isAddLiquidity ? (
+        <AddLiquidity selectedTokenPair={selectedTokenPair} />
+      ) : isWithdrawLiquidity ? (
+        <WithdrawLiquidity selectedTokenPair={selectedTokenPair} />
+      ) : (
         <Box className={styles.rootBox}>
           <Tabs />
           <Box className={styles.tableBox}>
@@ -175,7 +185,9 @@ const LiquidityPoolLists = () => {
                                   </Button>
                                   <Button
                                     className={styles.removeLiquidityButton}
-                                    onClick={handleRemoveLiquidity}
+                                    onClick={() =>
+                                      handleWithdrawLiquidity(item)
+                                    }
                                   >
                                     Remove Liquidity
                                   </Button>
@@ -193,8 +205,6 @@ const LiquidityPoolLists = () => {
             </TableContainer>
           </Box>
         </Box>
-      ) : (
-        <AddLiquidity selectedTokenPair={selectedTokenPair} />
       )}
     </>
   );

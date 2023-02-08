@@ -5,7 +5,10 @@ import styles from "../../css/AddLiquidityPreview.module.css";
 import ethLogo from "../../images/ethereumIcon.png";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
-const AddLiquidityPreview = ({ showPreviewModal, setShowPreviewModal }) => {
+const WithdrawLiquidityPreview = ({
+  showPreviewModal,
+  setShowPreviewModal,
+}) => {
   const handleClose = () => {
     setShowPreviewModal(false);
   };
@@ -19,7 +22,7 @@ const AddLiquidityPreview = ({ showPreviewModal, setShowPreviewModal }) => {
         aria-describedby="modal-modal-description"
       >
         <Box className={styles.boxStyle}>
-          <p className={styles.modalTitle}>Add Liquidity Preview</p>
+          <p className={styles.modalTitle}>Withdraw Liquidity Preview</p>
           <div className={styles.tokenAndLogo}>
             <p className={styles.amount}>0.001 ETH</p>
             <div className={styles.logo}>
@@ -37,7 +40,7 @@ const AddLiquidityPreview = ({ showPreviewModal, setShowPreviewModal }) => {
                     <Tooltip
                       arrow
                       placement="top"
-                      title="The total value in USD you'll be adding into this pool."
+                      title="The total value in USD you'll be withdrawing from this pool."
                     >
                       <InfoOutlinedIcon fontSize="small" />
                     </Tooltip>
@@ -52,7 +55,7 @@ const AddLiquidityPreview = ({ showPreviewModal, setShowPreviewModal }) => {
                     <Tooltip
                       arrow
                       placement="top"
-                      title="Price impact from adding liquidity results when the value of each token added is not proportional to the weights of the pool. Adding non-proportional amounts cause the internal prices of the pool to change, as if you were swapping tokens. The higher the price impact, the worse price you'll get to enter your position."
+                      title="Price impact from removing liquidity results when the value of each token removed is not proportional to the weights of the pool. Removing non-proportional amounts causes the internal prices of the pool to change, as if you were swapping tokens. The higher the price impact, the worse price you'll get for exiting your position."
                     >
                       <InfoOutlinedIcon fontSize="small" />
                     </Tooltip>
@@ -65,7 +68,7 @@ const AddLiquidityPreview = ({ showPreviewModal, setShowPreviewModal }) => {
             className={styles.btn}
             // onClick={handlePreviewClick}
           >
-            Add Liquidity{" "}
+            Withdraw Liquidity{" "}
           </button>
         </Box>
       </Modal>
@@ -73,4 +76,4 @@ const AddLiquidityPreview = ({ showPreviewModal, setShowPreviewModal }) => {
   );
 };
 
-export default AddLiquidityPreview;
+export default WithdrawLiquidityPreview;

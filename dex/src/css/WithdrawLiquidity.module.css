@@ -1,0 +1,117 @@
+.selectTokenSection {
+  display: flex;
+  flex-direction: column;
+  background-color: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0) 100%
+    ),
+    rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(2px);
+  padding: 15px 20px;
+  border-radius: 10px;
+}
+
+.tokensAndAmt {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.amount {
+  font-weight: 600;
+  font-size: 22px;
+}
+
+.selectBox {
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(2px);
+  border-radius: 5px !important;
+  height: 40px;
+  width: 45%;
+}
+
+.menuItems {
+  display: flex;
+  align-items: center;
+}
+
+.optionText {
+  margin-left: 10px;
+}
+
+.sliderPart {
+  display: flex;
+  flex-direction: column;
+}
+
+.proportional {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.proportional p {
+  font-weight: 600;
+}
+
+.tokensList {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.items {
+  background-color: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0) 100%
+    ),
+    rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(2px);
+  padding: 15px 20px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.tokenInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tokenInfo p {
+  font-weight: 600;
+}
+
+.amt {
+  display: flex;
+  flex-direction: column;
+}
+
+.amt p {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.amt span {
+  font-size: 14px;
+}
+
+.btn {
+  margin-top: 10px;
+  height: 50px;
+  background-color: #9180e0;
+  color: white;
+  width: 100%;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 16px;
+  font-size: 18px;
+  font-weight: 600;
+}

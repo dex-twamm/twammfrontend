@@ -4,11 +4,10 @@ import { Box } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import styles from "../../css/ShortSwap.module.css";
 import lsStyles from "../../css/LongSwap.module.css";
-import bStyles from "../../css/AddLiquidity.module.css";
+import wStyles from "../../css/WithdrawLiquidity.module.css";
 
 import PopupSettings from "../PopupSettings";
 import Tabs from "../Tabs";
-import classNames from "classnames";
 import LiquidityInput from "./LiquidityInput";
 import { getTokensBalance } from "../../utils/getAmount";
 import { ShortSwapContext } from "../../providers";
@@ -73,10 +72,7 @@ const AddLiquidity = ({ selectedTokenPair }) => {
                 tokenData={selectedTokenPair[1]}
                 balances={balanceOfToken}
               />
-              <button
-                className={classNames(bStyles.btn, bStyles.btnConnect)}
-                onClick={handlePreviewClick}
-              >
+              <button className={wStyles.btn} onClick={handlePreviewClick}>
                 {!isWalletConnected ? "Connect Wallet" : "Preview"}
               </button>
             </Box>
@@ -87,8 +83,6 @@ const AddLiquidity = ({ selectedTokenPair }) => {
             setShowPreviewModal={setShowPreviewModal}
           />
         </div>
-
-        {/* <PopupModal /> */}
       </div>
     </>
   );
