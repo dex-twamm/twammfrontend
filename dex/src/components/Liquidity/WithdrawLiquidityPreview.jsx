@@ -2,7 +2,8 @@ import { Modal, Tooltip } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import styles from "../../css/AddLiquidityPreview.module.css";
-import ethLogo from "../../images/ethereumIcon.png";
+import usdLogo from "../../images/usdIcon.png";
+import wethLogo from "../../images/wethIcon.png";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 const WithdrawLiquidityPreview = ({
@@ -24,9 +25,15 @@ const WithdrawLiquidityPreview = ({
         <Box className={styles.boxStyle}>
           <p className={styles.modalTitle}>Withdraw Liquidity Preview</p>
           <div className={styles.tokenAndLogo}>
-            <p className={styles.amount}>0.001 ETH</p>
+            <p className={styles.amount}>0.001 WETH</p>
             <div className={styles.logo}>
-              <img src={ethLogo} alt="logo" width="40px" height="40px" />
+              <img src={wethLogo} alt="logo" width="30px" height="30px" />
+            </div>
+          </div>
+          <div className={styles.tokenAndLogo}>
+            <p className={styles.amount}>0.001 USDC</p>
+            <div className={styles.logo}>
+              <img src={usdLogo} alt="logo" width="30px" height="30px" />
             </div>
           </div>
           <div className={styles.summary}>
