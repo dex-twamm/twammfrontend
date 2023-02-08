@@ -1,10 +1,11 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Box } from "@mui/material";
+import { Box, Tooltip } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import styles from "../../css/ShortSwap.module.css";
 import lsStyles from "../../css/LongSwap.module.css";
 import wStyles from "../../css/WithdrawLiquidity.module.css";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 import PopupSettings from "../PopupSettings";
 import Tabs from "../Tabs";
@@ -72,6 +73,33 @@ const AddLiquidity = ({ selectedTokenPair }) => {
                 tokenData={selectedTokenPair[1]}
                 balances={balanceOfToken}
               />
+              <div className={wStyles.totalAndImpact}>
+                <div className={wStyles.total}>
+                  <div className={wStyles.text}>
+                    <p>Total</p>
+                  </div>
+                  <div className={wStyles.value}>
+                    <p>$0.00</p>
+                  </div>
+                </div>
+                <div className={wStyles.impactPrice}>
+                  <div className={wStyles.text}>
+                    <p>Price Impact</p>
+                  </div>
+                  <div className={wStyles.value}>
+                    <p>
+                      0.00%
+                      <Tooltip
+                        arrow
+                        placement="top"
+                        title="Adding custom amounts causes the internal prices of the pool to change, as if you were swapping tokens. The higher the price impact the more you'll spend in swap fees."
+                      >
+                        <InfoOutlinedIcon fontSize="small" />
+                      </Tooltip>
+                    </p>
+                  </div>
+                </div>
+              </div>
               <button className={wStyles.btn} onClick={handlePreviewClick}>
                 {!isWalletConnected ? "Connect Wallet" : "Preview"}
               </button>
