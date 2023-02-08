@@ -1,6 +1,6 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Box, MenuItem, Select, Slider } from "@mui/material";
+import { Box, MenuItem, Select, Slider, Tooltip } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import styles from "../../css/ShortSwap.module.css";
 import lsStyles from "../../css/LongSwap.module.css";
@@ -14,6 +14,7 @@ import WithdrawLiquidityPreview from "./WithdrawLiquidityPreview";
 import maticLogo from "../../images/maticIcon.png";
 import usdLogo from "../../images/usdIcon.png";
 import wethLogo from "../../images/wethIcon.png";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 const WithdrawLiquidity = ({ selectedTokenPair }) => {
   const { account, web3provider, isWalletConnected } =
@@ -145,6 +146,23 @@ const WithdrawLiquidity = ({ selectedTokenPair }) => {
                     <p>0.05</p>
                     <span>$0.00</span>
                   </div>
+                </div>
+              </div>
+              <div className={wStyles.priceImpact}>
+                <div className={wStyles.impact}>
+                  <p>Price Impact</p>
+                </div>
+                <div className={wStyles.number}>
+                  <p>
+                    0.00%
+                    <Tooltip
+                      arrow
+                      placement="top"
+                      title="Withdrawing custom amounts causes the internal prices of the pool to change, as if you were swapping tokens. The higher the price impact the more you'll spend in swap fees"
+                    >
+                      <InfoOutlinedIcon fontSize="small" />
+                    </Tooltip>
+                  </p>
                 </div>
               </div>
               <button className={wStyles.btn} onClick={handlePreviewClick}>
