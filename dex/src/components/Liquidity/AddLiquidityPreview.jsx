@@ -1,15 +1,34 @@
 import { Modal, Tooltip } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useContext } from "react";
 import styles from "../../css/AddLiquidityPreview.module.css";
 import ethLogo from "../../images/ethereumIcon.png";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { addPoolLiquidity } from "../../utils/addPoolLiquidity";
+import { ShortSwapContext, UIContext } from "../../providers";
 
-const AddLiquidityPreview = ({ showPreviewModal, setShowPreviewModal }) => {
+const AddLiquidityPreview = ({
+  showPreviewModal,
+  setShowPreviewModal,
+  amountsIn,
+}) => {
+  const { selectedNetwork } = useContext(UIContext);
+  const { web3provider, account } = useContext(ShortSwapContext);
+
   const handleClose = () => {
     setShowPreviewModal(false);
   };
 
+  const handleAddLiquidity = async () => {
+    const res = await addPoolLiquidity(
+      selectedNetwork,
+      web3provider,
+      account,
+      amountsIn
+    );
+    console.log("res", res);
+  };
+  console.log(amountsIn);
   return (
     <>
       <Modal
@@ -61,10 +80,7 @@ const AddLiquidityPreview = ({ showPreviewModal, setShowPreviewModal }) => {
               </div>
             </div>
           </div>
-          <button
-            className={styles.btn}
-            // onClick={handlePreviewClick}
-          >
+          <button className={styles.btn} onClick={handleAddLiquidity}>
             Add Liquidity{" "}
           </button>
         </Box>

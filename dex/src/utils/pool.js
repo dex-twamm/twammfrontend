@@ -60,6 +60,33 @@ export const POOLS = {
         },
       ],
     },
+    "0x9f1f16b025f703ee985b58ced48daf93dad2f7ef000200000000000000000063": {
+      poolName: "USDC/WETH",
+      address: "0x9f1f16b025f703ee985b58ced48daf93dad2f7ef",
+      fees: "0.3%",
+      LTOContract: "0x9D3f9803826EB51B046D4366a5cf7313308E7CDC",
+      blockInterval: 150,
+      tokens: [
+        {
+          symbol: "USDC",
+          name: "USD",
+          decimals: 6,
+          address: "0x07865c6e87b9f70255377e024ace6630c1eaa37f",
+          logo: usdLogo,
+          network: "Goerli",
+          poolId: 2,
+        },
+        {
+          symbol: "WETH",
+          name: "WETH",
+          decimals: 18,
+          address: "0x60d4db9b534ef9260a88b0bed6c486fe13e604fc",
+          logo: wethLogo,
+          network: "Goerli",
+          poolId: 2,
+        },
+      ],
+    },
   },
   Ethereum: {
     "0xf7a3ffd8d6ae4b2564a18591d6f3783ec5f79d3a000200000000000000000417": {

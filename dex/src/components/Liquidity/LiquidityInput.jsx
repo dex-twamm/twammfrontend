@@ -3,8 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import iStyles from "../../css/Input.module.css";
 import { ShortSwapContext } from "../../providers";
 
-const LiquidityInput = ({ tokenData, balances }) => {
-  const [input, setInput] = useState();
+const LiquidityInput = ({ tokenData, balances, setInputAmount, input, id }) => {
   const [balance, setBalance] = useState();
   const { isWalletConnected } = useContext(ShortSwapContext);
 
@@ -16,7 +15,7 @@ const LiquidityInput = ({ tokenData, balances }) => {
   }, [balances]);
 
   const handleInputChange = (e) => {
-    setInput(e.target.value);
+    setInputAmount(e.target.value);
   };
 
   return (
@@ -26,7 +25,7 @@ const LiquidityInput = ({ tokenData, balances }) => {
           className={iStyles.textField}
           min={0}
           placeholder="0.0"
-          value={input ? input : ""}
+          value={input}
           onChange={handleInputChange}
         />
         <div>
@@ -63,14 +62,16 @@ const LiquidityInput = ({ tokenData, balances }) => {
         ) : balance ? (
           <p className={iStyles.balanceText}>
             {parseFloat(balance).toFixed(2)}{" "}
-            <span
-              className={iStyles.maxInput}
-              onClick={() => {
-                setInput(parseFloat(balance).toFixed(2));
-              }}
-            >
-              Max
-            </span>
+            {id === 1 ? (
+              <span
+                className={iStyles.maxInput}
+                onClick={() => {
+                  setInputAmount(parseFloat(balance).toFixed(2));
+                }}
+              >
+                Max
+              </span>
+            ) : null}
           </p>
         ) : (
           <Skeleton width={60} />

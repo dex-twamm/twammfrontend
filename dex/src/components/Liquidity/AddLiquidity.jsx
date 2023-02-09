@@ -1,6 +1,6 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Box, Tooltip } from "@mui/material";
+import { Alert, Box, Tooltip } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import styles from "../../css/ShortSwap.module.css";
 import lsStyles from "../../css/LongSwap.module.css";
@@ -11,18 +11,36 @@ import PopupSettings from "../PopupSettings";
 import Tabs from "../Tabs";
 import LiquidityInput from "./LiquidityInput";
 import { getTokensBalance } from "../../utils/getAmount";
-import { ShortSwapContext } from "../../providers";
+import { LongSwapContext, ShortSwapContext, UIContext } from "../../providers";
 import AddLiquidityPreview from "./AddLiquidityPreview";
+import { spotPrice } from "../../utils/getSpotPrice";
+import { bigToStr } from "../../utils";
+import { BigNumber } from "ethers";
 
 const AddLiquidity = ({ selectedTokenPair }) => {
-  const { account, web3provider, isWalletConnected } =
-    useContext(ShortSwapContext);
+  const {
+    account,
+    web3provider,
+    isWalletConnected,
+    setSpotPriceLoading,
+    deadline,
+    formErrors,
+    setFormErrors,
+    setSpotPrice,
+    expectedSwapOut,
+    setExpectedSwapOut,
+  } = useContext(ShortSwapContext);
+
+  const { allowance } = useContext(LongSwapContext);
+  const { selectedNetwork } = useContext(UIContext);
+
   const [showSettings, setShowSettings] = useState(false);
   const [balanceOfToken, setBalanceOfToken] = useState();
   const [showPreviewModal, setShowPreviewModal] = useState(false);
+  const [inputAmount, setInputAmount] = useState();
 
   useEffect(() => {
-    const selectedNetwork = {
+    const currentNetwork = {
       network: selectedTokenPair[0]?.network,
       poolId: selectedTokenPair[0]?.poolId,
     };
@@ -30,7 +48,7 @@ const AddLiquidity = ({ selectedTokenPair }) => {
       const tokenBalance = await getTokensBalance(
         web3provider?.getSigner(),
         account,
-        selectedNetwork
+        currentNetwork
       );
       setBalanceOfToken(tokenBalance);
     };
@@ -40,6 +58,68 @@ const AddLiquidity = ({ selectedTokenPair }) => {
   const handlePreviewClick = () => {
     setShowPreviewModal(true);
   };
+
+  const tokenA = selectedTokenPair[0];
+  const tokenB = selectedTokenPair[1];
+
+  console.log(
+    inputAmount,
+    setSpotPriceLoading,
+    tokenA?.address,
+    tokenB?.address,
+    web3provider,
+    account,
+    deadline,
+    setFormErrors,
+    setSpotPrice,
+    setExpectedSwapOut,
+    selectedNetwork
+  );
+
+  useEffect(() => {
+    let interval1, interval2;
+    // Do not fetch prices if not enough allowance.
+    if (parseFloat(allowance) > inputAmount) {
+      // Wait for 0.5 second before fetching price.
+      interval1 = setTimeout(() => {
+        spotPrice(
+          inputAmount,
+          setSpotPriceLoading,
+          tokenA?.address,
+          tokenB?.address,
+          web3provider,
+          account,
+          deadline,
+          setFormErrors,
+          setSpotPrice,
+          setExpectedSwapOut,
+          selectedNetwork
+        );
+      }, 500);
+      // Update price every 12 seconds.
+      interval2 = setTimeout(() => {
+        spotPrice(
+          inputAmount,
+          setSpotPriceLoading,
+          tokenA?.address,
+          tokenB?.address,
+          web3provider,
+          account,
+          deadline,
+          setFormErrors,
+          setSpotPrice,
+          setExpectedSwapOut,
+          selectedNetwork
+        );
+      }, 12000);
+    }
+    return () => {
+      clearTimeout(interval1);
+      clearTimeout(interval2);
+    };
+  }, [inputAmount, tokenA, tokenB, allowance, selectedNetwork]);
+
+  console.log(formErrors);
 
   return (
     <>
@@ -66,13 +146,32 @@ const AddLiquidity = ({ selectedTokenPair }) => {
             <div className={lsStyles.main} />
             <Box className={lsStyles.mainBox}>
               <LiquidityInput
-                tokenData={selectedTokenPair[0]}
+                tokenData={tokenA}
                 balances={balanceOfToken}
+                setInputAmount={setInputAmount}
+                input={inputAmount ? inputAmount : ""}
+                id={1}
               />
               <LiquidityInput
-                tokenData={selectedTokenPair[1]}
+                tokenData={tokenB}
                 balances={balanceOfToken}
+                input={
+                  expectedSwapOut
+                    ? bigToStr(
+                        BigNumber.from(expectedSwapOut),
+                        tokenB?.decimals
+                      )
+                    : ""
+                }
+                id={2}
               />
+              {formErrors.balError && (
+                <div className={styles.errorAlert}>
+                  <Alert severity="error" sx={{ borderRadius: "16px" }}>
+                    {formErrors.balError}
+                  </Alert>
+                </div>
+              )}
               <div className={wStyles.totalAndImpact}>
                 <div className={wStyles.total}>
                   <div className={wStyles.text}>
@@ -107,6 +206,7 @@ const AddLiquidity = ({ selectedTokenPair }) => {
           </div>
 
           <AddLiquidityPreview
+            amountsIn={[inputAmount, expectedSwapOut]}
             showPreviewModal={showPreviewModal}
             setShowPreviewModal={setShowPreviewModal}
           />

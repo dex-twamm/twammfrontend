@@ -25,8 +25,6 @@ const WithdrawLiquidity = ({ selectedTokenPair }) => {
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [sliderValue, setSliderValue] = useState(0);
 
-  console.log(selectedTokenPair);
-
   useEffect(() => {
     const selectedNetwork = {
       network: selectedTokenPair[0]?.network,
