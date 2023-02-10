@@ -12,7 +12,8 @@ const AddLiquidityPreview = ({
   setShowPreviewModal,
   amountsIn,
 }) => {
-  const { selectedNetwork } = useContext(UIContext);
+  // const { selectedNetwork } = useContext(UIContext);
+  const selectedNetwork = { network: "Goerli", poolId: 2 };
   const { web3provider, account } = useContext(ShortSwapContext);
 
   const handleClose = () => {
@@ -20,15 +21,13 @@ const AddLiquidityPreview = ({
   };
 
   const handleAddLiquidity = async () => {
-    const res = await addPoolLiquidity(
+    await addPoolLiquidity(
       selectedNetwork,
       web3provider,
       account,
       amountsIn
-    );
-    console.log("res", res);
+    ).then((res) => console.log(res));
   };
-  console.log(amountsIn);
   return (
     <>
       <Modal

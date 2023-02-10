@@ -62,20 +62,6 @@ const AddLiquidity = ({ selectedTokenPair }) => {
   const tokenA = selectedTokenPair[0];
   const tokenB = selectedTokenPair[1];
 
-  console.log(
-    inputAmount,
-    setSpotPriceLoading,
-    tokenA?.address,
-    tokenB?.address,
-    web3provider,
-    account,
-    deadline,
-    setFormErrors,
-    setSpotPrice,
-    setExpectedSwapOut,
-    selectedNetwork
-  );
-
   useEffect(() => {
     let interval1, interval2;
     // Do not fetch prices if not enough allowance.
@@ -118,8 +104,6 @@ const AddLiquidity = ({ selectedTokenPair }) => {
       clearTimeout(interval2);
     };
   }, [inputAmount, tokenA, tokenB, allowance, selectedNetwork]);
-
-  console.log(formErrors);
 
   return (
     <>
