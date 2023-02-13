@@ -1,6 +1,5 @@
 import { Contract } from "ethers";
 import { defaultAbiCoder } from "ethers/lib/utils";
-import { fp } from ".";
 import { VAULT_CONTRACT_ABI } from "../constants";
 import { getGasLimit } from "./getGasLimit";
 import { getVaultContractAddress } from "./networkUtils";
@@ -8,14 +7,15 @@ import { getVaultContractAddress } from "./networkUtils";
 export const withdrawPoolLiquidity = async (
   poolId,
   tokenIn,
-  bptAmountInWei,
+  bptAmountIn,
   walletAddress,
   web3provider,
   currentNetwork
 ) => {
+  console.log(bptAmountIn);
   const encodedRequest = defaultAbiCoder.encode(
     ["uint256", "uint256"],
-    [1, bptAmountInWei]
+    [1, bptAmountIn]
   );
 
   const vaultContract = new Contract(

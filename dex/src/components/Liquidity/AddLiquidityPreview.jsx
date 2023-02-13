@@ -6,6 +6,7 @@ import ethLogo from "../../images/ethereumIcon.png";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { LongSwapContext, ShortSwapContext } from "../../providers";
 import { _addPoolLiquidity } from "../../utils/_addPoolLiquidity";
+import PopupModal from "../alerts/PopupModal";
 
 const AddLiquidityPreview = ({
   showPreviewModal,
@@ -35,7 +36,8 @@ const AddLiquidityPreview = ({
         setTransactionHash,
         setMessage,
         setLoading,
-        setError
+        setError,
+        setShowPreviewModal
       );
     } catch (err) {
       console.log(err);

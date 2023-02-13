@@ -10,7 +10,8 @@ export const _withdrawPoolLiquidity = async (
   setTransactionHash,
   setMessage,
   setLoading,
-  setError
+  setError,
+  setShowPreviewModal
 ) => {
   try {
     const poolId = getPoolId(currentNetwork);
@@ -26,6 +27,7 @@ export const _withdrawPoolLiquidity = async (
     )
       .then((res) => {
         console.log("res", res);
+        setShowPreviewModal(false);
         setTransactionHash(res.hash);
         const addLiquidityResult = async () => {
           const result = await res.wait();

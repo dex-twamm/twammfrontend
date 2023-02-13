@@ -15,6 +15,8 @@ import maticLogo from "../../images/maticIcon.png";
 import usdLogo from "../../images/usdIcon.png";
 import wethLogo from "../../images/wethIcon.png";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import PopupModal from "../alerts/PopupModal";
+import { getPoolContract } from "../../utils/getContracts";
 
 const WithdrawLiquidity = ({ selectedTokenPair }) => {
   const { account, web3provider, isWalletConnected } =
@@ -24,6 +26,7 @@ const WithdrawLiquidity = ({ selectedTokenPair }) => {
   const [selectValue, setSelectValue] = useState(1);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [sliderValue, setSliderValue] = useState(0);
+  const [bptAmountIn, setBptAmountIn] = useState();
 
   useEffect(() => {
     const selectedNetwork = {
@@ -44,6 +47,25 @@ const WithdrawLiquidity = ({ selectedTokenPair }) => {
   const handlePreviewClick = () => {
     setShowPreviewModal(true);
   };
+
+  useEffect(() => {
+    const currentNetwork = {
+      network: selectedTokenPair[0]?.network,
+      poolId: selectedTokenPair[0]?.poolId,
+    };
+    console.log(currentNetwork);
+    const getPoolTokenData = async () => {
+      const signer = await web3provider?.getSigner();
+      const vaultContract = getPoolContract(currentNetwork, signer);
+      console.log(account);
+      const balance = await vaultContract.balanceOf(account);
+      setBptAmountIn(parseFloat(balance.toString()));
+      console.log("Balance", balance, balance.toString());
+    };
+    getPoolTokenData();
+  }, [web3provider]);
+
+  console.log("balance", bptAmountIn);
 
   return (
     <>
@@ -172,8 +194,10 @@ const WithdrawLiquidity = ({ selectedTokenPair }) => {
           <WithdrawLiquidityPreview
             showPreviewModal={showPreviewModal}
             setShowPreviewModal={setShowPreviewModal}
+            bptAmountIn={bptAmountIn}
           />
         </div>
+        <PopupModal />
       </div>
     </>
   );

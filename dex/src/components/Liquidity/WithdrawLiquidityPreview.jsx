@@ -11,6 +11,7 @@ import { _withdrawPoolLiquidity } from "../../utils/_withdrawPoolLiquidity";
 const WithdrawLiquidityPreview = ({
   showPreviewModal,
   setShowPreviewModal,
+  bptAmountIn,
 }) => {
   const selectedNetwork = { network: "Goerli", poolId: 2 };
   const { web3provider, account, setTransactionHash, setLoading, setError } =
@@ -23,8 +24,6 @@ const WithdrawLiquidityPreview = ({
   };
 
   const handleRemoveLiquidity = async () => {
-    let bptAmountIn = 1152;
-
     try {
       await _withdrawPoolLiquidity(
         account,
@@ -34,7 +33,8 @@ const WithdrawLiquidityPreview = ({
         setTransactionHash,
         setMessage,
         setLoading,
-        setError
+        setError,
+        setShowPreviewModal
       );
     } catch (err) {
       console.log(err);

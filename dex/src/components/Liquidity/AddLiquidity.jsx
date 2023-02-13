@@ -112,22 +112,6 @@ const AddLiquidity = ({ selectedTokenPair }) => {
   }, [inputAmount, tokenA, tokenB, allowance, selectedNetwork]);
 
   useEffect(() => {
-    const currentNetwork = {
-      network: selectedTokenPair[0]?.network,
-      poolId: selectedTokenPair[0]?.poolId,
-    };
-    console.log(currentNetwork);
-    const getPoolTokenData = async () => {
-      const signer = await web3provider?.getSigner();
-      const vaultContract = getPoolContract(currentNetwork, signer);
-      console.log(account);
-      const balance = await vaultContract.balanceOf(account);
-      console.log("Balance", balance.toString());
-    };
-    getPoolTokenData();
-  }, [web3provider]);
-
-  useEffect(() => {
     const getInputAmountValueInDollar = async () => {
       const id = tokenA?.symbol.toLowerCase();
       const tokenData = await axios.get(
@@ -253,6 +237,7 @@ const AddLiquidity = ({ selectedTokenPair }) => {
             tokenA={tokenA}
           />
         </div>
+        <PopupModal />
       </div>
     </>
   );
