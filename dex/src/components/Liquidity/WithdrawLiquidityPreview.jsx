@@ -5,7 +5,6 @@ import styles from "../../css/AddLiquidityPreview.module.css";
 import usdLogo from "../../images/usdIcon.png";
 import wethLogo from "../../images/wethIcon.png";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { withdrawPoolLiquidity } from "../../utils/withdrawPoolLiquidity";
 import { LongSwapContext, ShortSwapContext } from "../../providers";
 import { _withdrawPoolLiquidity } from "../../utils/_withdrawPoolLiquidity";
 

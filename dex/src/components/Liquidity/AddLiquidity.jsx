@@ -19,6 +19,7 @@ import { BigNumber } from "ethers";
 import classNames from "classnames";
 import { getPoolContract } from "../../utils/getContracts";
 import PopupModal from "../alerts/PopupModal";
+import axios from "axios";
 
 const AddLiquidity = ({ selectedTokenPair }) => {
   const {
@@ -42,6 +43,7 @@ const AddLiquidity = ({ selectedTokenPair }) => {
   const [balanceOfToken, setBalanceOfToken] = useState();
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [inputAmount, setInputAmount] = useState();
+  const [dollarValueOfInputAmount, setDollarValueOfInputAmount] = useState(0.0);
 
   useEffect(() => {
     const currentNetwork = {
@@ -125,6 +127,26 @@ const AddLiquidity = ({ selectedTokenPair }) => {
     getPoolTokenData();
   }, [web3provider]);
 
+  console.log(tokenA);
+
+  useEffect(() => {
+    const getInputAmountValueInDollar = async () => {
+      const id = tokenA?.symbol.toLowerCase();
+      const tokenData = await axios.get(
+        `https://api.coingecko.com/api/v3/coins/${id}`
+      );
+      console.log("tokenData", tokenData);
+      const currentPricePerToken =
+        tokenData?.data?.market_data?.current_price?.usd;
+
+      setDollarValueOfInputAmount(
+        (currentPricePerToken * inputAmount).toFixed(2)
+      );
+    };
+
+    getInputAmountValueInDollar();
+  }, [inputAmount]);
+
   return (
     <>
       <div className={styles.container}>
@@ -182,7 +204,9 @@ const AddLiquidity = ({ selectedTokenPair }) => {
                     <p>Total</p>
                   </div>
                   <div className={wStyles.value}>
-                    <p>$0.00</p>
+                    <p>
+                      {inputAmount ? `$${dollarValueOfInputAmount}` : `$0.0`}
+                    </p>
                   </div>
                 </div>
                 <div className={wStyles.impactPrice}>
@@ -227,6 +251,8 @@ const AddLiquidity = ({ selectedTokenPair }) => {
             amountsIn={[inputAmount, expectedSwapOut]}
             showPreviewModal={showPreviewModal}
             setShowPreviewModal={setShowPreviewModal}
+            dollarValueOfInputAmount={dollarValueOfInputAmount}
+            tokenA={tokenA}
           />
         </div>
       </div>

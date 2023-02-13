@@ -6,12 +6,13 @@ import ethLogo from "../../images/ethereumIcon.png";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { LongSwapContext, ShortSwapContext } from "../../providers";
 import { _addPoolLiquidity } from "../../utils/_addPoolLiquidity";
-import PopupModal from "../alerts/PopupModal";
 
 const AddLiquidityPreview = ({
   showPreviewModal,
   setShowPreviewModal,
   amountsIn,
+  dollarValueOfInputAmount,
+  tokenA,
 }) => {
   // const { selectedNetwork } = useContext(UIContext);
   const selectedNetwork = { network: "Goerli", poolId: 2 };
@@ -52,9 +53,11 @@ const AddLiquidityPreview = ({
         <Box className={styles.boxStyle}>
           <p className={styles.modalTitle}>Add Liquidity Preview</p>
           <div className={styles.tokenAndLogo}>
-            <p className={styles.amount}>0.001 ETH</p>
+            <p className={styles.amount}>
+              {amountsIn[0]} {tokenA?.name}
+            </p>
             <div className={styles.logo}>
-              <img src={ethLogo} alt="logo" width="40px" height="40px" />
+              <img src={tokenA?.logo} alt="logo" width="40px" height="40px" />
             </div>
           </div>
           <div className={styles.summary}>
@@ -63,7 +66,8 @@ const AddLiquidityPreview = ({
               <div className={styles.item}>
                 <p className={styles.total}>Total</p>
                 <p className={styles.data}>
-                  $0.0{"  "}
+                  ${dollarValueOfInputAmount}
+                  {"  "}
                   <span>
                     <Tooltip
                       arrow
