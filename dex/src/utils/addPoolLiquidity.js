@@ -4,41 +4,19 @@ import { MAX_UINT256 } from ".";
 import { VAULT_CONTRACT_ABI } from "../constants";
 import { getGasLimit } from "./getGasLimit";
 import { getVaultContractAddress } from "./networkUtils";
-import { getPoolId, getPoolTokenAddresses, getPoolTokens } from "./poolUtils";
 
 export const addPoolLiquidity = async (
-  currentNetwork,
-  web3provider,
+  poolId,
+  tokenIn,
+  tokenOneAmountWei,
+  tokenTwoAmountWei,
   walletAddress,
-  amountsIn
+  web3provider,
+  currentNetwork
 ) => {
-  const poolId = getPoolId(currentNetwork);
-  const tokenIn = getPoolTokenAddresses(currentNetwork);
-  const tokens = getPoolTokens(currentNetwork);
-
-  const amountWeiOne = ethers.utils.parseUnits(
-    amountsIn[0].toString(),
-    tokens[0].decimals
-  );
-
-  const amountWeiTwo = ethers.utils.parseUnits(
-    amountsIn[1].toString(),
-    tokens[1].decimals
-  );
-
-  console.log(
-    "received data",
-    currentNetwork,
-    web3provider,
-    walletAddress,
-    amountsIn,
-    amountWeiOne,
-    amountWeiTwo
-  );
-
   const encodedRequest = defaultAbiCoder.encode(
     ["uint256", "uint256[]", "uint256"],
-    [2, [amountWeiOne, amountWeiTwo], 0]
+    [2, [tokenOneAmountWei, tokenTwoAmountWei], 0]
   );
 
   const vaultContract = new Contract(

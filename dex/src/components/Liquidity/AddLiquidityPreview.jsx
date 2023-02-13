@@ -4,8 +4,9 @@ import React, { useContext } from "react";
 import styles from "../../css/AddLiquidityPreview.module.css";
 import ethLogo from "../../images/ethereumIcon.png";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { addPoolLiquidity } from "../../utils/addPoolLiquidity";
-import { ShortSwapContext } from "../../providers";
+import { LongSwapContext, ShortSwapContext } from "../../providers";
+import { _addPoolLiquidity } from "../../utils/_addPoolLiquidity";
+import PopupModal from "../alerts/PopupModal";
 
 const AddLiquidityPreview = ({
   showPreviewModal,
@@ -14,24 +15,30 @@ const AddLiquidityPreview = ({
 }) => {
   // const { selectedNetwork } = useContext(UIContext);
   const selectedNetwork = { network: "Goerli", poolId: 2 };
-  const { web3provider, account } = useContext(ShortSwapContext);
+  const { web3provider, account, setTransactionHash, setLoading, setError } =
+    useContext(ShortSwapContext);
+
+  const { setMessage } = useContext(LongSwapContext);
 
   const handleClose = () => {
     setShowPreviewModal(false);
   };
 
   const handleAddLiquidity = async () => {
-    await addPoolLiquidity(
-      selectedNetwork,
-      web3provider,
-      account,
-      amountsIn
-    ).then(async (res) => {
-      console.log(res);
-      console.log(res.value.toString());
-      const data = await res.wait();
-      console.log("data after wait", data);
-    });
+    try {
+      await _addPoolLiquidity(
+        account,
+        web3provider,
+        selectedNetwork,
+        amountsIn,
+        setTransactionHash,
+        setMessage,
+        setLoading,
+        setError
+      );
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

@@ -18,6 +18,7 @@ import { bigToStr } from "../../utils";
 import { BigNumber } from "ethers";
 import classNames from "classnames";
 import { getPoolContract } from "../../utils/getContracts";
+import PopupModal from "../alerts/PopupModal";
 
 const AddLiquidity = ({ selectedTokenPair }) => {
   const {

@@ -6,27 +6,40 @@ import usdLogo from "../../images/usdIcon.png";
 import wethLogo from "../../images/wethIcon.png";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { withdrawPoolLiquidity } from "../../utils/withdrawPoolLiquidity";
-import { ShortSwapContext } from "../../providers";
+import { LongSwapContext, ShortSwapContext } from "../../providers";
+import { _withdrawPoolLiquidity } from "../../utils/_withdrawPoolLiquidity";
 
 const WithdrawLiquidityPreview = ({
   showPreviewModal,
   setShowPreviewModal,
 }) => {
   const selectedNetwork = { network: "Goerli", poolId: 2 };
-  const { web3provider, account } = useContext(ShortSwapContext);
+  const { web3provider, account, setTransactionHash, setLoading, setError } =
+    useContext(ShortSwapContext);
+
+  const { setMessage } = useContext(LongSwapContext);
+
   const handleClose = () => {
     setShowPreviewModal(false);
   };
 
   const handleRemoveLiquidity = async () => {
-    await withdrawPoolLiquidity(selectedNetwork, web3provider, account).then(
-      async (res) => {
-        console.log(res);
-        console.log(res.value.toString());
-        const data = await res.wait();
-        console.log("data after wait", data);
-      }
-    );
+    let bptAmountIn = 1152;
+
+    try {
+      await _withdrawPoolLiquidity(
+        account,
+        web3provider,
+        selectedNetwork,
+        bptAmountIn,
+        setTransactionHash,
+        setMessage,
+        setLoading,
+        setError
+      );
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

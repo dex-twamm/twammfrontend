@@ -1,33 +1,17 @@
-import { Contract, ethers } from "ethers";
+import { Contract } from "ethers";
 import { defaultAbiCoder } from "ethers/lib/utils";
 import { VAULT_CONTRACT_ABI } from "../constants";
 import { getGasLimit } from "./getGasLimit";
 import { getVaultContractAddress } from "./networkUtils";
-import { getPoolId, getPoolTokenAddresses, getPoolTokens } from "./poolUtils";
 
 export const withdrawPoolLiquidity = async (
-  currentNetwork,
-  web3provider,
+  poolId,
+  tokenIn,
+  bptAmountInAmountWei,
   walletAddress,
-  bptAmountIn = 768
+  web3provider,
+  currentNetwork
 ) => {
-  const poolId = getPoolId(currentNetwork);
-  const tokenIn = getPoolTokenAddresses(currentNetwork);
-  const tokens = getPoolTokens(currentNetwork);
-
-  console.log(
-    "received data",
-    currentNetwork,
-    web3provider,
-    walletAddress,
-    bptAmountIn
-  );
-
-  const bptAmountInAmountWei = ethers.utils.parseUnits(
-    bptAmountIn.toString(),
-    tokens[0].decimals
-  );
-
   const encodedRequest = defaultAbiCoder.encode(
     ["uint256", "uint256"],
     [2, bptAmountInAmountWei]
