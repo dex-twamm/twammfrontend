@@ -1,4 +1,4 @@
-import { Contract, ethers } from "ethers";
+import { Contract } from "ethers";
 import { defaultAbiCoder } from "ethers/lib/utils";
 import { MAX_UINT256 } from ".";
 import { VAULT_CONTRACT_ABI } from "../constants";

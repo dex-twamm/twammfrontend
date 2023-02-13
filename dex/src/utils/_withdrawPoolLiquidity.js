@@ -1,6 +1,5 @@
-import { ethers } from "ethers";
 import { POPUP_MESSAGE } from "../constants";
-import { getPoolId, getPoolTokenAddresses, getPoolTokens } from "./poolUtils";
+import { getPoolId, getPoolTokenAddresses } from "./poolUtils";
 import { withdrawPoolLiquidity } from "./withdrawPoolLiquidity";
 
 export const _withdrawPoolLiquidity = async (
@@ -16,17 +15,11 @@ export const _withdrawPoolLiquidity = async (
   try {
     const poolId = getPoolId(currentNetwork);
     const tokenIn = getPoolTokenAddresses(currentNetwork);
-    const tokens = getPoolTokens(currentNetwork);
-
-    const bptAmountInAmountWei = ethers.utils.parseUnits(
-      bptAmountIn.toString(),
-      tokens[0].decimals
-    );
 
     await withdrawPoolLiquidity(
       poolId,
       tokenIn,
-      bptAmountInAmountWei,
+      bptAmountIn,
       walletAddress,
       web3provider,
       currentNetwork

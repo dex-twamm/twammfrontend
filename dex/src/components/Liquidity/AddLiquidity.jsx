@@ -127,8 +127,6 @@ const AddLiquidity = ({ selectedTokenPair }) => {
     getPoolTokenData();
   }, [web3provider]);
 
-  console.log(tokenA);
-
   useEffect(() => {
     const getInputAmountValueInDollar = async () => {
       const id = tokenA?.symbol.toLowerCase();

@@ -109,7 +109,9 @@ const PopupModal = () => {
               severity={
                 message === POPUP_MESSAGE.ltoCancelFailed ||
                 message === POPUP_MESSAGE.ltoWithdrawFailed ||
-                message === POPUP_MESSAGE.ltoPlaceFailed
+                message === POPUP_MESSAGE.ltoPlaceFailed ||
+                message === POPUP_MESSAGE.addliquidityFailed ||
+                message === POPUP_MESSAGE.ltoWithdrawFailed
                   ? "error"
                   : "success"
               }
@@ -117,7 +119,9 @@ const PopupModal = () => {
                 if (
                   message === POPUP_MESSAGE.ltoCancelSuccess ||
                   message === POPUP_MESSAGE.ltoWithdrawn ||
-                  message === POPUP_MESSAGE.ltoPlaced
+                  message === POPUP_MESSAGE.ltoPlaced ||
+                  message === POPUP_MESSAGE.liquidityAdded ||
+                  message === POPUP_MESSAGE.liquidityWithdrawn
                 ) {
                   handleClose();
                   window.location.reload();
