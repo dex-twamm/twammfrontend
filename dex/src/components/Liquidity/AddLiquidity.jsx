@@ -1,6 +1,6 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Alert, Box, Tooltip } from "@mui/material";
+import { Alert, Box, CircularProgress, Tooltip } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import styles from "../../css/ShortSwap.module.css";
 import lsStyles from "../../css/LongSwap.module.css";
@@ -16,12 +16,15 @@ import AddLiquidityPreview from "./AddLiquidityPreview";
 import { spotPrice } from "../../utils/getSpotPrice";
 import { bigToStr } from "../../utils";
 import { BigNumber } from "ethers";
+import classNames from "classnames";
+import { getPoolContract } from "../../utils/getContracts";
 
 const AddLiquidity = ({ selectedTokenPair }) => {
   const {
     account,
     web3provider,
     isWalletConnected,
+    spotPriceLoading,
     setSpotPriceLoading,
     deadline,
     formErrors,
@@ -105,6 +108,22 @@ const AddLiquidity = ({ selectedTokenPair }) => {
     };
   }, [inputAmount, tokenA, tokenB, allowance, selectedNetwork]);
 
+  useEffect(() => {
+    const currentNetwork = {
+      network: selectedTokenPair[0]?.network,
+      poolId: selectedTokenPair[0]?.poolId,
+    };
+    console.log(currentNetwork);
+    const getPoolTokenData = async () => {
+      const signer = await web3provider?.getSigner();
+      const vaultContract = getPoolContract(currentNetwork, signer);
+      console.log(account);
+      const balance = await vaultContract.balanceOf(account);
+      console.log("Balance", balance.toString());
+    };
+    getPoolTokenData();
+  }, [web3provider]);
+
   return (
     <>
       <div className={styles.container}>
@@ -183,8 +202,22 @@ const AddLiquidity = ({ selectedTokenPair }) => {
                   </div>
                 </div>
               </div>
-              <button className={wStyles.btn} onClick={handlePreviewClick}>
-                {!isWalletConnected ? "Connect Wallet" : "Preview"}
+              <button
+                className={classNames(
+                  wStyles.btn,
+                  wStyles.btnConnect,
+                  wStyles.btnBtn
+                )}
+                onClick={handlePreviewClick}
+                disabled={!inputAmount || spotPriceLoading}
+              >
+                {!isWalletConnected ? (
+                  "Connect Wallet"
+                ) : spotPriceLoading ? (
+                  <CircularProgress sx={{ color: "white" }} size={30} />
+                ) : (
+                  "Preview"
+                )}
               </button>
             </Box>
           </div>

@@ -5,7 +5,7 @@ import styles from "../../css/AddLiquidityPreview.module.css";
 import ethLogo from "../../images/ethereumIcon.png";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { addPoolLiquidity } from "../../utils/addPoolLiquidity";
-import { ShortSwapContext, UIContext } from "../../providers";
+import { ShortSwapContext } from "../../providers";
 
 const AddLiquidityPreview = ({
   showPreviewModal,
@@ -26,8 +26,14 @@ const AddLiquidityPreview = ({
       web3provider,
       account,
       amountsIn
-    ).then((res) => console.log(res));
+    ).then(async (res) => {
+      console.log(res);
+      console.log(res.value.toString());
+      const data = await res.wait();
+      console.log("data after wait", data);
+    });
   };
+
   return (
     <>
       <Modal

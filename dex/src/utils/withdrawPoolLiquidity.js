@@ -1,6 +1,5 @@
 import { Contract, ethers } from "ethers";
 import { defaultAbiCoder } from "ethers/lib/utils";
-import { MAX_UINT256 } from ".";
 import { VAULT_CONTRACT_ABI } from "../constants";
 import { getGasLimit } from "./getGasLimit";
 import { getVaultContractAddress } from "./networkUtils";
@@ -10,7 +9,7 @@ export const withdrawPoolLiquidity = async (
   currentNetwork,
   web3provider,
   walletAddress,
-  bptAmountIn
+  bptAmountIn = 768
 ) => {
   const poolId = getPoolId(currentNetwork);
   const tokenIn = getPoolTokenAddresses(currentNetwork);
@@ -24,9 +23,14 @@ export const withdrawPoolLiquidity = async (
     bptAmountIn
   );
 
+  const bptAmountInAmountWei = ethers.utils.parseUnits(
+    bptAmountIn.toString(),
+    tokens[0].decimals
+  );
+
   const encodedRequest = defaultAbiCoder.encode(
     ["uint256", "uint256"],
-    [4, bptAmountIn]
+    [2, bptAmountInAmountWei]
   );
 
   const vaultContract = new Contract(
@@ -48,8 +52,8 @@ export const withdrawPoolLiquidity = async (
   ];
 
   const exitPool = await vaultContract.exitPool(...exitData, {
-    // gasLimit: 500000,
-    gasLimit: getGasLimit(vaultContract, exitData, "exitPool"),
+    gasLimit: 500000,
+    // gasLimit: getGasLimit(vaultContract, exitData, "exitPool"),
   });
   return exitPool;
 };

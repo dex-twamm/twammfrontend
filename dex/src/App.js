@@ -14,9 +14,6 @@ import { getLastVirtualOrderBlock } from "./utils/longSwap";
 import { web3Modal } from "./utils/providerOptions";
 import LiquidityPage from "./pages/LiquidityPage";
 import { disconnect } from "./utils/disconnectWallet";
-import LiquidityPools from "./components/Liquidity/LiquidityPools";
-import AddLiquidity from "./components/Liquidity/AddLiquidity";
-import { getExchangeContract } from "./utils/getContracts";
 
 function App() {
   const {
@@ -216,19 +213,6 @@ function App() {
     setFormErrors({ balError: "" });
     setSpotPrice();
   }, [selectedNetwork]);
-
-  useEffect(() => {
-    const getPoolTokenData = async () => {
-      const signer = await web3provider.getSigner();
-      const vaultContract = getExchangeContract(selectedNetwork, signer);
-      const bpt = await vaultContract.methods.getBPT(account).call();
-      // const dataAddress = await vaultContract.getBalances().call()(
-      //   "0x9f1f16b025f703ee985b58ced48daf93dad2f7ef000200000000000000000063"
-      // );
-      console.log("Pool token addresses", bpt);
-    };
-    getPoolTokenData();
-  }, [web3provider]);
 
   return (
     <>

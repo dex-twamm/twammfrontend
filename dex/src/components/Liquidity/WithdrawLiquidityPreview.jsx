@@ -1,17 +1,32 @@
 import { Modal, Tooltip } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useContext } from "react";
 import styles from "../../css/AddLiquidityPreview.module.css";
 import usdLogo from "../../images/usdIcon.png";
 import wethLogo from "../../images/wethIcon.png";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { withdrawPoolLiquidity } from "../../utils/withdrawPoolLiquidity";
+import { ShortSwapContext } from "../../providers";
 
 const WithdrawLiquidityPreview = ({
   showPreviewModal,
   setShowPreviewModal,
 }) => {
+  const selectedNetwork = { network: "Goerli", poolId: 2 };
+  const { web3provider, account } = useContext(ShortSwapContext);
   const handleClose = () => {
     setShowPreviewModal(false);
+  };
+
+  const handleRemoveLiquidity = async () => {
+    await withdrawPoolLiquidity(selectedNetwork, web3provider, account).then(
+      async (res) => {
+        console.log(res);
+        console.log(res.value.toString());
+        const data = await res.wait();
+        console.log("data after wait", data);
+      }
+    );
   };
 
   return (
@@ -71,10 +86,7 @@ const WithdrawLiquidityPreview = ({
               </div>
             </div>
           </div>
-          <button
-            className={styles.btn}
-            // onClick={handlePreviewClick}
-          >
+          <button className={styles.btn} onClick={handleRemoveLiquidity}>
             Withdraw Liquidity{" "}
           </button>
         </Box>

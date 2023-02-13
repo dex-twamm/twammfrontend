@@ -151,6 +151,26 @@
   font-weight: 600;
 }
 
+.btnConnect:enabled:hover {
+  /* background-color: #ffdeea; */
+}
+
+.btnConnect:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.btn {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 600;
+}
+
+.btnBtn {
+  background: #554994;
+  border-radius: 17px;
+  color: white;
+}
+
 .totalAndImpact {
   display: flex;
   flex-direction: column;
