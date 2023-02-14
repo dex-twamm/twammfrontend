@@ -82,6 +82,7 @@ const LiquidityPoolLists = () => {
     setIsWithdrawLiquidity(true);
     setSelectedTokenPair(item);
   };
+
   return (
     <>
       {isAddLiquidity ? (

@@ -17,6 +17,7 @@ import wethLogo from "../../images/wethIcon.png";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import PopupModal from "../alerts/PopupModal";
 import { getPoolContract } from "../../utils/getContracts";
+import classNames from "classnames";
 
 const WithdrawLiquidity = ({ selectedTokenPair }) => {
   const { account, web3provider, isWalletConnected } =
@@ -25,7 +26,7 @@ const WithdrawLiquidity = ({ selectedTokenPair }) => {
   const [balanceOfToken, setBalanceOfToken] = useState();
   const [selectValue, setSelectValue] = useState(1);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
-  const [sliderValue, setSliderValue] = useState(0);
+  const [sliderValue, setSliderValue] = useState(100);
   const [bptAmountIn, setBptAmountIn] = useState();
 
   useEffect(() => {
@@ -62,6 +63,7 @@ const WithdrawLiquidity = ({ selectedTokenPair }) => {
       setBptAmountIn(parseFloat(balance.toString()));
       console.log("Balance", balance, balance.toString());
     };
+
     getPoolTokenData();
   }, [web3provider]);
 
@@ -185,7 +187,14 @@ const WithdrawLiquidity = ({ selectedTokenPair }) => {
                   </p>
                 </div>
               </div>
-              <button className={wStyles.btn} onClick={handlePreviewClick}>
+              <button
+                className={classNames(
+                  wStyles.btn,
+                  wStyles.btnConnect,
+                  wStyles.btnBtn
+                )}
+                onClick={handlePreviewClick}
+              >
                 {!isWalletConnected ? "Connect Wallet" : "Preview"}
               </button>
             </Box>
