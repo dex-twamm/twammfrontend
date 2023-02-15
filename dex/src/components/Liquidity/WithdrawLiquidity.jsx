@@ -19,7 +19,7 @@ import PopupModal from "../alerts/PopupModal";
 import { getPoolContract } from "../../utils/getContracts";
 import classNames from "classnames";
 
-const WithdrawLiquidity = ({ selectedTokenPair }) => {
+const WithdrawLiquidity = ({ selectedTokenPair, bptAmountIn }) => {
   const { account, web3provider, isWalletConnected } =
     useContext(ShortSwapContext);
   const [showSettings, setShowSettings] = useState(false);
@@ -27,7 +27,6 @@ const WithdrawLiquidity = ({ selectedTokenPair }) => {
   const [selectValue, setSelectValue] = useState(1);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [sliderValue, setSliderValue] = useState(100);
-  const [bptAmountIn, setBptAmountIn] = useState();
 
   useEffect(() => {
     const selectedNetwork = {
@@ -48,26 +47,6 @@ const WithdrawLiquidity = ({ selectedTokenPair }) => {
   const handlePreviewClick = () => {
     setShowPreviewModal(true);
   };
-
-  useEffect(() => {
-    const currentNetwork = {
-      network: selectedTokenPair[0]?.network,
-      poolId: selectedTokenPair[0]?.poolId,
-    };
-    console.log(currentNetwork);
-    const getPoolTokenData = async () => {
-      const signer = await web3provider?.getSigner();
-      const vaultContract = getPoolContract(currentNetwork, signer);
-      console.log(account);
-      const balance = await vaultContract.balanceOf(account);
-      setBptAmountIn(parseFloat(balance.toString()));
-      console.log("Balance", balance, balance.toString());
-    };
-
-    getPoolTokenData();
-  }, [web3provider]);
-
-  console.log("balance", bptAmountIn);
 
   return (
     <>

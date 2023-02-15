@@ -3,8 +3,6 @@ import styles from "../../css/LiquidityPoolList.module.css";
 import Tabs from "../Tabs";
 import TokenIcon from "@mui/icons-material/Token";
 import {
-  Avatar,
-  Button,
   Table,
   TableBody,
   TableCell,
@@ -18,6 +16,7 @@ import AddLiquidity from "./AddLiquidity";
 import WithdrawLiquidity from "./WithdrawLiquidity";
 import { POOLS } from "../../utils/pool";
 import { UIContext } from "../../providers";
+import LiquidityPoolListTableRow from "./LiquidityPoolListTableRow";
 
 const tableColumns = [
   {
@@ -62,6 +61,7 @@ const LiquidityPoolLists = () => {
   const [selectedTokenPair, setSelectedTokenPair] = useState();
   const [isAddLiquidity, setIsAddLiquidity] = useState(false);
   const [isWithdrawLiquidity, setIsWithdrawLiquidity] = useState(false);
+  const [bptAmountIn, setBptAmountIn] = useState(0);
 
   const getTableData = () => {
     const poolLength = Object.keys(POOLS[selectedNetwork?.network]).length;
@@ -73,22 +73,15 @@ const LiquidityPoolLists = () => {
     return tableData;
   };
 
-  const handleAddLiquidity = (item) => {
-    setIsAddLiquidity(true);
-    setSelectedTokenPair(item);
-  };
-
-  const handleWithdrawLiquidity = (item) => {
-    setIsWithdrawLiquidity(true);
-    setSelectedTokenPair(item);
-  };
-
   return (
     <>
       {isAddLiquidity ? (
         <AddLiquidity selectedTokenPair={selectedTokenPair} />
       ) : isWithdrawLiquidity ? (
-        <WithdrawLiquidity selectedTokenPair={selectedTokenPair} />
+        <WithdrawLiquidity
+          selectedTokenPair={selectedTokenPair}
+          bptAmountIn={bptAmountIn}
+        />
       ) : (
         <Box className={styles.rootBox}>
           <Tabs />
@@ -113,87 +106,16 @@ const LiquidityPoolLists = () => {
                 <TableBody>
                   {getTableData()?.map((item, index) => {
                     return (
-                      <TableRow key={index} className={styles.dataRow}>
-                        {tableColumns?.map((column, idx) => {
-                          if (column.id === "tokens") {
-                            return (
-                              <TableCell key={idx}>
-                                <Box className={styles.styledBoxFive}>
-                                  <Avatar
-                                    className={styles.styledAvatarOne}
-                                    alt="Testv4"
-                                    src={item[0]?.logo}
-                                  />
-                                  <Avatar
-                                    className={styles.styledAvatarTwo}
-                                    sizes="small"
-                                    alt="Faucet"
-                                    src={item[1]?.logo}
-                                  />
-                                </Box>
-                              </TableCell>
-                            );
-                          }
-                          if (column.id === "composition") {
-                            return (
-                              <TableCell key={idx}>
-                                <Box className={styles.symbolBox}>
-                                  <p>
-                                    {item[0]?.symbol} <span>50%</span>
-                                  </p>
-                                  <p>
-                                    {item[1]?.symbol} <span>50%</span>
-                                  </p>
-                                </Box>
-                              </TableCell>
-                            );
-                          }
-                          if (column.id === "pool_value") {
-                            return (
-                              <TableCell key={idx}>
-                                <p>$245,667,690</p>
-                              </TableCell>
-                            );
-                          }
-                          if (column.id === "volume") {
-                            return (
-                              <TableCell key={idx}>
-                                <p>$33,725,975</p>
-                              </TableCell>
-                            );
-                          }
-                          if (column.id === "apr") {
-                            return (
-                              <TableCell key={idx}>
-                                <p className={styles.apr}>1.28% - 2.19%</p>
-                              </TableCell>
-                            );
-                          }
-                          if (column.id === "action") {
-                            return (
-                              <TableCell key={idx} align={column.align}>
-                                <Box className={styles.buttonBox}>
-                                  <Button
-                                    className={styles.addLiquidityButton}
-                                    onClick={() => handleAddLiquidity(item)}
-                                  >
-                                    Add Liquidity
-                                  </Button>
-                                  <Button
-                                    className={styles.removeLiquidityButton}
-                                    onClick={() =>
-                                      handleWithdrawLiquidity(item)
-                                    }
-                                  >
-                                    Remove Liquidity
-                                  </Button>
-                                </Box>
-                              </TableCell>
-                            );
-                          }
-                          return <TableCell key={idx} />;
-                        })}
-                      </TableRow>
+                      <LiquidityPoolListTableRow
+                        tableColumns={tableColumns}
+                        item={item}
+                        index={index}
+                        setIsAddLiquidity={setIsAddLiquidity}
+                        setSelectedTokenPair={setSelectedTokenPair}
+                        setIsWithdrawLiquidity={setIsWithdrawLiquidity}
+                        setBptAmountIn={setBptAmountIn}
+                        bptAmountIn={bptAmountIn}
+                      />
                     );
                   })}
                 </TableBody>
