@@ -84,21 +84,21 @@ const LiquidityPoolListTableRow = ({
           if (column.id === "pool_value") {
             return (
               <TableCell key={idx}>
-                <p>$245,667,690</p>
+                <p> -- </p>
               </TableCell>
             );
           }
           if (column.id === "volume") {
             return (
               <TableCell key={idx}>
-                <p>$33,725,975</p>
+                <p> -- </p>
               </TableCell>
             );
           }
           if (column.id === "apr") {
             return (
               <TableCell key={idx}>
-                <p className={styles.apr}>1.28% - 2.19%</p>
+                <p className={styles.apr}> -- </p>
               </TableCell>
             );
           }
@@ -110,14 +110,14 @@ const LiquidityPoolListTableRow = ({
                     className={styles.addLiquidityButton}
                     onClick={() => handleAddLiquidity(item)}
                   >
-                    Add Liquidity
+                    Add
                   </Button>
                   {bptAmountIn ? (
                     <Button
                       className={styles.removeLiquidityButton}
                       onClick={() => handleWithdrawLiquidity(item)}
                     >
-                      Remove Liquidity
+                      Remove
                     </Button>
                   ) : (
                     <></>

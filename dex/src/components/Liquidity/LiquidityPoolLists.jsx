@@ -36,12 +36,12 @@ const tableColumns = [
     minWidth: 150,
     align: "left",
   },
-  {
-    id: "volume",
-    label: "Volume(24h)",
-    minWidth: 20,
-    align: "left",
-  },
+  // {
+  //   id: "volume",
+  //   label: "Volume(24h)",
+  //   minWidth: 20,
+  //   align: "left",
+  // },
   {
     id: "apr",
     label: "APR",
