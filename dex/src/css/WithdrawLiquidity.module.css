@@ -40,6 +40,23 @@
   margin-left: 10px;
 }
 
+.styledBoxFive {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.styledAvatarOne {
+  height: 25px;
+  width: 25px;
+}
+
+.styledAvatarTwo {
+  left: -10px;
+  height: 25px;
+  width: 25px;
+}
+
 .sliderPart {
   display: flex;
   flex-direction: column;

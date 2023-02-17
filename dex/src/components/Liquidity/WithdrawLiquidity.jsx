@@ -1,6 +1,6 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Box, MenuItem, Select, Slider, Tooltip } from "@mui/material";
+import { Avatar, Box, MenuItem, Select, Slider, Tooltip } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import styles from "../../css/ShortSwap.module.css";
 import lsStyles from "../../css/LongSwap.module.css";
@@ -85,7 +85,19 @@ const WithdrawLiquidity = ({ selectedTokenPair, bptAmountIn }) => {
                   >
                     <MenuItem value={1}>
                       <div className={wStyles.menuItems}>
-                        <img src={maticLogo} alt="" height={30} width={30} />
+                        <Box className={wStyles.styledBoxFive}>
+                          <Avatar
+                            className={wStyles.styledAvatarOne}
+                            alt="Testv4"
+                            src={selectedTokenPair[0].logo}
+                          />
+                          <Avatar
+                            className={wStyles.styledAvatarTwo}
+                            sizes="small"
+                            alt="Faucet"
+                            src={selectedTokenPair[1].logo}
+                          />
+                        </Box>
                         <span className={wStyles.optionText}>All tokens</span>
                       </div>
                     </MenuItem>
