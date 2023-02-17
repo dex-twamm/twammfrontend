@@ -32,7 +32,6 @@ const LiquidityPoolListTableRow = ({
       network: item[0]?.network,
       poolId: item[0]?.poolId,
     };
-    console.log(currentNetwork);
     const getPoolTokenData = async () => {
       const signer = await web3provider?.getSigner();
       const poolContract = getPoolContract(currentNetwork, signer);
@@ -42,7 +41,7 @@ const LiquidityPoolListTableRow = ({
     };
 
     getPoolTokenData();
-  }, [web3provider]);
+  }, [web3provider, item, account, setBptAmountIn]);
 
   console.log("dataa", { ...item, withdrawBalance: bptAmountIn });
   return (

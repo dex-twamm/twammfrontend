@@ -107,6 +107,9 @@ const AddLiquidity = ({ selectedTokenPair }) => {
     return () => {
       clearTimeout(interval1);
       clearTimeout(interval2);
+      setExpectedSwapOut(0);
+      setSpotPrice(0);
+      setFormErrors({ balError: undefined });
     };
   }, [inputAmount, tokenA, tokenB, allowance, selectedNetwork]);
 
@@ -126,7 +129,7 @@ const AddLiquidity = ({ selectedTokenPair }) => {
     };
 
     getInputAmountValueInDollar();
-  }, [inputAmount]);
+  }, [inputAmount, tokenA]);
 
   return (
     <>

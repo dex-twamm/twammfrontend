@@ -12,11 +12,8 @@ import { getTokensBalance } from "../../utils/getAmount";
 import { ShortSwapContext } from "../../providers";
 import WithdrawLiquidityPreview from "./WithdrawLiquidityPreview";
 import maticLogo from "../../images/maticIcon.png";
-import usdLogo from "../../images/usdIcon.png";
-import wethLogo from "../../images/wethIcon.png";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import PopupModal from "../alerts/PopupModal";
-import { getPoolContract } from "../../utils/getContracts";
 import classNames from "classnames";
 
 const WithdrawLiquidity = ({ selectedTokenPair, bptAmountIn }) => {
