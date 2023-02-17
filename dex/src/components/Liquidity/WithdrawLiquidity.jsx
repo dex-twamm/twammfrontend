@@ -92,18 +92,16 @@ const WithdrawLiquidity = ({ selectedTokenPair, bptAmountIn }) => {
                         <span className={wStyles.optionText}>All tokens</span>
                       </div>
                     </MenuItem>
-                    <MenuItem value={2}>
-                      <div className={wStyles.menuItems}>
-                        <img src={usdLogo} alt="" height={30} width={30} />
-                        <span className={wStyles.optionText}>USDC</span>
-                      </div>
-                    </MenuItem>
-                    <MenuItem value={3}>
-                      <div className={wStyles.menuItems}>
-                        <img src={wethLogo} alt="" height={30} width={30} />
-                        <span className={wStyles.optionText}>WETH</span>
-                      </div>
-                    </MenuItem>
+                    {selectedTokenPair?.map((itm, index) => (
+                      <MenuItem value={index + 2}>
+                        <div className={wStyles.menuItems}>
+                          <img src={itm?.logo} alt="" height={30} width={30} />
+                          <span className={wStyles.optionText}>
+                            {itm?.name}
+                          </span>
+                        </div>
+                      </MenuItem>
+                    ))}
                   </Select>
                   <p className={wStyles.amount}>$0.00</p>
                 </div>
@@ -128,26 +126,18 @@ const WithdrawLiquidity = ({ selectedTokenPair, bptAmountIn }) => {
                 </div>
               </div>
               <div className={wStyles.tokensList}>
-                <div className={wStyles.items}>
-                  <div className={wStyles.tokenInfo}>
-                    <img src={wethLogo} alt="" height={30} width={30} />
-                    <p>WETH 50%</p>
+                {selectedTokenPair?.map((el, idx) => (
+                  <div className={wStyles.items} key={idx}>
+                    <div className={wStyles.tokenInfo}>
+                      <img src={el?.logo} alt="" height={30} width={30} />
+                      <p>{el?.symbol} 50%</p>
+                    </div>
+                    <div className={wStyles.amt}>
+                      <p>0.05</p>
+                      <span>$0.00</span>
+                    </div>
                   </div>
-                  <div className={wStyles.amt}>
-                    <p>0.05</p>
-                    <span>$0.00</span>
-                  </div>
-                </div>
-                <div className={wStyles.items}>
-                  <div className={wStyles.tokenInfo}>
-                    <img src={usdLogo} alt="" height={30} width={30} />
-                    <p>USDC 50%</p>
-                  </div>
-                  <div className={wStyles.amt}>
-                    <p>0.05</p>
-                    <span>$0.00</span>
-                  </div>
-                </div>
+                ))}
               </div>
               <div className={wStyles.priceImpact}>
                 <div className={wStyles.impact}>
