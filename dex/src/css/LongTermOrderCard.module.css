@@ -114,9 +114,10 @@
 .extrasContainer {
   /* margin-top: -20px; */
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 10px;
-  width: 100%;
+  gap: 5px;
+  width: 60%;
 }
 
 .extrasContainerOne {
@@ -148,11 +149,13 @@
   border-radius: 17px;
   font-family: "Open Sans";
   font-weight: 600;
-  font-size: 11px;
+  font-size: 11.5px;
 }
 
 .averagePrice {
   cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 
 .buttonContainer {

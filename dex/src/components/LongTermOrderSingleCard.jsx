@@ -11,6 +11,7 @@ import { LongSwapContext, ShortSwapContext } from "../providers";
 import { ethers } from "ethers";
 import { getPoolConfig } from "../utils/poolUtils";
 import { getBlockExplorerTransactionUrl } from "../utils/networkUtils";
+import ChangeCircleOutlinedIcon from "@mui/icons-material/ChangeCircleOutlined";
 
 const LongTermOrderSingleCard = ({ orderLog }) => {
   const {
@@ -308,11 +309,15 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
                 >
                   {!switchAvgPrice
                     ? ` Average Price: 1 ${tokenIn.symbol} =
-                  ${getProperFixedValue(averagePrice)}
-                  ${tokenOut.symbol}`
+                    ${getProperFixedValue(averagePrice)}
+                    ${tokenOut.symbol}`
                     : ` Average Price: 1 ${tokenOut.symbol} =
-                  ${switchedAveragePrice}
-                  ${tokenIn.symbol}`}
+                    ${switchedAveragePrice}
+                    ${tokenIn.symbol}`}
+                  <ChangeCircleOutlinedIcon
+                    fontSize="small"
+                    sx={{ marginLeft: "10px" }}
+                  />
                 </div>
               )}
             </div>
