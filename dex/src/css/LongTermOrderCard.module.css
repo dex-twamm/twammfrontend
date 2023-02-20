@@ -148,7 +148,11 @@
   border-radius: 17px;
   font-family: "Open Sans";
   font-weight: 600;
-  font-size: 11.5px;
+  font-size: 11px;
+}
+
+.averagePrice {
+  cursor: pointer;
 }
 
 .buttonContainer {

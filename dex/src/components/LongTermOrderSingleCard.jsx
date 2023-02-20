@@ -48,6 +48,8 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
 
   const [orderStartTime, setOrderStartTime] = useState();
   const [orderCompletionTime, setOrderCompletionTime] = useState();
+  const [switchAvgPrice, setSwitchAvgPrice] = useState(false);
+  const [switchedAveragePrice, setSwitchedAveragePrice] = useState();
 
   const poolConfig = getPoolConfig(selectedNetwork);
 
@@ -169,6 +171,13 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
   const isExecuteTimeCompleted = () => {
     if (orderStatus?.status.includes(orderExecutionTimeRemaining)) return false;
     else return true;
+  };
+
+  const handleAveragePriceClick = () => {
+    setSwitchAvgPrice((prev) => !prev);
+    const avgPrice = parseFloat(getProperFixedValue(averagePrice));
+    console.log(avgPrice, typeof avgPrice, "asdasdas");
+    setSwitchedAveragePrice((1 / avgPrice).toFixed(2));
   };
 
   useEffect(() => {
@@ -293,8 +302,17 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
             <div className={styles.feesAndPrice}>
               <div className={styles.fees}>Fees: {poolConfig?.fees}</div>
               {bigToFloat(soldToken) !== 0 && (
-                <div className={styles.averagePrice}>
-                  Average Price: {getProperFixedValue(averagePrice)}
+                <div
+                  className={styles.averagePrice}
+                  onClick={handleAveragePriceClick}
+                >
+                  {!switchAvgPrice
+                    ? ` Average Price: 1 ${tokenIn.symbol} =
+                  ${getProperFixedValue(averagePrice)}
+                  ${tokenOut.symbol}`
+                    : ` Average Price: 1 ${tokenOut.symbol} =
+                  ${switchedAveragePrice}
+                  ${tokenIn.symbol}`}
                 </div>
               )}
             </div>
