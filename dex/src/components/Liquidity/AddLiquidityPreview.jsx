@@ -14,7 +14,7 @@ const AddLiquidityPreview = ({
   tokenA,
 }) => {
   // const { selectedNetwork } = useContext(UIContext);
-  const selectedNetwork = { network: "Goerli", poolId: 2 };
+  // const selectedNetwork = { network: "Goerli", poolId: 2 };
   const { web3provider, account, setTransactionHash, setLoading, setError } =
     useContext(ShortSwapContext);
 
@@ -22,6 +22,11 @@ const AddLiquidityPreview = ({
 
   const handleClose = () => {
     setShowPreviewModal(false);
+  };
+
+  const selectedNetwork = {
+    network: tokenA?.network,
+    poolId: tokenA?.poolId,
   };
 
   const handleAddLiquidity = async () => {

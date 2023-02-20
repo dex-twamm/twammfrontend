@@ -12,8 +12,9 @@ const WithdrawLiquidityPreview = ({
   showPreviewModal,
   setShowPreviewModal,
   bptAmountIn,
+  selectedTokenPair,
 }) => {
-  const selectedNetwork = { network: "Goerli", poolId: 2 };
+  // const selectedNetwork = { network: "Goerli", poolId: 2 };
   // const { selectedNetwork } = useContext(UIContext);
 
   const { web3provider, account, setTransactionHash, setLoading, setError } =
@@ -23,6 +24,11 @@ const WithdrawLiquidityPreview = ({
 
   const handleClose = () => {
     setShowPreviewModal(false);
+  };
+
+  const selectedNetwork = {
+    network: selectedTokenPair[0]?.network,
+    poolId: selectedTokenPair[0]?.poolId,
   };
 
   const handleRemoveLiquidity = async () => {

@@ -90,10 +90,11 @@ const WithdrawLiquidity = ({ selectedTokenPair, bptAmountIn }) => {
                             className={wStyles.styledAvatarOne}
                             alt="Testv4"
                             src={selectedTokenPair[0].logo}
+                            sx={{ width: "28px", height: "28px" }}
                           />
                           <Avatar
                             className={wStyles.styledAvatarTwo}
-                            sizes="small"
+                            sx={{ width: "28px", height: "28px" }}
                             alt="Faucet"
                             src={selectedTokenPair[1].logo}
                           />
@@ -182,6 +183,7 @@ const WithdrawLiquidity = ({ selectedTokenPair, bptAmountIn }) => {
             showPreviewModal={showPreviewModal}
             setShowPreviewModal={setShowPreviewModal}
             bptAmountIn={bptAmountIn}
+            selectedTokenPair={selectedTokenPair}
           />
         </div>
         <PopupModal />
