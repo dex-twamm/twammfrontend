@@ -1,7 +1,7 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Alert, Box, CircularProgress, Tooltip } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import styles from "../../css/ShortSwap.module.css";
 import lsStyles from "../../css/LongSwap.module.css";
 import wStyles from "../../css/WithdrawLiquidity.module.css";
@@ -44,11 +44,14 @@ const AddLiquidity = ({ selectedTokenPair }) => {
   const [inputAmount, setInputAmount] = useState();
   const [dollarValueOfInputAmount, setDollarValueOfInputAmount] = useState(0.0);
 
-  useEffect(() => {
-    const currentNetwork = {
-      network: selectedTokenPair[0]?.network,
-      poolId: selectedTokenPair[0]?.poolId,
+  const currentNetwork = useMemo(() => {
+    return {
+      ...selectedNetwork,
+      poolId: selectedTokenPair[2],
     };
+  }, [selectedNetwork, selectedTokenPair]);
+
+  useEffect(() => {
     const getTokenBalance = async () => {
       const tokenBalance = await getTokensBalance(
         web3provider?.getSigner(),
@@ -58,7 +61,7 @@ const AddLiquidity = ({ selectedTokenPair }) => {
       setBalanceOfToken(tokenBalance);
     };
     getTokenBalance();
-  }, [account, web3provider, selectedTokenPair]);
+  }, [account, web3provider, selectedTokenPair, currentNetwork]);
 
   const handlePreviewClick = () => {
     setShowPreviewModal(true);
@@ -84,7 +87,7 @@ const AddLiquidity = ({ selectedTokenPair }) => {
           setFormErrors,
           setSpotPrice,
           setExpectedSwapOut,
-          selectedNetwork
+          currentNetwork
         );
       }, 500);
       // Update price every 12 seconds.
@@ -100,7 +103,7 @@ const AddLiquidity = ({ selectedTokenPair }) => {
           setFormErrors,
           setSpotPrice,
           setExpectedSwapOut,
-          selectedNetwork
+          currentNetwork
         );
       }, 12000);
     }
@@ -119,7 +122,6 @@ const AddLiquidity = ({ selectedTokenPair }) => {
       const tokenData = await axios.get(
         `https://api.coingecko.com/api/v3/coins/${id}`
       );
-      console.log("tokenData", tokenData);
       const currentPricePerToken =
         tokenData?.data?.market_data?.current_price?.usd;
 
@@ -236,7 +238,8 @@ const AddLiquidity = ({ selectedTokenPair }) => {
             showPreviewModal={showPreviewModal}
             setShowPreviewModal={setShowPreviewModal}
             dollarValueOfInputAmount={dollarValueOfInputAmount}
-            tokenA={tokenA}
+            selectedTokenPair={selectedTokenPair}
+            currentNetwork={currentNetwork}
           />
         </div>
         <PopupModal />

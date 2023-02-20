@@ -5,7 +5,7 @@ import styles from "../../css/AddLiquidityPreview.module.css";
 import usdLogo from "../../images/usdIcon.png";
 import wethLogo from "../../images/wethIcon.png";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { LongSwapContext, ShortSwapContext, UIContext } from "../../providers";
+import { LongSwapContext, ShortSwapContext } from "../../providers";
 import { _withdrawPoolLiquidity } from "../../utils/_withdrawPoolLiquidity";
 
 const WithdrawLiquidityPreview = ({
@@ -13,10 +13,8 @@ const WithdrawLiquidityPreview = ({
   setShowPreviewModal,
   bptAmountIn,
   selectedTokenPair,
+  currentNetwork,
 }) => {
-  // const selectedNetwork = { network: "Goerli", poolId: 2 };
-  // const { selectedNetwork } = useContext(UIContext);
-
   const { web3provider, account, setTransactionHash, setLoading, setError } =
     useContext(ShortSwapContext);
 
@@ -26,17 +24,12 @@ const WithdrawLiquidityPreview = ({
     setShowPreviewModal(false);
   };
 
-  const selectedNetwork = {
-    network: selectedTokenPair[0]?.network,
-    poolId: selectedTokenPair[0]?.poolId,
-  };
-
   const handleRemoveLiquidity = async () => {
     try {
       await _withdrawPoolLiquidity(
         account,
         web3provider,
-        selectedNetwork,
+        currentNetwork,
         bptAmountIn,
         setTransactionHash,
         setMessage,

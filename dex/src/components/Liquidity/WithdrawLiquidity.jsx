@@ -1,7 +1,7 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Avatar, Box, MenuItem, Select, Slider, Tooltip } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import styles from "../../css/ShortSwap.module.css";
 import lsStyles from "../../css/LongSwap.module.css";
 import wStyles from "../../css/WithdrawLiquidity.module.css";
@@ -9,7 +9,7 @@ import wStyles from "../../css/WithdrawLiquidity.module.css";
 import PopupSettings from "../PopupSettings";
 import Tabs from "../Tabs";
 import { getTokensBalance } from "../../utils/getAmount";
-import { ShortSwapContext } from "../../providers";
+import { ShortSwapContext, UIContext } from "../../providers";
 import WithdrawLiquidityPreview from "./WithdrawLiquidityPreview";
 import maticLogo from "../../images/maticIcon.png";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
@@ -19,27 +19,32 @@ import classNames from "classnames";
 const WithdrawLiquidity = ({ selectedTokenPair, bptAmountIn }) => {
   const { account, web3provider, isWalletConnected } =
     useContext(ShortSwapContext);
+  const { selectedNetwork } = useContext(UIContext);
+
   const [showSettings, setShowSettings] = useState(false);
   const [balanceOfToken, setBalanceOfToken] = useState();
   const [selectValue, setSelectValue] = useState(1);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [sliderValue, setSliderValue] = useState(100);
 
-  useEffect(() => {
-    const selectedNetwork = {
-      network: selectedTokenPair[0]?.network,
-      poolId: selectedTokenPair[0]?.poolId,
+  const currentNetwork = useMemo(() => {
+    return {
+      ...selectedNetwork,
+      poolId: selectedTokenPair[2],
     };
+  }, [selectedNetwork, selectedTokenPair]);
+
+  useEffect(() => {
     const getTokenBalance = async () => {
       const tokenBalance = await getTokensBalance(
         web3provider?.getSigner(),
         account,
-        selectedNetwork
+        currentNetwork
       );
       setBalanceOfToken(tokenBalance);
     };
     getTokenBalance();
-  }, [account, web3provider, selectedTokenPair]);
+  }, [account, web3provider, selectedTokenPair, currentNetwork]);
 
   const handlePreviewClick = () => {
     setShowPreviewModal(true);
@@ -102,16 +107,23 @@ const WithdrawLiquidity = ({ selectedTokenPair, bptAmountIn }) => {
                         <span className={wStyles.optionText}>All tokens</span>
                       </div>
                     </MenuItem>
-                    {selectedTokenPair?.map((itm, index) => (
-                      <MenuItem value={index + 2}>
-                        <div className={wStyles.menuItems}>
-                          <img src={itm?.logo} alt="" height={30} width={30} />
-                          <span className={wStyles.optionText}>
-                            {itm?.name}
-                          </span>
-                        </div>
-                      </MenuItem>
-                    ))}
+                    {selectedTokenPair
+                      ?.slice(0, selectedTokenPair.length - 1)
+                      .map((itm, index) => (
+                        <MenuItem value={index + 2} key={index}>
+                          <div className={wStyles.menuItems}>
+                            <img
+                              src={itm?.logo}
+                              alt=""
+                              height={30}
+                              width={30}
+                            />
+                            <span className={wStyles.optionText}>
+                              {itm?.name}
+                            </span>
+                          </div>
+                        </MenuItem>
+                      ))}
                   </Select>
                   <p className={wStyles.amount}>$0.00</p>
                 </div>
@@ -136,18 +148,20 @@ const WithdrawLiquidity = ({ selectedTokenPair, bptAmountIn }) => {
                 </div>
               </div>
               <div className={wStyles.tokensList}>
-                {selectedTokenPair?.map((el, idx) => (
-                  <div className={wStyles.items} key={idx}>
-                    <div className={wStyles.tokenInfo}>
-                      <img src={el?.logo} alt="" height={30} width={30} />
-                      <p>{el?.symbol} 50%</p>
+                {selectedTokenPair
+                  .slice(0, selectedTokenPair.length - 1)
+                  ?.map((el, idx) => (
+                    <div className={wStyles.items} key={idx}>
+                      <div className={wStyles.tokenInfo}>
+                        <img src={el?.logo} alt="" height={30} width={30} />
+                        <p>{el?.symbol} 50%</p>
+                      </div>
+                      <div className={wStyles.amt}>
+                        <p>0.05</p>
+                        <span>$0.00</span>
+                      </div>
                     </div>
-                    <div className={wStyles.amt}>
-                      <p>0.05</p>
-                      <span>$0.00</span>
-                    </div>
-                  </div>
-                ))}
+                  ))}
               </div>
               <div className={wStyles.priceImpact}>
                 <div className={wStyles.impact}>
@@ -184,6 +198,7 @@ const WithdrawLiquidity = ({ selectedTokenPair, bptAmountIn }) => {
             setShowPreviewModal={setShowPreviewModal}
             bptAmountIn={bptAmountIn}
             selectedTokenPair={selectedTokenPair}
+            currentNetwork={currentNetwork}
           />
         </div>
         <PopupModal />

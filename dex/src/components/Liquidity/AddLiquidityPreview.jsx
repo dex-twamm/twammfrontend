@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import React, { useContext } from "react";
 import styles from "../../css/AddLiquidityPreview.module.css";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { LongSwapContext, ShortSwapContext, UIContext } from "../../providers";
+import { LongSwapContext, ShortSwapContext } from "../../providers";
 import { _addPoolLiquidity } from "../../utils/_addPoolLiquidity";
 
 const AddLiquidityPreview = ({
@@ -11,10 +11,9 @@ const AddLiquidityPreview = ({
   setShowPreviewModal,
   amountsIn,
   dollarValueOfInputAmount,
-  tokenA,
+  selectedTokenPair,
+  currentNetwork,
 }) => {
-  // const { selectedNetwork } = useContext(UIContext);
-  // const selectedNetwork = { network: "Goerli", poolId: 2 };
   const { web3provider, account, setTransactionHash, setLoading, setError } =
     useContext(ShortSwapContext);
 
@@ -24,17 +23,12 @@ const AddLiquidityPreview = ({
     setShowPreviewModal(false);
   };
 
-  const selectedNetwork = {
-    network: tokenA?.network,
-    poolId: tokenA?.poolId,
-  };
-
   const handleAddLiquidity = async () => {
     try {
       await _addPoolLiquidity(
         account,
         web3provider,
-        selectedNetwork,
+        currentNetwork,
         amountsIn,
         setTransactionHash,
         setMessage,
@@ -59,10 +53,15 @@ const AddLiquidityPreview = ({
           <p className={styles.modalTitle}>Add Liquidity Preview</p>
           <div className={styles.tokenAndLogo}>
             <p className={styles.amount}>
-              {amountsIn[0]} {tokenA?.name}
+              {amountsIn[0]} {selectedTokenPair[0]?.name}
             </p>
             <div className={styles.logo}>
-              <img src={tokenA?.logo} alt="logo" width="40px" height="40px" />
+              <img
+                src={selectedTokenPair[0]?.logo}
+                alt="logo"
+                width="40px"
+                height="40px"
+              />
             </div>
           </div>
           <div className={styles.summary}>

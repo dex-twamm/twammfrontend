@@ -2,7 +2,7 @@ import { Avatar, Button, TableCell, TableRow } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useContext, useEffect, useMemo } from "react";
 import styles from "../../css/LiquidityPoolList.module.css";
-import { ShortSwapContext } from "../../providers";
+import { ShortSwapContext, UIContext } from "../../providers";
 import { getPoolContract } from "../../utils/getContracts";
 
 const LiquidityPoolListTableRow = ({
@@ -16,41 +16,35 @@ const LiquidityPoolListTableRow = ({
   bptAmountIn,
 }) => {
   const { web3provider, account } = useContext(ShortSwapContext);
+  const { selectedNetwork } = useContext(UIContext);
 
   const handleAddLiquidity = (item) => {
     setIsAddLiquidity(true);
-    setSelectedTokenPair(item);
+    setSelectedTokenPair([...item, index]);
   };
 
-  const handleWithdrawLiquidity = (item) => {
+  const handleWithdrawLiquidity = () => {
     setIsWithdrawLiquidity(true);
-    setSelectedTokenPair(item);
+    setSelectedTokenPair([...item, index]);
   };
 
   const currentNetwork = useMemo(() => {
     return {
-      network: item[0]?.network,
-      poolId: item[0]?.poolId,
+      ...selectedNetwork,
+      poolId: index,
     };
-  }, [item]);
+  }, [index, selectedNetwork]);
 
   useEffect(() => {
     const getPoolTokenData = async () => {
-      const signer = await web3provider?.getSigner();
+      const signer = web3provider?.getSigner();
       const poolContract = getPoolContract(currentNetwork, signer);
-      console.log(poolContract);
       const balance = await poolContract.balanceOf(account);
       setBptAmountIn(parseFloat(balance.toString()));
     };
-
     getPoolTokenData();
   }, [web3provider, item, account, setBptAmountIn, currentNetwork]);
 
-  console.log(
-    "dataa",
-    { ...item, withdrawBalance: bptAmountIn },
-    currentNetwork
-  );
   return (
     <>
       <TableRow key={index} className={styles.dataRow}>
