@@ -299,10 +299,12 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
               )}
             </div>
             <div className={styles.times}>
-              <div className={styles.fees}>Initiated On: {orderStartTime}</div>
+              <div className={styles.fees}>
+                Initiated On: {orderStartTime.substring(0, 17)}
+              </div>
               {isExecuteTimeCompleted() && (
                 <div className={styles.fees}>
-                  Completed On: {orderCompletionTime}
+                  Completed On: {orderCompletionTime.substring(0, 17)}
                 </div>
               )}
             </div>
