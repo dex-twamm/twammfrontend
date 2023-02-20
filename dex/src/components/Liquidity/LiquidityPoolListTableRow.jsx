@@ -1,6 +1,6 @@
 import { Avatar, Button, TableCell, TableRow } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useMemo } from "react";
 import styles from "../../css/LiquidityPoolList.module.css";
 import { ShortSwapContext } from "../../providers";
 import { getPoolContract } from "../../utils/getContracts";
@@ -27,11 +27,14 @@ const LiquidityPoolListTableRow = ({
     setSelectedTokenPair(item);
   };
 
-  useEffect(() => {
-    const currentNetwork = {
+  const currentNetwork = useMemo(() => {
+    return {
       network: item[0]?.network,
       poolId: item[0]?.poolId,
     };
+  }, [item]);
+
+  useEffect(() => {
     const getPoolTokenData = async () => {
       const signer = await web3provider?.getSigner();
       const poolContract = getPoolContract(currentNetwork, signer);
@@ -41,9 +44,13 @@ const LiquidityPoolListTableRow = ({
     };
 
     getPoolTokenData();
-  }, [web3provider, item, account, setBptAmountIn]);
+  }, [web3provider, item, account, setBptAmountIn, currentNetwork]);
 
-  console.log("dataa", { ...item, withdrawBalance: bptAmountIn });
+  console.log(
+    "dataa",
+    { ...item, withdrawBalance: bptAmountIn },
+    currentNetwork
+  );
   return (
     <>
       <TableRow key={index} className={styles.dataRow}>

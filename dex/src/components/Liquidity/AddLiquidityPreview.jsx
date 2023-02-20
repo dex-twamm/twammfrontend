@@ -2,11 +2,9 @@ import { Modal, Tooltip } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useContext } from "react";
 import styles from "../../css/AddLiquidityPreview.module.css";
-import ethLogo from "../../images/ethereumIcon.png";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { LongSwapContext, ShortSwapContext } from "../../providers";
+import { LongSwapContext, ShortSwapContext, UIContext } from "../../providers";
 import { _addPoolLiquidity } from "../../utils/_addPoolLiquidity";
-import PopupModal from "../alerts/PopupModal";
 
 const AddLiquidityPreview = ({
   showPreviewModal,

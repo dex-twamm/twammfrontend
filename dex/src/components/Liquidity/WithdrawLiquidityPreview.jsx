@@ -5,7 +5,7 @@ import styles from "../../css/AddLiquidityPreview.module.css";
 import usdLogo from "../../images/usdIcon.png";
 import wethLogo from "../../images/wethIcon.png";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { LongSwapContext, ShortSwapContext } from "../../providers";
+import { LongSwapContext, ShortSwapContext, UIContext } from "../../providers";
 import { _withdrawPoolLiquidity } from "../../utils/_withdrawPoolLiquidity";
 
 const WithdrawLiquidityPreview = ({
@@ -14,6 +14,8 @@ const WithdrawLiquidityPreview = ({
   bptAmountIn,
 }) => {
   const selectedNetwork = { network: "Goerli", poolId: 2 };
+  // const { selectedNetwork } = useContext(UIContext);
+
   const { web3provider, account, setTransactionHash, setLoading, setError } =
     useContext(ShortSwapContext);
 
