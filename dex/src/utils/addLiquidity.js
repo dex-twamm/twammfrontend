@@ -9,8 +9,6 @@ export async function cancelLTO(
   walletAddress,
   signer,
   orderId,
-  orderHash,
-  setTransactionHash,
   currentNetwork
 ) {
   const vaultContract = getExchangeContract(currentNetwork, signer);
@@ -35,8 +33,6 @@ export async function cancelLTO(
   const exitPoolTx = await vaultContract.exitPool(...data, {
     gasLimit: getGasLimit(vaultContract, data, "exitPool"),
   });
-
-  setTransactionHash(orderHash);
   return exitPoolTx;
 }
 
@@ -44,8 +40,6 @@ export async function withdrawLTO(
   walletAddress,
   signer,
   orderId,
-  orderHash,
-  setTransactionHash,
   currentNetwork
 ) {
   const vaultContract = getExchangeContract(currentNetwork, signer);
@@ -71,7 +65,6 @@ export async function withdrawLTO(
     gasLimit: getGasLimit(vaultContract, data, "exitPool"),
   });
 
-  setTransactionHash(orderHash);
   return withdrawLTOTx;
 }
 
