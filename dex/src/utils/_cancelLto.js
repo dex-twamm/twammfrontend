@@ -6,7 +6,6 @@ import { getEthLogs } from "./get_ethLogs";
 // cancelLTO
 export const _cancelLTO = async (
   orderId,
-  orderHash,
   setLoading,
   setDisableActionBtn,
   account,

@@ -91,10 +91,9 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
     bigToFloat(convertedAmount, tokenOut.decimals) /
     bigToFloat(soldToken, tokenIn.decimals);
 
-  const handleCancel = (orderId, orderHash) => {
+  const handleCancel = (orderId) => {
     _cancelLTO(
       orderId,
-      orderHash,
       setLoading,
       setDisableActionBtn,
       account,
@@ -113,10 +112,9 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
     );
   };
 
-  const handleWithDraw = (orderId, orderHash) => {
+  const handleWithDraw = (orderId) => {
     _withdrawLTO(
       orderId,
-      orderHash,
       setLoading,
       setDisableActionBtn,
       account,
@@ -364,10 +362,7 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
                 disableActionBtn
               }
               onClick={() => {
-                handleCancel(
-                  orderLog?.orderId?.toNumber(),
-                  orderLog?.transactionHash
-                );
+                handleCancel(orderLog?.orderId?.toNumber());
               }}
             >
               {orderStatus?.status === orderStatusCompleted
@@ -381,10 +376,7 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
                 <button
                   className={classNames(styles.button, styles.withdrawButton)}
                   onClick={() => {
-                    handleWithDraw(
-                      orderLog?.orderId?.toNumber(),
-                      orderLog?.transactionHash
-                    );
+                    handleWithDraw(orderLog?.orderId?.toNumber());
                   }}
                   disabled={disableActionBtn}
                 >

@@ -5,7 +5,6 @@ import { getEthLogs } from "./get_ethLogs";
 
 export const _withdrawLTO = async (
   orderId,
-  orderHash,
   setLoading,
   setDisableActionBtn,
   account,
@@ -41,7 +40,6 @@ export const _withdrawLTO = async (
     await withdrawLTO(walletAddress, signer, orderId, currentNetwork).then(
       (res) => {
         setTransactionHash(res.hash);
-
         const withdrawLTOResult = async (res) => {
           const result = await res.wait();
           return result;
@@ -55,9 +53,7 @@ export const _withdrawLTO = async (
               }
             );
             setMessage(POPUP_MESSAGE.ltoWithdrawn);
-          } else {
-            setMessage(POPUP_MESSAGE.ltoWithdrawFailed);
-          }
+          } else setMessage(POPUP_MESSAGE.ltoWithdrawFailed);
           setDisableActionBtn(false);
         });
       }
