@@ -7,7 +7,6 @@ import styles from "../css/LongTermOrderCard.module.css";
 const LongTermOrderCard = () => {
   const { isWalletConnected } = useContext(ShortSwapContext);
   const { orderLogsDecoded, orderLogsLoading } = useContext(LongSwapContext);
-  console.log(orderLogsDecoded);
 
   return !isWalletConnected ? (
     <>

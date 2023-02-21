@@ -204,9 +204,16 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
         result["amountsOut"]?.[1],
         tokenOut?.decimal
       );
-      setWithdrawValue(withdrawResult.toFixed(2));
+      if (orderLog?.withdrawals.length > 0) {
+        let addedValue = 0;
+        orderLog?.withdrawals.map(
+          (item) =>
+            (addedValue =
+              addedValue + bigToFloat(item.proceeds, tokenOut?.decimal))
+        );
+        setWithdrawValue(getProperFixedValue(withdrawResult + addedValue));
+      } else setWithdrawValue(getProperFixedValue(withdrawResult));
     };
-    console.log(orderLog);
 
     if (orderLog?.state === "inProgress") getWithdrawValue();
   }, []);
@@ -273,7 +280,10 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
                 alt={tokenOut.symbol}
               />
               <p className={classNames(styles.tokenText, styles.greenText)}>
-                {withdrawValue} {tokenOut.symbol}
+                {orderLog?.state === "inProgress"
+                  ? withdrawValue
+                  : bigToStr(convertedAmount, tokenOut.decimals)}{" "}
+                {tokenOut.symbol}
               </p>
             </div>
           </div>

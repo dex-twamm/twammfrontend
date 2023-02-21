@@ -68,17 +68,10 @@ export async function withdrawLTO(
   let withdrawLTOTx;
 
   if (hasCallStatic) {
-    console.log("hello");
     withdrawLTOTx = await balancerContract.queryExit(...data, {
       gasLimit: getGasLimit(balancerContract, data, "queryExit"),
     });
-
-    console.log();
-    withdrawLTOTx[2]?.map((item, index) =>
-      console.log(`tokens_${index}`, bigToFloat(item, 18))
-    );
   } else {
-    console.log("hi");
     withdrawLTOTx = await vaultContract.exitPool(...data, {
       gasLimit: getGasLimit(vaultContract, data, "exitPool"),
     });

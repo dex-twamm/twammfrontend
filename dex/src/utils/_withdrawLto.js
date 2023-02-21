@@ -40,7 +40,6 @@ export const _withdrawLTO = async (
 
     await withdrawLTO(walletAddress, signer, orderId, currentNetwork).then(
       (res) => {
-        console.log("response", res);
         setTransactionHash(res.hash);
 
         const withdrawLTOResult = async (res) => {
