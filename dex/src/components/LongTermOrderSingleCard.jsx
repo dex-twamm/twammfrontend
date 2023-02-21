@@ -174,9 +174,8 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
 
   const handleAveragePriceClick = () => {
     setSwitchAvgPrice((prev) => !prev);
-    const avgPrice = parseFloat(getProperFixedValue(averagePrice));
-    console.log(avgPrice, typeof avgPrice, "asdasdas");
-    setSwitchedAveragePrice((1 / avgPrice).toFixed(2));
+    const avgPrice = parseFloat(averagePrice);
+    setSwitchedAveragePrice(getProperFixedValue(1 / avgPrice));
   };
 
   useEffect(() => {
