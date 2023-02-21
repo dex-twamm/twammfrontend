@@ -3,7 +3,8 @@ import { defaultAbiCoder } from "ethers/lib/utils";
 import { getPoolId, getPoolTokenAddresses, getPoolTokens } from "./poolUtils";
 
 import { getGasLimit } from "./getGasLimit";
-import { getExchangeContract } from "./getContracts";
+import { getBalancerContract, getExchangeContract } from "./getContracts";
+import { bigToFloat } from ".";
 
 export async function cancelLTO(
   walletAddress,
@@ -44,6 +45,8 @@ export async function withdrawLTO(
   hasCallStatic
 ) {
   const vaultContract = getExchangeContract(currentNetwork, signer);
+
+  const balancerContract = getBalancerContract(currentNetwork, signer);
   // bptAmountIn As User Input
   const encodedRequest = defaultAbiCoder.encode(
     ["uint256", "uint256"],
@@ -66,9 +69,14 @@ export async function withdrawLTO(
 
   if (hasCallStatic) {
     console.log("hello");
-    withdrawLTOTx = await vaultContract.callStatic.exitPool(...data, {
-      gasLimit: getGasLimit(vaultContract, data, "exitPool"),
+    withdrawLTOTx = await balancerContract.queryExit(...data, {
+      gasLimit: getGasLimit(balancerContract, data, "queryExit"),
     });
+
+    console.log();
+    withdrawLTOTx[2]?.map((item, index) =>
+      console.log(`tokens_${index}`, bigToFloat(item, 18))
+    );
   } else {
     console.log("hi");
     withdrawLTOTx = await vaultContract.exitPool(...data, {

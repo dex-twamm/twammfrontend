@@ -20,12 +20,10 @@ export const _withdrawLTO = async (
   setMessage,
   setTransactionHash,
   currentNetwork,
-  setSelectedNetwork,
-  hasCallStatic
+  setSelectedNetwork
 ) => {
-  console.log("call Static on the orders", hasCallStatic);
-  if (!hasCallStatic) setDisableActionBtn(true);
-  if (!hasCallStatic) setLoading(true);
+  setDisableActionBtn(true);
+  setLoading(true);
   try {
     const walletAddress = account;
     const signer = web3provider.getSigner();
@@ -40,39 +38,35 @@ export const _withdrawLTO = async (
       );
     }
 
-    await withdrawLTO(
-      walletAddress,
-      signer,
-      orderId,
-      currentNetwork,
-      hasCallStatic
-    ).then((res) => {
-      console.log("response", res);
-      setTransactionHash(res.hash);
+    await withdrawLTO(walletAddress, signer, orderId, currentNetwork).then(
+      (res) => {
+        console.log("response", res);
+        setTransactionHash(res.hash);
 
-      const withdrawLTOResult = async (res) => {
-        const result = await res.wait();
-        return result;
-      };
-      withdrawLTOResult(res).then(async (response) => {
-        if (response.status === 1) {
-          await getEthLogs(signer, walletAddress, currentNetwork).then(
-            (res) => {
-              const resArray = Array.from(res.values());
-              setOrderLogsDecoded(resArray);
-            }
-          );
-          if (!hasCallStatic) setMessage(POPUP_MESSAGE.ltoWithdrawn);
-        } else {
-          if (!hasCallStatic) setMessage(POPUP_MESSAGE.ltoWithdrawFailed);
-        }
-        setDisableActionBtn(false);
-      });
-    });
+        const withdrawLTOResult = async (res) => {
+          const result = await res.wait();
+          return result;
+        };
+        withdrawLTOResult(res).then(async (response) => {
+          if (response.status === 1) {
+            await getEthLogs(signer, walletAddress, currentNetwork).then(
+              (res) => {
+                const resArray = Array.from(res.values());
+                setOrderLogsDecoded(resArray);
+              }
+            );
+            setMessage(POPUP_MESSAGE.ltoWithdrawn);
+          } else {
+            setMessage(POPUP_MESSAGE.ltoWithdrawFailed);
+          }
+          setDisableActionBtn(false);
+        });
+      }
+    );
     setLoading(false);
   } catch (e) {
     console.log(e);
-    if (!hasCallStatic) setMessage(POPUP_MESSAGE.ltoWithdrawFailed);
+    setMessage(POPUP_MESSAGE.ltoWithdrawFailed);
     setLoading(false);
     setDisableActionBtn(false);
   }

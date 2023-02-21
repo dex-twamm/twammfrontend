@@ -11,6 +11,7 @@ import { LongSwapContext, ShortSwapContext } from "../providers";
 import { ethers } from "ethers";
 import { getPoolConfig } from "../utils/poolUtils";
 import { getBlockExplorerTransactionUrl } from "../utils/networkUtils";
+import { withdrawLTO } from "../utils/addLiquidity";
 
 const LongTermOrderSingleCard = ({ orderLog }) => {
   const {
@@ -48,6 +49,7 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
 
   const [orderStartTime, setOrderStartTime] = useState();
   const [orderCompletionTime, setOrderCompletionTime] = useState();
+  const [withdrawValue, setWithdrawValue] = useState();
 
   const poolConfig = getPoolConfig(selectedNetwork);
 
@@ -189,28 +191,24 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
   }, [expBlock, stBlock, web3provider, orderStatus]);
 
   useEffect(() => {
-    if (orderLog?.state === "inProgress") {
-      _withdrawLTO(
-        orderLog?.orderId?.toNumber(),
-        orderLog?.transactionHash,
-        setLoading,
-        setDisableActionBtn,
+    const getWithdrawValue = async () => {
+      const signer = web3provider.getSigner();
+      const result = await withdrawLTO(
         account,
-        web3provider,
-        setweb3provider,
-        setCurrentBlock,
-        setBalance,
-        setAccount,
-        setWalletConnected,
-        isWalletConnected,
-        setOrderLogsDecoded,
-        setMessage,
-        setTransactionHash,
+        signer,
+        orderLog?.orderId?.toNumber(),
         selectedNetwork,
-        setSelectedNetwork,
         true
       );
-    }
+      const withdrawResult = bigToFloat(
+        result["amountsOut"]?.[1],
+        tokenOut?.decimal
+      );
+      setWithdrawValue(withdrawResult.toFixed(2));
+    };
+    console.log(orderLog);
+
+    if (orderLog?.state === "inProgress") getWithdrawValue();
   }, []);
 
   return (
@@ -275,7 +273,7 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
                 alt={tokenOut.symbol}
               />
               <p className={classNames(styles.tokenText, styles.greenText)}>
-                {bigToStr(convertedAmount, tokenOut.decimals)} {tokenOut.symbol}
+                {withdrawValue} {tokenOut.symbol}
               </p>
             </div>
           </div>
