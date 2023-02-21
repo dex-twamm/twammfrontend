@@ -2,7 +2,12 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { HiExternalLink } from "react-icons/hi";
 import styles from "../css/LongTermOrderCard.module.css";
 import { UIContext } from "../providers/context/UIProvider";
-import { bigToFloat, bigToStr, getProperFixedValue } from "../utils";
+import {
+  bigToFloat,
+  bigToStr,
+  getInversedValue,
+  getProperFixedValue,
+} from "../utils";
 import classNames from "classnames";
 import LongTermSwapCardDropdown from "./LongTermSwapCardDropdown";
 import { _withdrawLTO } from "../utils/_withdrawLto";
@@ -175,7 +180,7 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
   const handleAveragePriceClick = () => {
     setSwitchAvgPrice((prev) => !prev);
     const avgPrice = parseFloat(averagePrice);
-    setSwitchedAveragePrice(getProperFixedValue(1 / avgPrice));
+    setSwitchedAveragePrice(getInversedValue(avgPrice));
   };
 
   useEffect(() => {
