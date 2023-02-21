@@ -20,10 +20,12 @@ export const _withdrawLTO = async (
   setMessage,
   setTransactionHash,
   currentNetwork,
-  setSelectedNetwork
+  setSelectedNetwork,
+  hasCallStatic
 ) => {
-  setDisableActionBtn(true);
-  setLoading(true);
+  console.log("call Static on the orders", hasCallStatic);
+  if (!hasCallStatic) setDisableActionBtn(true);
+  if (!hasCallStatic) setLoading(true);
   try {
     const walletAddress = account;
     const signer = web3provider.getSigner();
@@ -42,10 +44,12 @@ export const _withdrawLTO = async (
       walletAddress,
       signer,
       orderId,
-      orderHash,
-      setTransactionHash,
-      currentNetwork
+      currentNetwork,
+      hasCallStatic
     ).then((res) => {
+      console.log("response", res);
+      setTransactionHash(res.hash);
+
       const withdrawLTOResult = async (res) => {
         const result = await res.wait();
         return result;
@@ -58,15 +62,17 @@ export const _withdrawLTO = async (
               setOrderLogsDecoded(resArray);
             }
           );
-          setMessage(POPUP_MESSAGE.ltoWithdrawn);
-        } else setMessage(POPUP_MESSAGE.ltoWithdrawFailed);
+          if (!hasCallStatic) setMessage(POPUP_MESSAGE.ltoWithdrawn);
+        } else {
+          if (!hasCallStatic) setMessage(POPUP_MESSAGE.ltoWithdrawFailed);
+        }
         setDisableActionBtn(false);
       });
     });
     setLoading(false);
   } catch (e) {
     console.log(e);
-    setMessage(POPUP_MESSAGE.ltoWithdrawFailed);
+    if (!hasCallStatic) setMessage(POPUP_MESSAGE.ltoWithdrawFailed);
     setLoading(false);
     setDisableActionBtn(false);
   }

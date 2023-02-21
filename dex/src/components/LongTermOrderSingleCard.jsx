@@ -188,6 +188,31 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
     getTime();
   }, [expBlock, stBlock, web3provider, orderStatus]);
 
+  useEffect(() => {
+    if (orderLog?.state === "inProgress") {
+      _withdrawLTO(
+        orderLog?.orderId?.toNumber(),
+        orderLog?.transactionHash,
+        setLoading,
+        setDisableActionBtn,
+        account,
+        web3provider,
+        setweb3provider,
+        setCurrentBlock,
+        setBalance,
+        setAccount,
+        setWalletConnected,
+        isWalletConnected,
+        setOrderLogsDecoded,
+        setMessage,
+        setTransactionHash,
+        selectedNetwork,
+        setSelectedNetwork,
+        true
+      );
+    }
+  }, []);
+
   return (
     <>
       <div className={styles.container} key={orderLog.transactionHash}>
