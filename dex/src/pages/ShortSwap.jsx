@@ -145,6 +145,24 @@ const ShortSwap = () => {
             <div className={styles.swapOptions}>
               <p className={styles.textLink}>Swap</p>
               <div className={styles.poolAndIcon}>
+                {getAllPool(selectedNetwork)?.length > 1 && (
+                  <Select
+                    className={styles.poolBox}
+                    inputProps={{ "aria-label": "Without label" }}
+                    value={selectedNetwork?.poolId}
+                    onChange={handlePoolChange}
+                    variant="outlined"
+                    sx={{ outline: "none" }}
+                  >
+                    {getAllPool(selectedNetwork)?.map((el, idx) => {
+                      return (
+                        <MenuItem key={idx} value={idx}>
+                          {el.poolName}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                )}
                 <FontAwesomeIcon
                   className={styles.settingsIcon}
                   icon={faGear}
