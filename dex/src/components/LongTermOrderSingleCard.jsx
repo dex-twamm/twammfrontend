@@ -171,17 +171,27 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
     else return true;
   };
 
+  const getTimeWithoutSecs = (time) => {
+    return time.substring(0, 17);
+  };
+
   useEffect(() => {
     const getTime = async () => {
       const startTime = await web3provider.getBlock(stBlock);
-      setOrderStartTime(new Date(startTime?.timestamp * 1000).toLocaleString());
+      setOrderStartTime(
+        getTimeWithoutSecs(
+          new Date(startTime?.timestamp * 1000).toLocaleString()
+        )
+      );
 
       if (isExecuteTimeCompleted()) {
         const completionTime = await web3provider.getBlock(
           parseFloat(expBlock.toString())
         );
         setOrderCompletionTime(
-          new Date(completionTime?.timestamp * 1000).toLocaleString()
+          getTimeWithoutSecs(
+            new Date(completionTime?.timestamp * 1000).toLocaleString()
+          )
         );
       }
     };
@@ -299,12 +309,10 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
               )}
             </div>
             <div className={styles.times}>
-              <div className={styles.fees}>
-                Initiated On: {orderStartTime.substring(0, 17)}
-              </div>
+              <div className={styles.fees}>Initiated On: {orderStartTime}</div>
               {isExecuteTimeCompleted() && (
                 <div className={styles.fees}>
-                  Completed On: {orderCompletionTime.substring(0, 17)}
+                  Completed On: {orderCompletionTime}
                 </div>
               )}
             </div>
