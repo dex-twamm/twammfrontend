@@ -11,6 +11,7 @@ import { LongSwapContext, ShortSwapContext } from "../providers";
 import { ethers } from "ethers";
 import { getPoolConfig } from "../utils/poolUtils";
 import { getBlockExplorerTransactionUrl } from "../utils/networkUtils";
+import { formatToReadableTime } from "../utils/timeUtils";
 
 const LongTermOrderSingleCard = ({ orderLog }) => {
   const {
@@ -169,28 +170,16 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
     else return true;
   };
 
-  const getTimeWithoutSecs = (time) => {
-    return time.substring(0, 17);
-  };
-
   useEffect(() => {
     const getTime = async () => {
       const startTime = await web3provider.getBlock(stBlock);
-      setOrderStartTime(
-        getTimeWithoutSecs(
-          new Date(startTime?.timestamp * 1000).toLocaleString()
-        )
-      );
+      setOrderStartTime(formatToReadableTime(startTime?.timestamp));
 
       if (isExecuteTimeCompleted()) {
         const completionTime = await web3provider.getBlock(
           parseFloat(expBlock.toString())
         );
-        setOrderCompletionTime(
-          getTimeWithoutSecs(
-            new Date(completionTime?.timestamp * 1000).toLocaleString()
-          )
-        );
+        setOrderCompletionTime(formatToReadableTime(completionTime?.timestamp));
       }
     };
     getTime();
