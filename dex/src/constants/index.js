@@ -3433,7 +3433,7 @@ export const LONGTERM_ABI = [
   },
 ];
 
-export const BALANCER_ABI = [
+export const BALANCER_HELPER_ABI = [
   {
     inputs: [
       {
