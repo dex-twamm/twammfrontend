@@ -198,10 +198,11 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
         selectedNetwork,
         true
       );
-      const withdrawResult = bigToFloat(
-        result["amountsOut"]?.[1],
-        tokenOut?.decimal
+
+      const buyIndex = result["amountsOut"]?.filter(
+        (item) => bigToFloat(item) !== 0
       );
+      const withdrawResult = bigToFloat(buyIndex[0], tokenOut?.decimal);
       if (orderLog?.withdrawals.length > 0) {
         let addedValue = 0;
         orderLog?.withdrawals.map(
