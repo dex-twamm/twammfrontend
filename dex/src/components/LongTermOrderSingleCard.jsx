@@ -11,6 +11,8 @@ import { LongSwapContext, ShortSwapContext } from "../providers";
 import { ethers } from "ethers";
 import { getPoolConfig } from "../utils/poolUtils";
 import { getBlockExplorerTransactionUrl } from "../utils/networkUtils";
+import { withdrawLTO } from "../utils/addLiquidity";
+import { formatToReadableTime } from "../utils/timeUtils";
 
 const LongTermOrderSingleCard = ({ orderLog }) => {
   const {
@@ -48,6 +50,7 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
 
   const [orderStartTime, setOrderStartTime] = useState();
   const [orderCompletionTime, setOrderCompletionTime] = useState();
+  const [withdrawValue, setWithdrawValue] = useState();
 
   const poolConfig = getPoolConfig(selectedNetwork);
 
@@ -89,10 +92,9 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
     bigToFloat(convertedAmount, tokenOut.decimals) /
     bigToFloat(soldToken, tokenIn.decimals);
 
-  const handleCancel = (orderId, orderHash) => {
+  const handleCancel = (orderId) => {
     _cancelLTO(
       orderId,
-      orderHash,
       setLoading,
       setDisableActionBtn,
       account,
@@ -111,10 +113,9 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
     );
   };
 
-  const handleWithDraw = (orderId, orderHash) => {
+  const handleWithDraw = (orderId) => {
     _withdrawLTO(
       orderId,
-      orderHash,
       setLoading,
       setDisableActionBtn,
       account,
@@ -174,19 +175,46 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
   useEffect(() => {
     const getTime = async () => {
       const startTime = await web3provider.getBlock(stBlock);
-      setOrderStartTime(new Date(startTime?.timestamp * 1000).toLocaleString());
+      setOrderStartTime(formatToReadableTime(startTime?.timestamp));
 
       if (isExecuteTimeCompleted()) {
         const completionTime = await web3provider.getBlock(
           parseFloat(expBlock.toString())
         );
-        setOrderCompletionTime(
-          new Date(completionTime?.timestamp * 1000).toLocaleString()
-        );
+        setOrderCompletionTime(formatToReadableTime(completionTime?.timestamp));
       }
     };
     getTime();
   }, [expBlock, stBlock, web3provider, orderStatus]);
+
+  useEffect(() => {
+    const getWithdrawValue = async () => {
+      const signer = web3provider.getSigner();
+      const result = await withdrawLTO(
+        account,
+        signer,
+        orderLog?.orderId?.toNumber(),
+        selectedNetwork,
+        true
+      );
+
+      const buyIndex = result["amountsOut"]?.filter(
+        (item) => bigToFloat(item) !== 0
+      );
+      const withdrawResult = bigToFloat(buyIndex[0], tokenOut?.decimal);
+      if (orderLog?.withdrawals.length > 0) {
+        let addedValue = 0;
+        orderLog?.withdrawals.map(
+          (item) =>
+            (addedValue =
+              addedValue + bigToFloat(item.proceeds, tokenOut?.decimal))
+        );
+        setWithdrawValue(getProperFixedValue(withdrawResult + addedValue));
+      } else setWithdrawValue(getProperFixedValue(withdrawResult));
+    };
+
+    if (orderLog?.state === "inProgress") getWithdrawValue();
+  }, []);
 
   return (
     <>
@@ -250,7 +278,10 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
                 alt={tokenOut.symbol}
               />
               <p className={classNames(styles.tokenText, styles.greenText)}>
-                {bigToStr(convertedAmount, tokenOut.decimals)} {tokenOut.symbol}
+                {orderLog?.state === "inProgress"
+                  ? withdrawValue
+                  : bigToStr(convertedAmount, tokenOut.decimals)}{" "}
+                {tokenOut.symbol}
               </p>
             </div>
           </div>
@@ -331,10 +362,7 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
                 disableActionBtn
               }
               onClick={() => {
-                handleCancel(
-                  orderLog?.orderId?.toNumber(),
-                  orderLog?.transactionHash
-                );
+                handleCancel(orderLog?.orderId?.toNumber());
               }}
             >
               {orderStatus?.status === orderStatusCompleted
@@ -348,10 +376,7 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
                 <button
                   className={classNames(styles.button, styles.withdrawButton)}
                   onClick={() => {
-                    handleWithDraw(
-                      orderLog?.orderId?.toNumber(),
-                      orderLog?.transactionHash
-                    );
+                    handleWithDraw(orderLog?.orderId?.toNumber());
                   }}
                   disabled={disableActionBtn}
                 >

@@ -5,7 +5,6 @@ import { getEthLogs } from "./get_ethLogs";
 
 export const _withdrawLTO = async (
   orderId,
-  orderHash,
   setLoading,
   setDisableActionBtn,
   account,
@@ -38,31 +37,27 @@ export const _withdrawLTO = async (
       );
     }
 
-    await withdrawLTO(
-      walletAddress,
-      signer,
-      orderId,
-      orderHash,
-      setTransactionHash,
-      currentNetwork
-    ).then((res) => {
-      const withdrawLTOResult = async (res) => {
-        const result = await res.wait();
-        return result;
-      };
-      withdrawLTOResult(res).then(async (response) => {
-        if (response.status === 1) {
-          await getEthLogs(signer, walletAddress, currentNetwork).then(
-            (res) => {
-              const resArray = Array.from(res.values());
-              setOrderLogsDecoded(resArray);
-            }
-          );
-          setMessage(POPUP_MESSAGE.ltoWithdrawn);
-        } else setMessage(POPUP_MESSAGE.ltoWithdrawFailed);
-        setDisableActionBtn(false);
-      });
-    });
+    await withdrawLTO(walletAddress, signer, orderId, currentNetwork).then(
+      (res) => {
+        setTransactionHash(res.hash);
+        const withdrawLTOResult = async (res) => {
+          const result = await res.wait();
+          return result;
+        };
+        withdrawLTOResult(res).then(async (response) => {
+          if (response.status === 1) {
+            await getEthLogs(signer, walletAddress, currentNetwork).then(
+              (res) => {
+                const resArray = Array.from(res.values());
+                setOrderLogsDecoded(resArray);
+              }
+            );
+            setMessage(POPUP_MESSAGE.ltoWithdrawn);
+          } else setMessage(POPUP_MESSAGE.ltoWithdrawFailed);
+          setDisableActionBtn(false);
+        });
+      }
+    );
     setLoading(false);
   } catch (e) {
     console.log(e);

@@ -48,7 +48,6 @@ export const verifyLongSwap = async (
           walletAddress,
           currentNetwork
         ).then((res) => {
-          console.log("Response From Verify Long Swap", res);
           errors.balError = undefined;
           setLongSwapFormErrors(errors ?? "");
           setLongSwapVerifyLoading(false);

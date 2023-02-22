@@ -3,14 +3,13 @@ import { defaultAbiCoder } from "ethers/lib/utils";
 import { getPoolId, getPoolTokenAddresses, getPoolTokens } from "./poolUtils";
 
 import { getGasLimit } from "./getGasLimit";
-import { getExchangeContract } from "./getContracts";
+import { getBalancerHelperContract, getExchangeContract } from "./getContracts";
+import { bigToFloat } from ".";
 
 export async function cancelLTO(
   walletAddress,
   signer,
   orderId,
-  orderHash,
-  setTransactionHash,
   currentNetwork
 ) {
   const vaultContract = getExchangeContract(currentNetwork, signer);
@@ -35,8 +34,6 @@ export async function cancelLTO(
   const exitPoolTx = await vaultContract.exitPool(...data, {
     gasLimit: getGasLimit(vaultContract, data, "exitPool"),
   });
-
-  setTransactionHash(orderHash);
   return exitPoolTx;
 }
 
@@ -44,11 +41,15 @@ export async function withdrawLTO(
   walletAddress,
   signer,
   orderId,
-  orderHash,
-  setTransactionHash,
-  currentNetwork
+  currentNetwork,
+  hasCallStatic
 ) {
   const vaultContract = getExchangeContract(currentNetwork, signer);
+
+  const balancerHelperContract = getBalancerHelperContract(
+    currentNetwork,
+    signer
+  );
   // bptAmountIn As User Input
   const encodedRequest = defaultAbiCoder.encode(
     ["uint256", "uint256"],
@@ -67,11 +68,17 @@ export async function withdrawLTO(
     },
   ];
 
-  const withdrawLTOTx = await vaultContract.exitPool(...data, {
-    gasLimit: getGasLimit(vaultContract, data, "exitPool"),
-  });
+  let withdrawLTOTx;
 
-  setTransactionHash(orderHash);
+  if (hasCallStatic) {
+    withdrawLTOTx = await balancerHelperContract.queryExit(...data, {
+      gasLimit: getGasLimit(balancerHelperContract, data, "queryExit"),
+    });
+  } else {
+    withdrawLTOTx = await vaultContract.exitPool(...data, {
+      gasLimit: getGasLimit(vaultContract, data, "exitPool"),
+    });
+  }
   return withdrawLTOTx;
 }
 
