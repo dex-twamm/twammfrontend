@@ -18,3 +18,7 @@ export const getBlockExplorerTransactionUrl = (currentNetwork) => {
 export const getVaultContractAddress = (currentNetwork) => {
   return getActiveNetwork(currentNetwork)?.vaultAddress;
 };
+
+export const getBalancerHelperContractAddress = (currentNetwork) => {
+  return getActiveNetwork(currentNetwork)?.balancerHelperAddress;
+};
