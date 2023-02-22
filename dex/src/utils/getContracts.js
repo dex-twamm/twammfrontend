@@ -1,7 +1,7 @@
 import { Contract } from "ethers";
 import { BALANCER_ABI, TWAMM_POOL_ABI, VAULT_CONTRACT_ABI } from "../constants";
 import {
-  getBalancerContractAddress,
+  getBalancerHelperContractAddress,
   getVaultContractAddress,
 } from "./networkUtils";
 import { getPoolContractAddress } from "./poolUtils";
@@ -22,9 +22,9 @@ export const getPoolContract = (currentNetwork, signer) => {
   );
 };
 
-export const getBalancerContract = (currentNetwork, signer) => {
+export const getBalancerHelperContract = (currentNetwork, signer) => {
   return new Contract(
-    getBalancerContractAddress(currentNetwork),
+    getBalancerHelperContractAddress(currentNetwork),
     BALANCER_ABI,
     signer
   );

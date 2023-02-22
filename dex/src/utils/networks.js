@@ -9,7 +9,7 @@ export const NETWORKS = [
     vaultAddress: "0xBA12222222228d8Ba445958a75a0704d566BF2C8",
     blockExplorerUrl: "https://etherscan.io/address/",
     transactionUrl: "https://etherscan.io/tx/",
-    balancerAddress: "0x5aDDCCa35b7A0D07C74063c48700C8590E87864E",
+    balancerHelperAddress: "0x5aDDCCa35b7A0D07C74063c48700C8590E87864E",
   },
   {
     name: "Goerli",
@@ -17,7 +17,7 @@ export const NETWORKS = [
     vaultAddress: "0xBA12222222228d8Ba445958a75a0704d566BF2C8",
     blockExplorerUrl: "https://goerli.etherscan.io/address/",
     transactionUrl: "https://goerli.etherscan.io/tx/",
-    balancerAddress: "0x5aDDCCa35b7A0D07C74063c48700C8590E87864E",
+    balancerHelperAddress: "0x5aDDCCa35b7A0D07C74063c48700C8590E87864E",
     logo: goerliLogo,
   },
 ];

@@ -19,6 +19,6 @@ export const getVaultContractAddress = (currentNetwork) => {
   return getActiveNetwork(currentNetwork)?.vaultAddress;
 };
 
-export const getBalancerContractAddress = (currentNetwork) => {
-  return getActiveNetwork(currentNetwork)?.balancerAddress;
+export const getBalancerHelperContractAddress = (currentNetwork) => {
+  return getActiveNetwork(currentNetwork)?.balancerHelperAddress;
 };
