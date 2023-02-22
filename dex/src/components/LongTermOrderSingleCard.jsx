@@ -12,6 +12,7 @@ import { ethers } from "ethers";
 import { getPoolConfig } from "../utils/poolUtils";
 import { getBlockExplorerTransactionUrl } from "../utils/networkUtils";
 import { withdrawLTO } from "../utils/addLiquidity";
+import { formatToReadableTime } from "../utils/timeUtils";
 
 const LongTermOrderSingleCard = ({ orderLog }) => {
   const {
@@ -174,15 +175,13 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
   useEffect(() => {
     const getTime = async () => {
       const startTime = await web3provider.getBlock(stBlock);
-      setOrderStartTime(new Date(startTime?.timestamp * 1000).toLocaleString());
+      setOrderStartTime(formatToReadableTime(startTime?.timestamp));
 
       if (isExecuteTimeCompleted()) {
         const completionTime = await web3provider.getBlock(
           parseFloat(expBlock.toString())
         );
-        setOrderCompletionTime(
-          new Date(completionTime?.timestamp * 1000).toLocaleString()
-        );
+        setOrderCompletionTime(formatToReadableTime(completionTime?.timestamp));
       }
     };
     getTime();
