@@ -308,13 +308,12 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
                   className={styles.averagePrice}
                   onClick={handleAveragePriceClick}
                 >
-                  {!switchAvgPrice
-                    ? ` Average Price: 1 ${tokenIn.symbol} =
-                    ${getProperFixedValue(averagePrice)}
-                    ${tokenOut.symbol}`
-                    : ` Average Price: 1 ${tokenOut.symbol} =
-                    ${switchedAveragePrice}
-                    ${tokenIn.symbol}`}
+                  Average Price: 1 {tokenIn.symbol} =
+                  {switchAvgPrice
+                    ? ` ${switchedAveragePrice} ${tokenIn.symbol}`
+                    : ` ${getProperFixedValue(averagePrice)} ${
+                        tokenOut.symbol
+                      }`}
                   <ChangeCircleOutlinedIcon
                     fontSize="small"
                     sx={{ marginLeft: "10px" }}
