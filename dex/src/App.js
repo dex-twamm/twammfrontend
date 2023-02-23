@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useMemo } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import LongSwapPage from "./pages/LongSwapPage";
@@ -15,8 +15,12 @@ import { web3Modal } from "./utils/providerOptions";
 import LiquidityPage from "./pages/LiquidityPage";
 import { disconnect } from "./utils/disconnectWallet";
 import ContactPage from "./pages/ContactPage";
+import ChatBubbleOutlineTwoToneIcon from "@mui/icons-material/ChatBubbleOutlineTwoTone";
 
 function App() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const {
     setSwapAmount,
     setLoading,
@@ -225,6 +229,16 @@ function App() {
           <Route path="/" element={<LongSwapPage />} />
           <Route path="/liquidity" element={<LiquidityPage />} />
         </Routes>
+        {location.pathname !== "/contact" ? (
+          <div className="supportIcon">
+            <ChatBubbleOutlineTwoToneIcon
+              sx={{ fontSize: 19, color: "white" }}
+              onClick={() => navigate("/contact")}
+            />
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     </>
   );

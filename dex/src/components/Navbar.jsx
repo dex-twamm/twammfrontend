@@ -149,7 +149,7 @@ const Navbar = () => {
               )}
             </div>
             {/* Not used currently */}
-            <div
+            {/* <div
               onClick={(e) => e.stopPropagation()}
               className={styles.menuOption}
             >
@@ -165,7 +165,7 @@ const Navbar = () => {
                 />
               </button>
 
-              {showDropdown && (
+               {showDropdown && (
                 <span
                   className={classNames(
                     styles.menuList,
@@ -175,8 +175,8 @@ const Navbar = () => {
                 >
                   {<NavOptionDropdwon />}
                 </span>
-              )}
-            </div>
+              )} 
+            </div> */}
           </div>
         )}
       </div>
