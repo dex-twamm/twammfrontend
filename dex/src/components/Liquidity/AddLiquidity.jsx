@@ -6,7 +6,6 @@ import styles from "../../css/ShortSwap.module.css";
 import lsStyles from "../../css/LongSwap.module.css";
 import wStyles from "../../css/WithdrawLiquidity.module.css";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import iStyles from "../../css/Input.module.css";
 
 import PopupSettings from "../PopupSettings";
 import Tabs from "../Tabs";
@@ -48,6 +47,9 @@ const AddLiquidity = ({ selectedTokenPair }) => {
     maxText: "Max",
     optimizeText: "Optimize",
   });
+
+  const [hasProportionalInputA, setHasProportionalInputA] = useState(false);
+  const [hasProportionalInputB, setHasProportionalInputB] = useState(false);
 
   const currentNetwork = useMemo(() => {
     return {
@@ -140,6 +142,32 @@ const AddLiquidity = ({ selectedTokenPair }) => {
     setSpanText((prev) => ({ ...prev, maxText: "Max" }));
   }, [tokenAInputAmount, tokenBInputAmount]);
 
+  useEffect(() => {
+    if (tokenAInputAmount == 0 && tokenBInputAmount == 0) {
+      setHasProportionalInputA(false);
+      setHasProportionalInputB(false);
+    } else {
+      if (tokenAInputAmount > 0 && tokenBInputAmount > 0) {
+        setHasProportionalInputA(false);
+        setHasProportionalInputB(false);
+      } else if (tokenAInputAmount > 0) {
+        setHasProportionalInputA(false);
+        setHasProportionalInputB(true);
+      } else if (tokenBInputAmount > 0) {
+        setHasProportionalInputA(true);
+        setHasProportionalInputB(false);
+      }
+    }
+  }, [tokenAInputAmount, tokenBInputAmount, spanText]);
+
+  console.log(
+    "amounts and condition",
+    tokenAInputAmount,
+    tokenBInputAmount,
+    hasProportionalInputA,
+    hasProportionalInputB
+  );
+
   return (
     <>
       <div className={styles.container}>
@@ -173,6 +201,7 @@ const AddLiquidity = ({ selectedTokenPair }) => {
                 tokenA={tokenA}
                 tokenB={tokenB}
                 currentNetwork={currentNetwork}
+                hasProportional={hasProportionalInputA}
               />
               <LiquidityInput
                 tokenData={tokenB}
@@ -183,6 +212,7 @@ const AddLiquidity = ({ selectedTokenPair }) => {
                 tokenA={tokenB}
                 tokenB={tokenA}
                 currentNetwork={currentNetwork}
+                hasProportional={hasProportionalInputB}
               />
               {formErrors.balError && (
                 <div className={styles.errorAlert}>
@@ -212,6 +242,8 @@ const AddLiquidity = ({ selectedTokenPair }) => {
                           getIndividualTokenBalance(tokenB?.address)
                         );
                         setSpanText({ ...spanText, maxText: "Maxed" });
+                        setHasProportionalInputA(false);
+                        setHasProportionalInputB(false);
                       }}
                       style={{
                         cursor:
