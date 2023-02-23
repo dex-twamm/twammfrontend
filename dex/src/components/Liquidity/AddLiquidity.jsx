@@ -160,14 +160,6 @@ const AddLiquidity = ({ selectedTokenPair }) => {
     }
   }, [tokenAInputAmount, tokenBInputAmount, spanText]);
 
-  console.log(
-    "amounts and condition",
-    tokenAInputAmount,
-    tokenBInputAmount,
-    hasProportionalInputA,
-    hasProportionalInputB
-  );
-
   return (
     <>
       <div className={styles.container}>
