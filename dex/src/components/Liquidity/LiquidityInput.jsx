@@ -1,11 +1,33 @@
 import { Skeleton } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import iStyles from "../../css/Input.module.css";
-import { ShortSwapContext } from "../../providers";
+import { LongSwapContext, ShortSwapContext } from "../../providers";
+import { spotPrice } from "../../utils/getSpotPrice";
 
-const LiquidityInput = ({ tokenData, balances, setInputAmount, input, id }) => {
+const LiquidityInput = ({
+  tokenData,
+  balances,
+  tokenInputAmount,
+  setTokenInputAmount,
+  input,
+  id,
+  tokenA,
+  tokenB,
+  currentNetwork,
+}) => {
   const [balance, setBalance] = useState();
-  const { isWalletConnected } = useContext(ShortSwapContext);
+
+  const {
+    account,
+    web3provider,
+    isWalletConnected,
+    setSpotPriceLoading,
+    deadline,
+    setFormErrors,
+    setSpotPrice,
+    setExpectedSwapOut,
+  } = useContext(ShortSwapContext);
+  const { allowance } = useContext(LongSwapContext);
 
   useEffect(() => {
     const tokenBalance = balances?.filter((item) => {
@@ -15,8 +37,54 @@ const LiquidityInput = ({ tokenData, balances, setInputAmount, input, id }) => {
   }, [balances]);
 
   const handleInputChange = (e) => {
-    setInputAmount(e.target.value);
+    setTokenInputAmount(e.target.value);
   };
+
+  useEffect(() => {
+    let interval1, interval2;
+    // Do not fetch prices if not enough allowance.
+    if (parseFloat(allowance) > tokenInputAmount) {
+      // Wait for 0.5 second before fetching price.
+      interval1 = setTimeout(() => {
+        spotPrice(
+          tokenInputAmount,
+          setSpotPriceLoading,
+          tokenA?.address,
+          tokenB?.address,
+          web3provider,
+          account,
+          deadline,
+          setFormErrors,
+          setSpotPrice,
+          setExpectedSwapOut,
+          currentNetwork
+        );
+      }, 500);
+      // Update price every 12 seconds.
+      interval2 = setTimeout(() => {
+        spotPrice(
+          tokenInputAmount,
+          setSpotPriceLoading,
+          tokenA?.address,
+          tokenB?.address,
+          web3provider,
+          account,
+          deadline,
+          setFormErrors,
+          setSpotPrice,
+          setExpectedSwapOut,
+          currentNetwork
+        );
+      }, 12000);
+    }
+    return () => {
+      clearTimeout(interval1);
+      clearTimeout(interval2);
+      setExpectedSwapOut(0);
+      setSpotPrice(0);
+      setFormErrors({ balError: undefined });
+    };
+  }, [tokenInputAmount, tokenA, tokenB, allowance]);
 
   return (
     <div className={iStyles.textInput}>
@@ -66,7 +134,7 @@ const LiquidityInput = ({ tokenData, balances, setInputAmount, input, id }) => {
               <span
                 className={iStyles.maxInput}
                 onClick={() => {
-                  setInputAmount(parseFloat(balance).toFixed(2));
+                  setTokenInputAmount(parseFloat(balance).toFixed(2));
                 }}
               >
                 Max

@@ -27,13 +27,8 @@ const AddLiquidity = ({ selectedTokenPair }) => {
     web3provider,
     isWalletConnected,
     spotPriceLoading,
-    setSpotPriceLoading,
-    deadline,
     formErrors,
     setFormErrors,
-    setSpotPrice,
-    expectedSwapOut,
-    setExpectedSwapOut,
     setTransactionHash,
     setAllowance,
     setAllowTwammErrorMessage,
@@ -45,7 +40,8 @@ const AddLiquidity = ({ selectedTokenPair }) => {
   const [showSettings, setShowSettings] = useState(false);
   const [balanceOfToken, setBalanceOfToken] = useState();
   const [showPreviewModal, setShowPreviewModal] = useState(false);
-  const [inputAmount, setInputAmount] = useState();
+  const [tokenAInputAmount, setTokenAInputAmount] = useState(0);
+  const [tokenBInputAmount, setTokenBInputAmount] = useState(0);
   const [dollarValueOfInputAmount, setDollarValueOfInputAmount] = useState(0.0);
   const [hasBalancerOrTransactionError, setHasBalancerOrTransactionError] =
     useState(true);
@@ -75,52 +71,6 @@ const AddLiquidity = ({ selectedTokenPair }) => {
 
   const tokenA = selectedTokenPair[0];
   const tokenB = selectedTokenPair[1];
-
-  useEffect(() => {
-    let interval1, interval2;
-    // Do not fetch prices if not enough allowance.
-    if (parseFloat(allowance) > inputAmount) {
-      // Wait for 0.5 second before fetching price.
-      interval1 = setTimeout(() => {
-        spotPrice(
-          inputAmount,
-          setSpotPriceLoading,
-          tokenA?.address,
-          tokenB?.address,
-          web3provider,
-          account,
-          deadline,
-          setFormErrors,
-          setSpotPrice,
-          setExpectedSwapOut,
-          currentNetwork
-        );
-      }, 500);
-      // Update price every 12 seconds.
-      interval2 = setTimeout(() => {
-        spotPrice(
-          inputAmount,
-          setSpotPriceLoading,
-          tokenA?.address,
-          tokenB?.address,
-          web3provider,
-          account,
-          deadline,
-          setFormErrors,
-          setSpotPrice,
-          setExpectedSwapOut,
-          currentNetwork
-        );
-      }, 12000);
-    }
-    return () => {
-      clearTimeout(interval1);
-      clearTimeout(interval2);
-      setExpectedSwapOut(0);
-      setSpotPrice(0);
-      setFormErrors({ balError: undefined });
-    };
-  }, [inputAmount, tokenA, tokenB, allowance, selectedNetwork]);
 
   const handleApproveButton = async () => {
     try {
@@ -169,12 +119,12 @@ const AddLiquidity = ({ selectedTokenPair }) => {
         tokenData?.data?.market_data?.current_price?.usd;
 
       setDollarValueOfInputAmount(
-        (currentPricePerToken * inputAmount).toFixed(2)
+        (currentPricePerToken * tokenAInputAmount).toFixed(2)
       );
     };
 
     getInputAmountValueInDollar();
-  }, [inputAmount, tokenA]);
+  }, [tokenAInputAmount, tokenA]);
 
   return (
     <>
@@ -203,22 +153,24 @@ const AddLiquidity = ({ selectedTokenPair }) => {
               <LiquidityInput
                 tokenData={tokenA}
                 balances={balanceOfToken}
-                setInputAmount={setInputAmount}
-                input={inputAmount ? inputAmount : ""}
+                tokenInputAmount={tokenAInputAmount}
+                setTokenInputAmount={setTokenAInputAmount}
+                input={tokenAInputAmount ? tokenAInputAmount : ""}
+                tokenA={tokenA}
+                tokenB={tokenB}
                 id={1}
+                currentNetwork={currentNetwork}
               />
               <LiquidityInput
                 tokenData={tokenB}
                 balances={balanceOfToken}
-                input={
-                  expectedSwapOut
-                    ? bigToStr(
-                        BigNumber.from(expectedSwapOut),
-                        tokenB?.decimals
-                      )
-                    : ""
-                }
+                tokenInputAmount={tokenBInputAmount}
+                setTokenInputAmount={setTokenBInputAmount}
+                input={tokenBInputAmount ? tokenBInputAmount : ""}
                 id={2}
+                tokenA={tokenB}
+                tokenB={tokenA}
+                currentNetwork={currentNetwork}
               />
               {formErrors.balError && (
                 <div className={styles.errorAlert}>
@@ -234,7 +186,9 @@ const AddLiquidity = ({ selectedTokenPair }) => {
                   </div>
                   <div className={wStyles.value}>
                     <p>
-                      {inputAmount ? `$${dollarValueOfInputAmount}` : `$0.0`}
+                      {tokenAInputAmount
+                        ? `$${dollarValueOfInputAmount}`
+                        : `$0.0`}
                     </p>
                   </div>
                 </div>
@@ -256,7 +210,9 @@ const AddLiquidity = ({ selectedTokenPair }) => {
                   </div>
                 </div>
               </div>
-              {inputAmount && parseFloat(allowance) <= inputAmount && tokenA ? (
+              {tokenAInputAmount &&
+              parseFloat(allowance) <= tokenAInputAmount &&
+              tokenA ? (
                 <button
                   className={classNames(
                     wStyles.btn,
@@ -268,8 +224,8 @@ const AddLiquidity = ({ selectedTokenPair }) => {
                   }}
                   disabled={
                     hasBalancerOrTransactionError ||
-                    inputAmount == 0 ||
-                    inputAmount > tokenA?.balance
+                    tokenAInputAmount == 0 ||
+                    tokenAInputAmount > tokenA?.balance
                   }
                 >
                   {`Allow TWAMM Protocol to use your ${
@@ -288,15 +244,15 @@ const AddLiquidity = ({ selectedTokenPair }) => {
                   )}
                   onClick={handlePreviewClick}
                   disabled={
-                    !inputAmount ||
+                    !tokenAInputAmount ||
                     hasBalancerOrTransactionError ||
                     spotPriceLoading ||
-                    parseFloat(allowance) <= inputAmount
+                    parseFloat(allowance) <= tokenAInputAmount
                       ? true
                       : false
                   }
                 >
-                  {!inputAmount ? (
+                  {!tokenAInputAmount ? (
                     "Enter an Amount"
                   ) : spotPriceLoading ? (
                     <CircularProgress sx={{ color: "white" }} size={30} />
@@ -317,7 +273,7 @@ const AddLiquidity = ({ selectedTokenPair }) => {
           </div>
 
           <AddLiquidityPreview
-            amountsIn={[inputAmount, expectedSwapOut]}
+            amountsIn={[tokenAInputAmount, tokenBInputAmount]}
             showPreviewModal={showPreviewModal}
             setShowPreviewModal={setShowPreviewModal}
             dollarValueOfInputAmount={dollarValueOfInputAmount}

@@ -64,6 +64,21 @@ const AddLiquidityPreview = ({
               />
             </div>
           </div>
+          {amountsIn[1] > 0 && (
+            <div className={styles.tokenAndLogo}>
+              <p className={styles.amount}>
+                {amountsIn[1]} {selectedTokenPair[1]?.name}
+              </p>
+              <div className={styles.logo}>
+                <img
+                  src={selectedTokenPair[1]?.logo}
+                  alt="logo"
+                  width="40px"
+                  height="40px"
+                />
+              </div>
+            </div>
+          )}
           <div className={styles.summary}>
             <p className={styles.title}>Summary</p>
             <div className={styles.content}>
