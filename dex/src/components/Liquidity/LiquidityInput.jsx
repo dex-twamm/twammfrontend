@@ -14,8 +14,10 @@ const LiquidityInput = ({
   tokenB,
   currentNetwork,
   hasProportional,
+  setHasBalancerOrTransactionError,
 }) => {
   const [balance, setBalance] = useState();
+  const [balancerErrors, setBalancerErrors] = useState();
 
   const {
     account,
@@ -23,7 +25,7 @@ const LiquidityInput = ({
     isWalletConnected,
     setSpotPriceLoading,
     deadline,
-    setFormErrors,
+    setTransactionHash,
     setSpotPrice,
     setExpectedSwapOut,
   } = useContext(ShortSwapContext);
@@ -54,7 +56,7 @@ const LiquidityInput = ({
           web3provider,
           account,
           deadline,
-          setFormErrors,
+          setBalancerErrors,
           setSpotPrice,
           setExpectedSwapOut,
           currentNetwork
@@ -70,7 +72,7 @@ const LiquidityInput = ({
           web3provider,
           account,
           deadline,
-          setFormErrors,
+          setBalancerErrors,
           setSpotPrice,
           setExpectedSwapOut,
           currentNetwork
@@ -82,9 +84,22 @@ const LiquidityInput = ({
       clearTimeout(interval2);
       setExpectedSwapOut(0);
       setSpotPrice(0);
-      setFormErrors({ balError: undefined });
+      setBalancerErrors();
     };
   }, [tokenInputAmount, tokenA, tokenB, allowance]);
+
+  useEffect(() => {
+    balancerErrors?.balError !== undefined
+      ? setHasBalancerOrTransactionError(true)
+      : setHasBalancerOrTransactionError(false);
+  }, [balancerErrors]);
+
+  useEffect(() => {
+    return () => {
+      setBalancerErrors({ balError: undefined });
+      setTransactionHash(undefined);
+    };
+  }, [setTransactionHash]);
 
   return (
     <div className={iStyles.textInput}>
@@ -123,11 +138,19 @@ const LiquidityInput = ({
           </span>
         </div>
       </div>
-      <div className={hasProportional ? iStyles.liqBalance : iStyles.balance}>
+      <div
+        className={
+          hasProportional || balancerErrors?.balError
+            ? iStyles.liqBalance
+            : iStyles.balance
+        }
+      >
         {hasProportional && (
           <span className={iStyles.maxInput}>proportional suggestion</span>
         )}
-
+        {balancerErrors?.balError && (
+          <span className={iStyles.errorText}>{balancerErrors?.balError}</span>
+        )}
         {!isWalletConnected ? (
           "Balance: N/A"
         ) : balance ? (

@@ -101,19 +101,6 @@ const AddLiquidity = ({ selectedTokenPair }) => {
   };
 
   useEffect(() => {
-    formErrors.balError !== undefined
-      ? setHasBalancerOrTransactionError(true)
-      : setHasBalancerOrTransactionError(false);
-  }, [formErrors]);
-
-  useEffect(() => {
-    return () => {
-      setFormErrors({ balError: undefined });
-      setTransactionHash(undefined);
-    };
-  }, [setFormErrors, setTransactionHash]);
-
-  useEffect(() => {
     const getInputAmountValueInDollar = async () => {
       const id = tokenA?.symbol.toLowerCase();
       const tokenData = await axios.get(
@@ -194,6 +181,9 @@ const AddLiquidity = ({ selectedTokenPair }) => {
                 tokenB={tokenB}
                 currentNetwork={currentNetwork}
                 hasProportional={hasProportionalInputA}
+                setHasBalancerOrTransactionError={
+                  setHasBalancerOrTransactionError
+                }
               />
               <LiquidityInput
                 tokenData={tokenB}
@@ -205,14 +195,17 @@ const AddLiquidity = ({ selectedTokenPair }) => {
                 tokenB={tokenA}
                 currentNetwork={currentNetwork}
                 hasProportional={hasProportionalInputB}
+                setHasBalancerOrTransactionError={
+                  setHasBalancerOrTransactionError
+                }
               />
-              {formErrors.balError && (
+              {/* {formErrors.balError && (
                 <div className={styles.errorAlert}>
                   <Alert severity="error" sx={{ borderRadius: "16px" }}>
                     {formErrors.balError}
                   </Alert>
                 </div>
-              )}
+              )} */}
               <div className={wStyles.totalAndImpact}>
                 <div className={wStyles.total}>
                   <div className={wStyles.text}>

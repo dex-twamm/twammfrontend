@@ -177,3 +177,7 @@
 .balanceText {
   margin-left: 4px;
 }
+
+.errorText {
+  color: rgb(239 68 68);
+}
