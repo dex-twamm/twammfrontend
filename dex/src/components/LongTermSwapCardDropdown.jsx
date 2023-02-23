@@ -22,8 +22,6 @@ const LongTermSwapCardDropdown = (props) => {
     );
   };
 
-  console.log(item, item?.orderId.toString());
-
   return (
     <>
       <div>
