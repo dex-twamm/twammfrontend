@@ -1,8 +1,34 @@
-import ethLogo from "../images/ethereum.svg";
-import maticLogo from "../images/Testv4.svg";
+import faucetLogo from "../images/faucetIcon.png";
+import daiLogo from "../images/daiIcon.png";
+import maticLogo from "../images/maticIcon.png";
+import usdLogo from "../images/usdIcon.png";
+import wethLogo from "../images/wethIcon.png";
 
 export const POOLS = {
   Goerli: {
+    "0xd01e3ddd9d6fe5d265468c8bd265d211ddc1b4c9000200000000000000000580": {
+      poolName: "USDC/FAU",
+      address: "0xd01e3ddd9d6fe5d265468c8bd265d211ddc1b4c9",
+      fees: "0.05%",
+      LTOContract: "0x353ba21b794187d14757c88cfacebd86c31a6eaf",
+      blockInterval: 100,
+      tokens: [
+        {
+          symbol: "USD/C",
+          name: "USDC",
+          decimals: 6,
+          address: "0x07865c6E87B9F70255377e024ace6630C1Eaa37F",
+          logo: usdLogo,
+        },
+        {
+          symbol: "FAU",
+          name: "Faucet",
+          decimals: 18,
+          address: "0xBA62BCfcAaFc6622853cca2BE6Ac7d845BC0f2Dc",
+          logo: faucetLogo,
+        },
+      ],
+    },
     "0xdab1b8c505867ec1e7292b17d7a4b42b6e1626680002000000000000000002c1": {
       poolName: "MATIC/FAU",
       address: "0xdab1b8c505867ec1e7292b17d7a4b42b6e162668",
@@ -22,7 +48,7 @@ export const POOLS = {
           name: "Faucet",
           decimals: 18,
           address: "0xBA62BCfcAaFc6622853cca2BE6Ac7d845BC0f2Dc",
-          logo: ethLogo,
+          logo: faucetLogo,
         },
       ],
     },
@@ -38,14 +64,14 @@ export const POOLS = {
           name: "Dai",
           decimals: 18,
           address: "0x499d11E0b6eAC7c0593d8Fb292DCBbF815Fb29Ae",
-          logo: maticLogo,
+          logo: daiLogo,
         },
         {
           symbol: "FAU",
           name: "Faucet",
           decimals: 18,
           address: "0xBA62BCfcAaFc6622853cca2BE6Ac7d845BC0f2Dc",
-          logo: ethLogo,
+          logo: faucetLogo,
         },
       ],
     },
@@ -60,17 +86,17 @@ export const POOLS = {
       tokens: [
         {
           symbol: "USDC",
-          name: "USDC",
+          name: "USD",
           decimals: 6,
           address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-          logo: maticLogo,
+          logo: usdLogo,
         },
         {
           symbol: "WETH",
           name: "WETH",
           decimals: 18,
           address: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-          logo: ethLogo,
+          logo: wethLogo,
         },
       ],
     },

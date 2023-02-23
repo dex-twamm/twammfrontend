@@ -6,7 +6,6 @@ import { getEthLogs } from "./get_ethLogs";
 // cancelLTO
 export const _cancelLTO = async (
   orderId,
-  orderHash,
   setLoading,
   setDisableActionBtn,
   account,
@@ -42,10 +41,9 @@ export const _cancelLTO = async (
       walletAddress,
       web3provider.getSigner(),
       orderId,
-      orderHash,
-      setTransactionHash,
       currentNetwork
     ).then((res) => {
+      setTransactionHash(res.hash);
       const exitPoolResult = async (res) => {
         const result = await res.wait();
         return result;

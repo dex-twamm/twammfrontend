@@ -180,19 +180,21 @@ function App() {
     }
   }, [web3provider]);
 
-  //This will automatically change the account of our app without refreshing when the account in metamask is changed.
+  // This will automatically change the account of our app without refreshing when the account in metamask is changed.
   useEffect(() => {
-    const accountsChangedListener = function (accounts) {
-      setAccount(accounts[0]);
-    };
-    window.ethereum.on("accountsChanged", accountsChangedListener);
+    if (window.ethereum) {
+      const accountsChangedListener = function (accounts) {
+        setAccount(accounts[0]);
+      };
+      window.ethereum.on("accountsChanged", accountsChangedListener);
 
-    return () => {
-      window.ethereum.removeListener(
-        "accountsChanged",
-        accountsChangedListener
-      );
-    };
+      return () => {
+        window.ethereum.removeListener(
+          "accountsChanged",
+          accountsChangedListener
+        );
+      };
+    }
   }, []);
 
   useEffect(() => {

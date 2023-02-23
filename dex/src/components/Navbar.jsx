@@ -33,6 +33,7 @@ const Navbar = () => {
   } = useContext(ShortSwapContext);
 
   const handleSelect = async (chainId) => {
+    localStorage.setItem("poolId", 0);
     const id = chainId;
     if (isWalletConnected) {
       try {

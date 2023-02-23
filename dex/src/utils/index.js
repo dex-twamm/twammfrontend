@@ -97,3 +97,7 @@ export const timeDeltaString = (seconds) => {
     return hhmm;
   }
 };
+
+export const getInversedValue = (value) => {
+  return getProperFixedValue(1 / value);
+};
