@@ -13,6 +13,7 @@ const LiquidityInput = ({
   tokenA,
   tokenB,
   currentNetwork,
+  hasProportional,
 }) => {
   const [balance, setBalance] = useState();
 
@@ -122,13 +123,16 @@ const LiquidityInput = ({
           </span>
         </div>
       </div>
-      <div className={iStyles.balance}>
-        Balance:
+      <div className={hasProportional ? iStyles.liqBalance : iStyles.balance}>
+        {hasProportional && (
+          <span className={iStyles.maxInput}>proportional suggestion</span>
+        )}
+
         {!isWalletConnected ? (
-          "N/A"
+          "Balance: N/A"
         ) : balance ? (
           <p className={iStyles.balanceText}>
-            {parseFloat(balance).toFixed(2)}{" "}
+            Balance: {parseFloat(balance).toFixed(2)}{" "}
             <span
               className={iStyles.maxInput}
               onClick={() => {

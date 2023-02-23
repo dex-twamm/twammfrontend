@@ -158,6 +158,22 @@
   font-weight: 800;
 }
 
+.liqBalance {
+  margin-top: 10px;
+  text-align: right;
+  padding: 0 6px 16px;
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  color: gray;
+}
+
+.suggestion {
+  cursor: pointer;
+  color: blueviolet;
+  font-weight: 700;
+}
+
 .balanceText {
   margin-left: 4px;
 }

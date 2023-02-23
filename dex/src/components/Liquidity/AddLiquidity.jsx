@@ -139,6 +139,7 @@ const AddLiquidity = ({ selectedTokenPair }) => {
   useEffect(() => {
     setSpanText((prev) => ({ ...prev, maxText: "Max" }));
   }, [tokenAInputAmount, tokenBInputAmount]);
+
   return (
     <>
       <div className={styles.container}>
@@ -287,7 +288,7 @@ const AddLiquidity = ({ selectedTokenPair }) => {
                   )}
                   onClick={handlePreviewClick}
                   disabled={
-                    !tokenAInputAmount ||
+                    (!tokenAInputAmount && !tokenBInputAmount) ||
                     hasBalancerOrTransactionError ||
                     spotPriceLoading ||
                     parseFloat(allowance) <= tokenAInputAmount
@@ -295,7 +296,7 @@ const AddLiquidity = ({ selectedTokenPair }) => {
                       : false
                   }
                 >
-                  {!tokenAInputAmount ? (
+                  {!tokenAInputAmount && !tokenBInputAmount ? (
                     "Enter an Amount"
                   ) : spotPriceLoading ? (
                     <CircularProgress sx={{ color: "white" }} size={30} />
