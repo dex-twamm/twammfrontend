@@ -176,8 +176,6 @@ const AddLiquidity = ({ selectedTokenPair }) => {
     getInputAmountValueInDollar();
   }, [inputAmount, tokenA]);
 
-  console.log("allowance", allowance);
-
   return (
     <>
       <div className={styles.container}>
