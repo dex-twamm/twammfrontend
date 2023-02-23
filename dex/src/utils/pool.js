@@ -6,6 +6,29 @@ import wethLogo from "../images/wethIcon.png";
 
 export const POOLS = {
   Goerli: {
+    "0xd01e3ddd9d6fe5d265468c8bd265d211ddc1b4c9000200000000000000000580": {
+      poolName: "USDC/FAU",
+      address: "0xd01e3ddd9d6fe5d265468c8bd265d211ddc1b4c9",
+      fees: "0.05%",
+      LTOContract: "0x353ba21b794187d14757c88cfacebd86c31a6eaf",
+      blockInterval: 100,
+      tokens: [
+        {
+          symbol: "USD/C",
+          name: "USDC",
+          decimals: 6,
+          address: "0x07865c6E87B9F70255377e024ace6630C1Eaa37F",
+          logo: usdLogo,
+        },
+        {
+          symbol: "FAU",
+          name: "Faucet",
+          decimals: 18,
+          address: "0xBA62BCfcAaFc6622853cca2BE6Ac7d845BC0f2Dc",
+          logo: faucetLogo,
+        },
+      ],
+    },
     "0xdab1b8c505867ec1e7292b17d7a4b42b6e1626680002000000000000000002c1": {
       poolName: "MATIC/FAU",
       address: "0xdab1b8c505867ec1e7292b17d7a4b42b6e162668",
