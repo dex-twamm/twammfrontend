@@ -75,14 +75,25 @@ const ContactPage = () => {
           <h5 className={styles.h5Text}>Contact Us</h5>
           <h1 className={styles.h1Text}>Get In Touch With Us</h1>
           <p className={styles.para}>
-            Welcome to our contact us page. We value your feedback and are here
-            to assist you with any questions or concerns you may have regarding
-            our platform for long-term and short-term token swapping, and
-            liquidity pools. Our team of experts is committed to providing
-            excellent customer service and ensuring that your experience with us
-            is as smooth and satisfactory as possible. Please do not hesitate to
-            reach out to us with any inquiries or suggestions. We look forward
-            to hearing from you.
+            We value your feedback and inquiries, and we want to hear from you.
+            If you have any questions, comments, or concerns, please feel free
+            to use this page to get in touch with our team.
+          </p>
+          <p className={styles.para}>
+            We are committed to addressing your needs promptly and
+            professionally. Whether you want to reach out for possible
+            integration and partnership, have a question about our product, need
+            help with an order, or simply want to provide feedback, we are here
+            to assist you.
+          </p>
+          <p className={styles.para}>
+            To contact us, please fill out the contact form on this page with
+            your name, email address, and a brief message describing your
+            inquiry. We will get back to you.
+          </p>
+          <p className={styles.para}>
+            We appreciate your interest in what we are building and look forward
+            to hearing from you!
           </p>
           <div className={styles.mediums}>
             {/* <div className={styles.details}>
