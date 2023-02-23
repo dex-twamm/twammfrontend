@@ -19,6 +19,7 @@ import { BigNumber } from "ethers";
 import classNames from "classnames";
 import PopupModal from "../alerts/PopupModal";
 import axios from "axios";
+import { approveMaxAllowance, getAllowance } from "../../utils/getApproval";
 
 const AddLiquidity = ({ selectedTokenPair }) => {
   const {
@@ -33,6 +34,9 @@ const AddLiquidity = ({ selectedTokenPair }) => {
     setSpotPrice,
     expectedSwapOut,
     setExpectedSwapOut,
+    setTransactionHash,
+    setAllowance,
+    setAllowTwammErrorMessage,
   } = useContext(ShortSwapContext);
 
   const { allowance } = useContext(LongSwapContext);
@@ -43,6 +47,8 @@ const AddLiquidity = ({ selectedTokenPair }) => {
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [inputAmount, setInputAmount] = useState();
   const [dollarValueOfInputAmount, setDollarValueOfInputAmount] = useState(0.0);
+  const [hasBalancerOrTransactionError, setHasBalancerOrTransactionError] =
+    useState(true);
 
   const currentNetwork = useMemo(() => {
     return {
@@ -116,6 +122,42 @@ const AddLiquidity = ({ selectedTokenPair }) => {
     };
   }, [inputAmount, tokenA, tokenB, allowance, selectedNetwork]);
 
+  const handleApproveButton = async () => {
+    try {
+      const approval = await approveMaxAllowance(
+        web3provider,
+        tokenA?.address,
+        selectedNetwork
+      );
+      setTransactionHash(approval.hash);
+
+      await getAllowance(
+        web3provider?.getSigner(),
+        account,
+        tokenA?.address,
+        selectedNetwork
+      ).then((res) => {
+        setAllowance(bigToStr(res));
+      });
+    } catch (e) {
+      console.log(e);
+      setAllowTwammErrorMessage(e?.message);
+    }
+  };
+
+  useEffect(() => {
+    formErrors.balError !== undefined
+      ? setHasBalancerOrTransactionError(true)
+      : setHasBalancerOrTransactionError(false);
+  }, [formErrors]);
+
+  useEffect(() => {
+    return () => {
+      setFormErrors({ balError: undefined });
+      setTransactionHash(undefined);
+    };
+  }, [setFormErrors, setTransactionHash]);
+
   useEffect(() => {
     const getInputAmountValueInDollar = async () => {
       const id = tokenA?.symbol.toLowerCase();
@@ -133,6 +175,8 @@ const AddLiquidity = ({ selectedTokenPair }) => {
 
     getInputAmountValueInDollar();
   }, [inputAmount, tokenA]);
+
+  console.log("allowance", allowance);
 
   return (
     <>
@@ -214,23 +258,63 @@ const AddLiquidity = ({ selectedTokenPair }) => {
                   </div>
                 </div>
               </div>
-              <button
-                className={classNames(
-                  wStyles.btn,
-                  wStyles.btnConnect,
-                  wStyles.btnBtn
-                )}
-                onClick={handlePreviewClick}
-                disabled={!inputAmount || spotPriceLoading}
-              >
-                {!isWalletConnected ? (
-                  "Connect Wallet"
-                ) : spotPriceLoading ? (
+              {inputAmount && parseFloat(allowance) <= inputAmount && tokenA ? (
+                <button
+                  className={classNames(
+                    wStyles.btn,
+                    wStyles.btnConnect,
+                    wStyles.btnBtn
+                  )}
+                  onClick={() => {
+                    handleApproveButton();
+                  }}
+                  disabled={
+                    hasBalancerOrTransactionError ||
+                    inputAmount == 0 ||
+                    inputAmount > tokenA?.balance
+                  }
+                >
+                  {`Allow TWAMM Protocol to use your ${
+                    tokenA.symbol ?? tokenB.symbol
+                  }`}
+                </button>
+              ) : (
+                <></>
+              )}
+              {isWalletConnected && allowance ? (
+                <button
+                  className={classNames(
+                    wStyles.btn,
+                    wStyles.btnConnect,
+                    wStyles.btnBtn
+                  )}
+                  onClick={handlePreviewClick}
+                  disabled={
+                    !inputAmount ||
+                    hasBalancerOrTransactionError ||
+                    spotPriceLoading ||
+                    parseFloat(allowance) <= inputAmount
+                      ? true
+                      : false
+                  }
+                >
+                  {!inputAmount ? (
+                    "Enter an Amount"
+                  ) : spotPriceLoading ? (
+                    <CircularProgress sx={{ color: "white" }} size={30} />
+                  ) : (
+                    "Preview"
+                  )}
+                </button>
+              ) : !isWalletConnected ? (
+                <button className={classNames(wStyles.btn, wStyles.btnConnect)}>
+                  Connect Wallet
+                </button>
+              ) : (
+                <button className={classNames(styles.btn, styles.btnConnect)}>
                   <CircularProgress sx={{ color: "white" }} size={30} />
-                ) : (
-                  "Preview"
-                )}
-              </button>
+                </button>
+              )}
             </Box>
           </div>
 
