@@ -10,7 +10,6 @@ const LiquidityInput = ({
   tokenInputAmount,
   setTokenInputAmount,
   input,
-  id,
   tokenA,
   tokenB,
   currentNetwork,
@@ -130,16 +129,14 @@ const LiquidityInput = ({
         ) : balance ? (
           <p className={iStyles.balanceText}>
             {parseFloat(balance).toFixed(2)}{" "}
-            {id === 1 ? (
-              <span
-                className={iStyles.maxInput}
-                onClick={() => {
-                  setTokenInputAmount(parseFloat(balance).toFixed(2));
-                }}
-              >
-                Max
-              </span>
-            ) : null}
+            <span
+              className={iStyles.maxInput}
+              onClick={() => {
+                setTokenInputAmount(parseFloat(balance).toFixed(2));
+              }}
+            >
+              Max
+            </span>
           </p>
         ) : (
           <Skeleton width={60} />

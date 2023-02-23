@@ -13,9 +13,7 @@ import LiquidityInput from "./LiquidityInput";
 import { getTokensBalance } from "../../utils/getAmount";
 import { LongSwapContext, ShortSwapContext, UIContext } from "../../providers";
 import AddLiquidityPreview from "./AddLiquidityPreview";
-import { spotPrice } from "../../utils/getSpotPrice";
 import { bigToStr } from "../../utils";
-import { BigNumber } from "ethers";
 import classNames from "classnames";
 import PopupModal from "../alerts/PopupModal";
 import axios from "axios";
@@ -158,7 +156,6 @@ const AddLiquidity = ({ selectedTokenPair }) => {
                 input={tokenAInputAmount ? tokenAInputAmount : ""}
                 tokenA={tokenA}
                 tokenB={tokenB}
-                id={1}
                 currentNetwork={currentNetwork}
               />
               <LiquidityInput
@@ -167,7 +164,6 @@ const AddLiquidity = ({ selectedTokenPair }) => {
                 tokenInputAmount={tokenBInputAmount}
                 setTokenInputAmount={setTokenBInputAmount}
                 input={tokenBInputAmount ? tokenBInputAmount : ""}
-                id={2}
                 tokenA={tokenB}
                 tokenB={tokenA}
                 currentNetwork={currentNetwork}
