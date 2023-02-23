@@ -12,6 +12,7 @@ import { connectWallet } from "../utils/connetWallet";
 import { DisconnectWalletOption } from "./DisconnectWalletOption";
 import NavOptionDropdwon from "./navbarDropdown/NavOptionDropdwon";
 import { NETWORKS } from "../utils/networks";
+import logo from "../images/logo.png";
 
 const Navbar = () => {
   const [showDisconnect, setShowDisconnect] = useState(false);
@@ -94,12 +95,7 @@ const Navbar = () => {
       <div className={styles.row}>
         <div className={styles.tabContainerLeft}>
           <Link to="/">
-            <img
-              className={styles.logo}
-              src="logo.png"
-              alt="logo"
-              width="20px"
-            />
+            <img className={styles.logo} src={logo} alt="logo" width="20px" />
             <p className={styles.longSwap}>Longswap</p>
           </Link>
         </div>
