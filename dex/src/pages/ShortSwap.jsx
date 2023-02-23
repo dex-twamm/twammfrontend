@@ -117,7 +117,7 @@ const ShortSwap = () => {
         );
 
         setSwapAmount(0);
-        setExpectedSwapOut(0.0);
+        setExpectedSwapOut(0);
       }
     } catch (err) {
       console.error(err);

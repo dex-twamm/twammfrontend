@@ -133,16 +133,10 @@ const Swap = (props) => {
     return () => {
       setFormErrors({ balError: undefined });
       setTransactionHash(undefined);
-      setExpectedSwapOut();
-      setSpotPrice();
+      setExpectedSwapOut(0);
+      setSpotPrice(0);
     };
-  }, [
-    setFormErrors,
-    setTransactionHash,
-    swapAmount,
-    setExpectedSwapOut,
-    setSpotPrice,
-  ]);
+  }, [setFormErrors, setTransactionHash, setExpectedSwapOut, setSpotPrice]);
 
   return (
     <>
