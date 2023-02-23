@@ -6,6 +6,7 @@ import styles from "../../css/ShortSwap.module.css";
 import lsStyles from "../../css/LongSwap.module.css";
 import wStyles from "../../css/WithdrawLiquidity.module.css";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import iStyles from "../../css/Input.module.css";
 
 import PopupSettings from "../PopupSettings";
 import Tabs from "../Tabs";
@@ -43,6 +44,10 @@ const AddLiquidity = ({ selectedTokenPair }) => {
   const [dollarValueOfInputAmount, setDollarValueOfInputAmount] = useState(0.0);
   const [hasBalancerOrTransactionError, setHasBalancerOrTransactionError] =
     useState(true);
+  const [spanText, setSpanText] = useState({
+    maxText: "Max",
+    optimizeText: "Optimize",
+  });
 
   const currentNetwork = useMemo(() => {
     return {
@@ -124,6 +129,16 @@ const AddLiquidity = ({ selectedTokenPair }) => {
     getInputAmountValueInDollar();
   }, [tokenAInputAmount, tokenA]);
 
+  function getIndividualTokenBalance(tokenAddress) {
+    const token = balanceOfToken.find(
+      (t) => Object.keys(t)[0] === tokenAddress
+    );
+    return token ? parseFloat(token[tokenAddress]).toFixed(2) : null;
+  }
+
+  useEffect(() => {
+    setSpanText((prev) => ({ ...prev, maxText: "Max" }));
+  }, [tokenAInputAmount, tokenBInputAmount]);
   return (
     <>
       <div className={styles.container}>
@@ -186,6 +201,24 @@ const AddLiquidity = ({ selectedTokenPair }) => {
                         ? `$${dollarValueOfInputAmount}`
                         : `$0.0`}
                     </p>
+                    <span
+                      className={wStyles.maxInput}
+                      onClick={() => {
+                        setTokenAInputAmount(
+                          getIndividualTokenBalance(tokenA?.address)
+                        );
+                        setTokenBInputAmount(
+                          getIndividualTokenBalance(tokenB?.address)
+                        );
+                        setSpanText({ ...spanText, maxText: "Maxed" });
+                      }}
+                      style={{
+                        cursor:
+                          spanText?.maxText === "Max" ? "pointer" : "unset",
+                      }}
+                    >
+                      {spanText?.maxText}
+                    </span>
                   </div>
                 </div>
                 <div className={wStyles.impactPrice}>
@@ -203,6 +236,20 @@ const AddLiquidity = ({ selectedTokenPair }) => {
                         <InfoOutlinedIcon fontSize="small" />
                       </Tooltip>
                     </p>
+                    <span
+                      className={wStyles.maxInput}
+                      style={{
+                        cursor:
+                          spanText?.optimizeText === "Optimize"
+                            ? "pointer"
+                            : "unset",
+                      }}
+                      onClick={() => {
+                        setSpanText({ ...spanText, optimizeText: "Optimized" });
+                      }}
+                    >
+                      {spanText?.optimizeText}
+                    </span>
                   </div>
                 </div>
               </div>

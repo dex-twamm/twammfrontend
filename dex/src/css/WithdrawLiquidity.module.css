@@ -214,6 +214,8 @@
 
 .value {
   width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
 .text,
@@ -240,4 +242,15 @@
 
 .impactPrice p {
   font-size: 14px;
+}
+
+.maxInput {
+  color: blueviolet;
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.optimize {
+  font-weight: 800;
+  font-size: 13px;
 }
