@@ -12,10 +12,10 @@ const tabOptions = [
     value: "Long Term Swap",
     path: "/",
   },
-  // {
-  //   value: "Add Liquidity",
-  //   path: "/liquidity",
-  // },
+  {
+    value: "Add Liquidity",
+    path: "/liquidity",
+  },
 ];
 
 const Tabs = () => {

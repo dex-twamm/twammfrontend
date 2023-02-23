@@ -18,12 +18,12 @@ const LiquidityPoolListTableRow = ({
   const { web3provider, account } = useContext(ShortSwapContext);
   const { selectedNetwork } = useContext(UIContext);
 
-  const handleAddLiquidity = (item) => {
+  const handleAddLiquidity = (item, index) => {
     setIsAddLiquidity(true);
     setSelectedTokenPair([...item, index]);
   };
 
-  const handleWithdrawLiquidity = () => {
+  const handleWithdrawLiquidity = (item, index) => {
     setIsWithdrawLiquidity(true);
     setSelectedTokenPair([...item, index]);
   };
@@ -43,7 +43,16 @@ const LiquidityPoolListTableRow = ({
       setBptAmountIn(parseFloat(balance.toString()));
     };
     getPoolTokenData();
-  }, [web3provider, item, account, setBptAmountIn, currentNetwork]);
+  }, [web3provider, account, setBptAmountIn, currentNetwork]);
+
+  console.log(
+    "bptAmountIn-->",
+    "poolId :",
+    currentNetwork?.poolId,
+    "-->",
+    bptAmountIn,
+    "--->"
+  );
 
   return (
     <>
@@ -109,14 +118,14 @@ const LiquidityPoolListTableRow = ({
                 <Box className={styles.buttonBox}>
                   <Button
                     className={styles.addLiquidityButton}
-                    onClick={() => handleAddLiquidity(item)}
+                    onClick={() => handleAddLiquidity(item, index)}
                   >
-                    Add
+                    Add {bptAmountIn}
                   </Button>
-                  {bptAmountIn ? (
+                  {bptAmountIn > 0 ? (
                     <Button
                       className={styles.removeLiquidityButton}
-                      onClick={() => handleWithdrawLiquidity(item)}
+                      onClick={() => handleWithdrawLiquidity(item, index)}
                     >
                       Remove
                     </Button>

@@ -61,7 +61,7 @@ const LiquidityPoolLists = () => {
   const [selectedTokenPair, setSelectedTokenPair] = useState();
   const [isAddLiquidity, setIsAddLiquidity] = useState(false);
   const [isWithdrawLiquidity, setIsWithdrawLiquidity] = useState(false);
-  const [bptAmountIn, setBptAmountIn] = useState(0);
+  const [bptAmountIn, setBptAmountIn] = useState();
 
   const getTableData = () => {
     const poolLength = Object.keys(POOLS[selectedNetwork?.network]).length;
