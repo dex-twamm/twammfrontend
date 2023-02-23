@@ -4,15 +4,16 @@ import EmailIcon from "@mui/icons-material/Email";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import styles from "../css/Contact.module.css";
+import axios from "axios";
+import { Alert, Backdrop } from "@mui/material";
 
 const ContactPage = () => {
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   const [emailError, setEmailError] = useState("");
   const [messageError, setMessageError] = useState("");
-  const [status, setStatus] = useState();
+  const [isSubmitted, setisSubmitted] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -39,10 +40,26 @@ const ContactPage = () => {
       const formData = {
         name: name,
         email: email,
-        phone: phone,
-        message: message,
+        testing: message,
       };
+      sendEmail(formData);
     }
+  };
+
+  const sendEmail = (formData) => {
+    axios
+      .post(
+        "https://docs.google.com/forms/d/e/1FAIpQLScnt72kXvBZt5GSRfHw7-ZL6KO8avuP4FgRM_uj3MTnRMiQ4Q/formResponse",
+        formData
+      )
+      .then((res) => {
+        if (res.status === 200) {
+          setisSubmitted(true);
+        }
+      })
+      .catch((error) => {
+        console.log("hello", error);
+      });
   };
 
   const isEmail = (email) => {
@@ -119,13 +136,6 @@ const ContactPage = () => {
             )}
           </div>
 
-          <input
-            name="number"
-            className={styles.textInput}
-            type="number"
-            placeholder="Your Phone"
-            onChange={(e) => setPhone(e.target.value)}
-          />
           <div className="">
             <textarea
               name="message"
@@ -146,6 +156,16 @@ const ContactPage = () => {
           </button>
         </form>
       </div>
+      <Backdrop open={isSubmitted} onClose={() => setisSubmitted(false)}>
+        <Alert
+          severity="success"
+          onClose={() => {
+            setisSubmitted(false);
+          }}
+        >
+          Your feedback has been submitted.
+        </Alert>
+      </Backdrop>
     </>
   );
 };

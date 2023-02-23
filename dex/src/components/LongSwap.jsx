@@ -31,7 +31,8 @@ const LongSwap = (props) => {
   const [display, setDisplay] = useState(false);
   const [value, setValue] = useState(0.0);
   const [executionTime, setExecutionTIme] = useState("");
-  const [disableAllowBtn, setDisableAllowBtn] = useState(true);
+  const [hasBalancerOrTransactionError, setHasBalancerOrTransactionError] =
+    useState(true);
 
   const {
     account,
@@ -152,15 +153,15 @@ const LongSwap = (props) => {
 
   useEffect(() => {
     longSwapFormErrors?.balError !== undefined
-      ? setDisableAllowBtn(true)
-      : setDisableAllowBtn(false);
+      ? setHasBalancerOrTransactionError(true)
+      : setHasBalancerOrTransactionError(false);
   }, [longSwapFormErrors]);
 
   useEffect(() => {
     if (error === "Transaction Error" || error === "Transaction Cancelled") {
-      setDisableAllowBtn(false);
+      setHasBalancerOrTransactionError(false);
     }
-  }, [error, setDisableAllowBtn]);
+  }, [error, setHasBalancerOrTransactionError]);
 
   useEffect(() => {
     return () => {
@@ -323,7 +324,12 @@ const LongSwap = (props) => {
               onClick={() => {
                 handleApproveButton();
               }}
-              disabled={disableAllowBtn || executionTime === ""}
+              disabled={
+                hasBalancerOrTransactionError ||
+                executionTime === "" ||
+                swapAmount == 0 ||
+                swapAmount > tokenA?.balance
+              }
             >
               {`Allow TWAMM Protocol to use your ${
                 tokenA.symbol ?? tokenB.symbol
@@ -345,7 +351,7 @@ const LongSwap = (props) => {
                 !tokenB.tokenIsSet ||
                 !swapAmount ||
                 !numberOfBlockIntervals ||
-                disableAllowBtn ||
+                hasBalancerOrTransactionError ||
                 longSwapVerifyLoading ||
                 parseFloat(allowance) <= swapAmount
                   ? true
