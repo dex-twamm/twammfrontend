@@ -29,6 +29,29 @@ export const POOLS = {
         },
       ],
     },
+    "0xdab1b8c505867ec1e7292b17d7a4b42b6e1626680002000000000000000002c1": {
+      poolName: "MATIC/FAU",
+      address: "0xdab1b8c505867ec1e7292b17d7a4b42b6e162668",
+      fees: "0.3%",
+      LTOContract: "0x04143AA32FB58bcB943dfF29C3aad9C51FcF9630",
+      blockInterval: 150,
+      tokens: [
+        {
+          symbol: "USD/C",
+          name: "USDC",
+          decimals: 6,
+          address: "0x07865c6E87B9F70255377e024ace6630C1Eaa37F",
+          logo: usdLogo,
+        },
+        {
+          symbol: "FAU",
+          name: "Faucet",
+          decimals: 18,
+          address: "0xBA62BCfcAaFc6622853cca2BE6Ac7d845BC0f2Dc",
+          logo: faucetLogo,
+        },
+      ],
+    },
     "0x20c0b25ace39df183b9ccbbd1d575764544aeb190002000000000000000001f8": {
       poolName: "DAI/FAU",
       address: "0x20c0b25ace39df183b9ccbbd1d575764544aeb19",

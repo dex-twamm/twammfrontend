@@ -93,7 +93,7 @@ const LongTermSwapCardDropdown = (props) => {
                         <span className={styles.infoSpan}>
                           {`Converted token withdrawal of ${bigToStr(
                             items.proceeds,
-                            18
+                            tokenOut.decimals
                           )} ${tokenOut.symbol}`}
                           <IconButton
                             onClick={() =>
@@ -123,12 +123,17 @@ const LongTermSwapCardDropdown = (props) => {
                       />
                       <Box className={styles.infoBox}>
                         <span className={styles.infoSpan}>
-                          {`Unconverted token withdrawl of ${bigToStr(
+                          {`Unconverted token withdrawal of ${bigToStr(
                             item.unsoldAmount,
-                            18
+                            tokenIn.decimals
                           )} ${tokenIn.symbol}`}
                           <IconButton
-                            onClick={() => handleExplorer(item.transactionHash)}
+                            onClick={() =>
+                              handleExplorer(
+                                item?.withdrawals[item?.withdrawals.length - 1]
+                                  ?.transactionHash
+                              )
+                            }
                           >
                             <LaunchIcon
                               fontSize="small"

@@ -2,7 +2,12 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { HiExternalLink } from "react-icons/hi";
 import styles from "../css/LongTermOrderCard.module.css";
 import { UIContext } from "../providers/context/UIProvider";
-import { bigToFloat, bigToStr, getProperFixedValue } from "../utils";
+import {
+  bigToFloat,
+  bigToStr,
+  getInversedValue,
+  getProperFixedValue,
+} from "../utils";
 import classNames from "classnames";
 import LongTermSwapCardDropdown from "./LongTermSwapCardDropdown";
 import { _withdrawLTO } from "../utils/_withdrawLto";
@@ -11,6 +16,7 @@ import { LongSwapContext, ShortSwapContext } from "../providers";
 import { ethers } from "ethers";
 import { getPoolConfig } from "../utils/poolUtils";
 import { getBlockExplorerTransactionUrl } from "../utils/networkUtils";
+import ChangeCircleOutlinedIcon from "@mui/icons-material/ChangeCircleOutlined";
 import { withdrawLTO } from "../utils/addLiquidity";
 import { formatToReadableTime } from "../utils/timeUtils";
 
@@ -50,6 +56,8 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
 
   const [orderStartTime, setOrderStartTime] = useState();
   const [orderCompletionTime, setOrderCompletionTime] = useState();
+  const [switchAvgPrice, setSwitchAvgPrice] = useState(false);
+  const [switchedAveragePrice, setSwitchedAveragePrice] = useState();
   const [withdrawValue, setWithdrawValue] = useState();
 
   const poolConfig = getPoolConfig(selectedNetwork);
@@ -170,6 +178,12 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
   const isExecuteTimeCompleted = () => {
     if (orderStatus?.status.includes(orderExecutionTimeRemaining)) return false;
     else return true;
+  };
+
+  const handleAveragePriceClick = () => {
+    setSwitchAvgPrice((prev) => !prev);
+    const avgPrice = parseFloat(averagePrice);
+    setSwitchedAveragePrice(getInversedValue(avgPrice));
   };
 
   useEffect(() => {
@@ -324,8 +338,21 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
             <div className={styles.feesAndPrice}>
               <div className={styles.fees}>Fees: {poolConfig?.fees}</div>
               {bigToFloat(soldToken) !== 0 && (
-                <div className={styles.averagePrice}>
-                  Average Price: {getProperFixedValue(averagePrice)}
+                <div
+                  className={styles.averagePrice}
+                  onClick={handleAveragePriceClick}
+                >
+                  {!switchAvgPrice
+                    ? ` Average Price: 1 ${tokenIn.symbol} =
+                    ${getProperFixedValue(averagePrice)}
+                    ${tokenOut.symbol}`
+                    : ` Average Price: 1 ${tokenOut.symbol} =
+                    ${switchedAveragePrice}
+                    ${tokenIn.symbol}`}
+                  <ChangeCircleOutlinedIcon
+                    fontSize="small"
+                    sx={{ marginLeft: "10px" }}
+                  />
                 </div>
               )}
             </div>
