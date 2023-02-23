@@ -37,11 +37,11 @@ export const POOLS = {
       blockInterval: 150,
       tokens: [
         {
-          symbol: "USD/C",
-          name: "USDC",
-          decimals: 6,
-          address: "0x07865c6E87B9F70255377e024ace6630C1Eaa37F",
-          logo: usdLogo,
+          symbol: "MATIC",
+          name: "Matic",
+          decimals: 18,
+          address: "0x499d11E0b6eAC7c0593d8Fb292DCBbF815Fb29Ae",
+          logo: maticLogo,
         },
         {
           symbol: "FAU",
@@ -72,29 +72,6 @@ export const POOLS = {
           decimals: 18,
           address: "0xBA62BCfcAaFc6622853cca2BE6Ac7d845BC0f2Dc",
           logo: faucetLogo,
-        },
-      ],
-    },
-    "0x9f1f16b025f703ee985b58ced48daf93dad2f7ef000200000000000000000063": {
-      poolName: "USDC/WETH",
-      address: "0x9f1f16b025f703ee985b58ced48daf93dad2f7ef",
-      fees: "0.3%",
-      LTOContract: "0x9D3f9803826EB51B046D4366a5cf7313308E7CDC",
-      blockInterval: 150,
-      tokens: [
-        {
-          symbol: "WETH",
-          name: "WETH",
-          decimals: 18,
-          address: "0xdFCeA9088c8A88A76FF74892C1457C17dfeef9C1",
-          logo: wethLogo,
-        },
-        {
-          symbol: "USDC",
-          name: "USD",
-          decimals: 6,
-          address: "0xe0C9275E44Ea80eF17579d33c55136b7DA269aEb",
-          logo: usdLogo,
         },
       ],
     },

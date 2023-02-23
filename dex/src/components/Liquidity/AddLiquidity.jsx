@@ -226,7 +226,7 @@ const AddLiquidity = ({ selectedTokenPair }) => {
                         setTokenBInputAmount(
                           getIndividualTokenBalance(tokenB?.address)
                         );
-                        setSpanText({ ...spanText, maxText: "Maxed" });
+                        setSpanText((prev) => ({ ...prev, maxText: "Maxed" }));
                         setHasProportionalInputA(false);
                         setHasProportionalInputB(false);
                       }}
