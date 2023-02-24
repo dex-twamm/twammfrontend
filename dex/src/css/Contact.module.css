@@ -88,7 +88,7 @@
   border-radius: 16px;
   backdrop-filter: blur(2px);
   width: 40%;
-  height: 100%;
+  height: 900px;
 }
 
 .textInput {
@@ -154,6 +154,7 @@
   .rightSection {
     width: 100%;
     padding: 50px 35px;
+    height: 880px;
   }
 }
 

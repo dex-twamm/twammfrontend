@@ -1,7 +1,4 @@
-import { faMessage } from "@fortawesome/free-solid-svg-icons";
 import TwitterIcon from "@mui/icons-material/Twitter";
-import EmailIcon from "@mui/icons-material/Email";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import styles from "../css/Contact.module.css";
 import axios from "axios";
@@ -13,7 +10,7 @@ const ContactPage = () => {
   const [message, setMessage] = useState("");
   const [emailError, setEmailError] = useState("");
   const [messageError, setMessageError] = useState("");
-  const [isSubmitted, setisSubmitted] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,7 +51,7 @@ const ContactPage = () => {
       )
       .then((res) => {
         if (res.status === 200) {
-          setisSubmitted(true);
+          setIsSubmitted(true);
         }
       })
       .catch((error) => {
@@ -125,7 +122,22 @@ const ContactPage = () => {
             </div> */}
           </div>
         </div>
-        <form className={styles.rightSection} onSubmit={handleSubmit}>
+
+        <iframe
+          id="google-form"
+          title="contact-us"
+          src="https://docs.google.com/forms/d/e/1FAIpQLScnt72kXvBZt5GSRfHw7-ZL6KO8avuP4FgRM_uj3MTnRMiQ4Q/viewform?embedded=true"
+          className={styles.rightSection}
+          width="640"
+          height="645"
+          frameborder="0"
+          marginheight="0"
+          marginwidth="0"
+        >
+          Loading…
+        </iframe>
+
+        {/* <form className={styles.rightSection} onSubmit={handleSubmit}>
           <input
             className={styles.textInput}
             type="text"
@@ -165,13 +177,13 @@ const ContactPage = () => {
           <button className={styles.sendButton} type="submit">
             Send Message
           </button>
-        </form>
+        </form> */}
       </div>
-      <Backdrop open={isSubmitted} onClose={() => setisSubmitted(false)}>
+      <Backdrop open={isSubmitted} onClose={() => setIsSubmitted(false)}>
         <Alert
           severity="success"
           onClose={() => {
-            setisSubmitted(false);
+            setIsSubmitted(false);
           }}
         >
           Your feedback has been submitted.
