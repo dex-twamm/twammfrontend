@@ -23,7 +23,12 @@ export const getProperFixedValue = (num) => {
   let number = parseFloat(num);
   let str = num?.toString();
   let decimalIndex = str.indexOf(".");
-  if (decimalIndex === -1) return number?.toFixed(4);
+  if (decimalIndex === -1) return number;
+
+  if (number > 1) {
+    return number?.toFixed(4);
+  }
+
   let trailingZeroes = str.slice(decimalIndex).replace(/[1-9]/g, "").length;
   return number?.toFixed(trailingZeroes > 2 ? trailingZeroes : 2);
 };
