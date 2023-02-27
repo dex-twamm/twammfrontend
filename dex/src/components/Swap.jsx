@@ -258,13 +258,18 @@ const Swap = (props) => {
                             )}
                             <ChangeCircleOutlinedIcon
                               onClick={handleTokenRateSwitch}
-                              sx={{ marginLeft: "10px", cursor: "pointer" }}
+                              sx={{
+                                marginLeft: { xs: "3px", sm: "10px" },
+                                cursor: "pointer",
+                              }}
                             />
                           </span>
                           <div className={styles.priceDropdown}>
                             <span>Price Impact: 0.03%</span>
                             <ExpandMoreIcon
-                              sx={{ cursor: "pointer" }}
+                              sx={{
+                                cursor: "pointer",
+                              }}
                               onClick={handlePriceDropdown}
                             />
                           </div>
