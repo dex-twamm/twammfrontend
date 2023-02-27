@@ -58,6 +58,7 @@ const Input = (props) => {
         <div className={styles.inputSelectContainer}>
           <input
             className={styles.textField}
+            type="number"
             min={0}
             placeholder={placeholder}
             value={input}
