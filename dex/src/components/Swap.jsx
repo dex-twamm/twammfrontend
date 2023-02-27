@@ -286,9 +286,7 @@ const Swap = (props) => {
                             />
                           </span>
                           <div className={styles.priceDropdown}>
-                            <span>
-                              Price Impact: {getPoolFees(selectedNetwork)}
-                            </span>
+                            <span>Fees: {getPoolFees(selectedNetwork)}</span>
                             <ExpandMoreIcon
                               sx={{
                                 cursor: "pointer",
@@ -320,7 +318,7 @@ const Swap = (props) => {
                 </p>
               </div>
               <div className={styles.priceValueItem}>
-                <p>Price Impact:</p>
+                <p>Fees:</p>
                 <p>
                   {" "}
                   {spotPriceLoading ? (

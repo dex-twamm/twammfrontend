@@ -262,16 +262,14 @@ const LongSwap = (props) => {
             setTokenB={setTokenB}
           />
 
-          {swapAmount && executionTime && !longSwapFormErrors?.balError && (
-            <p
-              className={lsStyles.priceImpactLS}
-              style={{
-                padding: { xs: "0px", sm: "8px 0px" },
-              }}
-            >
-              Price Impact: {getPoolFees(selectedNetwork)}
-            </p>
-          )}
+          <p
+            className={lsStyles.priceImpactLS}
+            style={{
+              padding: { xs: "0px", sm: "8px 0px" },
+            }}
+          >
+            Fees: {getPoolFees(selectedNetwork)}
+          </p>
 
           {longSwapFormErrors?.balError && (
             <div className={styles.errorAlert}>
