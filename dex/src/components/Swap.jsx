@@ -16,6 +16,7 @@ import { approveMaxAllowance, getAllowance } from "../utils/getApproval";
 import { UIContext } from "../providers/context/UIProvider";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ChangeCircleOutlinedIcon from "@mui/icons-material/ChangeCircleOutlined";
+import { getPoolFees } from "../utils/poolUtils";
 
 const Swap = (props) => {
   const { handleSwapAction, spotPriceLoading } = props;
@@ -285,7 +286,9 @@ const Swap = (props) => {
                             />
                           </span>
                           <div className={styles.priceDropdown}>
-                            <span>Price Impact: 0.03%</span>
+                            <span>
+                              Price Impact: {getPoolFees(selectedNetwork)}
+                            </span>
                             <ExpandMoreIcon
                               sx={{
                                 cursor: "pointer",
@@ -320,7 +323,11 @@ const Swap = (props) => {
                 <p>Price Impact:</p>
                 <p>
                   {" "}
-                  {spotPriceLoading ? <Skeleton width={"100px"} /> : "0.3%"}
+                  {spotPriceLoading ? (
+                    <Skeleton width={"100px"} />
+                  ) : (
+                    getPoolFees(selectedNetwork)
+                  )}
                 </p>
               </div>
             </div>

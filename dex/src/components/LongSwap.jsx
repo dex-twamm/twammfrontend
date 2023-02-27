@@ -24,6 +24,7 @@ import { FiChevronDown } from "react-icons/fi";
 import { approveMaxAllowance, getAllowance } from "../utils/getApproval";
 
 import { UIContext } from "../providers/context/UIProvider";
+import { getPoolFees } from "../utils/poolUtils";
 
 const LongSwap = (props) => {
   const { handleLongSwapAction, longSwapVerifyLoading } = props;
@@ -268,7 +269,7 @@ const LongSwap = (props) => {
                 padding: { xs: "0px", sm: "8px 0px" },
               }}
             >
-              Price Impact: 0.03%
+              Price Impact: {getPoolFees(selectedNetwork)}
             </p>
           )}
 
