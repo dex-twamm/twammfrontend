@@ -215,13 +215,13 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
       const buyIndex = result["amountsOut"]?.filter(
         (item) => bigToFloat(item) !== 0
       );
-      const withdrawResult = bigToFloat(buyIndex[0], tokenOut?.decimal);
+      const withdrawResult = bigToFloat(buyIndex[0], tokenOut?.decimals);
       if (orderLog?.withdrawals.length > 0) {
         let addedValue = 0;
         orderLog?.withdrawals.map(
           (item) =>
             (addedValue =
-              addedValue + bigToFloat(item.proceeds, tokenOut?.decimal))
+              addedValue + bigToFloat(item.proceeds, tokenOut?.decimals))
         );
         setWithdrawValue(getProperFixedValue(withdrawResult + addedValue));
       } else setWithdrawValue(getProperFixedValue(withdrawResult));
