@@ -113,7 +113,6 @@ const Swap = (props) => {
     if (!valueInt > 0) {
       errors.swapAmount = "Swap Amount Is Required";
     }
-
     return errors;
   };
 
@@ -136,7 +135,22 @@ const Swap = (props) => {
       setExpectedSwapOut(0);
       setSpotPrice(0);
     };
-  }, [setFormErrors, setTransactionHash, setExpectedSwapOut, setSpotPrice]);
+  }, [
+    setFormErrors,
+    setTransactionHash,
+    setExpectedSwapOut,
+    setSpotPrice,
+    tokenA,
+    tokenB,
+  ]);
+
+  useEffect(() => {
+    if (!swapAmount) {
+      setFormErrors({ balError: undefined });
+      setSpotPrice();
+      setExpectedSwapOut(0);
+    }
+  }, [swapAmount, setFormErrors, setSpotPrice, setExpectedSwapOut]);
 
   return (
     <>
