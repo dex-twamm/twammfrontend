@@ -10,7 +10,7 @@ import classNames from "classnames";
 import React, { useContext, useState } from "react";
 import lsStyles from "../css/LongSwap.module.css";
 import styles from "../css/AddLiquidity.module.css";
-import { bigToStr } from "../utils";
+import { bigToStr, getInputLimit } from "../utils";
 
 import {
   calculateNumBlockIntervals,
@@ -249,7 +249,7 @@ const LongSwap = (props) => {
             input={swapAmount ? swapAmount : ""}
             placeholder="0.0"
             onChange={(e) => {
-              setSwapAmount(e.target.value);
+              setSwapAmount(getInputLimit(e.target.value));
             }}
             imgSrc={tokenA?.logo}
             symbol={tokenA?.symbol}

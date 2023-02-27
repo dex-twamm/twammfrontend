@@ -10,7 +10,12 @@ import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
 import Input from "./Input";
 
 import { BigNumber } from "ethers";
-import { bigToStr, getInversedValue, getProperFixedValue } from "../utils";
+import {
+  bigToStr,
+  getInputLimit,
+  getInversedValue,
+  getProperFixedValue,
+} from "../utils";
 import { approveMaxAllowance, getAllowance } from "../utils/getApproval";
 
 import { UIContext } from "../providers/context/UIProvider";
@@ -152,6 +157,8 @@ const Swap = (props) => {
     }
   }, [swapAmount, setFormErrors, setSpotPrice, setExpectedSwapOut]);
 
+  console.log(swapAmount);
+
   return (
     <>
       <form onSubmit={handleSubmit} className={styles.form}>
@@ -162,7 +169,7 @@ const Swap = (props) => {
             input={swapAmount ? swapAmount : ""}
             placeholder="0.0"
             onChange={(e) => {
-              setSwapAmount(e.target.value);
+              setSwapAmount(getInputLimit(e.target.value));
             }}
             imgSrc={tokenA?.logo}
             symbol={tokenA?.symbol}
