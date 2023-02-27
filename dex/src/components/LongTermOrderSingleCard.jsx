@@ -169,9 +169,9 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
   useEffect(() => {
     const timer = setInterval(() => {
       if (newTime && newTime > 0) {
-        setNewTime(newTime - 1);
+        setNewTime(newTime - 60);
       }
-    }, 1000);
+    }, 1000 * 60);
     return () => clearInterval(timer);
   }, [newTime]);
 
