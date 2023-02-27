@@ -261,6 +261,17 @@ const LongSwap = (props) => {
             setTokenB={setTokenB}
           />
 
+          {swapAmount && executionTime && !longSwapFormErrors?.balError && (
+            <p
+              className={lsStyles.priceImpactLS}
+              style={{
+                padding: { xs: "0px", sm: "8px 0px" },
+              }}
+            >
+              Price Impact: 0.03%
+            </p>
+          )}
+
           {longSwapFormErrors?.balError && (
             <div className={styles.errorAlert}>
               <Alert severity="error" sx={{ borderRadius: "16px" }}>
