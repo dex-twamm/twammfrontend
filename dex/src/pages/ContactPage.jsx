@@ -69,13 +69,13 @@ const ContactPage = () => {
     <>
       <div className={styles.container}>
         <div className={styles.leftSection}>
-          <h5 className={styles.h5Text}>Contact Us</h5>
+          {/* <h5 className={styles.h5Text}>Contact Us</h5> */}
           <h1 className={styles.h1Text}>Get In Touch With Us</h1>
-          <p className={styles.para}>
+          {/* <p className={styles.para}>
             We value your feedback and inquiries, and we want to hear from you.
             If you have any questions, comments, or concerns, please feel free
             to use this page to get in touch with our team.
-          </p>
+          </p> 
           <p className={styles.para}>
             We are committed to addressing your needs promptly and
             professionally. Whether you want to reach out for possible
@@ -91,7 +91,7 @@ const ContactPage = () => {
           <p className={styles.para}>
             We appreciate your interest in what we are building and look forward
             to hearing from you!
-          </p>
+          </p> */}
           <div className={styles.mediums}>
             {/* <div className={styles.details}>
               <div className={styles.icon}>
