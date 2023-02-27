@@ -223,12 +223,46 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  padding: 0;
 }
 
 .spotBox {
   display: flex;
   box-sizing: border-box;
   font-family: Open Sans;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  /* padding: 4px 5px 4px 15px; */
+}
+
+.spotContentBox {
+  width: 100%;
+}
+
+.spotValue {
+  display: flex;
+  align-items: center;
+}
+
+.priceDropdown {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.priceValueBox {
+  border: 2px solid white;
+  background-color: #f3f3f3;
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-radius: 8px;
+}
+.priceValueItem {
+  display: flex;
+  justify-content: space-between;
 }
 
 /* 
