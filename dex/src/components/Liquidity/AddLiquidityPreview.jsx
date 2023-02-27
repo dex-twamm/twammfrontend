@@ -24,6 +24,14 @@ const AddLiquidityPreview = ({
   };
 
   const handleAddLiquidity = async () => {
+    console.log(
+      `walletAddress ${account}`,
+      `web3provider`,
+      web3provider.getSigner(),
+      `currentNetwork`,
+      currentNetwork,
+      `amountsIn ${amountsIn}`
+    );
     try {
       await _addPoolLiquidity(
         account,
@@ -51,19 +59,21 @@ const AddLiquidityPreview = ({
       >
         <Box className={styles.boxStyle}>
           <p className={styles.modalTitle}>Add Liquidity Preview</p>
-          <div className={styles.tokenAndLogo}>
-            <p className={styles.amount}>
-              {amountsIn[0]} {selectedTokenPair[0]?.name}
-            </p>
-            <div className={styles.logo}>
-              <img
-                src={selectedTokenPair[0]?.logo}
-                alt="logo"
-                width="40px"
-                height="40px"
-              />
+          {amountsIn[0] > 0 && (
+            <div className={styles.tokenAndLogo}>
+              <p className={styles.amount}>
+                {amountsIn[0]} {selectedTokenPair[0]?.name}
+              </p>
+              <div className={styles.logo}>
+                <img
+                  src={selectedTokenPair[0]?.logo}
+                  alt="logo"
+                  width="40px"
+                  height="40px"
+                />
+              </div>
             </div>
-          </div>
+          )}
           {amountsIn[1] > 0 && (
             <div className={styles.tokenAndLogo}>
               <p className={styles.amount}>
