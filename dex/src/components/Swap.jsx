@@ -143,7 +143,23 @@ const Swap = (props) => {
       setExpectedSwapOut(0);
       setSpotPrice(0);
     };
-  }, [setFormErrors, setTransactionHash, setExpectedSwapOut, setSpotPrice]);
+  }, [
+    setFormErrors,
+    setTransactionHash,
+    setExpectedSwapOut,
+    setSpotPrice,
+    tokenA,
+    tokenB,
+  ]);
+
+  useEffect(() => {
+    if (!swapAmount) {
+      setFormErrors({ balError: undefined });
+      setSpotPrice();
+      setExpectedSwapOut(0);
+      setShowPriceValues(false);
+    }
+  }, [swapAmount, setFormErrors, setSpotPrice, setExpectedSwapOut]);
 
   return (
     <>
