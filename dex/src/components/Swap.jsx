@@ -152,8 +152,6 @@ const Swap = (props) => {
     }
   }, [swapAmount, setFormErrors, setSpotPrice, setExpectedSwapOut]);
 
-  console.log("Swap amount", swapAmount);
-
   return (
     <>
       <form onSubmit={handleSubmit} className={styles.form}>
