@@ -153,6 +153,10 @@ const Swap = (props) => {
   ]);
 
   useEffect(() => {
+    setShowPriceValues(false);
+  }, [swapAmount]);
+
+  useEffect(() => {
     if (!swapAmount) {
       setFormErrors({ balError: undefined });
       setSpotPrice();
