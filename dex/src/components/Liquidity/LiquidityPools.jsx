@@ -7,6 +7,7 @@ import {
   getPoolFees,
   getPoolId,
   getPoolTokenSymbol,
+  getShortSwapPoolFee,
 } from "../../utils/poolUtils";
 import { UIContext } from "../../providers/context/UIProvider";
 import { Avatar, Box, Skeleton } from "@mui/material";
@@ -75,7 +76,7 @@ const LiquidityPools = () => {
                     </Box>
                   </Box>
                   <span className={styles.feeTypography}>
-                    {getPoolFees(selectedNetwork)}
+                    {getShortSwapPoolFee(selectedNetwork)}
                   </span>
                 </Box>
               </Box>

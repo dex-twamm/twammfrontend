@@ -16,7 +16,7 @@ import { approveMaxAllowance, getAllowance } from "../utils/getApproval";
 import { UIContext } from "../providers/context/UIProvider";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ChangeCircleOutlinedIcon from "@mui/icons-material/ChangeCircleOutlined";
-import { getPoolFees } from "../utils/poolUtils";
+import { getShortSwapPoolFee } from "../utils/poolUtils";
 
 const Swap = (props) => {
   const { handleSwapAction, spotPriceLoading } = props;
@@ -286,7 +286,9 @@ const Swap = (props) => {
                             />
                           </span>
                           <div className={styles.priceDropdown}>
-                            <span>Fees: {getPoolFees(selectedNetwork)}</span>
+                            <span>
+                              Fees: {getShortSwapPoolFee(selectedNetwork)}
+                            </span>
                             <ExpandMoreIcon
                               sx={{
                                 cursor: "pointer",
@@ -318,13 +320,13 @@ const Swap = (props) => {
                 </p>
               </div>
               <div className={styles.priceValueItem}>
-                <p>Fees:</p>
+                <p>Fees included:</p>
                 <p>
                   {" "}
                   {spotPriceLoading ? (
                     <Skeleton width={"100px"} />
                   ) : (
-                    getPoolFees(selectedNetwork)
+                    getShortSwapPoolFee(selectedNetwork)
                   )}
                 </p>
               </div>
