@@ -178,6 +178,14 @@ const LongSwap = (props) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (!swapAmount) {
+      setLongSwapFormErrors({ balError: undefined });
+    }
+  }, [swapAmount, setLongSwapFormErrors]);
+
+  console.log(swapAmount);
+
   return (
     <>
       <form onSubmit={handleSubmit} className={styles.form} noValidate>
