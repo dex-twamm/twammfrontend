@@ -103,5 +103,5 @@ export const getInversedValue = (value) => {
 };
 
 export const getInputLimit = (value) => {
-  return value.slice(0, 10);
+  return value.slice(0, 15);
 };
