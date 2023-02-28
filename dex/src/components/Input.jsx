@@ -52,6 +52,18 @@ const Input = (props) => {
     };
   }, [setTokenA, setTokenB, tokenBalances, setSelectedNetwork]);
 
+  function handleKeyPress(event) {
+    const keyPressed = event.key;
+    if (
+      keyPressed === "-" ||
+      keyPressed === "+" ||
+      keyPressed === "e" ||
+      keyPressed === "E"
+    ) {
+      event.preventDefault();
+    }
+  }
+
   return (
     <>
       <div className={styles.textInput}>
@@ -63,6 +75,7 @@ const Input = (props) => {
             placeholder={placeholder}
             value={input}
             onChange={onChange}
+            onKeyDown={handleKeyPress}
           />
           {}
           <button
