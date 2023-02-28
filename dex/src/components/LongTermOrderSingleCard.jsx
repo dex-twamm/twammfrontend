@@ -86,9 +86,13 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
   const expBlock = orderLog.expirationBlock;
   const amountOf = expBlock?.sub(stBlock)?.mul(orderLog?.salesRate);
 
-  let soldToken;
+  let soldToken, tokenWithdrawals;
+  tokenWithdrawals = parseFloat(withdrawValue ?? 0);
+
   if (orderLog.state === "cancelled") {
     soldToken = amountOf?.sub(orderLog?.unsoldAmount);
+    tokenWithdrawals =
+      bigToFloat(convertedAmount, tokenOut.decimals) + tokenWithdrawals;
   } else if (orderLog.state === "inProgress") {
     soldToken =
       currentBlock.number > expBlock
@@ -102,7 +106,7 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
   }
 
   const averagePrice = getProperFixedValue(
-    parseFloat(withdrawValue ?? 0) / bigToFloat(soldToken, tokenIn.decimals)
+    tokenWithdrawals / bigToFloat(soldToken, tokenIn.decimals)
   );
 
   const handleCancel = (orderId) => {
