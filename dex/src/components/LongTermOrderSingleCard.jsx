@@ -58,7 +58,7 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
   const [orderCompletionTime, setOrderCompletionTime] = useState();
   const [switchAvgPrice, setSwitchAvgPrice] = useState(false);
   const [switchedAveragePrice, setSwitchedAveragePrice] = useState();
-  const [withdrawValue, setWithdrawValue] = useState();
+  const [expectedWithdrawalValue, setExpectedWithdrawalValue] = useState(0);
 
   const poolConfig = getPoolConfig(selectedNetwork);
 
@@ -67,32 +67,21 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
 
   const remainingTimeRef = useRef();
 
-  let convertedAmount = ethers.constants.Zero;
-  if (orderLog.state === "completed" || orderLog.state === "cancelled") {
-    // Order Completed and Deleted
-    convertedAmount = orderLog.withdrawals.reduce((total, withdrawal) => {
-      return total.add(withdrawal.proceeds);
-    }, ethers.constants.Zero);
-  } else {
-    // Order Still In Progress
-    let withdrawals = orderLog.withdrawals.reduce((total, withdrawal) => {
-      return total.add(withdrawal.proceeds);
-    }, ethers.constants.Zero);
-
-    convertedAmount = orderLog.convertedValue.add(withdrawals);
-  }
-
   const stBlock = orderLog.startBlock;
   const expBlock = orderLog.expirationBlock;
   const amountOf = expBlock?.sub(stBlock)?.mul(orderLog?.salesRate);
 
-  let soldToken, tokenWithdrawals;
-  tokenWithdrawals = parseFloat(withdrawValue ?? 0);
+  const convertedAmount = orderLog.withdrawals.reduce((total, withdrawal) => {
+    return total.add(withdrawal.proceeds);
+  }, ethers.constants.Zero);
 
+  const tokenWithdrawals =
+    bigToFloat(convertedAmount, tokenOut.decimals) +
+    parseFloat(expectedWithdrawalValue);
+
+  let soldToken;
   if (orderLog.state === "cancelled") {
     soldToken = amountOf?.sub(orderLog?.unsoldAmount);
-    tokenWithdrawals =
-      bigToFloat(convertedAmount, tokenOut.decimals) + tokenWithdrawals;
   } else if (orderLog.state === "inProgress") {
     soldToken =
       currentBlock.number > expBlock
@@ -211,7 +200,7 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
   }, [expBlock, stBlock, web3provider, orderStatus]);
 
   useEffect(() => {
-    const getWithdrawValue = async () => {
+    const getExpectedWithdrawalValue = async () => {
       const signer = web3provider.getSigner();
       const result = await withdrawLTO(
         account,
@@ -221,23 +210,14 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
         true
       );
 
-      const buyIndex = result["amountsOut"]?.filter(
-        (item) => bigToFloat(item) !== 0
+      const expectedWithdrawResult = bigToFloat(
+        result["amountsOut"][orderLog.buyTokenIndex],
+        tokenOut?.decimals
       );
-      const withdrawResult = bigToFloat(buyIndex[0], tokenOut?.decimals);
-      if (orderLog?.withdrawals.length > 0) {
-        let addedValue = 0;
-        orderLog?.withdrawals.map(
-          (item) =>
-            (addedValue =
-              addedValue + bigToFloat(item.proceeds, tokenOut?.decimals))
-        );
-
-        setWithdrawValue(getProperFixedValue(withdrawResult + addedValue));
-      } else setWithdrawValue(getProperFixedValue(withdrawResult));
+      setExpectedWithdrawalValue(getProperFixedValue(expectedWithdrawResult));
     };
 
-    if (orderLog?.state === "inProgress") getWithdrawValue();
+    if (orderLog?.state === "inProgress") getExpectedWithdrawalValue();
   }, []);
 
   return (
@@ -302,10 +282,7 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
                 alt={tokenOut.symbol}
               />
               <p className={classNames(styles.tokenText, styles.greenText)}>
-                {orderLog?.state === "inProgress"
-                  ? withdrawValue
-                  : bigToStr(convertedAmount, tokenOut.decimals)}{" "}
-                {tokenOut.symbol}
+                {tokenWithdrawals} {tokenOut.symbol}
               </p>
             </div>
           </div>
