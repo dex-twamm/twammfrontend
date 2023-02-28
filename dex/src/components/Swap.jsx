@@ -161,7 +161,7 @@ const Swap = (props) => {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className={styles.form}>
+      <form onSubmit={handleSubmit} className={styles.form} noValidate>
         <div className={lsStyles.main} />
         <Box className={lsStyles.mainBox}>
           <Input
