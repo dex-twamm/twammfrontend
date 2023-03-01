@@ -50,11 +50,6 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
   } = useContext(LongSwapContext);
   const { selectedNetwork, setSelectedNetwork } = useContext(UIContext);
 
-  // const ORDER_STATUS_COMPLETED = "Completed";
-  // const ORDER_STATUS_CANCELLED = "Cancelled";
-  // const ORDER_STATUS_EXECUTED = "Execution Completed";
-  // const ORDER_EXECUTION_TIME_REMAINING = "Time Remaining";
-
   const [orderStatus, setOrderStatus] = useState();
   const [newTime, setNewTime] = useState(
     (orderLog.expirationBlock - currentBlock.number) * 12
