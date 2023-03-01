@@ -1,5 +1,6 @@
 import { BigNumber, ethers } from "ethers";
 import { Decimal } from "decimal.js";
+import { MAX_INPUT_LENGTH } from "./constants";
 
 export const truncateAddress = (address) => {
   if (!address) return "No Account";
@@ -103,5 +104,5 @@ export const getInversedValue = (value) => {
 };
 
 export const getInputLimit = (value) => {
-  return value.slice(0, 15);
+  return value.slice(0, MAX_INPUT_LENGTH);
 };

@@ -19,6 +19,12 @@ import { getBlockExplorerTransactionUrl } from "../utils/networkUtils";
 import ChangeCircleOutlinedIcon from "@mui/icons-material/ChangeCircleOutlined";
 import { withdrawLTO } from "../utils/addLiquidity";
 import { formatToReadableTime } from "../utils/timeUtils";
+import {
+  ORDER_EXECUTION_TIME_REMAINING,
+  ORDER_STATUS_CANCELLED,
+  ORDER_STATUS_COMPLETED,
+  ORDER_STATUS_EXECUTED,
+} from "../utils/constants";
 
 const LongTermOrderSingleCard = ({ orderLog }) => {
   const {
@@ -44,10 +50,10 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
   } = useContext(LongSwapContext);
   const { selectedNetwork, setSelectedNetwork } = useContext(UIContext);
 
-  const orderStatusCompleted = "Completed";
-  const orderStatusCancelled = "Cancelled";
-  const orderStatusExecuted = "Execution Completed";
-  const orderExecutionTimeRemaining = "Time Remaining";
+  // const ORDER_STATUS_COMPLETED = "Completed";
+  // const ORDER_STATUS_CANCELLED = "Cancelled";
+  // const ORDER_STATUS_EXECUTED = "Execution Completed";
+  // const ORDER_EXECUTION_TIME_REMAINING = "Time Remaining";
 
   const [orderStatus, setOrderStatus] = useState();
   const [newTime, setNewTime] = useState(
@@ -144,24 +150,24 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
 
   useEffect(() => {
     if (orderLog?.state === "completed") {
-      setOrderStatus({ status: orderStatusCompleted, progress: 100 });
+      setOrderStatus({ status: ORDER_STATUS_COMPLETED, progress: 100 });
     } else if (orderLog?.state === "cancelled") {
-      setOrderStatus({ status: orderStatusCancelled, progress: 100 });
+      setOrderStatus({ status: ORDER_STATUS_CANCELLED, progress: 100 });
     } else if (lastVirtualOrderBlock >= orderLog.expirationBlock) {
-      setOrderStatus({ status: orderStatusExecuted, progress: 100 });
+      setOrderStatus({ status: ORDER_STATUS_EXECUTED, progress: 100 });
     } else {
       if (orderLog.expirationBlock > currentBlock.number) {
         let date = new Date(0);
         date.setSeconds(newTime); // specify value for SECONDS here
         const timeString = date.toISOString().substring(11, 16);
         setOrderStatus({
-          status: `${orderExecutionTimeRemaining}: ${timeString}`,
+          status: `${ORDER_EXECUTION_TIME_REMAINING}: ${timeString}`,
           progress:
             ((lastVirtualOrderBlock - orderLog?.startBlock) * 100) /
             (orderLog?.expirationBlock - orderLog?.startBlock),
         });
       } else {
-        setOrderStatus({ status: orderStatusExecuted, progress: 100 });
+        setOrderStatus({ status: ORDER_STATUS_EXECUTED, progress: 100 });
       }
     }
   }, [orderLog, currentBlock, lastVirtualOrderBlock, newTime]);
@@ -176,7 +182,8 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
   }, [newTime]);
 
   const isExecuteTimeCompleted = () => {
-    if (orderStatus?.status.includes(orderExecutionTimeRemaining)) return false;
+    if (orderStatus?.status.includes(ORDER_EXECUTION_TIME_REMAINING))
+      return false;
     else return true;
   };
 
@@ -303,7 +310,7 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
           <div>
             <p
               className={
-                orderStatus?.status === orderStatusCancelled
+                orderStatus?.status === ORDER_STATUS_CANCELLED
                   ? styles.cancelled
                   : styles.timeRemaining
               }
@@ -316,11 +323,11 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
                 style={{ width: `${orderStatus?.progress}%` }}
                 className={classNames(
                   styles.activeProgress,
-                  orderStatus?.status === orderStatusCompleted
+                  orderStatus?.status === ORDER_STATUS_COMPLETED
                     ? styles.greenProgress
-                    : orderStatus?.status === orderStatusExecuted
+                    : orderStatus?.status === ORDER_STATUS_EXECUTED
                     ? styles.greenProgress
-                    : orderStatus?.status === orderStatusCancelled
+                    : orderStatus?.status === ORDER_STATUS_CANCELLED
                     ? styles.redProgress
                     : styles.activeProgress
                 )}
@@ -378,28 +385,28 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
             <button
               className={classNames(
                 styles.button,
-                orderStatus?.status !== orderStatusCompleted
+                orderStatus?.status !== ORDER_STATUS_COMPLETED
                   ? styles.cancelButton
                   : styles.successButton
               )}
               disabled={
-                orderStatus?.status === orderStatusCancelled ||
-                orderStatus?.status === orderStatusCompleted ||
-                orderStatus?.status === orderStatusExecuted ||
+                orderStatus?.status === ORDER_STATUS_CANCELLED ||
+                orderStatus?.status === ORDER_STATUS_COMPLETED ||
+                orderStatus?.status === ORDER_STATUS_EXECUTED ||
                 disableActionBtn
               }
               onClick={() => {
                 handleCancel(orderLog?.orderId?.toNumber());
               }}
             >
-              {orderStatus?.status === orderStatusCompleted
-                ? orderStatusCompleted
-                : orderStatus?.status === orderStatusCancelled
-                ? orderStatusCancelled
+              {orderStatus?.status === ORDER_STATUS_COMPLETED
+                ? ORDER_STATUS_COMPLETED
+                : orderStatus?.status === ORDER_STATUS_CANCELLED
+                ? ORDER_STATUS_CANCELLED
                 : "Cancel"}
             </button>
-            {orderStatus?.status !== orderStatusCancelled &&
-              orderStatus?.status !== orderStatusCompleted && (
+            {orderStatus?.status !== ORDER_STATUS_CANCELLED &&
+              orderStatus?.status !== ORDER_STATUS_COMPLETED && (
                 <button
                   className={classNames(styles.button, styles.withdrawButton)}
                   onClick={() => {
