@@ -52,16 +52,30 @@ const Input = (props) => {
     };
   }, [setTokenA, setTokenB, tokenBalances, setSelectedNetwork]);
 
+  function handleKeyPress(event) {
+    const keyPressed = event.key;
+    if (
+      keyPressed === "-" ||
+      keyPressed === "+" ||
+      keyPressed === "e" ||
+      keyPressed === "E"
+    ) {
+      event.preventDefault();
+    }
+  }
+
   return (
     <>
       <div className={styles.textInput}>
         <div className={styles.inputSelectContainer}>
           <input
             className={styles.textField}
+            type="number"
             min={0}
             placeholder={placeholder}
             value={input}
             onChange={onChange}
+            onKeyDown={handleKeyPress}
           />
           {}
           <button

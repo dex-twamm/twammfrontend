@@ -1,5 +1,6 @@
 import { BigNumber, ethers } from "ethers";
 import { Decimal } from "decimal.js";
+import { MAX_INPUT_LENGTH } from "./constants";
 
 export const truncateAddress = (address) => {
   if (!address) return "No Account";
@@ -105,4 +106,8 @@ export const timeDeltaString = (seconds) => {
 
 export const getInversedValue = (value) => {
   return getProperFixedValue(1 / value);
+};
+
+export const getInputLimit = (value) => {
+  return value.slice(0, MAX_INPUT_LENGTH);
 };
