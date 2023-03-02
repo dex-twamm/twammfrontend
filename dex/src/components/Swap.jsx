@@ -10,7 +10,12 @@ import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
 import Input from "./Input";
 
 import { BigNumber } from "ethers";
-import { bigToStr, getInversedValue, getProperFixedValue } from "../utils";
+import {
+  bigToStr,
+  getInputLimit,
+  getInversedValue,
+  getProperFixedValue,
+} from "../utils";
 import { approveMaxAllowance, getAllowance } from "../utils/getApproval";
 
 import { UIContext } from "../providers/context/UIProvider";
@@ -56,6 +61,7 @@ const Swap = (props) => {
     setSelectToken(event.currentTarget.id);
     setDisplay(!display);
     setSpotPrice(0);
+    setExpectedSwapOut();
   };
 
   useEffect(() => {
@@ -117,7 +123,6 @@ const Swap = (props) => {
     if (!valueInt > 0) {
       errors.swapAmount = "Swap Amount Is Required";
     }
-
     return errors;
   };
 
@@ -168,7 +173,7 @@ const Swap = (props) => {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className={styles.form}>
+      <form onSubmit={handleSubmit} className={styles.form} noValidate>
         <div className={lsStyles.main} />
         <Box className={lsStyles.mainBox}>
           <Input
@@ -176,7 +181,7 @@ const Swap = (props) => {
             input={swapAmount ? swapAmount : ""}
             placeholder="0.0"
             onChange={(e) => {
-              setSwapAmount(e.target.value);
+              setSwapAmount(getInputLimit(e.target.value));
             }}
             imgSrc={tokenA?.logo}
             symbol={tokenA?.symbol}
