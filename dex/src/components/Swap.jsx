@@ -294,7 +294,7 @@ const Swap = (props) => {
           )}
 
           {swapAmount &&
-          parseFloat(allowance) <= swapAmount &&
+          parseFloat(allowance) < swapAmount &&
           tokenA.tokenIsSet &&
           tokenB.tokenIsSet ? (
             <button
@@ -319,7 +319,7 @@ const Swap = (props) => {
           ) : (
             <></>
           )}
-          {isWalletConnected && allowance ? (
+          {isWalletConnected ? (
             <button
               className={classNames(
                 styles.btn,
@@ -333,7 +333,7 @@ const Swap = (props) => {
                 !swapAmount ||
                 hasBalancerOrTransactionError ||
                 spotPriceLoading ||
-                parseFloat(allowance) <= swapAmount
+                parseFloat(allowance) < swapAmount
                   ? true
                   : false
               }
