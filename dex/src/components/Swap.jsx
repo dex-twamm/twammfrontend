@@ -319,7 +319,7 @@ const Swap = (props) => {
           ) : (
             <></>
           )}
-          {isWalletConnected && allowance ? (
+          {isWalletConnected ? (
             <button
               className={classNames(
                 styles.btn,
