@@ -1,5 +1,6 @@
 import { BigNumber, ethers } from "ethers";
 import { Decimal } from "decimal.js";
+import { MAX_INPUT_LENGTH } from "./constants";
 
 export const truncateAddress = (address) => {
   if (!address) return "No Account";
@@ -23,7 +24,12 @@ export const getProperFixedValue = (num) => {
   let number = parseFloat(num);
   let str = num?.toString();
   let decimalIndex = str.indexOf(".");
-  if (decimalIndex === -1) return number?.toFixed(4);
+  if (decimalIndex === -1) return number;
+
+  if (number > 1) {
+    return number?.toFixed(4);
+  }
+
   let trailingZeroes = str.slice(decimalIndex).replace(/[1-9]/g, "").length;
   return number?.toFixed(trailingZeroes > 2 ? trailingZeroes : 2);
 };
@@ -100,4 +106,8 @@ export const timeDeltaString = (seconds) => {
 
 export const getInversedValue = (value) => {
   return getProperFixedValue(1 / value);
+};
+
+export const getInputLimit = (value) => {
+  return value.slice(0, MAX_INPUT_LENGTH);
 };
