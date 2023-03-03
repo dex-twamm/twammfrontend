@@ -318,7 +318,7 @@ const LongSwap = (props) => {
           </div>
 
           {swapAmount &&
-          parseFloat(allowance) <= swapAmount &&
+          parseFloat(allowance) < swapAmount &&
           tokenA.tokenIsSet &&
           tokenB.tokenIsSet ? (
             <button
@@ -344,7 +344,7 @@ const LongSwap = (props) => {
           ) : (
             <></>
           )}
-          {isWalletConnected && allowance ? (
+          {isWalletConnected ? (
             <button
               className={classNames(
                 styles.btn,
@@ -359,9 +359,7 @@ const LongSwap = (props) => {
                 !numberOfBlockIntervals ||
                 hasBalancerOrTransactionError ||
                 longSwapVerifyLoading ||
-                parseFloat(allowance) <= swapAmount
-                  ? true
-                  : false
+                parseFloat(allowance) < swapAmount
               }
             >
               {!tokenA.tokenIsSet || !tokenB.tokenIsSet ? (
