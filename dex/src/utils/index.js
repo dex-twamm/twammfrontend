@@ -109,5 +109,5 @@ export const getInversedValue = (value) => {
 };
 
 export const getInputLimit = (value) => {
-  return value.slice(0, MAX_INPUT_LENGTH);
+  return +value.slice(0, MAX_INPUT_LENGTH);
 };

@@ -20,7 +20,7 @@ export const _swapTokens = async (
   const poolConfig = getPoolConfig(currentNetwork);
   const tokenIn = poolConfig.tokens.find((token) => token.address === tokenA);
 
-  const swapAmountWei = ethers.utils.parseUnits(swapAmount, tokenIn.decimals);
+  const swapAmountWei = ethers.utils.parseUnits(swapAmount.toString(), tokenIn.decimals);
   const walletBalanceWei = ethers.utils.parseUnits(
     ethBalance,
     tokenIn.decimals

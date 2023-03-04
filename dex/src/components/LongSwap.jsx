@@ -94,7 +94,7 @@ const LongSwap = (props) => {
   };
 
   const handleClick = () => {
-    isWalletConnected && setLongSwapFormErrors(validate(swapAmount));
+    isWalletConnected && setLongSwapFormErrors(validate(swapAmount.toString()));
     handleLongSwapAction();
   };
 
@@ -113,7 +113,7 @@ const LongSwap = (props) => {
         tokenA?.address,
         selectedNetwork
       ).then((res) => {
-        setAllowance(bigToStr(res));
+        setAllowance(bigToStr(res, tokenA?.decimals));
       });
     } catch (e) {
       setAllowTwammErrorMessage(e?.message);
@@ -332,12 +332,11 @@ const LongSwap = (props) => {
               }}
               disabled={
                 hasBalancerOrTransactionError ||
-                executionTime === "" ||
                 swapAmount == 0 ||
                 swapAmount > tokenA?.balance
               }
             >
-              {`Allow TWAMM Protocol to use your ${
+              {`Allow LongSwap Protocol to use your ${
                 tokenA.symbol ?? tokenB.symbol
               }`}
             </button>
