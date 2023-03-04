@@ -29,7 +29,7 @@ export const spotPrice = async (
     );
 
     //todo : Change this to use token decimal places
-    const swapAmountWei = ethers.utils.parseUnits(swapAmount, tokenIn.decimals);
+    const swapAmountWei = ethers.utils.parseUnits(swapAmount.toString(), tokenIn.decimals);
 
     const errors = {};
 

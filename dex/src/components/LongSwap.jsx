@@ -253,7 +253,7 @@ const LongSwap = (props) => {
 
           <Input
             id={1}
-            input={swapAmount ? swapAmount : ""}
+            input={swapAmount ? swapAmount.toString() : ""}
             placeholder="0.0"
             onChange={(e) => {
               setSwapAmount(getInputLimit(e.target.value));
