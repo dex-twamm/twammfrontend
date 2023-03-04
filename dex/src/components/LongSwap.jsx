@@ -184,6 +184,7 @@ const LongSwap = (props) => {
     }
   }, [swapAmount, setLongSwapFormErrors]);
 
+  console.log(swapAmount, tokenA?.balance);
   return (
     <>
       <form onSubmit={handleSubmit} className={styles.form} noValidate>
@@ -318,6 +319,7 @@ const LongSwap = (props) => {
           </div>
 
           {swapAmount &&
+          swapAmount <= tokenA?.balance &&
           parseFloat(allowance) < swapAmount &&
           tokenA.tokenIsSet &&
           tokenB.tokenIsSet ? (

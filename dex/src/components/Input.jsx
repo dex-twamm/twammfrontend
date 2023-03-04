@@ -125,7 +125,7 @@ const Input = (props) => {
                 <span
                   className={styles.maxInput}
                   onClick={() => {
-                    setSwapAmount(parseFloat(tokenA?.balance)?.toFixed(2));
+                    setSwapAmount(parseFloat(tokenA?.balance));
                   }}
                 >
                   Max
