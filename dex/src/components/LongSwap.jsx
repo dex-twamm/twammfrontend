@@ -94,7 +94,7 @@ const LongSwap = (props) => {
   };
 
   const handleClick = () => {
-    isWalletConnected && setLongSwapFormErrors(validate(swapAmount));
+    isWalletConnected && setLongSwapFormErrors(validate(swapAmount.toString()));
     handleLongSwapAction();
   };
 
@@ -113,7 +113,7 @@ const LongSwap = (props) => {
         tokenA?.address,
         selectedNetwork
       ).then((res) => {
-        setAllowance(bigToStr(res));
+        setAllowance(bigToStr(res, tokenA?.decimals));
       });
     } catch (e) {
       setAllowTwammErrorMessage(e?.message);
@@ -184,6 +184,7 @@ const LongSwap = (props) => {
     }
   }, [swapAmount, setLongSwapFormErrors]);
 
+  console.log(swapAmount, tokenA?.balance);
   return (
     <>
       <form onSubmit={handleSubmit} className={styles.form} noValidate>
@@ -252,7 +253,7 @@ const LongSwap = (props) => {
 
           <Input
             id={1}
-            input={swapAmount ? swapAmount : ""}
+            input={swapAmount ? swapAmount.toString() : ""}
             placeholder="0.0"
             onChange={(e) => {
               setSwapAmount(getInputLimit(e.target.value));
@@ -318,7 +319,8 @@ const LongSwap = (props) => {
           </div>
 
           {swapAmount &&
-          parseFloat(allowance) <= swapAmount &&
+          swapAmount <= tokenA?.balance &&
+          parseFloat(allowance) < swapAmount &&
           tokenA.tokenIsSet &&
           tokenB.tokenIsSet ? (
             <button
@@ -332,19 +334,18 @@ const LongSwap = (props) => {
               }}
               disabled={
                 hasBalancerOrTransactionError ||
-                executionTime === "" ||
                 swapAmount == 0 ||
                 swapAmount > tokenA?.balance
               }
             >
-              {`Allow TWAMM Protocol to use your ${
+              {`Allow LongSwap Protocol to use your ${
                 tokenA.symbol ?? tokenB.symbol
               }`}
             </button>
           ) : (
             <></>
           )}
-          {isWalletConnected && allowance ? (
+          {isWalletConnected ? (
             <button
               className={classNames(
                 styles.btn,
@@ -359,9 +360,7 @@ const LongSwap = (props) => {
                 !numberOfBlockIntervals ||
                 hasBalancerOrTransactionError ||
                 longSwapVerifyLoading ||
-                parseFloat(allowance) <= swapAmount
-                  ? true
-                  : false
+                parseFloat(allowance) < swapAmount
               }
             >
               {!tokenA.tokenIsSet || !tokenB.tokenIsSet ? (

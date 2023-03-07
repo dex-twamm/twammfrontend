@@ -85,7 +85,7 @@ const Modal = ({
 
   useEffect(() => {
     setFormErrors({ balError: undefined });
-    if (swapAmount && swapAmount !== "0")
+    if (swapAmount && swapAmount !== 0)
       getAllowance(
         web3provider?.getSigner(),
         account,

@@ -33,7 +33,7 @@ export const verifyLongSwap = async (
         (object) => tokenB === object.address
       );
       const amountIn = ethers.utils.parseUnits(
-        swapAmount,
+        swapAmount.toString(),
         poolConfig.tokens[tokenInIndex].decimals
       );
 

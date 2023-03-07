@@ -86,7 +86,7 @@ const Swap = (props) => {
   };
 
   const handleClick = () => {
-    isWalletConnected && setFormErrors(validate(swapAmount));
+    isWalletConnected && setFormErrors(validate(swapAmount.toString()));
     handleSwapAction();
   };
 
@@ -105,7 +105,7 @@ const Swap = (props) => {
         tokenA?.address,
         selectedNetwork
       ).then((res) => {
-        setAllowance(bigToStr(res));
+        setAllowance(bigToStr(res, tokenA?.decimals));
       });
     } catch (e) {
       console.log(e);
@@ -158,8 +158,6 @@ const Swap = (props) => {
     }
   }, [swapAmount, setFormErrors, setSpotPrice, setExpectedSwapOut]);
 
-  console.log(swapAmount);
-
   return (
     <>
       <form onSubmit={handleSubmit} className={styles.form} noValidate>
@@ -167,7 +165,7 @@ const Swap = (props) => {
         <Box className={lsStyles.mainBox}>
           <Input
             id={1}
-            input={swapAmount ? swapAmount : ""}
+            input={swapAmount ? swapAmount.toString() : ""}
             placeholder="0.0"
             onChange={(e) => {
               setSwapAmount(getInputLimit(e.target.value));
@@ -294,7 +292,7 @@ const Swap = (props) => {
           )}
 
           {swapAmount &&
-          parseFloat(allowance) <= swapAmount &&
+          parseFloat(allowance) < swapAmount &&
           tokenA.tokenIsSet &&
           tokenB.tokenIsSet ? (
             <button
@@ -319,7 +317,7 @@ const Swap = (props) => {
           ) : (
             <></>
           )}
-          {isWalletConnected && allowance ? (
+          {isWalletConnected ? (
             <button
               className={classNames(
                 styles.btn,
@@ -333,7 +331,7 @@ const Swap = (props) => {
                 !swapAmount ||
                 hasBalancerOrTransactionError ||
                 spotPriceLoading ||
-                parseFloat(allowance) <= swapAmount
+                parseFloat(allowance) < swapAmount
                   ? true
                   : false
               }
