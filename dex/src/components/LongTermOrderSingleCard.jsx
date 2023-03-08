@@ -18,13 +18,13 @@ import { getPoolConfig } from "../utils/poolUtils";
 import { getBlockExplorerTransactionUrl } from "../utils/networkUtils";
 import ChangeCircleOutlinedIcon from "@mui/icons-material/ChangeCircleOutlined";
 import { withdrawLTO } from "../utils/addLiquidity";
-import { formatToReadableTime } from "../utils/timeUtils";
 import {
   ORDER_EXECUTION_TIME_REMAINING,
   ORDER_STATUS_CANCELLED,
   ORDER_STATUS_COMPLETED,
   ORDER_STATUS_EXECUTED,
 } from "../utils/constants";
+import { formatToReadableTime } from "../utils/timeUtils";
 
 const LongTermOrderSingleCard = ({ orderLog }) => {
   const {
