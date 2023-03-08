@@ -1,7 +1,16 @@
 import ethLogo from "../images/ethereumIcon.png";
 import goerliLogo from "../images/maticIcon.png";
 
-export const NETWORKS = [
+interface Networks {
+  name: string;
+  chainId: string;
+  logo: string;
+  vaultAddress: string;
+  blockExplorerUrl: string;
+  transactionUrl: string;
+  balancerHelperAddress: string;
+}
+export const NETWORKS: Networks[] = [
   {
     name: "Ethereum",
     chainId: "1",
