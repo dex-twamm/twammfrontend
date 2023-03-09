@@ -37,10 +37,10 @@ export const _swapTokens = async (
 
   if (swapAmountWei.lte(walletBalanceWei)) {
     try {
-      const signer = web3provider.getSigner();
-      const assetIn = tokenA;
-      const assetOut = tokenB;
-      const walletAddress = account;
+      const signer: any = web3provider.getSigner();
+      const assetIn: string = tokenA;
+      const assetOut: string = tokenB;
+      const walletAddress: string = account;
 
       // Call the swapTokens function from the `utils` folder
       await swapTokens(

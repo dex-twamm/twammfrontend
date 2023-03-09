@@ -5,14 +5,14 @@ import { getExchangeContract } from "./getContracts";
 import { getGasLimit } from "./getGasLimit";
 
 export const verifySwapTokens = async (
-  signer,
-  swapAmountWei,
-  assetIn,
-  assetOut,
-  walletAddress,
-  deadline,
-  currentNetwork
-) => {
+  signer: any,
+  swapAmountWei: BigNumber,
+  assetIn: string,
+  assetOut: string,
+  walletAddress: string,
+  deadline: number,
+  currentNetwork: { network: string; poolId: number }
+): Promise<BigNumber> => {
   const verifyResult = await swapTokens(
     signer,
     swapAmountWei,
@@ -31,7 +31,7 @@ export const verifySwapTokens = async (
 */
 const kind = 0; // GivenIn
 
-const getDeadlineStamp = (deadline) => {
+const getDeadlineStamp = (deadline: number) => {
   const targetDate = new Date();
   targetDate.setSeconds(deadline * 60);
   const deadlineTimestamp = targetDate.getTime();
@@ -39,15 +39,15 @@ const getDeadlineStamp = (deadline) => {
 };
 
 export const swapTokens = async (
-  signer,
-  swapAmountWei,
-  assetIn,
-  assetOut,
-  walletAddress,
-  deadline,
-  currentNetwork,
-  hasCallStatic
-) => {
+  signer: any,
+  swapAmountWei: BigNumber,
+  assetIn: string,
+  assetOut: string,
+  walletAddress: string,
+  deadline: number,
+  currentNetwork: { network: string; poolId: number },
+  hasCallStatic?: boolean
+): Promise<any> => {
   const exchangeContract = getExchangeContract(currentNetwork, signer);
   const deadlineTimestamp = getDeadlineStamp(deadline);
 
