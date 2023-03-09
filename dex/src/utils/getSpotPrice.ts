@@ -1,40 +1,45 @@
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
+import { Dispatch, SetStateAction } from "react";
 import { POPUP_MESSAGE } from "../constants";
+import { PoolType, TokenType } from "./pool";
 import { getPoolConfig } from "./poolUtils";
 import { verifySwapTokens } from "./swap";
 
 // Spot Prices
 export const spotPrice = async (
-  swapAmount,
-  setSpotPriceLoading,
-  tokenA,
-  tokenB,
-  web3provider,
-  account,
-  deadline,
-  setFormErrors,
-  setSpotPrice,
-  setExpectedSwapOut,
-  currentNetwork
-) => {
+  swapAmount: number,
+  setSpotPriceLoading: Dispatch<SetStateAction<boolean>>,
+  tokenA: string,
+  tokenB: string,
+  web3provider: any,
+  account: string,
+  deadline: number,
+  setFormErrors: Dispatch<SetStateAction<{ balError?: string }>>,
+  setSpotPrice: Dispatch<SetStateAction<number>>,
+  setExpectedSwapOut: Dispatch<SetStateAction<number>>,
+  currentNetwork: { network: string; poolId: number }
+): Promise<void> => {
   if (swapAmount) {
     setSpotPriceLoading(true);
 
-    const poolConfig = getPoolConfig(currentNetwork);
-    const tokenIn = poolConfig?.tokens.find(
+    const poolConfig: PoolType = getPoolConfig(currentNetwork)!;
+    const tokenIn: TokenType = poolConfig?.tokens.find(
       (token) => token.address === tokenA
-    );
-    const tokenOut = poolConfig?.tokens.find(
+    )!;
+    const tokenOut: TokenType = poolConfig?.tokens.find(
       (token) => token.address === tokenB
-    );
+    )!;
 
     //todo : Change this to use token decimal places
-    const swapAmountWei = ethers.utils.parseUnits(swapAmount.toString(), tokenIn.decimals);
+    const swapAmountWei: BigNumber = ethers.utils.parseUnits(
+      swapAmount.toString(),
+      tokenIn.decimals
+    );
 
-    const errors = {};
+    const errors: { balError?: string } = {};
 
-    const signer = web3provider.getSigner();
-    const walletAddress = account;
+    const signer: any = web3provider.getSigner();
+    const walletAddress: string = account;
 
     //for shortswap
     try {
@@ -46,17 +51,17 @@ export const spotPrice = async (
         walletAddress,
         deadline,
         currentNetwork
-      ).then((res) => {
+      ).then((res: BigNumber) => {
         errors.balError = undefined;
         setFormErrors(errors ?? "");
         setSpotPrice(
-          (parseFloat(res) * 10 ** tokenIn.decimals) /
-            (parseFloat(swapAmountWei) * 10 ** tokenOut.decimals)
+          (parseFloat(res.toString()) * 10 ** tokenIn.decimals) /
+            (parseFloat(swapAmountWei.toString()) * 10 ** tokenOut.decimals)
         );
         setSpotPriceLoading(false);
-        setExpectedSwapOut(res);
+        setExpectedSwapOut(parseFloat(res.toString()));
       });
-    } catch (e) {
+    } catch (e: any) {
       setSpotPriceLoading(false);
       if (e.reason) {
         if (e.reason.match("BAL#304")) {
