@@ -1,43 +1,45 @@
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
+import { Dispatch, SetStateAction } from "react";
 import { POPUP_MESSAGE } from "../constants";
 import { verifyLongSwapTxn } from "./longSwap";
+import { PoolType } from "./pool";
 import { getPoolConfig } from "./poolUtils";
 
 export const verifyLongSwap = async (
-  swapAmount,
-  setLongSwapVerifyLoading,
-  tokenA,
-  tokenB,
-  web3provider,
-  account,
-  setLongSwapFormErrors,
-  currentNetwork,
-  numberOfBlockIntervals,
-  allowance
-) => {
+  swapAmount: number,
+  setLongSwapVerifyLoading: Dispatch<SetStateAction<boolean>>,
+  tokenA: string,
+  tokenB: string,
+  web3provider: any,
+  account: string,
+  setLongSwapFormErrors: Dispatch<SetStateAction<{ balError?: string }>>,
+  currentNetwork: { network: string; poolId: number },
+  numberOfBlockIntervals: number,
+  allowance: string
+): Promise<void> => {
   if (swapAmount && numberOfBlockIntervals) {
     setLongSwapVerifyLoading(true);
 
-    const poolConfig = getPoolConfig(currentNetwork);
+    const poolConfig: PoolType = getPoolConfig(currentNetwork)!;
 
-    const errors = {};
+    const errors: { balError?: string } = {};
 
-    const signer = web3provider.getSigner();
-    const walletAddress = account;
+    const signer: any = web3provider.getSigner();
+    const walletAddress: string = account;
 
     try {
-      const tokenInIndex = poolConfig.tokens.findIndex(
+      const tokenInIndex: number = poolConfig.tokens.findIndex(
         (object) => tokenA === object.address
       );
-      const tokenOutIndex = poolConfig.tokens.findIndex(
+      const tokenOutIndex: number = poolConfig.tokens.findIndex(
         (object) => tokenB === object.address
       );
-      const amountIn = ethers.utils.parseUnits(
+      const amountIn: BigNumber = ethers.utils.parseUnits(
         swapAmount.toString(),
         poolConfig.tokens[tokenInIndex].decimals
       );
 
-      if (amountIn < parseFloat(allowance)) {
+      if (parseFloat(amountIn.toString()) < parseFloat(allowance)) {
         setLongSwapVerifyLoading(true);
         await verifyLongSwapTxn(
           tokenInIndex,
@@ -53,7 +55,7 @@ export const verifyLongSwap = async (
           setLongSwapVerifyLoading(false);
         });
       }
-    } catch (e) {
+    } catch (e: any) {
       setLongSwapVerifyLoading(false);
       if (e.reason) {
         if (e.reason.match("BAL#304")) {
