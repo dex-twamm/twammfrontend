@@ -1,31 +1,34 @@
 import { POPUP_MESSAGE } from "../constants";
+import { Dispatch, SetStateAction } from "react";
 import { withdrawLTO } from "./addLiquidity";
 import { connectWallet } from "./connetWallet";
 import { getEthLogs } from "./get_ethLogs";
 
 export const _withdrawLTO = async (
-  orderId,
-  setLoading,
-  setDisableActionBtn,
-  account,
-  web3provider,
-  setweb3provider,
-  setCurrentBlock,
-  setBalance,
-  setAccount,
-  setWalletConnected,
-  isWalletConnected,
-  setOrderLogsDecoded,
-  setMessage,
-  setTransactionHash,
-  currentNetwork,
-  setSelectedNetwork
-) => {
+  orderId: number,
+  setLoading: Dispatch<SetStateAction<boolean>>,
+  setDisableActionBtn: Dispatch<SetStateAction<boolean>>,
+  account: string,
+  web3provider: any,
+  setweb3provider: Dispatch<SetStateAction<any>>,
+  setCurrentBlock: Dispatch<SetStateAction<any>>,
+  setBalance: Dispatch<SetStateAction<number>>,
+  setAccount: Dispatch<SetStateAction<string>>,
+  setWalletConnected: Dispatch<SetStateAction<boolean>>,
+  isWalletConnected: boolean,
+  setOrderLogsDecoded: Dispatch<SetStateAction<any>>,
+  setMessage: Dispatch<SetStateAction<string>>,
+  setTransactionHash: Dispatch<SetStateAction<string>>,
+  currentNetwork: { network: string; poolId: number },
+  setSelectedNetwork: Dispatch<
+    SetStateAction<{ network: string; poolId: number }>
+  >
+): Promise<void> => {
   setDisableActionBtn(true);
   setLoading(true);
   try {
-    const walletAddress = account;
-    const signer = web3provider.getSigner();
+    const walletAddress: string = account;
+    const signer: any = web3provider.getSigner();
     if (!isWalletConnected) {
       await connectWallet(
         setweb3provider,
@@ -40,7 +43,7 @@ export const _withdrawLTO = async (
     await withdrawLTO(walletAddress, signer, orderId, currentNetwork).then(
       (res) => {
         setTransactionHash(res.hash);
-        const withdrawLTOResult = async (res) => {
+        const withdrawLTOResult = async (res: any) => {
           const result = await res.wait();
           return result;
         };
