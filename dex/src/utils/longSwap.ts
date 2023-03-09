@@ -11,11 +11,11 @@ import { getExchangeContract } from "./getContracts";
 import { getGasLimit } from "./getGasLimit";
 
 const getLongSwapEncodedRequest = (
-  tokenInIndex,
-  tokenOutIndex,
-  amountIn,
-  numberOfBlockIntervals
-) => {
+  tokenInIndex: number,
+  tokenOutIndex: number,
+  amountIn: BigNumber,
+  numberOfBlockIntervals: number
+): string => {
   const abiCoder = ethers.utils.defaultAbiCoder;
 
   return abiCoder.encode(
@@ -31,15 +31,15 @@ const getLongSwapEncodedRequest = (
 };
 
 export const verifyLongSwapTxn = async (
-  tokenInIndex,
-  tokenOutIndex,
-  amountIn,
-  numberOfBlockIntervals,
-  signer,
-  walletAddress,
-  currentNetwork
-) => {
-  const verifyLongSwapTxnResult = await placeLongTermOrder(
+  tokenInIndex: number,
+  tokenOutIndex: number,
+  amountIn: BigNumber,
+  numberOfBlockIntervals: number,
+  signer: any,
+  walletAddress: string,
+  currentNetwork: { network: string; poolId: number }
+): Promise<void> => {
+  const verifyLongSwapTxnResult: any = await placeLongTermOrder(
     tokenInIndex,
     tokenOutIndex,
     amountIn,
@@ -53,18 +53,18 @@ export const verifyLongSwapTxn = async (
 };
 
 export async function placeLongTermOrder(
-  tokenInIndex,
-  tokenOutIndex,
-  amountIn,
-  numberOfBlockIntervals,
-  signer,
-  walletAddress,
-  currentNetwork,
-  isVerifyOnly
+  tokenInIndex: number,
+  tokenOutIndex: number,
+  amountIn: BigNumber,
+  numberOfBlockIntervals: number,
+  signer: any,
+  walletAddress: string,
+  currentNetwork: { network: string; poolId: number },
+  isVerifyOnly?: boolean
 ) {
   const exchangeContract = getExchangeContract(currentNetwork, signer);
 
-  const encodedRequest = getLongSwapEncodedRequest(
+  const encodedRequest: string = getLongSwapEncodedRequest(
     tokenInIndex,
     tokenOutIndex,
     amountIn,
@@ -96,9 +96,13 @@ export async function placeLongTermOrder(
   return placeLtoTx;
 }
 
-export async function getLongTermOrder(signer, orderId, currentNetwork) {
+export async function getLongTermOrder(
+  signer: any,
+  orderId: any,
+  currentNetwork: { network: string; poolId: number }
+): Promise<(BigNumber | string)[]> {
   const contract = new Contract(
-    getPoolContractAddress(currentNetwork),
+    getPoolContractAddress(currentNetwork)!,
     LONGTERM_ABI,
     signer
   );
@@ -107,9 +111,12 @@ export async function getLongTermOrder(signer, orderId, currentNetwork) {
   return orderDetails;
 }
 
-export async function getLastVirtualOrderBlock(signer, currentNetwork) {
+export async function getLastVirtualOrderBlock(
+  signer: any,
+  currentNetwork: { network: string; poolId: number }
+): Promise<BigNumber> {
   const contract = new Contract(
-    getPoolLtoContractAddress(currentNetwork),
+    getPoolLtoContractAddress(currentNetwork)!,
     LONGTERM_ABI,
     signer
   );
