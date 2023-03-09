@@ -1,27 +1,30 @@
 import { POPUP_MESSAGE } from "../constants";
+import { Dispatch, SetStateAction } from "react";
 import { cancelLTO } from "./addLiquidity";
 import { connectWallet } from "./connetWallet";
 import { getEthLogs } from "./get_ethLogs";
 
 // cancelLTO
 export const _cancelLTO = async (
-  orderId,
-  setLoading,
-  setDisableActionBtn,
-  account,
-  web3provider,
-  setweb3provider,
-  setCurrentBlock,
-  setBalance,
-  setAccount,
-  setWalletConnected,
-  isWalletConnected,
-  setOrderLogsDecoded,
-  setMessage,
-  setTransactionHash,
-  currentNetwork,
-  setSelectedNetwork
-) => {
+  orderId: number,
+  setLoading: Dispatch<SetStateAction<boolean>>,
+  setDisableActionBtn: Dispatch<SetStateAction<boolean>>,
+  account: string,
+  web3provider: any,
+  setweb3provider: Dispatch<SetStateAction<any>>,
+  setCurrentBlock: Dispatch<SetStateAction<any>>,
+  setBalance: Dispatch<SetStateAction<number>>,
+  setAccount: Dispatch<SetStateAction<string>>,
+  setWalletConnected: Dispatch<SetStateAction<boolean>>,
+  isWalletConnected: boolean,
+  setOrderLogsDecoded: Dispatch<SetStateAction<any>>,
+  setMessage: Dispatch<SetStateAction<string>>,
+  setTransactionHash: Dispatch<SetStateAction<string>>,
+  currentNetwork: { network: string; poolId: number },
+  setSelectedNetwork: Dispatch<
+    SetStateAction<{ network: string; poolId: number }>
+  >
+): Promise<void> => {
   setLoading(true);
   setDisableActionBtn(true);
   try {
@@ -36,7 +39,7 @@ export const _cancelLTO = async (
         setSelectedNetwork
       );
     }
-    const signer = web3provider.getSigner();
+    const signer: any = web3provider.getSigner();
     await cancelLTO(
       walletAddress,
       web3provider.getSigner(),
@@ -44,7 +47,7 @@ export const _cancelLTO = async (
       currentNetwork
     ).then((res) => {
       setTransactionHash(res.hash);
-      const exitPoolResult = async (res) => {
+      const exitPoolResult = async (res: any) => {
         const result = await res.wait();
         return result;
       };
