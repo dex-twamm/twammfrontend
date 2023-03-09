@@ -19,11 +19,11 @@ export const _swapTokens = async (
   setLoading: Dispatch<SetStateAction<boolean>>,
   currentNetwork: { network: string; poolId: number }
 ): Promise<void> => {
-  const poolConfig: PoolType | undefined = getPoolConfig(currentNetwork);
+  const poolConfig: PoolType = getPoolConfig(currentNetwork)!;
 
-  const tokenIn: TokenType | undefined = poolConfig?.tokens.find(
+  const tokenIn: TokenType = poolConfig?.tokens.find(
     (token: any) => token.address === tokenA
-  );
+  )!;
 
   const swapAmountWei: BigNumber = ethers.utils.parseUnits(
     swapAmount.toString(),

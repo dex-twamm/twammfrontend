@@ -1,41 +1,43 @@
-import { ethers } from "ethers";
+import { ethers, BigNumber } from "ethers";
+import { Dispatch, SetStateAction } from "react";
 import { POPUP_MESSAGE } from "../constants";
 import { getEthLogs } from "./get_ethLogs";
 import { placeLongTermOrder } from "./longSwap";
+import { PoolType } from "./pool";
 import { getPoolConfig } from "./poolUtils";
 
 export const _placeLongTermOrders = async (
-  swapAmount,
-  tokenA,
-  tokenB,
-  numberOfBlockIntervals,
-  web3provider,
-  account,
-  setTransactionHash,
-  setLoading,
-  setMessage,
-  setOrderLogsDecoded,
-  setError,
-  currentNetwork
-) => {
-  const poolConfig = getPoolConfig(currentNetwork);
+  swapAmount: number,
+  tokenA: string,
+  tokenB: string,
+  numberOfBlockIntervals: number,
+  web3provider: any,
+  account: string,
+  setTransactionHash: Dispatch<SetStateAction<string>>,
+  setLoading: Dispatch<SetStateAction<boolean>>,
+  setMessage: Dispatch<SetStateAction<string>>,
+  setOrderLogsDecoded: Dispatch<SetStateAction<any>>,
+  setError: Dispatch<SetStateAction<string>>,
+  currentNetwork: { network: string; poolId: number }
+): Promise<void> => {
+  const poolConfig: PoolType = getPoolConfig(currentNetwork)!;
 
   try {
-    const tokenInIndex = poolConfig.tokens.findIndex(
+    const tokenInIndex: number = poolConfig?.tokens.findIndex(
       (object) => tokenA === object.address
     );
-    const tokenOutIndex = poolConfig.tokens.findIndex(
+    const tokenOutIndex: number = poolConfig?.tokens.findIndex(
       (object) => tokenB === object.address
     );
-    const amountIn = ethers.utils.parseUnits(
+    const amountIn: BigNumber = ethers.utils.parseUnits(
       swapAmount.toString(),
-      poolConfig.tokens[tokenInIndex].decimals
+      poolConfig?.tokens[tokenInIndex].decimals
     );
-    const blockIntervals = Math.ceil(numberOfBlockIntervals);
+    const blockIntervals: number = Math.ceil(numberOfBlockIntervals);
 
-    const signer = web3provider.getSigner();
+    const signer: any = web3provider.getSigner();
 
-    const walletAddress = account;
+    const walletAddress: string = account;
     // Call the PlaceLongTermOrders function from the `utils` folder*
     await placeLongTermOrder(
       tokenInIndex,
@@ -48,7 +50,7 @@ export const _placeLongTermOrders = async (
     )
       .then((res) => {
         setTransactionHash(res.hash);
-        const placeLtoTxResult = async (res) => {
+        const placeLtoTxResult = async (res: any) => {
           const result = await res.wait();
           return result;
         };
@@ -68,7 +70,9 @@ export const _placeLongTermOrders = async (
         console.error(err);
         setMessage(POPUP_MESSAGE.ltoPlaceFailed);
       })
-      .finally(setLoading(false));
+      .finally(() => {
+        setLoading(false);
+      });
   } catch (err) {
     console.error(err);
     setLoading(false);
