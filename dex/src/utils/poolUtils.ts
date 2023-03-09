@@ -1,7 +1,7 @@
 import { POOLS } from "./pool";
 
 interface currentNetworkType {
-  network: string;
+  network?: string;
   poolId: number;
 }
 

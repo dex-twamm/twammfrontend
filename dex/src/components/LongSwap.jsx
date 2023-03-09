@@ -184,7 +184,6 @@ const LongSwap = (props) => {
     }
   }, [swapAmount, setLongSwapFormErrors]);
 
-  console.log(swapAmount, tokenA?.balance);
   return (
     <>
       <form onSubmit={handleSubmit} className={styles.form} noValidate>

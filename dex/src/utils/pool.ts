@@ -4,7 +4,7 @@ import maticLogo from "../images/maticIcon.png";
 import usdLogo from "../images/usdIcon.png";
 import wethLogo from "../images/wethIcon.png";
 
-interface Token {
+export interface TokenType {
   symbol: string;
   name: string;
   decimals: number;
@@ -12,22 +12,22 @@ interface Token {
   logo: string;
 }
 
-interface Pool {
+export interface PoolType {
   poolName: string;
   address: string;
   fees: string;
   LTOContract: string;
   blockInterval: number;
-  tokens: Token[];
+  tokens: TokenType[];
 }
 
-interface Pools {
+interface PoolsType {
   [key: string]: {
-    [key: string]: Pool;
+    [key: string]: PoolType;
   };
 }
 
-export const POOLS: Pools = {
+export const POOLS: PoolsType = {
   Goerli: {
     "0xd01e3ddd9d6fe5d265468c8bd265d211ddc1b4c9000200000000000000000580": {
       poolName: "USDC/FAU",

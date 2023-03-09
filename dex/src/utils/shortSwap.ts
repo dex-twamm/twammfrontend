@@ -1,29 +1,38 @@
-import { ethers } from "ethers";
+import { ethers, BigNumber } from "ethers";
+import { Dispatch, SetStateAction } from "react";
 import { POPUP_MESSAGE } from "../constants";
+import { PoolType, TokenType } from "./pool";
 import { getPoolConfig } from "./poolUtils";
 import { swapTokens } from "./swap";
 
 export const _swapTokens = async (
-  ethBalance,
-  swapAmount,
-  web3provider,
-  tokenA,
-  tokenB,
-  account,
-  deadline,
-  setTransactionHash,
-  setSuccess,
-  setError,
-  setLoading,
-  currentNetwork
-) => {
-  const poolConfig = getPoolConfig(currentNetwork);
-  const tokenIn = poolConfig.tokens.find((token) => token.address === tokenA);
+  ethBalance: string,
+  swapAmount: number,
+  web3provider: any,
+  tokenA: string,
+  tokenB: string,
+  account: string,
+  deadline: number,
+  setTransactionHash: Dispatch<SetStateAction<string>>,
+  setSuccess: Dispatch<SetStateAction<string>>,
+  setError: Dispatch<SetStateAction<string>>,
+  setLoading: Dispatch<SetStateAction<boolean>>,
+  currentNetwork: { network: string; poolId: number }
+): Promise<void> => {
+  const poolConfig: PoolType | undefined = getPoolConfig(currentNetwork);
 
-  const swapAmountWei = ethers.utils.parseUnits(swapAmount.toString(), tokenIn.decimals);
-  const walletBalanceWei = ethers.utils.parseUnits(
+  const tokenIn: TokenType | undefined = poolConfig?.tokens.find(
+    (token: any) => token.address === tokenA
+  );
+
+  const swapAmountWei: BigNumber = ethers.utils.parseUnits(
+    swapAmount.toString(),
+    tokenIn?.decimals
+  );
+
+  const walletBalanceWei: BigNumber = ethers.utils.parseUnits(
     ethBalance,
-    tokenIn.decimals
+    tokenIn?.decimals
   );
 
   if (swapAmountWei.lte(walletBalanceWei)) {
@@ -45,7 +54,7 @@ export const _swapTokens = async (
       )
         .then((res) => {
           setTransactionHash(res.hash);
-          const swapResult = async (res) => {
+          const swapResult = async (res: any) => {
             const result = await res.wait();
             return result;
           };
@@ -55,6 +64,7 @@ export const _swapTokens = async (
           });
         })
         .catch((err) => {
+          console.log(err);
           setError(POPUP_MESSAGE.shortSwapFailed);
         });
       setLoading(false);
