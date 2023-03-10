@@ -418,7 +418,7 @@ export const ERC20_TOKEN_CONTRACT_ABI = [
     stateMutability: "payable",
     type: "receive",
   },
-];
+] as const;
 
 export const VAULT_CONTRACT_ABI = [
   {
@@ -1598,10 +1598,10 @@ export const VAULT_CONTRACT_ABI = [
     stateMutability: "payable",
     type: "receive",
   },
-];
+] as const;
 
 export const VAULT_CONTRACT_ADDRESS =
-  "0xBA12222222228d8Ba445958a75a0704d566BF2C8";
+  "0xBA12222222228d8Ba445958a75a0704d566BF2C8" as const;
 
 export const TWAMM_POOL_ABI = [
   {
@@ -2976,7 +2976,7 @@ export const TWAMM_POOL_ABI = [
     stateMutability: "nonpayable",
     type: "function",
   },
-];
+] as const;
 
 export const LONGTERM_ABI = [
   {
@@ -3431,7 +3431,7 @@ export const LONGTERM_ABI = [
     stateMutability: "nonpayable",
     type: "function",
   },
-];
+] as const;
 
 export const BALANCER_HELPER_ABI = [
   {
@@ -3580,9 +3580,9 @@ export const BALANCER_HELPER_ABI = [
     stateMutability: "view",
     type: "function",
   },
-];
+] as const;
 
-export const GAS_OVERAGE_FACTOR = 1.05;
+export const GAS_OVERAGE_FACTOR = 1.05 as const;
 
 export const POPUP_MESSAGE = {
   networkSwitchFailed: "Failed to switch network!",
@@ -3610,7 +3610,7 @@ export const POPUP_MESSAGE = {
   "BAL#347": "Try Giving Lesser Amount",
   "BAL#346": "Try Giving Smaller Duration or Higher Amount",
   unknown: "Unknown error!",
-};
+} as const;
 
 export const BalancerErrors = {
   "BAL#304": "Try Giving Lesser Amount",
@@ -3619,4 +3619,4 @@ export const BalancerErrors = {
   "BAL#346": "Try Giving Smaller Duration or Higher Amount",
   unknown: "Unknown error!",
   underflow: "Underflow!",
-};
+} as const;
