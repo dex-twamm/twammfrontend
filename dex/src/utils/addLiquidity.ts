@@ -1,20 +1,20 @@
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { defaultAbiCoder } from "ethers/lib/utils";
 import { getPoolId, getPoolTokenAddresses, getPoolTokens } from "./poolUtils";
 
 import { getGasLimit } from "./getGasLimit";
 import { getBalancerHelperContract, getExchangeContract } from "./getContracts";
-import { bigToFloat } from ".";
+import { TokenType } from "./pool";
 
 export async function cancelLTO(
-  walletAddress,
-  signer,
-  orderId,
-  currentNetwork
-) {
+  walletAddress: string,
+  signer: any,
+  orderId: number,
+  currentNetwork: { network: string; poolId: number }
+): Promise<any> {
   const vaultContract = getExchangeContract(currentNetwork, signer);
   // bptAmountIn As User Input
-  const encodedRequest = defaultAbiCoder.encode(
+  const encodedRequest: string = defaultAbiCoder.encode(
     ["uint256", "uint256"],
     [4, orderId]
   );
@@ -38,12 +38,12 @@ export async function cancelLTO(
 }
 
 export async function withdrawLTO(
-  walletAddress,
-  signer,
-  orderId,
-  currentNetwork,
-  hasCallStatic
-) {
+  walletAddress: string,
+  signer: any,
+  orderId: number,
+  currentNetwork: { network: string; poolId: number },
+  hasCallStatic?: boolean
+): Promise<any> {
   const vaultContract = getExchangeContract(currentNetwork, signer);
 
   const balancerHelperContract = getBalancerHelperContract(
@@ -51,7 +51,7 @@ export async function withdrawLTO(
     signer
   );
   // bptAmountIn As User Input
-  const encodedRequest = defaultAbiCoder.encode(
+  const encodedRequest: string = defaultAbiCoder.encode(
     ["uint256", "uint256"],
     [5, orderId]
   );
@@ -82,10 +82,14 @@ export async function withdrawLTO(
   return withdrawLTOTx;
 }
 
-export async function getPoolBalance(signer, tokenAddress, currentNetwork) {
-  const tokenIndex = getPoolTokens(currentNetwork).filter(
+export async function getPoolBalance(
+  signer: any,
+  tokenAddress: string,
+  currentNetwork: { network: string; poolId: number }
+): Promise<string> {
+  const tokenIndex: TokenType[] = getPoolTokens(currentNetwork)?.filter(
     (item) => item.address === tokenAddress
-  );
+  )!;
 
   const vaultContract = getExchangeContract(currentNetwork, signer);
 
