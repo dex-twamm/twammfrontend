@@ -9,7 +9,7 @@ export const getAllowance = async (
   tokenAddress: string,
   currentNetwork: { network: string; poolId: number }
 ): Promise<BigNumber> => {
-  const ERC20Contract = new Contract(
+  const ERC20Contract: Contract = new Contract(
     tokenAddress,
     ERC20_TOKEN_CONTRACT_ABI,
     signer
@@ -26,7 +26,7 @@ export const approveMaxAllowance = async (
   tokenAddress: string,
   currentNetwork: { network: string; poolId: number }
 ): Promise<any> => {
-  const ERC20Contract = new Contract(
+  const ERC20Contract: Contract = new Contract(
     tokenAddress,
     ERC20_TOKEN_CONTRACT_ABI,
     provider.getSigner()
