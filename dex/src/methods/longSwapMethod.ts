@@ -1,17 +1,26 @@
 import { timeDeltaString } from "../utils";
 import { getPoolBlockInterval } from "../utils/poolUtils";
 
-const valueLabel = (value, currentBlock, currentNetwork) => {
-  const blockInterval = getPoolBlockInterval(currentNetwork);
+interface ValueLabelReturnType {
+  executionTime: string;
+  targetDate: string;
+}
 
-  let currentBlockNumber = currentBlock?.number || 0;
-  const numBlocks =
+const valueLabel = (
+  value: number,
+  currentBlock: any,
+  currentNetwork: { network: string; poolId: number }
+): ValueLabelReturnType => {
+  const blockInterval: number = getPoolBlockInterval(currentNetwork)!;
+
+  let currentBlockNumber: number = currentBlock?.number || 0;
+  const numBlocks: number =
     Math.ceil(value) * blockInterval +
     (currentBlockNumber % blockInterval
       ? blockInterval - (currentBlockNumber % blockInterval)
       : 0);
 
-  let targetDate;
+  let targetDate: Date;
   if (currentBlock?.timestamp) {
     targetDate = new Date(currentBlock.timestamp * 1000);
   } else {
@@ -20,16 +29,18 @@ const valueLabel = (value, currentBlock, currentNetwork) => {
 
   targetDate.setSeconds(targetDate.getSeconds() + numBlocks * 12);
 
-  const timeString = timeDeltaString((targetDate - new Date()) / 1000);
+  const timeString: string = timeDeltaString(
+    (targetDate.getTime() - new Date().getTime()) / 1000
+  );
 
-  const values = {
+  const values: ValueLabelReturnType = {
     executionTime: timeString,
     targetDate: `${targetDate.toLocaleString()}`,
   };
   return values;
 };
 
-const calculateNumBlockIntervals = (sliderValue) => {
+const calculateNumBlockIntervals = (sliderValue: number): number => {
   return Math.floor(Math.pow(2, sliderValue));
 };
 
