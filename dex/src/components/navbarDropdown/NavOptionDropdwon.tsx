@@ -10,7 +10,7 @@ import FreeBreakfastOutlinedIcon from "@mui/icons-material/FreeBreakfastOutlined
 import "./navbarDropdown.css";
 import { Link } from "react-router-dom";
 
-const NavOptionDropdwon = () => {
+const NavOptionDropdwon: React.FC = () => {
   return (
     <>
       <div
