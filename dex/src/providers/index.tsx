@@ -1,6 +1,11 @@
 import { LongSwapProvider, ShortSwapProvider, UIProvider } from "./context";
+import React, { ReactNode } from "react";
 
-const AllProviders = ({ children }) => {
+interface AllProvidersProps {
+  children: ReactNode;
+}
+
+const AllProviders: React.FC<AllProvidersProps> = ({ children }) => {
   return (
     <UIProvider>
       <ShortSwapProvider>
