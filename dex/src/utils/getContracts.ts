@@ -10,7 +10,10 @@ import {
 } from "./networkUtils";
 import { getPoolContractAddress } from "./poolUtils";
 
-export const getExchangeContract = (currentNetwork, signer) => {
+export const getExchangeContract = (
+  currentNetwork: { network: string; poolId: number },
+  signer: any
+): Contract => {
   return new Contract(
     getVaultContractAddress(currentNetwork),
     VAULT_CONTRACT_ABI,
@@ -18,15 +21,21 @@ export const getExchangeContract = (currentNetwork, signer) => {
   );
 };
 
-export const getPoolContract = (currentNetwork, signer) => {
+export const getPoolContract = (
+  currentNetwork: { network: string; poolId: number },
+  signer: any
+): Contract => {
   return new Contract(
-    getPoolContractAddress(currentNetwork),
+    getPoolContractAddress(currentNetwork)!,
     TWAMM_POOL_ABI,
     signer
   );
 };
 
-export const getBalancerHelperContract = (currentNetwork, signer) => {
+export const getBalancerHelperContract = (
+  currentNetwork: { network: string; poolId: number },
+  signer: any
+): Contract => {
   return new Contract(
     getBalancerHelperContractAddress(currentNetwork),
     BALANCER_HELPER_ABI,
