@@ -4,7 +4,7 @@ import { getPoolConfig } from "../../utils/poolUtils";
 
 import { UIContext } from "./UIProvider";
 
-export const LongSwapProvider = ({ children }) => {
+const LongSwapProvider = ({ children }) => {
   const [sliderValue, setSliderValue] = useState(1);
   const [orderLogsDecoded, setOrderLogsDecoded] = useState([]);
   const [lastVirtualOrderBlock, setLastVirtualOrderBlock] = useState("");
@@ -71,4 +71,5 @@ export const LongSwapProvider = ({ children }) => {
   );
 };
 
-export const LongSwapContext = createContext(null);
+const LongSwapContext = createContext(null);
+export { LongSwapContext, LongSwapProvider };
