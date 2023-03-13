@@ -8,15 +8,23 @@ import { bigToStr } from "../utils";
 import { UIContext } from "../providers";
 import { getBlockExplorerTransactionUrl } from "../utils/networkUtils";
 import styles from "../css/LongTermSwapCardDropDown.module.css";
+import { TokenType } from "../utils/pool";
 
-const LongTermSwapCardDropdown = (props) => {
+interface PropTypes {
+  item: any;
+  tokenIn: TokenType;
+  tokenOut: TokenType;
+}
+
+const LongTermSwapCardDropdown = (props: PropTypes) => {
   const { item, tokenIn, tokenOut } = props;
-  const { selectedNetwork } = useContext(UIContext);
-  const [open, setOpen] = useState(false);
+  console.log(tokenIn, tokenOut);
+  const { selectedNetwork } = useContext(UIContext)!;
+  const [open, setOpen] = useState<boolean>(false);
 
   const handleClose = () => setOpen((state) => !state);
 
-  const handleExplorer = (transactionHash) => {
+  const handleExplorer = (transactionHash: string) => {
     window.open(
       `${getBlockExplorerTransactionUrl(selectedNetwork)}${transactionHash}`
     );
@@ -25,13 +33,7 @@ const LongTermSwapCardDropdown = (props) => {
   return (
     <>
       <div>
-        <Box
-          id="basic-menu"
-          onClose={handleClose}
-          menulistprops={{
-            "aria-labelledby": "basic-button",
-          }}
-        >
+        <Box id="basic-menu" component="div">
           <Box className={styles.mainBox}>
             <Box
               className={styles.contentBox}
@@ -77,7 +79,7 @@ const LongTermSwapCardDropdown = (props) => {
 
               {open && (
                 <>
-                  {item?.withdrawals.map((items) => (
+                  {item?.withdrawals.map((items: any) => (
                     <Box
                       className={styles.withdrawlBox}
                       key={items?.transactionHash}
