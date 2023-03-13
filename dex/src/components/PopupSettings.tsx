@@ -3,9 +3,13 @@ import React, { useContext } from "react";
 import styles from "../css/PopupSettings.module.css";
 import { ShortSwapContext } from "../providers";
 
-const PopupSettings = ({ swapType }) => {
+interface PropTypes {
+  swapType?: string;
+}
+
+const PopupSettings = ({ swapType }: PropTypes) => {
   const { tolerance, setTolerance, deadline, setDeadline } =
-    useContext(ShortSwapContext);
+    useContext(ShortSwapContext)!;
 
   return (
     <span
@@ -59,7 +63,9 @@ const PopupSettings = ({ swapType }) => {
                 type="number"
                 placeholder="30"
                 value={deadline ? deadline : 0}
-                onChange={(e) => setDeadline(e.target.value)}
+                onChange={(e) => {
+                  setDeadline(parseFloat(e.target.value));
+                }}
               />
             </div>
             <p>minutes</p>

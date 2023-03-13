@@ -18,7 +18,6 @@ interface PropTypes {
 
 const LongTermSwapCardDropdown = (props: PropTypes) => {
   const { item, tokenIn, tokenOut } = props;
-  console.log(tokenIn, tokenOut);
   const { selectedNetwork } = useContext(UIContext)!;
   const [open, setOpen] = useState<boolean>(false);
 
