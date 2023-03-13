@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { Box, Button } from "@mui/material";
 import Modal from "@mui/material/Modal";
 import CloseIcon from "@mui/icons-material/Close";
@@ -16,11 +16,19 @@ import coinbaseLogo from "../images/coinbase.svg";
 
 import styles from "../css/DisconnectWalletOption.module.css";
 
-const DisconnectWalletOption = ({ showDisconnect, setShowDisconnect }) => {
+interface PropTypes {
+  showDisconnect: boolean;
+  setShowDisconnect: Dispatch<SetStateAction<boolean>>;
+}
+
+const DisconnectWalletOption = ({
+  showDisconnect,
+  setShowDisconnect,
+}: PropTypes) => {
   const { account, setAccount, setWalletConnected, setBalance } =
-    useContext(ShortSwapContext);
+    useContext(ShortSwapContext)!;
   const handleClose = () => setShowDisconnect(false);
-  const { selectedNetwork } = useContext(UIContext);
+  const { selectedNetwork } = useContext(UIContext)!;
 
   const handleDisconnectWallet = () => {
     disconnect(setAccount, setWalletConnected, setBalance);
@@ -28,8 +36,8 @@ const DisconnectWalletOption = ({ showDisconnect, setShowDisconnect }) => {
   };
   const getConnectedWalletIcon = () => {
     const wallet = localStorage.getItem("walletConnection");
-    if (wallet.includes("metamask")) return metaMaskLogo;
-    else if (wallet.includes("coinbase")) return coinbaseLogo;
+    if (wallet?.includes("metamask")) return metaMaskLogo;
+    else if (wallet?.includes("coinbase")) return coinbaseLogo;
   };
 
   return (
