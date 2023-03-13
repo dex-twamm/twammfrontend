@@ -6,8 +6,8 @@ import { getPoolConfig } from "./poolUtils";
 import { swapTokens } from "./swap";
 
 export const _swapTokens = async (
-  ethBalance: string,
-  swapAmount: number,
+  ethBalance: number,
+  swapAmount: string,
   web3provider: any,
   tokenA: string,
   tokenB: string,
@@ -31,7 +31,7 @@ export const _swapTokens = async (
   );
 
   const walletBalanceWei: BigNumber = ethers.utils.parseUnits(
-    ethBalance,
+    ethBalance.toString(),
     tokenIn?.decimals
   );
 
