@@ -7,7 +7,7 @@ import { swapTokens } from "./swap";
 
 export const _swapTokens = async (
   ethBalance: number,
-  swapAmount: string,
+  swapAmount: number,
   web3provider: any,
   tokenA: string,
   tokenB: string,

@@ -14,7 +14,7 @@ export const spotPrice = async (
   web3provider: any,
   account: string,
   deadline: number,
-  setFormErrors: Dispatch<SetStateAction<{ balError?: string }>>,
+  setFormErrors: Dispatch<SetStateAction<{ balError: string | undefined }>>,
   setSpotPrice: Dispatch<SetStateAction<number>>,
   setExpectedSwapOut: Dispatch<SetStateAction<number>>,
   currentNetwork: { network: string; poolId: number }
@@ -36,8 +36,6 @@ export const spotPrice = async (
       tokenIn.decimals
     );
 
-    const errors: { balError?: string } = {};
-
     const signer: any = web3provider.getSigner();
     const walletAddress: string = account;
 
@@ -52,8 +50,7 @@ export const spotPrice = async (
         deadline,
         currentNetwork
       ).then((res: BigNumber) => {
-        errors.balError = undefined;
-        setFormErrors(errors ?? "");
+        setFormErrors({ balError: undefined });
         setSpotPrice(
           (parseFloat(res.toString()) * 10 ** tokenIn.decimals) /
             (parseFloat(swapAmountWei.toString()) * 10 ** tokenOut.decimals)
@@ -78,8 +75,7 @@ export const spotPrice = async (
         ) {
           setSpotPriceLoading(false);
           setSpotPrice(0);
-          errors.balError = undefined;
-          setFormErrors(errors ?? "");
+          setFormErrors({ balError: undefined });
           setExpectedSwapOut(0);
         } else {
           setFormErrors({
