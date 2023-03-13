@@ -30,7 +30,7 @@ const LongSwapPage = () => {
     tokenA,
     tokenB,
     allowance,
-  } = useContext(LongSwapContext);
+  } = useContext(LongSwapContext)!;
 
   const {
     isWalletConnected,
@@ -46,11 +46,11 @@ const LongSwapPage = () => {
     setTransactionHash,
     setLoading,
     setError,
-  } = useContext(ShortSwapContext);
+  } = useContext(ShortSwapContext)!;
 
-  const [showSettings, setShowSettings] = useState(false);
+  const [showSettings, setShowSettings] = useState<boolean>(false);
 
-  const { selectedNetwork, setSelectedNetwork } = useContext(UIContext);
+  const { selectedNetwork, setSelectedNetwork } = useContext(UIContext)!;
 
   const ethLogsCount = orderLogsDecoded
     ? Object.keys(orderLogsDecoded).length
@@ -59,7 +59,7 @@ const LongSwapPage = () => {
   const cardListCount = ethLogsCount;
 
   useEffect(() => {
-    let verifyLongSwapInterval;
+    let verifyLongSwapInterval: any;
 
     // Wait for 0.5 second before fetching price.
 
@@ -67,8 +67,8 @@ const LongSwapPage = () => {
       verifyLongSwap(
         swapAmount,
         setLongSwapVerifyLoading,
-        tokenA?.address,
-        tokenB?.address,
+        tokenA?.address!,
+        tokenB?.address!,
         web3provider,
         account,
         setLongSwapFormErrors,
@@ -100,8 +100,8 @@ const LongSwapPage = () => {
       } else {
         await _placeLongTermOrders(
           swapAmount,
-          tokenA?.address,
-          tokenB?.address,
+          tokenA?.address!,
+          tokenB?.address!,
           numberOfBlockIntervals,
           web3provider,
           account,
@@ -125,7 +125,7 @@ const LongSwapPage = () => {
     };
   });
 
-  const handlePoolChange = (e) => {
+  const handlePoolChange = (e: any) => {
     setSelectedNetwork({ ...selectedNetwork, poolId: e.target.value });
     localStorage.setItem("poolId", e.target.value);
   };
@@ -139,7 +139,7 @@ const LongSwapPage = () => {
             <div className={styles.swapOptions}>
               <p className={styles.textLink}>Long Term Swap</p>
               <div className={styles.poolAndIcon}>
-                {getAllPool(selectedNetwork)?.length > 1 && (
+                {getAllPool(selectedNetwork)?.length! > 1 && (
                   <Select
                     className={styles.poolBox}
                     inputProps={{ "aria-label": "Without label" }}

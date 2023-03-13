@@ -12,7 +12,9 @@ export const verifyLongSwap = async (
   tokenB: string,
   web3provider: any,
   account: string,
-  setLongSwapFormErrors: Dispatch<SetStateAction<{ balError?: string }>>,
+  setLongSwapFormErrors: Dispatch<
+    SetStateAction<{ balError: string | undefined }>
+  >,
   currentNetwork: { network: string; poolId: number },
   numberOfBlockIntervals: number,
   allowance: string
@@ -21,8 +23,6 @@ export const verifyLongSwap = async (
     setLongSwapVerifyLoading(true);
 
     const poolConfig: PoolType = getPoolConfig(currentNetwork)!;
-
-    const errors: { balError?: string } = {};
 
     const signer: any = web3provider.getSigner();
     const walletAddress: string = account;
@@ -50,8 +50,7 @@ export const verifyLongSwap = async (
           walletAddress,
           currentNetwork
         ).then((res) => {
-          errors.balError = undefined;
-          setLongSwapFormErrors(errors ?? "");
+          setLongSwapFormErrors({ balError: undefined });
           setLongSwapVerifyLoading(false);
         });
       }
@@ -81,8 +80,7 @@ export const verifyLongSwap = async (
           e.reason.match("allowance")
         ) {
           setLongSwapVerifyLoading(false);
-          errors.balError = undefined;
-          setLongSwapFormErrors(errors ?? "");
+          setLongSwapFormErrors({ balError: undefined });
         } else {
           setLongSwapFormErrors({
             balError: POPUP_MESSAGE.unknown,
