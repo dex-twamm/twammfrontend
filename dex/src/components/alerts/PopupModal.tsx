@@ -6,7 +6,7 @@ import { LongSwapContext, ShortSwapContext } from "../../providers";
 import { UIContext } from "../../providers/context/UIProvider";
 import { getBlockExplorerTransactionUrl } from "../../utils/networkUtils";
 
-const PopupModal = () => {
+const PopupModal: React.FC = () => {
   const {
     error,
     setError,
@@ -14,13 +14,12 @@ const PopupModal = () => {
     setSuccess,
     transactionHash,
     setTransactionHash,
-    allowTwammErrorMessage,
     setAllowTwammErrorMessage,
-  } = useContext(ShortSwapContext);
+  } = useContext(ShortSwapContext)!;
 
-  const { message, setMessage } = useContext(LongSwapContext);
+  const { message, setMessage } = useContext(LongSwapContext)!;
 
-  const { selectedNetwork } = useContext(UIContext);
+  const { selectedNetwork } = useContext(UIContext)!;
 
   // Timeout For Backdrop
   useEffect(() => {
@@ -34,6 +33,11 @@ const PopupModal = () => {
       clearTimeout(timer);
     };
   });
+
+  const handleAlertClose = () => {
+    handleClose();
+    window.location.reload();
+  };
 
   const handleClose = () => {
     setError("");
@@ -64,26 +68,16 @@ const PopupModal = () => {
     <>
       <div style={AlertStyle}>
         {error && (
-          <Backdrop open={error ? true : false} onClose={handleClose}>
+          <Backdrop open={error ? true : false}>
             <Alert severity="error" onClose={handleClose}>
               {error}
             </Alert>
           </Backdrop>
         )}
-        {/* {loading && (
-          <Backdrop open={loading ? true : false} onClose={handleClose}>
-            <CircularProgress />
-          </Backdrop>
-        )} */}
+
         {success && (
-          <Backdrop open={success ? true : false} onClose={handleClose}>
-            <Alert
-              severity="success"
-              onClose={() => {
-                handleClose();
-                window.location.reload();
-              }}
-            >
+          <Backdrop open={success ? true : false} component="div">
+            <Alert severity="success" onClose={handleAlertClose}>
               {success}
             </Alert>
           </Backdrop>
@@ -99,12 +93,7 @@ const PopupModal = () => {
           </Alert>
         )}
         {message && (
-          <Backdrop
-            open={
-              typeof message !== "undefined" || message !== "" ? true : false
-            }
-            onClose={handleClose}
-          >
+          <Backdrop open={message !== "" ? true : false}>
             <Alert
               severity={
                 message === POPUP_MESSAGE.ltoCancelFailed ||
@@ -119,8 +108,7 @@ const PopupModal = () => {
                   message === POPUP_MESSAGE.ltoWithdrawn ||
                   message === POPUP_MESSAGE.ltoPlaced
                 ) {
-                  handleClose();
-                  window.location.reload();
+                  handleAlertClose();
                 } else {
                   handleClose();
                 }
