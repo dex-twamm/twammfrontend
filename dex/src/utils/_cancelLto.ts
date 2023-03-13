@@ -3,6 +3,7 @@ import { Dispatch, SetStateAction } from "react";
 import { cancelLTO } from "./addLiquidity";
 import { connectWallet } from "./connetWallet";
 import { getEthLogs } from "./get_ethLogs";
+import { providers } from "ethers";
 
 // cancelLTO
 export const _cancelLTO = async (
@@ -10,8 +11,8 @@ export const _cancelLTO = async (
   setLoading: Dispatch<SetStateAction<boolean>>,
   setDisableActionBtn: Dispatch<SetStateAction<boolean>>,
   account: string,
-  web3provider: any,
-  setweb3provider: Dispatch<SetStateAction<any>>,
+  web3provider: providers.Web3Provider,
+  setweb3provider: Dispatch<SetStateAction<providers.Web3Provider | undefined>>,
   setCurrentBlock: Dispatch<SetStateAction<any>>,
   setBalance: Dispatch<SetStateAction<number>>,
   setAccount: Dispatch<SetStateAction<string>>,

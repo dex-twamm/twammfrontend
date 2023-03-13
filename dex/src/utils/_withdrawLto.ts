@@ -3,14 +3,15 @@ import { Dispatch, SetStateAction } from "react";
 import { withdrawLTO } from "./addLiquidity";
 import { connectWallet } from "./connetWallet";
 import { getEthLogs } from "./get_ethLogs";
+import { providers } from "ethers";
 
 export const _withdrawLTO = async (
   orderId: number,
   setLoading: Dispatch<SetStateAction<boolean>>,
   setDisableActionBtn: Dispatch<SetStateAction<boolean>>,
   account: string,
-  web3provider: any,
-  setweb3provider: Dispatch<SetStateAction<any>>,
+  web3provider: providers.Web3Provider,
+  setweb3provider: Dispatch<SetStateAction<providers.Web3Provider>>,
   setCurrentBlock: Dispatch<SetStateAction<any>>,
   setBalance: Dispatch<SetStateAction<number>>,
   setAccount: Dispatch<SetStateAction<string>>,

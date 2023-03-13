@@ -77,7 +77,9 @@ const ShortSwapProvider: React.FC<ShortSwapProviderProps> = ({ children }) => {
   const [formErrors, setFormErrors] = useState<{
     balError: string | undefined;
   }>({ balError: undefined });
-  const [web3provider, setweb3provider] = useState<providers.Web3Provider>();
+  const [web3provider, setweb3provider] = useState<
+    providers.Web3Provider | undefined
+  >(undefined);
   const [currentBlock, setCurrentBlock] = useState<any>();
   const [spotPrice, setSpotPrice] = useState<number>(0);
   const [LPTokenBalance, setLPTokenBalance] = useState<number>();
