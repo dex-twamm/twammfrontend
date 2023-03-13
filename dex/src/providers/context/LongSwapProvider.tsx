@@ -17,7 +17,7 @@ interface LongSwapProviderProps {
   children: React.ReactNode;
 }
 
-interface TokenState extends TokenType {
+export interface TokenState extends TokenType {
   balance: number;
   tokenIsSet: boolean;
 }
@@ -90,8 +90,8 @@ const LongSwapProvider: React.FC<LongSwapProviderProps> = ({ children }) => {
   }>({ balError: undefined });
   const [longSwapVerifyLoading, setLongSwapVerifyLoading] =
     useState<boolean>(false);
-  const [tokenA, setTokenA] = useState<TokenState>();
-  const [tokenB, setTokenB] = useState<TokenState>();
+  const [tokenA, setTokenA] = useState<TokenState | undefined>();
+  const [tokenB, setTokenB] = useState<TokenState | undefined>();
 
   const { selectedNetwork } = useContext(UIContext)!;
   useEffect(() => {

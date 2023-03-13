@@ -5,8 +5,8 @@ import LongTermOrderSingleCard from "./LongTermOrderSingleCard";
 import styles from "../css/LongTermOrderCard.module.css";
 
 const LongTermOrderCard = () => {
-  const { isWalletConnected } = useContext(ShortSwapContext);
-  const { orderLogsDecoded, orderLogsLoading } = useContext(LongSwapContext);
+  const { isWalletConnected } = useContext(ShortSwapContext)!;
+  const { orderLogsDecoded, orderLogsLoading } = useContext(LongSwapContext)!;
 
   return !isWalletConnected ? (
     <>
@@ -22,7 +22,7 @@ const LongTermOrderCard = () => {
         </p>
       ) : (
         orderLogsDecoded
-          .map((orderLog, index) => {
+          .map((orderLog: any, index: number) => {
             return (
               <div key={index}>
                 <LongTermOrderSingleCard orderLog={orderLog} />
