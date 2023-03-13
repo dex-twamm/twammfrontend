@@ -15,11 +15,11 @@ import { NETWORKS } from "../utils/networks";
 import logo from "../images/logo.png";
 
 const Navbar = () => {
-  const [showDisconnect, setShowDisconnect] = useState(false);
-  const [showDropdown, setShowDropdown] = useState(false);
+  const [showDisconnect, setShowDisconnect] = useState<boolean>(false);
+  const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const location = useLocation();
 
-  const { selectedNetwork, setSelectedNetwork } = useContext(UIContext);
+  const { selectedNetwork, setSelectedNetwork } = useContext(UIContext)!;
 
   const {
     setError,
@@ -31,14 +31,16 @@ const Navbar = () => {
     account,
     balance,
     setWalletConnected,
-  } = useContext(ShortSwapContext);
+  } = useContext(ShortSwapContext)!;
 
-  const handleSelect = async (chainId) => {
-    localStorage.setItem("poolId", 0);
+  const handleSelect = async (chainId: string) => {
+    const defaultPoolId = 0;
+    localStorage.setItem("poolId", defaultPoolId.toString());
     const id = chainId;
     if (isWalletConnected) {
       try {
-        await window.ethereum.request({
+        const { ethereum }: any = window;
+        await ethereum.request({
           method: "wallet_switchEthereumChain",
           params: [{ chainId: toHex(id) }],
         });
@@ -55,7 +57,6 @@ const Navbar = () => {
       <p
         key={index}
         className={styles.networkName}
-        value={network.chainId}
         onClick={() => handleSelect(network.chainId)}
       >
         {network.name}
