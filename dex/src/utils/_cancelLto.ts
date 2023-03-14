@@ -4,6 +4,7 @@ import { cancelLTO } from "./addLiquidity";
 import { connectWallet } from "./connetWallet";
 import { getEthLogs } from "./get_ethLogs";
 import { providers } from "ethers";
+import { SelectedNetworkType } from "../providers/context/UIProvider";
 
 // cancelLTO
 export const _cancelLTO = async (
@@ -11,8 +12,8 @@ export const _cancelLTO = async (
   setLoading: Dispatch<SetStateAction<boolean>>,
   setDisableActionBtn: Dispatch<SetStateAction<boolean>>,
   account: string,
-  web3provider: providers.Web3Provider,
-  setweb3provider: Dispatch<SetStateAction<providers.Web3Provider | undefined>>,
+  web3provider: any,
+  setweb3provider: Dispatch<SetStateAction<any>>,
   setCurrentBlock: Dispatch<SetStateAction<any>>,
   setBalance: Dispatch<SetStateAction<number>>,
   setAccount: Dispatch<SetStateAction<string>>,
@@ -21,10 +22,8 @@ export const _cancelLTO = async (
   setOrderLogsDecoded: Dispatch<SetStateAction<any>>,
   setMessage: Dispatch<SetStateAction<string>>,
   setTransactionHash: Dispatch<SetStateAction<string>>,
-  currentNetwork: { network: string; poolId: number },
-  setSelectedNetwork: Dispatch<
-    SetStateAction<{ network: string; poolId: number }>
-  >
+  currentNetwork: SelectedNetworkType,
+  setSelectedNetwork: Dispatch<SetStateAction<SelectedNetworkType>>
 ): Promise<void> => {
   setLoading(true);
   setDisableActionBtn(true);

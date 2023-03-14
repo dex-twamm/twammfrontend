@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
+import { BigNumber } from "ethers";
 import { HiExternalLink } from "react-icons/hi";
 import styles from "../css/LongTermOrderCard.module.css";
 import { UIContext } from "../providers/context/UIProvider";
@@ -25,8 +26,13 @@ import {
   ORDER_STATUS_EXECUTED,
 } from "../utils/constants";
 import { formatToReadableTime } from "../utils/timeUtils";
+import { TokenType } from "../utils/pool";
 
-const LongTermOrderSingleCard = ({ orderLog }) => {
+interface PropTypes {
+  orderLog: any;
+}
+
+const LongTermOrderSingleCard = ({ orderLog }: PropTypes) => {
   const {
     currentBlock,
     isWalletConnected,
@@ -39,7 +45,7 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
     setAccount,
     setWalletConnected,
     setTransactionHash,
-  } = useContext(ShortSwapContext);
+  } = useContext(ShortSwapContext)!;
 
   const {
     lastVirtualOrderBlock,
@@ -47,38 +53,45 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
     setDisableActionBtn,
     setOrderLogsDecoded,
     setMessage,
-  } = useContext(LongSwapContext);
-  const { selectedNetwork, setSelectedNetwork } = useContext(UIContext);
+  } = useContext(LongSwapContext)!;
+  const { selectedNetwork, setSelectedNetwork } = useContext(UIContext)!;
 
-  const [orderStatus, setOrderStatus] = useState();
-  const [newTime, setNewTime] = useState(
+  const [orderStatus, setOrderStatus] = useState<{
+    status: string;
+    progress: number;
+  }>();
+  const [newTime, setNewTime] = useState<number>(
     (orderLog.expirationBlock - currentBlock.number) * 12
   );
 
-  const [orderStartTime, setOrderStartTime] = useState();
-  const [orderCompletionTime, setOrderCompletionTime] = useState();
-  const [switchAvgPrice, setSwitchAvgPrice] = useState(false);
-  const [switchedAveragePrice, setSwitchedAveragePrice] = useState();
-  const [expectedWithdrawalValue, setExpectedWithdrawalValue] = useState(0);
+  const [orderStartTime, setOrderStartTime] = useState<any>();
+  const [orderCompletionTime, setOrderCompletionTime] = useState<any>();
+  const [switchAvgPrice, setSwitchAvgPrice] = useState<boolean>(false);
+  const [switchedAveragePrice, setSwitchedAveragePrice] = useState<number>(0);
+  const [expectedWithdrawalValue, setExpectedWithdrawalValue] =
+    useState<number>(0);
 
   const poolConfig = getPoolConfig(selectedNetwork);
 
-  const tokenIn = poolConfig.tokens[orderLog.sellTokenIndex];
-  const tokenOut = poolConfig.tokens[orderLog.buyTokenIndex];
+  const tokenIn: TokenType = poolConfig!.tokens[orderLog.sellTokenIndex];
+  const tokenOut: TokenType = poolConfig!.tokens[orderLog.buyTokenIndex];
 
-  const remainingTimeRef = useRef();
+  const remainingTimeRef = useRef<HTMLParagraphElement>(null);
 
   const stBlock = orderLog.startBlock;
   const expBlock = orderLog.expirationBlock;
   const amountOf = expBlock?.sub(stBlock)?.mul(orderLog?.salesRate);
 
-  const convertedAmount = orderLog.withdrawals.reduce((total, withdrawal) => {
-    return total.add(withdrawal.proceeds);
-  }, ethers.constants.Zero);
+  const convertedAmount = orderLog.withdrawals.reduce(
+    (total: BigNumber, withdrawal: any) => {
+      return total.add(withdrawal.proceeds);
+    },
+    ethers.constants.Zero
+  );
 
   const tokenWithdrawals =
     bigToFloat(convertedAmount, tokenOut.decimals) +
-    parseFloat(expectedWithdrawalValue);
+    parseFloat(expectedWithdrawalValue.toString());
 
   let soldToken;
   if (orderLog.state === "cancelled") {
@@ -90,7 +103,7 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
         : orderLog.salesRate?.mul(currentBlock.number - stBlock);
   } else {
     soldToken =
-      lastVirtualOrderBlock > expBlock
+      lastVirtualOrderBlock! > expBlock
         ? amountOf
         : lastVirtualOrderBlock?.sub(stBlock)?.mul(orderLog.salesRate);
   }
@@ -99,7 +112,7 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
     tokenWithdrawals / bigToFloat(soldToken, tokenIn.decimals)
   );
 
-  const handleCancel = (orderId) => {
+  const handleCancel = (orderId: number) => {
     _cancelLTO(
       orderId,
       setLoading,
@@ -120,7 +133,7 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
     );
   };
 
-  const handleWithDraw = (orderId) => {
+  const handleWithDraw = (orderId: number) => {
     _withdrawLTO(
       orderId,
       setLoading,
@@ -146,7 +159,7 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
       setOrderStatus({ status: ORDER_STATUS_COMPLETED, progress: 100 });
     } else if (orderLog?.state === "cancelled") {
       setOrderStatus({ status: ORDER_STATUS_CANCELLED, progress: 100 });
-    } else if (lastVirtualOrderBlock >= orderLog.expirationBlock) {
+    } else if (lastVirtualOrderBlock! >= orderLog.expirationBlock) {
       setOrderStatus({ status: ORDER_STATUS_EXECUTED, progress: 100 });
     } else {
       if (orderLog.expirationBlock > currentBlock.number) {
@@ -156,7 +169,9 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
         setOrderStatus({
           status: `${ORDER_EXECUTION_TIME_REMAINING}: ${timeString}`,
           progress:
-            ((lastVirtualOrderBlock - orderLog?.startBlock) * 100) /
+            ((parseFloat(lastVirtualOrderBlock!.toString()) -
+              orderLog?.startBlock) *
+              100) /
             (orderLog?.expirationBlock - orderLog?.startBlock),
         });
       } else {
@@ -182,20 +197,22 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
 
   const handleAveragePriceClick = () => {
     setSwitchAvgPrice((prev) => !prev);
-    const avgPrice = parseFloat(averagePrice);
-    setSwitchedAveragePrice(getInversedValue(avgPrice));
+    const avgPrice = parseFloat(averagePrice.toString());
+    setSwitchedAveragePrice(+getInversedValue(avgPrice));
   };
 
   useEffect(() => {
     const getTime = async () => {
-      const startTime = await web3provider.getBlock(stBlock);
-      setOrderStartTime(formatToReadableTime(startTime?.timestamp));
+      const startTime = await web3provider?.getBlock(stBlock);
+      setOrderStartTime(formatToReadableTime(startTime?.timestamp!));
 
       if (isExecuteTimeCompleted()) {
-        const completionTime = await web3provider.getBlock(
+        const completionTime = await web3provider?.getBlock(
           parseFloat(expBlock.toString())
         );
-        setOrderCompletionTime(formatToReadableTime(completionTime?.timestamp));
+        setOrderCompletionTime(
+          formatToReadableTime(completionTime?.timestamp!)
+        );
       }
     };
     getTime();
@@ -203,7 +220,7 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
 
   useEffect(() => {
     const getExpectedWithdrawalValue = async () => {
-      const signer = web3provider.getSigner();
+      const signer = web3provider?.getSigner();
       const result = await withdrawLTO(
         account,
         signer,
@@ -216,7 +233,7 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
         result["amountsOut"][orderLog.buyTokenIndex],
         tokenOut?.decimals
       );
-      setExpectedWithdrawalValue(getProperFixedValue(expectedWithdrawResult));
+      setExpectedWithdrawalValue(+getProperFixedValue(expectedWithdrawResult));
     };
 
     if (orderLog?.state === "inProgress") getExpectedWithdrawalValue();
@@ -229,7 +246,6 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
           <p className={styles.orderId} key={orderLog?.orderId?.toNumber()}>
             {orderLog?.orderId?.toNumber()}
           </p>
-
           <HiExternalLink
             className={styles.iconExternalLink}
             onClick={() =>

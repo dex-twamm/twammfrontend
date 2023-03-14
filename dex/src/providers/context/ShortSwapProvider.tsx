@@ -40,18 +40,16 @@ interface ShortSwapContextValue {
       balError: string | undefined;
     }>
   >;
-  web3provider?: providers.Web3Provider | undefined;
-  setweb3provider?: Dispatch<
-    SetStateAction<providers.Web3Provider | undefined>
-  >;
+  web3provider: any;
+  setweb3provider: Dispatch<SetStateAction<any>>;
   currentBlock: any;
   setCurrentBlock: Dispatch<SetStateAction<any>>;
   spotPrice: number;
   setSpotPrice: Dispatch<SetStateAction<number>>;
   LPTokenBalance: number | undefined;
   setLPTokenBalance: Dispatch<SetStateAction<number | undefined>>;
-  balance: number | undefined;
-  setBalance: Dispatch<SetStateAction<number | undefined>>;
+  balance: number;
+  setBalance: Dispatch<SetStateAction<number>>;
   spotPriceLoading: boolean;
   setSpotPriceLoading: Dispatch<SetStateAction<boolean>>;
   allowTwammErrorMessage: string;
@@ -77,13 +75,11 @@ const ShortSwapProvider: React.FC<ShortSwapProviderProps> = ({ children }) => {
   const [formErrors, setFormErrors] = useState<{
     balError: string | undefined;
   }>({ balError: undefined });
-  const [web3provider, setweb3provider] = useState<
-    providers.Web3Provider | undefined
-  >(undefined);
+  const [web3provider, setweb3provider] = useState<any>();
   const [currentBlock, setCurrentBlock] = useState<any>();
   const [spotPrice, setSpotPrice] = useState<number>(0);
   const [LPTokenBalance, setLPTokenBalance] = useState<number>();
-  const [balance, setBalance] = useState<number>();
+  const [balance, setBalance] = useState<number>(0);
   const [spotPriceLoading, setSpotPriceLoading] = useState<boolean>(false);
   const [allowTwammErrorMessage, setAllowTwammErrorMessage] =
     useState<string>("");

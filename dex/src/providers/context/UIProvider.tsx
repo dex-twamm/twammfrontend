@@ -3,7 +3,7 @@ import { createContext, useState } from "react";
 import { NETWORKS } from "../../utils/networks";
 import ethLogo from "../../images/ethereum.svg";
 
-interface SelectedNetworkType {
+export interface SelectedNetworkType {
   network: string;
   logo: string;
   chainId: string;
