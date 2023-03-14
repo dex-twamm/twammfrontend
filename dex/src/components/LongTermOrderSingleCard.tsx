@@ -349,7 +349,7 @@ const LongTermOrderSingleCard = ({ orderLog }: PropTypes) => {
                 >
                   {!switchAvgPrice
                     ? ` Average Price: 1 ${tokenIn.symbol} =
-                    ${getProperFixedValue(averagePrice)}
+                    ${getProperFixedValue(+averagePrice)}
                     ${tokenOut.symbol}`
                     : ` Average Price: 1 ${tokenOut.symbol} =
                     ${switchedAveragePrice}

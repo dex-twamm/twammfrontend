@@ -2,7 +2,7 @@ import { BigNumber, ethers } from "ethers";
 import { Decimal } from "decimal.js";
 import { MAX_INPUT_LENGTH } from "./constants";
 
-export const truncateAddress = (address) => {
+export const truncateAddress = (address: string): string => {
   if (!address) return "No Account";
   const chars = 4;
   const match = address.match(
@@ -14,14 +14,14 @@ export const truncateAddress = (address) => {
   )}`;
 };
 
-export const toHex = (num) => {
+export const toHex = (num: string): string => {
   const val = Number(num);
   return "0x" + val.toString(16);
 };
 
 //This function returns the few number after trailing of zeroes in decimals
-export const getProperFixedValue = (num) => {
-  let number = parseFloat(num);
+export const getProperFixedValue = (num: number) => {
+  let number = num;
   let str = num?.toString();
   let decimalIndex = str.indexOf(".");
   if (decimalIndex === -1) return number;
@@ -34,29 +34,29 @@ export const getProperFixedValue = (num) => {
   return number?.toFixed(trailingZeroes > 2 ? trailingZeroes : 2);
 };
 
-export const bigToStr = (bigNum, decimalPlaces) => {
+export const bigToStr = (bigNum: BigNumber, decimalPlaces?: number) => {
   return getProperFixedValue(
     parseFloat(ethers.utils.formatUnits(bigNum, decimalPlaces))
   );
 };
 
-export const bigToFloat = (bigNum, decimalPlaces) => {
+export const bigToFloat = (bigNum: BigNumber, decimalPlaces?: number) => {
   return parseFloat(ethers.utils.formatUnits(bigNum, decimalPlaces));
 };
 
 // Exporting fp
 export const SCALING_FACTOR = 1e18;
-export const decimal = (x) => new Decimal(x.toString());
-export const bn = (x) => {
+export const decimal = (x: any) => new Decimal(x.toString());
+export const bn = (x: any) => {
   if (BigNumber.isBigNumber(x)) return x;
   const stringified = parseScientific(x.toString());
   const integer = stringified.split(".")[0];
   return BigNumber.from(integer);
 };
-export const toFp = (x) => decimal(x).mul(SCALING_FACTOR);
-export const fp = (x) => bn(toFp(x));
+export const toFp = (x: any) => decimal(x).mul(SCALING_FACTOR);
+export const fp = (x: any) => bn(toFp(x));
 
-function parseScientific(num) {
+function parseScientific(num: string) {
   // If the number is not in scientific notation return it as it is
   if (!/\d+\.?\d*e[+-]*\d+/i.test(num)) return num;
 
@@ -94,9 +94,9 @@ export const ZERO = ethers.constants.Zero;
 
 export const LONGTERM_CONTRACT = "0xC392dF9Ee383d6Bce110757FdE7762f0372f6A5D";
 
-export const timeDeltaString = (seconds) => {
+export const timeDeltaString = (seconds: number): string => {
   const hhmm = new Date(1000 * seconds).toISOString().substring(11, 16);
-  const days = parseInt(seconds / 86400);
+  const days = seconds / 86400;
   if (seconds > 86400) {
     return `${days}d ${hhmm}`;
   } else {
@@ -104,10 +104,10 @@ export const timeDeltaString = (seconds) => {
   }
 };
 
-export const getInversedValue = (value) => {
+export const getInversedValue = (value: number) => {
   return getProperFixedValue(1 / value);
 };
 
-export const getInputLimit = (value) => {
-  return +value.slice(0, MAX_INPUT_LENGTH);
+export const getInputLimit = (value: number) => {
+  return +value.toString().slice(0, MAX_INPUT_LENGTH);
 };
