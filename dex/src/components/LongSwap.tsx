@@ -25,14 +25,19 @@ import { approveMaxAllowance, getAllowance } from "../utils/getApproval";
 
 import { UIContext } from "../providers/context/UIProvider";
 
-const LongSwap = (props) => {
+interface PropTypes {
+  handleLongSwapAction: any;
+  longSwapVerifyLoading: boolean;
+}
+
+const LongSwap = (props: PropTypes) => {
   const { handleLongSwapAction, longSwapVerifyLoading } = props;
 
-  const [display, setDisplay] = useState(false);
-  const [value, setValue] = useState(0.0);
-  const [executionTime, setExecutionTIme] = useState("");
+  const [display, setDisplay] = useState<boolean>(false);
+  const [value, setValue] = useState<number>(0.0);
+  const [executionTime, setExecutionTIme] = useState<string>("");
   const [hasBalancerOrTransactionError, setHasBalancerOrTransactionError] =
-    useState(true);
+    useState<boolean>(true);
 
   const {
     account,
@@ -47,7 +52,7 @@ const LongSwap = (props) => {
     isWalletConnected,
     web3provider,
     setAllowTwammErrorMessage,
-  } = useContext(ShortSwapContext);
+  } = useContext(ShortSwapContext)!;
 
   const {
     tokenA,
@@ -63,11 +68,11 @@ const LongSwap = (props) => {
     setLongSwapFormErrors,
     longSwapFormErrors,
     setMessage,
-  } = useContext(LongSwapContext);
+  } = useContext(LongSwapContext)!;
 
-  const { selectedNetwork } = useContext(UIContext);
+  const { selectedNetwork } = useContext(UIContext)!;
 
-  const handleDisplay = (event) => {
+  const handleDisplay = (event: React.MouseEvent<HTMLElement>) => {
     setSelectToken(event.currentTarget.id);
     setDisplay(!display);
     setExpectedSwapOut(0.0);
@@ -75,7 +80,7 @@ const LongSwap = (props) => {
 
   useEffect(() => {
     return () => {
-      setExpectedSwapOut(undefined);
+      setExpectedSwapOut(0);
     };
   }, [setExpectedSwapOut]);
 
@@ -84,12 +89,15 @@ const LongSwap = (props) => {
       setTokenB({
         symbol: "Select Token",
         logo: "",
-        balance: "",
+        balance: 0,
         tokenIsSet: false,
+        name: "",
+        decimals: 0,
+        address: "",
       });
   }, [tokenA, tokenB, setTokenB]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
 
@@ -101,8 +109,8 @@ const LongSwap = (props) => {
   const handleApproveButton = async () => {
     try {
       const approval = await approveMaxAllowance(
-        web3provider,
-        tokenA?.address,
+        web3provider!,
+        tokenA?.address!,
         selectedNetwork
       );
       setTransactionHash(approval.hash);
@@ -110,44 +118,39 @@ const LongSwap = (props) => {
       await getAllowance(
         web3provider?.getSigner(),
         account,
-        tokenA?.address,
+        tokenA?.address!,
         selectedNetwork
       ).then((res) => {
-        setAllowance(bigToStr(res, tokenA?.decimals));
+        setAllowance(bigToStr(res, tokenA?.decimals).toString());
       });
     } catch (e) {
-      setAllowTwammErrorMessage(e?.message);
+      setAllowTwammErrorMessage("Error!");
     }
   };
 
-  const validate = (values) => {
+  const validate = (values: string) => {
     const valueInt = parseFloat(values);
-    const errors = {};
-    if (!valueInt > 0) {
-      errors.swapAmount = "Swap Amount Is Required";
+    const errors = { balError: "" };
+    if (valueInt <= 0) {
+      errors.balError = "Swap Amount Is Required";
     }
 
     return errors;
   };
 
-  const handleChange = (e, newValue) => {
+  const handleChange = (event: Event, newValue: number | number[]) => {
     if (typeof newValue === "number") {
-      setValue(newValue);
+      setValue(newValue as number);
       setNumberOfBlockIntervals(calculateNumBlockIntervals(newValue));
-      setTargetDate(
-        valueLabel(
-          calculateNumBlockIntervals(newValue),
-          currentBlock,
-          selectedNetwork
-        ).targetDate
+      const { targetDate, executionTime } = valueLabel(
+        calculateNumBlockIntervals(newValue as number),
+        currentBlock,
+        selectedNetwork
       );
-      setExecutionTIme(
-        valueLabel(
-          calculateNumBlockIntervals(newValue),
-          currentBlock,
-          selectedNetwork
-        ).executionTime
-      );
+
+      console.log(targetDate, executionTime);
+      setTargetDate(targetDate);
+      setExecutionTIme(executionTime);
     }
   };
 
@@ -173,7 +176,7 @@ const LongSwap = (props) => {
     return () => {
       setTargetDate("");
       setExecutionTIme("");
-      setTransactionHash(undefined);
+      setTransactionHash("");
       setMessage("");
     };
   }, []);
@@ -254,7 +257,7 @@ const LongSwap = (props) => {
             id={1}
             input={swapAmount ? swapAmount.toString() : ""}
             placeholder="0.0"
-            onChange={(e) => {
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setSwapAmount(getInputLimit(e.target.value));
             }}
             imgSrc={tokenA?.logo}
@@ -307,8 +310,8 @@ const LongSwap = (props) => {
                 aria-labelledby="non-linear-slider"
               />
               {swapAmount &&
-              tokenA.tokenIsSet &&
-              tokenB.tokenIsSet &&
+              tokenA?.tokenIsSet &&
+              tokenB?.tokenIsSet &&
               !executionTime ? (
                 <p style={{ fontSize: "12px", marginBottom: "0px" }}>
                   execution time is required.
@@ -318,10 +321,10 @@ const LongSwap = (props) => {
           </div>
 
           {swapAmount &&
-          swapAmount <= tokenA?.balance &&
+          swapAmount <= tokenA?.balance! &&
           parseFloat(allowance) < swapAmount &&
-          tokenA.tokenIsSet &&
-          tokenB.tokenIsSet ? (
+          tokenA?.tokenIsSet &&
+          tokenB?.tokenIsSet ? (
             <button
               className={classNames(
                 styles.btn,
@@ -338,7 +341,7 @@ const LongSwap = (props) => {
               }
             >
               {`Allow LongSwap Protocol to use your ${
-                tokenA.symbol ?? tokenB.symbol
+                tokenA?.symbol ?? tokenB?.symbol
               }`}
             </button>
           ) : (
@@ -353,8 +356,8 @@ const LongSwap = (props) => {
               )}
               onClick={handleClick}
               disabled={
-                !tokenA.tokenIsSet ||
-                !tokenB.tokenIsSet ||
+                !tokenA?.tokenIsSet ||
+                !tokenB?.tokenIsSet ||
                 !swapAmount ||
                 !numberOfBlockIntervals ||
                 hasBalancerOrTransactionError ||
@@ -362,7 +365,7 @@ const LongSwap = (props) => {
                 parseFloat(allowance) < swapAmount
               }
             >
-              {!tokenA.tokenIsSet || !tokenB.tokenIsSet ? (
+              {!tokenA?.tokenIsSet || !tokenB?.tokenIsSet ? (
                 "Select a Token"
               ) : !swapAmount ? (
                 "Enter an Amount"

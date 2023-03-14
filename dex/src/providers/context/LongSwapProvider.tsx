@@ -29,21 +29,8 @@ interface LongSwapContextValue {
   setTokenA: Dispatch<SetStateAction<TokenState | undefined>>;
   tokenB: TokenState | undefined;
   setTokenB: Dispatch<SetStateAction<TokenState | undefined>>;
-  targetDate:
-    | {
-        executionTime: string;
-        targetDate: string;
-      }
-    | undefined;
-  setTargetDate: Dispatch<
-    SetStateAction<
-      | {
-          executionTime: string;
-          targetDate: string;
-        }
-      | undefined
-    >
-  >;
+  targetDate: string | undefined;
+  setTargetDate: Dispatch<SetStateAction<string | undefined>>;
   orderLogsDecoded: any;
   setOrderLogsDecoded: Dispatch<SetStateAction<any>>;
   lastVirtualOrderBlock: BigNumber | undefined;
@@ -77,10 +64,7 @@ const LongSwapProvider: React.FC<LongSwapProviderProps> = ({ children }) => {
     useState<BigNumber>();
   const [numberOfBlockIntervals, setNumberOfBlockIntervals] =
     useState<number>(0);
-  const [targetDate, setTargetDate] = useState<{
-    executionTime: string;
-    targetDate: string;
-  }>();
+  const [targetDate, setTargetDate] = useState<string>();
   const [allowance, setAllowance] = useState<string>("");
   const [message, setMessage] = useState<string>("");
   const [disableActionBtn, setDisableActionBtn] = useState<boolean>(false);
