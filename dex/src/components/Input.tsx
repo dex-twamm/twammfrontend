@@ -1,11 +1,28 @@
 import { Skeleton } from "@mui/material";
 import classnames from "classnames";
-import { useContext, useEffect } from "react";
+import { Dispatch, SetStateAction, useContext, useEffect } from "react";
 import styles from "../css/Input.module.css";
 import { LongSwapContext, ShortSwapContext, UIContext } from "../providers";
+import { TokenState } from "../providers/context/LongSwapProvider";
 import Modal from "./Modal";
 
-const Input = (props) => {
+interface PropTypes {
+  id: number;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  input: number;
+  imgSrc?: string;
+  symbol?: string;
+  handleDisplay: (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => void;
+  display: boolean;
+  setDisplay: Dispatch<SetStateAction<boolean>>;
+  setTokenA: Dispatch<SetStateAction<TokenState>>;
+  setTokenB: Dispatch<SetStateAction<TokenState>>;
+  placeholder: string;
+}
+
+const Input = (props: PropTypes) => {
   const {
     id,
     onChange,
@@ -19,40 +36,40 @@ const Input = (props) => {
     setTokenB,
     placeholder,
   } = props;
-  const {
-    tokenBalances,
-    selectToken,
-    setEthBalance,
-    isWalletConnected,
-    setSwapAmount,
-  } = useContext(ShortSwapContext);
-  const { tokenA, tokenB } = useContext(LongSwapContext);
 
-  const { setSelectedNetwork } = useContext(UIContext);
+  const { tokenBalances, setEthBalance, isWalletConnected, setSwapAmount } =
+    useContext(ShortSwapContext)!;
+  const { tokenA, tokenB } = useContext(LongSwapContext)!;
+
+  const { setSelectedNetwork } = useContext(UIContext)!;
 
   useEffect(() => {
-    const balanceA =
-      tokenBalances && tokenBalances?.filter((item) => item[tokenA?.address]);
-    const balanceB =
-      tokenBalances && tokenBalances?.filter((item) => item[tokenB?.address]);
+    if (tokenA) {
+      const balanceA =
+        tokenBalances && tokenBalances?.filter((item) => item[tokenA?.address]);
+      setTokenA({
+        ...tokenA,
+        balance: balanceA?.[0]?.[tokenA?.address],
+      });
 
-    setTokenA({
-      ...tokenA,
-      balance: balanceA?.[0]?.[tokenA?.address],
-    });
-    setTokenB({
-      ...tokenB,
-      balance: balanceB?.[0]?.[tokenB?.address],
-    });
+      setEthBalance(balanceA?.[0]?.[tokenA?.address]);
+    }
+    if (tokenB) {
+      const balanceB =
+        tokenBalances && tokenBalances?.filter((item) => item[tokenB?.address]);
+
+      setTokenB({
+        ...tokenB,
+        balance: balanceB?.[0]?.[tokenB?.address],
+      });
+    }
     // TODO: Rename this to TokenInBalance.
-    setEthBalance(balanceA?.[0]?.[tokenA?.address]);
-
     return () => {
-      setSwapAmount();
+      setSwapAmount(0);
     };
   }, [setTokenA, setTokenB, tokenBalances, setSelectedNetwork]);
 
-  function handleKeyPress(event) {
+  function handleKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
     const keyPressed = event.key;
     if (
       keyPressed === "-" ||
@@ -81,7 +98,7 @@ const Input = (props) => {
           <button
             className={classnames(styles.btn, styles.currencySelect)}
             onClick={handleDisplay}
-            id={id}
+            id={id.toString()}
           >
             <span className={styles.spnCurrency}>
               <div className={styles.currency}>
@@ -121,11 +138,11 @@ const Input = (props) => {
           ) : tokenBalances ? (
             id === 1 ? (
               <p className={styles.balanceText}>
-                {parseFloat(tokenA?.balance)?.toFixed(2)}{" "}
+                {tokenA?.balance?.toFixed(2) ?? "N/A"}{" "}
                 <span
                   className={styles.maxInput}
                   onClick={() => {
-                    setSwapAmount(parseFloat(tokenA?.balance));
+                    setSwapAmount(tokenA?.balance ?? 0);
                   }}
                 >
                   Max
@@ -133,7 +150,7 @@ const Input = (props) => {
               </p>
             ) : (
               <p className={styles.balanceText}>
-                {parseFloat(tokenB?.balance)?.toFixed(2)}
+                {tokenB?.balance?.toFixed(2) ?? "N/A"}
               </p>
             )
           ) : (
@@ -146,7 +163,6 @@ const Input = (props) => {
         <Modal
           display={display}
           setDisplay={setDisplay}
-          selectToken={selectToken}
           setTokenA={setTokenA}
           setTokenB={setTokenB}
           tokenBalances={tokenBalances}

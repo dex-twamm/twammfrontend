@@ -25,10 +25,10 @@ export interface TokenState extends TokenType {
 interface LongSwapContextValue {
   sliderValue: number;
   setSliderValue: Dispatch<SetStateAction<number>>;
-  tokenA: TokenState | undefined;
-  setTokenA: Dispatch<SetStateAction<TokenState | undefined>>;
-  tokenB: TokenState | undefined;
-  setTokenB: Dispatch<SetStateAction<TokenState | undefined>>;
+  tokenA: TokenState;
+  setTokenA: Dispatch<SetStateAction<TokenState>>;
+  tokenB: TokenState;
+  setTokenB: Dispatch<SetStateAction<TokenState>>;
   targetDate: string | undefined;
   setTargetDate: Dispatch<SetStateAction<string | undefined>>;
   orderLogsDecoded: any;
@@ -74,8 +74,24 @@ const LongSwapProvider: React.FC<LongSwapProviderProps> = ({ children }) => {
   }>({ balError: undefined });
   const [longSwapVerifyLoading, setLongSwapVerifyLoading] =
     useState<boolean>(false);
-  const [tokenA, setTokenA] = useState<TokenState | undefined>();
-  const [tokenB, setTokenB] = useState<TokenState | undefined>();
+  const [tokenA, setTokenA] = useState<TokenState>({
+    symbol: "",
+    name: "",
+    decimals: 0,
+    address: "",
+    logo: "",
+    balance: 0,
+    tokenIsSet: false,
+  });
+  const [tokenB, setTokenB] = useState<TokenState>({
+    symbol: "",
+    name: "",
+    decimals: 0,
+    address: "",
+    logo: "",
+    balance: 0,
+    tokenIsSet: false,
+  });
 
   const { selectedNetwork } = useContext(UIContext)!;
   useEffect(() => {

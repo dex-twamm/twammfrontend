@@ -173,7 +173,7 @@ const Swap = (props: PropTypes) => {
         <Box className={lsStyles.mainBox}>
           <Input
             id={1}
-            input={swapAmount ? swapAmount.toString() : ""}
+            input={swapAmount ? swapAmount : 0}
             placeholder="0.0"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setSwapAmount(getInputLimit(e.target.value));
@@ -181,7 +181,6 @@ const Swap = (props: PropTypes) => {
             imgSrc={tokenA?.logo}
             symbol={tokenA?.symbol}
             handleDisplay={handleDisplay}
-            selectToken={selectToken}
             display={display}
             setDisplay={setDisplay}
             setTokenA={setTokenA}
@@ -191,8 +190,8 @@ const Swap = (props: PropTypes) => {
             id={2}
             input={
               expectedSwapOut
-                ? bigToStr(BigNumber.from(expectedSwapOut), tokenB?.decimals)
-                : ""
+                ? +bigToStr(BigNumber.from(expectedSwapOut), tokenB?.decimals)
+                : 0
             }
             placeholder=""
             imgSrc={tokenB?.logo}
@@ -201,7 +200,6 @@ const Swap = (props: PropTypes) => {
               e.target.value
             }
             handleDisplay={handleDisplay}
-            selectToken={selectToken}
             display={display}
             setDisplay={setDisplay}
             setTokenA={setTokenA}

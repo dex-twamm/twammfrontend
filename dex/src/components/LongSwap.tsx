@@ -148,7 +148,6 @@ const LongSwap = (props: PropTypes) => {
         selectedNetwork
       );
 
-      console.log(targetDate, executionTime);
       setTargetDate(targetDate);
       setExecutionTIme(executionTime);
     }
@@ -255,7 +254,7 @@ const LongSwap = (props: PropTypes) => {
 
           <Input
             id={1}
-            input={swapAmount ? swapAmount.toString() : ""}
+            input={swapAmount ? swapAmount : 0}
             placeholder="0.0"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setSwapAmount(getInputLimit(e.target.value));
@@ -263,7 +262,6 @@ const LongSwap = (props: PropTypes) => {
             imgSrc={tokenA?.logo}
             symbol={tokenA?.symbol}
             handleDisplay={handleDisplay}
-            selectToken={selectToken}
             display={display}
             setDisplay={setDisplay}
             setTokenA={setTokenA}
