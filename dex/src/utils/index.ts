@@ -37,7 +37,7 @@ export const getProperFixedValue = (num: number) => {
 export const bigToStr = (bigNum: BigNumber, decimalPlaces?: number) => {
   return getProperFixedValue(
     parseFloat(ethers.utils.formatUnits(bigNum, decimalPlaces))
-  );
+  ).toString();
 };
 
 export const bigToFloat = (bigNum: BigNumber, decimalPlaces?: number) => {
