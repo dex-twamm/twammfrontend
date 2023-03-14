@@ -2,15 +2,17 @@ import { ethers, providers } from "ethers";
 import { getEthLogs } from "./get_ethLogs";
 import { NETWORKS } from "./networks";
 import { web3Modal } from "./providerOptions";
+import { Dispatch, SetStateAction } from "react";
+import { SelectedNetworkType } from "../providers/context/UIProvider";
 
 export const connectWallet = async (
-  setweb3provider,
-  setCurrentBlock,
-  setBalance,
-  setAccount,
-  setWalletConnected,
-  setSelectedNetwork
-) => {
+  setweb3provider: Dispatch<SetStateAction<any>>,
+  setCurrentBlock: Dispatch<SetStateAction<any>>,
+  setBalance: Dispatch<SetStateAction<number>>,
+  setAccount: Dispatch<SetStateAction<string>>,
+  setWalletConnected: Dispatch<SetStateAction<boolean>>,
+  setSelectedNetwork: Dispatch<SetStateAction<SelectedNetworkType>>
+): Promise<void> => {
   try {
     const provider = await web3Modal.connect();
     // TODO: Fix switching to Goerli on Coinbase Wallet.
@@ -24,24 +26,25 @@ export const connectWallet = async (
     const walletBalance = await web3Provider.getBalance(accounts[0]);
     const ethBalance = ethers.utils.formatEther(walletBalance);
     const humanFriendlyBalance = parseFloat(ethBalance).toFixed(4);
-
-    localStorage.setItem("account", accounts);
+    localStorage.setItem("account", accounts[0]);
     localStorage.setItem("balance", humanFriendlyBalance);
     localStorage.setItem("walletConnection", web3Provider?.connection?.url);
     if (accounts) setAccount(accounts[0]);
     if (web3Provider) setWalletConnected(true);
     setweb3provider(web3Provider);
     setCurrentBlock(await web3Provider.getBlock("latest"));
-    setBalance(humanFriendlyBalance);
+    setBalance(parseFloat(humanFriendlyBalance));
 
-    window.ethereum?.request({ method: "net_version" }).then((net_version) => {
-      const initialNetwork = NETWORKS.find((nw) => nw.chainId === net_version);
+    const { ethereum }: any = window;
+
+    ethereum?.request({ method: "net_version" }).then((net_version: string) => {
+      const initialNetwork = NETWORKS.find((nw) => nw.chainId === net_version)!;
       setSelectedNetwork({
         network: initialNetwork?.name,
         logo: initialNetwork?.logo,
         chainId: initialNetwork?.chainId,
         poolId: localStorage.getItem("poolId")
-          ? localStorage.getItem("poolId")
+          ? parseFloat(localStorage.getItem("poolId")!)
           : 0,
       });
     });
@@ -51,16 +54,16 @@ export const connectWallet = async (
 };
 
 export const connectWalletAndGetEthLogs = async (
-  setweb3provider,
-  setCurrentBlock,
-  setBalance,
-  setAccount,
-  setWalletConnected,
-  setSelectedNetwork,
-  web3provider,
-  account,
-  selectedNetwork
-) => {
+  setweb3provider: Dispatch<SetStateAction<any>>,
+  setCurrentBlock: Dispatch<SetStateAction<any>>,
+  setBalance: Dispatch<SetStateAction<number>>,
+  setAccount: Dispatch<SetStateAction<string>>,
+  setWalletConnected: Dispatch<SetStateAction<boolean>>,
+  setSelectedNetwork: Dispatch<SetStateAction<SelectedNetworkType>>,
+  web3provider: any,
+  account: string,
+  selectedNetwork: SelectedNetworkType
+): Promise<void> => {
   await connectWallet(
     setweb3provider,
     setCurrentBlock,
