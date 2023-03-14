@@ -1,11 +1,27 @@
 import { Skeleton } from "@mui/material";
 import classNames from "classnames";
-import React, { useContext, useEffect, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import styles from "../css/Modal.module.css";
 import { LongSwapContext, ShortSwapContext, UIContext } from "../providers";
 import { getPoolTokens } from "../utils/poolUtils";
 
 import { getAllowance } from "../utils/getApproval";
+import { TokenState } from "../providers/context/LongSwapProvider";
+import { TokenType } from "../utils/pool";
+
+interface PropTypes {
+  display: boolean;
+  setDisplay: Dispatch<SetStateAction<boolean>>;
+  setTokenA: Dispatch<SetStateAction<TokenState>>;
+  setTokenB: Dispatch<SetStateAction<TokenState>>;
+  tokenBalances: any;
+}
 
 const Modal = ({
   display,
@@ -13,7 +29,7 @@ const Modal = ({
   setTokenA,
   setTokenB,
   tokenBalances,
-}) => {
+}: PropTypes) => {
   // useContext To Retrieve The Source and Destination Address of The Token
 
   const {
@@ -24,13 +40,13 @@ const Modal = ({
     swapAmount,
     account,
     web3provider,
-  } = useContext(ShortSwapContext);
+  } = useContext(ShortSwapContext)!;
 
-  const { tokenA, tokenB } = useContext(LongSwapContext);
+  const { tokenA, tokenB } = useContext(LongSwapContext)!;
 
-  const [tokenDetails, setTokenDetails] = useState();
+  const { selectedNetwork } = useContext(UIContext)!;
 
-  const { selectedNetwork } = useContext(UIContext);
+  const [tokenDetails, setTokenDetails] = useState<TokenType[] | undefined>();
 
   useEffect(() => {
     const tokenDetail = getPoolTokens(selectedNetwork);
@@ -43,20 +59,24 @@ const Modal = ({
   };
 
   // Handle Select Token Modal display
-  const handleTokenSelection = (token) => {
-    const chosenToken = tokenDetails?.find((x) => x.symbol === token.symbol);
-
-    let balances = tokenBalances.map((obj) => ({
-      address: Object.keys(obj)[0],
-      balance: parseFloat(Object.values(obj)[0]).toFixed(2),
-    }));
+  const handleTokenSelection = (token: TokenType) => {
+    const chosenToken: TokenType = tokenDetails?.find(
+      (x) => x.symbol === token.symbol
+    )!;
+    let balances: { [address: string]: number }[] = tokenBalances.map(
+      (obj: { [address: string]: number }) => ({
+        address: Object.keys(obj)[0],
+        balance: +Object.values(obj)[0].toFixed(2),
+      })
+    );
 
     const chosenTokenBalance = balances.find(
-      (x) => x.address === chosenToken.address
-    ).balance;
+      (x) => x?.address.toString() === chosenToken?.address.toString()
+    )?.balance;
+
     if (selectToken === "1") {
       //set tokenFrom
-      setEthBalance(chosenTokenBalance);
+      setEthBalance(chosenTokenBalance!);
       if (chosenToken.symbol === tokenA.symbol) {
         return <></>;
       } else if (chosenToken.symbol === tokenB.symbol) {
@@ -67,7 +87,7 @@ const Modal = ({
       }
       setTokenA({
         ...chosenToken,
-        balance: chosenTokenBalance,
+        balance: chosenTokenBalance!,
         tokenIsSet: true,
       });
     } else if (selectToken === "2") {
@@ -76,7 +96,7 @@ const Modal = ({
       } else
         setTokenB({
           ...chosenToken,
-          balance: chosenTokenBalance,
+          balance: chosenTokenBalance!,
           tokenIsSet: true,
         });
     }
@@ -96,9 +116,12 @@ const Modal = ({
 
   let tokensList;
   let tokensDetail = tokenDetails;
-  const getMarkup = (token) => {
+  const getMarkup = (token: TokenType) => {
     const balance =
-      tokenBalances && tokenBalances?.filter((item) => item[token.address]);
+      tokenBalances &&
+      tokenBalances?.filter(
+        (item: { [address: string]: number }) => item[token.address]
+      );
 
     return (
       <>
@@ -121,11 +144,6 @@ const Modal = ({
             <Skeleton width={100} />
           )}
         </p>
-        {token.type === "coming_soon" && (
-          <div className={styles.comingSoon}>
-            <span>coming soon...</span>
-          </div>
-        )}
       </>
     );
   };
@@ -165,38 +183,38 @@ const Modal = ({
     });
   }
 
-  return (
-    display && (
-      <div
-        onClick={() => {
-          setDisplay(false);
-        }}
-        className={styles.modalWrapper}
-      >
-        <div onClick={(e) => e.stopPropagation()} className={styles.container}>
-          <div className={styles.modalContainer}>
-            <div className={styles.modalHeading}>Select a token</div>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className=""
-              onClick={handleModalClose}
-            >
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          </div>
-          <div className={styles.modalTokenList}>{tokensList}</div>
+  return display ? (
+    <div
+      onClick={() => {
+        setDisplay(false);
+      }}
+      className={styles.modalWrapper}
+    >
+      <div onClick={(e) => e.stopPropagation()} className={styles.container}>
+        <div className={styles.modalContainer}>
+          <div className={styles.modalHeading}>Select a token</div>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className=""
+            onClick={handleModalClose}
+          >
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
         </div>
+        <div className={styles.modalTokenList}>{tokensList}</div>
       </div>
-    )
+    </div>
+  ) : (
+    <></>
   );
 };
 
