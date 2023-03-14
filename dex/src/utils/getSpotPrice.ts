@@ -1,6 +1,7 @@
 import { BigNumber, ethers } from "ethers";
 import { Dispatch, SetStateAction } from "react";
 import { POPUP_MESSAGE } from "../constants";
+import { SelectedNetworkType } from "../providers/context/UIProvider";
 import { PoolType, TokenType } from "./pool";
 import { getPoolConfig } from "./poolUtils";
 import { verifySwapTokens } from "./swap";
@@ -17,7 +18,7 @@ export const spotPrice = async (
   setFormErrors: Dispatch<SetStateAction<{ balError: string | undefined }>>,
   setSpotPrice: Dispatch<SetStateAction<number>>,
   setExpectedSwapOut: Dispatch<SetStateAction<number>>,
-  currentNetwork: { network: string; poolId: number }
+  currentNetwork: SelectedNetworkType
 ): Promise<void> => {
   if (swapAmount) {
     setSpotPriceLoading(true);

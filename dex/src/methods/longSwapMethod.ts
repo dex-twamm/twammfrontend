@@ -1,3 +1,4 @@
+import { SelectedNetworkType } from "../providers/context/UIProvider";
 import { timeDeltaString } from "../utils";
 import { getPoolBlockInterval } from "../utils/poolUtils";
 
@@ -9,7 +10,7 @@ interface ValueLabelReturnType {
 const valueLabel = (
   value: number,
   currentBlock: any,
-  currentNetwork: { network: string; poolId: number }
+  currentNetwork: SelectedNetworkType
 ): ValueLabelReturnType => {
   const blockInterval: number = getPoolBlockInterval(currentNetwork)!;
 
