@@ -5,11 +5,11 @@ import { Dispatch, SetStateAction } from "react";
 export const disconnect = async (
   setAccount: Dispatch<SetStateAction<string>>,
   setWalletConnected: Dispatch<SetStateAction<boolean>>,
-  setBalance: Dispatch<SetStateAction<number | undefined>>
+  setBalance: Dispatch<SetStateAction<number>>
 ): Promise<void> => {
   web3Modal.clearCachedProvider();
   setAccount("");
   setWalletConnected(false);
-  setBalance(undefined);
+  setBalance(0);
   localStorage.clear();
 };
