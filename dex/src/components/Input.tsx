@@ -90,7 +90,7 @@ const Input = (props: PropTypes) => {
             type="number"
             min={0}
             placeholder={placeholder}
-            value={input}
+            value={input ?? ""}
             onChange={onChange}
             onKeyDown={handleKeyPress}
           />
