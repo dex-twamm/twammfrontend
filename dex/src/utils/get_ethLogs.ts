@@ -1,11 +1,16 @@
 import { Contract, ethers } from "ethers";
 import { TWAMM_POOL_ABI } from "../constants";
+import { SelectedNetworkType } from "../providers/context/UIProvider";
 import { getLongTermOrder } from "./longSwap";
 import { getPoolContractAddress } from "./poolUtils";
 
-export async function getEthLogs(signer, walletAddress, currentNetwork) {
-  const poolContract = new Contract(
-    getPoolContractAddress(currentNetwork),
+export async function getEthLogs(
+  signer: any,
+  walletAddress: string,
+  currentNetwork: SelectedNetworkType
+): Promise<any> {
+  const poolContract: Contract = new Contract(
+    getPoolContractAddress(currentNetwork)!,
     TWAMM_POOL_ABI,
     signer
   );
@@ -97,6 +102,5 @@ export async function getEthLogs(signer, walletAddress, currentNetwork) {
       transactionHash: eventsCancelled[i].transactionHash,
     });
   }
-
   return placedEventsDecoded;
 }

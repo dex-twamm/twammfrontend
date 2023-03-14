@@ -2,6 +2,7 @@ import { BigNumber, Contract, ethers } from "ethers";
 import { bigToStr } from ".";
 
 import { ERC20_TOKEN_CONTRACT_ABI, TWAMM_POOL_ABI } from "../constants";
+import { SelectedNetworkType } from "../providers/context/UIProvider";
 import { PoolType } from "./pool";
 import {
   getPoolContractAddress,
@@ -15,7 +16,7 @@ type MyArrayOfObjects = { [key: string]: number };
 export const getTokensBalance = async (
   signer: any,
   walletAddress: string,
-  currentNetwork: { network: string; poolId: number }
+  currentNetwork: SelectedNetworkType
 ): Promise<MyArrayOfObjects[]> => {
   const poolConfig: PoolType = getPoolConfig(currentNetwork)!;
   var tokenAddress: string[] = getPoolTokenAddresses(currentNetwork)!;
@@ -48,7 +49,7 @@ export const getTokensBalance = async (
 export const getLPTokensBalance = async (
   signer: any,
   walletAddress: string,
-  currentNetwork: { network: string; poolId: number }
+  currentNetwork: SelectedNetworkType
 ): Promise<number> => {
   const poolContract: Contract = new Contract(
     getPoolContractAddress(currentNetwork)!,

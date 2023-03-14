@@ -1,6 +1,7 @@
 import { ethers, BigNumber } from "ethers";
 import { Dispatch, SetStateAction } from "react";
 import { POPUP_MESSAGE } from "../constants";
+import { SelectedNetworkType } from "../providers/context/UIProvider";
 import { getEthLogs } from "./get_ethLogs";
 import { placeLongTermOrder } from "./longSwap";
 import { PoolType } from "./pool";
@@ -18,7 +19,7 @@ export const _placeLongTermOrders = async (
   setMessage: Dispatch<SetStateAction<string>>,
   setOrderLogsDecoded: Dispatch<SetStateAction<any>>,
   setError: Dispatch<SetStateAction<string>>,
-  currentNetwork: { network: string; poolId: number }
+  currentNetwork: SelectedNetworkType
 ): Promise<void> => {
   const poolConfig: PoolType = getPoolConfig(currentNetwork)!;
 

@@ -1,6 +1,7 @@
 import { BigNumber, ethers } from "ethers";
 import { Dispatch, SetStateAction } from "react";
 import { POPUP_MESSAGE } from "../constants";
+import { SelectedNetworkType } from "../providers/context/UIProvider";
 import { verifyLongSwapTxn } from "./longSwap";
 import { PoolType } from "./pool";
 import { getPoolConfig } from "./poolUtils";
@@ -15,7 +16,7 @@ export const verifyLongSwap = async (
   setLongSwapFormErrors: Dispatch<
     SetStateAction<{ balError: string | undefined }>
   >,
-  currentNetwork: { network: string; poolId: number },
+  currentNetwork: SelectedNetworkType,
   numberOfBlockIntervals: number,
   allowance: string
 ): Promise<void> => {

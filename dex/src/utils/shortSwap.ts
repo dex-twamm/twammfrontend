@@ -1,6 +1,7 @@
 import { ethers, BigNumber } from "ethers";
 import { Dispatch, SetStateAction } from "react";
 import { POPUP_MESSAGE } from "../constants";
+import { SelectedNetworkType } from "../providers/context/UIProvider";
 import { PoolType, TokenType } from "./pool";
 import { getPoolConfig } from "./poolUtils";
 import { swapTokens } from "./swap";
@@ -17,7 +18,7 @@ export const _swapTokens = async (
   setSuccess: Dispatch<SetStateAction<string>>,
   setError: Dispatch<SetStateAction<string>>,
   setLoading: Dispatch<SetStateAction<boolean>>,
-  currentNetwork: { network: string; poolId: number }
+  currentNetwork: SelectedNetworkType
 ): Promise<void> => {
   const poolConfig: PoolType = getPoolConfig(currentNetwork)!;
 

@@ -1,38 +1,34 @@
+import { SelectedNetworkType } from "../providers/context/UIProvider";
 import { POOLS } from "./pool";
 
-interface currentNetworkType {
-  network?: string;
-  poolId: number;
-}
-
-export const getCurrentNetwork = (currentNetwork: currentNetworkType) => {
+export const getCurrentNetwork = (currentNetwork: SelectedNetworkType) => {
   return currentNetwork?.network ?? "Ethereum";
 };
 
-export const getAllPool = (currentNetwork: currentNetworkType) => {
+export const getAllPool = (currentNetwork: SelectedNetworkType) => {
   if (currentNetwork)
     return Object.values(POOLS?.[getCurrentNetwork(currentNetwork)]);
 };
 
-export const getPoolId = (currentNetwork: currentNetworkType) => {
+export const getPoolId = (currentNetwork: SelectedNetworkType) => {
   if (currentNetwork)
     return Object.keys(POOLS[getCurrentNetwork(currentNetwork)])?.[
       currentNetwork?.poolId
     ];
 };
 
-export const getPoolConfig = (currentNetwork: currentNetworkType) => {
+export const getPoolConfig = (currentNetwork: SelectedNetworkType) => {
   if (currentNetwork)
     return Object.values(POOLS?.[getCurrentNetwork(currentNetwork)])?.[
       currentNetwork?.poolId
     ];
 };
 
-export const getPoolTokens = (currentNetwork: currentNetworkType) => {
+export const getPoolTokens = (currentNetwork: SelectedNetworkType) => {
   return getPoolConfig(currentNetwork)?.tokens;
 };
 
-export const getPoolTokenSymbol = (currentNetwork: currentNetworkType) => {
+export const getPoolTokenSymbol = (currentNetwork: SelectedNetworkType) => {
   if (currentNetwork) {
     const symbols = [
       getPoolTokens(currentNetwork)?.[0]?.symbol,
@@ -43,24 +39,24 @@ export const getPoolTokenSymbol = (currentNetwork: currentNetworkType) => {
   }
 };
 
-export const getPoolFees = (currentNetwork: currentNetworkType) => {
+export const getPoolFees = (currentNetwork: SelectedNetworkType) => {
   return getPoolConfig(currentNetwork)?.fees;
 };
 
-export const getPoolContractAddress = (currentNetwork: currentNetworkType) => {
+export const getPoolContractAddress = (currentNetwork: SelectedNetworkType) => {
   return getPoolConfig(currentNetwork)?.address;
 };
 
 export const getPoolLtoContractAddress = (
-  currentNetwork: currentNetworkType
+  currentNetwork: SelectedNetworkType
 ) => {
   return getPoolConfig(currentNetwork)?.LTOContract;
 };
 
-export const getPoolTokenAddresses = (currentNetwork: currentNetworkType) => {
+export const getPoolTokenAddresses = (currentNetwork: SelectedNetworkType) => {
   return getPoolTokens(currentNetwork)?.map((item) => item.address);
 };
 
-export const getPoolBlockInterval = (currentNetwork: currentNetworkType) => {
+export const getPoolBlockInterval = (currentNetwork: SelectedNetworkType) => {
   return getPoolConfig(currentNetwork)?.blockInterval;
 };

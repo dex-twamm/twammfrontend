@@ -3,6 +3,7 @@ import { MAX_UINT256 } from ".";
 import { getPoolId } from "./poolUtils";
 import { getExchangeContract } from "./getContracts";
 import { getGasLimit } from "./getGasLimit";
+import { SelectedNetworkType } from "../providers/context/UIProvider";
 
 export const verifySwapTokens = async (
   signer: any,
@@ -11,7 +12,7 @@ export const verifySwapTokens = async (
   assetOut: string,
   walletAddress: string,
   deadline: number,
-  currentNetwork: { network: string; poolId: number }
+  currentNetwork: SelectedNetworkType
 ): Promise<BigNumber> => {
   const verifyResult = await swapTokens(
     signer,
@@ -45,7 +46,7 @@ export const swapTokens = async (
   assetOut: string,
   walletAddress: string,
   deadline: number,
-  currentNetwork: { network: string; poolId: number },
+  currentNetwork: SelectedNetworkType,
   hasCallStatic?: boolean
 ): Promise<any> => {
   const exchangeContract = getExchangeContract(currentNetwork, signer);

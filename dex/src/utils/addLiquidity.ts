@@ -5,12 +5,13 @@ import { getPoolId, getPoolTokenAddresses, getPoolTokens } from "./poolUtils";
 import { getGasLimit } from "./getGasLimit";
 import { getBalancerHelperContract, getExchangeContract } from "./getContracts";
 import { TokenType } from "./pool";
+import { SelectedNetworkType } from "../providers/context/UIProvider";
 
 export async function cancelLTO(
   walletAddress: string,
   signer: any,
   orderId: number,
-  currentNetwork: { network: string; poolId: number }
+  currentNetwork: SelectedNetworkType
 ): Promise<any> {
   const vaultContract = getExchangeContract(currentNetwork, signer);
   // bptAmountIn As User Input
@@ -41,7 +42,7 @@ export async function withdrawLTO(
   walletAddress: string,
   signer: any,
   orderId: number,
-  currentNetwork: { network: string; poolId: number },
+  currentNetwork: SelectedNetworkType,
   hasCallStatic?: boolean
 ): Promise<any> {
   const vaultContract = getExchangeContract(currentNetwork, signer);
@@ -85,7 +86,7 @@ export async function withdrawLTO(
 export async function getPoolBalance(
   signer: any,
   tokenAddress: string,
-  currentNetwork: { network: string; poolId: number }
+  currentNetwork: SelectedNetworkType
 ): Promise<string> {
   const tokenIndex: TokenType[] = getPoolTokens(currentNetwork)?.filter(
     (item) => item.address === tokenAddress

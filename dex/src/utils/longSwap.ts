@@ -9,6 +9,7 @@ import {
 } from "./poolUtils";
 import { getExchangeContract } from "./getContracts";
 import { getGasLimit } from "./getGasLimit";
+import { SelectedNetworkType } from "../providers/context/UIProvider";
 
 const getLongSwapEncodedRequest = (
   tokenInIndex: number,
@@ -37,7 +38,7 @@ export const verifyLongSwapTxn = async (
   numberOfBlockIntervals: number,
   signer: any,
   walletAddress: string,
-  currentNetwork: { network: string; poolId: number }
+  currentNetwork: SelectedNetworkType
 ): Promise<void> => {
   const verifyLongSwapTxnResult: any = await placeLongTermOrder(
     tokenInIndex,
@@ -59,7 +60,7 @@ export async function placeLongTermOrder(
   numberOfBlockIntervals: number,
   signer: any,
   walletAddress: string,
-  currentNetwork: { network: string; poolId: number },
+  currentNetwork: SelectedNetworkType,
   isVerifyOnly?: boolean
 ) {
   const exchangeContract = getExchangeContract(currentNetwork, signer);
@@ -99,7 +100,7 @@ export async function placeLongTermOrder(
 export async function getLongTermOrder(
   signer: any,
   orderId: any,
-  currentNetwork: { network: string; poolId: number }
+  currentNetwork: SelectedNetworkType
 ): Promise<(BigNumber | string)[]> {
   const contract = new Contract(
     getPoolContractAddress(currentNetwork)!,
@@ -113,7 +114,7 @@ export async function getLongTermOrder(
 
 export async function getLastVirtualOrderBlock(
   signer: any,
-  currentNetwork: { network: string; poolId: number }
+  currentNetwork: SelectedNetworkType
 ): Promise<BigNumber> {
   const contract = new Contract(
     getPoolLtoContractAddress(currentNetwork)!,

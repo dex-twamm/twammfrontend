@@ -1,13 +1,14 @@
 import { BigNumber, Contract, providers } from "ethers";
 import { MAX_UINT256 } from ".";
 import { ERC20_TOKEN_CONTRACT_ABI } from "../constants";
+import { SelectedNetworkType } from "../providers/context/UIProvider";
 import { getVaultContractAddress } from "./networkUtils";
 
 export const getAllowance = async (
   signer: any,
   walletAddress: string,
   tokenAddress: string,
-  currentNetwork: { network: string; poolId: number }
+  currentNetwork: SelectedNetworkType
 ): Promise<BigNumber> => {
   const ERC20Contract: Contract = new Contract(
     tokenAddress,
@@ -24,7 +25,7 @@ export const getAllowance = async (
 export const approveMaxAllowance = async (
   provider: providers.Web3Provider,
   tokenAddress: string,
-  currentNetwork: { network: string; poolId: number }
+  currentNetwork: SelectedNetworkType
 ): Promise<any> => {
   const ERC20Contract: Contract = new Contract(
     tokenAddress,

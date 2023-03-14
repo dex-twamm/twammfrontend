@@ -4,6 +4,7 @@ import {
   TWAMM_POOL_ABI,
   VAULT_CONTRACT_ABI,
 } from "../constants";
+import { SelectedNetworkType } from "../providers/context/UIProvider";
 import {
   getBalancerHelperContractAddress,
   getVaultContractAddress,
@@ -11,7 +12,7 @@ import {
 import { getPoolContractAddress } from "./poolUtils";
 
 export const getExchangeContract = (
-  currentNetwork: { network: string; poolId: number },
+  currentNetwork: SelectedNetworkType,
   signer: any
 ): Contract => {
   return new Contract(
@@ -22,7 +23,7 @@ export const getExchangeContract = (
 };
 
 export const getPoolContract = (
-  currentNetwork: { network: string; poolId: number },
+  currentNetwork: SelectedNetworkType,
   signer: any
 ): Contract => {
   return new Contract(
@@ -33,7 +34,7 @@ export const getPoolContract = (
 };
 
 export const getBalancerHelperContract = (
-  currentNetwork: { network: string; poolId: number },
+  currentNetwork: SelectedNetworkType,
   signer: any
 ): Contract => {
   return new Contract(
