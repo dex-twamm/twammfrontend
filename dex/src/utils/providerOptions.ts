@@ -16,9 +16,9 @@ export const providerOptions = {
       infuraId: process.env.INFURA_KEY,
     },
   },
-};
+} as const;
 
-export const web3Modal = new Web3Modal({
+export const web3Modal: Web3Modal = new Web3Modal({
   cacheProvider: true,
   providerOptions,
 });
