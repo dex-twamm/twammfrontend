@@ -30,7 +30,6 @@ export const connectWallet = async (
     localStorage.setItem("walletConnection", web3Provider?.connection?.url);
     if (accounts) setAccount(accounts[0]);
     if (web3Provider) setWalletConnected(true);
-    console.log("web3Provider", web3Provider);
     setweb3provider(web3Provider);
     setCurrentBlock(await web3Provider.getBlock("latest"));
     setBalance(humanFriendlyBalance);

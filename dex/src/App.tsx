@@ -38,16 +38,16 @@ function App() {
     web3provider,
     setFormErrors,
     setSpotPrice,
-  } = useContext(ShortSwapContext);
+  } = useContext(ShortSwapContext)!;
   const {
     tokenA,
     setOrderLogsDecoded,
     setLastVirtualOrderBlock,
     setAllowance,
     setOrderLogsLoading,
-  } = useContext(LongSwapContext);
+  } = useContext(LongSwapContext)!;
 
-  const { setSelectedNetwork, selectedNetwork } = useContext(UIContext);
+  const { setSelectedNetwork, selectedNetwork } = useContext(UIContext)!;
 
   // Connect cached Wallet as early as possible in cycle.
   useEffect(() => {
@@ -86,7 +86,7 @@ function App() {
           selectedNetwork
         )
           .then((res) => {
-            setAllowance(bigToStr(res, tokenA.decimals));
+            setAllowance(bigToStr(res, tokenA.decimals).toString());
           })
           .catch((err) => console.log(err));
       }
@@ -157,14 +157,14 @@ function App() {
     if (account && balance) {
       setAccount(account);
       setWalletConnected(true);
-      setBalance(balance);
+      setBalance(parseFloat(balance));
     }
   }, []);
 
   useEffect(() => {
     let signer = web3provider?.getSigner();
     if (signer?.on) {
-      const handleAccountsChanged = (accounts) => {
+      const handleAccountsChanged = (accounts: string[]) => {
         if (accounts) setAccount(accounts[0]);
       };
       const handleDisconnect = () => {
@@ -186,17 +186,15 @@ function App() {
 
   // This will automatically change the account of our app without refreshing when the account in metamask is changed.
   useEffect(() => {
-    if (window.ethereum) {
-      const accountsChangedListener = function (accounts) {
+    const { ethereum }: any = window;
+    if (ethereum) {
+      const accountsChangedListener = function (accounts: string[]) {
         setAccount(accounts[0]);
       };
-      window.ethereum.on("accountsChanged", accountsChangedListener);
+      ethereum.on("accountsChanged", accountsChangedListener);
 
       return () => {
-        window.ethereum.removeListener(
-          "accountsChanged",
-          accountsChangedListener
-        );
+        ethereum.removeListener("accountsChanged", accountsChangedListener);
       };
     }
   }, []);
@@ -213,10 +211,10 @@ function App() {
   }, [account]);
 
   useEffect(() => {
-    setSwapAmount();
-    setExpectedSwapOut();
+    setSwapAmount(0);
+    setExpectedSwapOut(0);
     setFormErrors({ balError: "" });
-    setSpotPrice();
+    setSpotPrice(0);
   }, [selectedNetwork]);
 
   return (
