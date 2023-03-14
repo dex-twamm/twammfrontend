@@ -254,7 +254,7 @@ const LongSwap = (props: PropTypes) => {
 
           <Input
             id={1}
-            input={swapAmount ? swapAmount : 0}
+            input={swapAmount ? swapAmount : undefined}
             placeholder="0.0"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setSwapAmount(getInputLimit(parseFloat(e.target.value)));

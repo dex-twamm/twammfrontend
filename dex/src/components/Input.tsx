@@ -9,7 +9,7 @@ import Modal from "./Modal";
 interface PropTypes {
   id: number;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
-  input: number;
+  input: number | undefined;
   imgSrc?: string;
   symbol?: string;
   handleDisplay: (
@@ -88,7 +88,7 @@ const Input = (props: PropTypes) => {
           <input
             className={styles.textField}
             type="number"
-            min={0}
+            // min={0}
             placeholder={placeholder}
             value={input}
             onChange={onChange}
