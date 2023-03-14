@@ -20,14 +20,19 @@ import { approveMaxAllowance, getAllowance } from "../utils/getApproval";
 
 import { UIContext } from "../providers/context/UIProvider";
 
-const Swap = (props) => {
+interface PropTypes {
+  handleSwapAction: any;
+  spotPriceLoading: boolean;
+}
+
+const Swap = (props: PropTypes) => {
   const { handleSwapAction, spotPriceLoading } = props;
 
-  const [display, setDisplay] = useState(false);
+  const [display, setDisplay] = useState<boolean>(false);
   const [hasBalancerOrTransactionError, setHasBalancerOrTransactionError] =
-    useState(true);
+    useState<boolean>(true);
 
-  const [tokenRateSwitch, setTokenRateSwitch] = useState(false);
+  const [tokenRateSwitch, setTokenRateSwitch] = useState<boolean>(false);
 
   const {
     account,
@@ -45,25 +50,25 @@ const Swap = (props) => {
     setTransactionHash,
     isWalletConnected,
     setAllowTwammErrorMessage,
-  } = useContext(ShortSwapContext);
+    web3provider,
+  } = useContext(ShortSwapContext)!;
 
   const { tokenA, tokenB, setTokenA, setTokenB, allowance, setAllowance } =
-    useContext(LongSwapContext);
+    useContext(LongSwapContext)!;
 
-  const { web3provider } = useContext(ShortSwapContext);
-  const { selectedNetwork } = useContext(UIContext);
+  const { selectedNetwork } = useContext(UIContext)!;
 
-  const handleDisplay = (event) => {
+  const handleDisplay = (event: React.MouseEvent<HTMLElement>) => {
     setSelectToken(event.currentTarget.id);
     setDisplay(!display);
     setSpotPrice(0);
-    setExpectedSwapOut();
+    setExpectedSwapOut(0);
   };
 
   useEffect(() => {
     return () => {
-      setExpectedSwapOut();
-      setSpotPrice();
+      setExpectedSwapOut(0);
+      setSpotPrice(0);
     };
   }, []);
 
@@ -72,12 +77,15 @@ const Swap = (props) => {
       setTokenB({
         symbol: "Select Token",
         logo: "",
-        balance: "",
+        balance: 0,
         tokenIsSet: false,
+        name: "",
+        decimals: 0,
+        address: "",
       });
   }, [tokenA, tokenB, setTokenB]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
 
@@ -93,8 +101,8 @@ const Swap = (props) => {
   const handleApproveButton = async () => {
     try {
       const approval = await approveMaxAllowance(
-        web3provider,
-        tokenA?.address,
+        web3provider!,
+        tokenA?.address!,
         selectedNetwork
       );
       setTransactionHash(approval.hash);
@@ -102,22 +110,22 @@ const Swap = (props) => {
       await getAllowance(
         web3provider?.getSigner(),
         account,
-        tokenA?.address,
+        tokenA?.address!,
         selectedNetwork
       ).then((res) => {
-        setAllowance(bigToStr(res, tokenA?.decimals));
+        setAllowance(bigToStr(res, tokenA?.decimals).toString());
       });
     } catch (e) {
       console.log(e);
-      setAllowTwammErrorMessage(e?.message);
+      setAllowTwammErrorMessage("Error!");
     }
   };
 
-  const validate = (values) => {
+  const validate = (values: string) => {
     const valueInt = parseFloat(values);
-    const errors = {};
-    if (!valueInt > 0) {
-      errors.swapAmount = "Swap Amount Is Required";
+    const errors = { balError: "" };
+    if (valueInt <= 0) {
+      errors.balError = "Swap Amount Is Required";
     }
     return errors;
   };
@@ -137,7 +145,7 @@ const Swap = (props) => {
   useEffect(() => {
     return () => {
       setFormErrors({ balError: undefined });
-      setTransactionHash(undefined);
+      setTransactionHash("");
       setExpectedSwapOut(0);
       setSpotPrice(0);
     };
@@ -153,7 +161,7 @@ const Swap = (props) => {
   useEffect(() => {
     if (!swapAmount) {
       setFormErrors({ balError: undefined });
-      setSpotPrice();
+      setSpotPrice(0);
       setExpectedSwapOut(0);
     }
   }, [swapAmount, setFormErrors, setSpotPrice, setExpectedSwapOut]);
@@ -167,7 +175,7 @@ const Swap = (props) => {
             id={1}
             input={swapAmount ? swapAmount.toString() : ""}
             placeholder="0.0"
-            onChange={(e) => {
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setSwapAmount(getInputLimit(e.target.value));
             }}
             imgSrc={tokenA?.logo}
@@ -183,13 +191,15 @@ const Swap = (props) => {
             id={2}
             input={
               expectedSwapOut
-                ? bigToStr(BigNumber.from(expectedSwapOut), tokenB.decimals)
+                ? bigToStr(BigNumber.from(expectedSwapOut), tokenB?.decimals)
                 : ""
             }
             placeholder=""
             imgSrc={tokenB?.logo}
             symbol={tokenB?.symbol}
-            onChange={(e) => e.target.value}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              e.target.value
+            }
             handleDisplay={handleDisplay}
             selectToken={selectToken}
             display={display}
@@ -240,14 +250,11 @@ const Swap = (props) => {
                     ) : (
                       <p
                         className={lsStyles.spotPrice}
-                        style={{
-                          padding: { xs: "0px", sm: "8px 0px" },
-                        }}
                         onClick={handleTokenRateSwitch}
                       >
                         {!tokenRateSwitch && (
                           <>
-                            {` 1 ${tokenA.symbol} = ${"  "}`}
+                            {` 1 ${tokenA?.symbol} = ${"  "}`}
                             <label
                               style={{ marginLeft: "4px", cursor: "pointer" }}
                             >
@@ -271,7 +278,7 @@ const Swap = (props) => {
                                 <Skeleton width={"100px"} />
                               ) : (
                                 ` ${getInversedValue(spotPrice)} ${
-                                  tokenA.symbol
+                                  tokenA?.symbol
                                 }`
                               )}
                             </label>
@@ -293,8 +300,8 @@ const Swap = (props) => {
 
           {swapAmount &&
           parseFloat(allowance) < swapAmount &&
-          tokenA.tokenIsSet &&
-          tokenB.tokenIsSet ? (
+          tokenA?.tokenIsSet &&
+          tokenB?.tokenIsSet ? (
             <button
               className={classNames(
                 styles.btn,
@@ -326,8 +333,8 @@ const Swap = (props) => {
               )}
               onClick={handleClick}
               disabled={
-                !tokenA.tokenIsSet ||
-                !tokenB.tokenIsSet ||
+                !tokenA?.tokenIsSet ||
+                !tokenB?.tokenIsSet ||
                 !swapAmount ||
                 hasBalancerOrTransactionError ||
                 spotPriceLoading ||
@@ -336,7 +343,7 @@ const Swap = (props) => {
                   : false
               }
             >
-              {!tokenA.tokenIsSet || !tokenB.tokenIsSet ? (
+              {!tokenA?.tokenIsSet || !tokenB?.tokenIsSet ? (
                 "Select a Token"
               ) : !swapAmount ? (
                 "Enter an Amount"
