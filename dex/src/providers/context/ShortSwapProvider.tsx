@@ -4,7 +4,7 @@ interface ShortSwapProviderProps {
   children: React.ReactNode;
 }
 
-const useSwapState = () => {
+const useShortSwapState = () => {
   const [swapAmount, setSwapAmount] = useState(0);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -78,10 +78,10 @@ const useSwapState = () => {
   };
 };
 
-type ShortSwapContextValue = ReturnType<typeof useSwapState>;
+type ShortSwapContextValue = ReturnType<typeof useShortSwapState>;
 
 const ShortSwapProvider: React.FC<ShortSwapProviderProps> = ({ children }) => {
-  const swapState = useSwapState();
+  const swapState = useShortSwapState();
   return (
     <ShortSwapContext.Provider value={swapState}>
       {children}
