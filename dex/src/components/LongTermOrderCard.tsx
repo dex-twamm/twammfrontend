@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
-import { LongSwapContext, ShortSwapContext } from "../providers";
+import { LongSwapContext } from "../providers";
 import CircularProgressBar from "./alerts/CircularProgressBar";
 import LongTermOrderSingleCard from "./LongTermOrderSingleCard";
 import styles from "../css/LongTermOrderCard.module.css";
+import { useShortSwapContext } from "../providers/context/ShortSwapProvider";
 
 const LongTermOrderCard = () => {
-  const { isWalletConnected } = useContext(ShortSwapContext)!;
+  const { isWalletConnected } = useShortSwapContext();
   const { orderLogsDecoded, orderLogsLoading } = useContext(LongSwapContext)!;
 
   return !isWalletConnected ? (

@@ -13,7 +13,7 @@ import classNames from "classnames";
 import LongTermSwapCardDropdown from "./LongTermSwapCardDropdown";
 import { _withdrawLTO } from "../utils/_withdrawLto";
 import { _cancelLTO } from "../utils/_cancelLto";
-import { LongSwapContext, ShortSwapContext } from "../providers";
+import { LongSwapContext } from "../providers";
 import { ethers } from "ethers";
 import { getPoolConfig } from "../utils/poolUtils";
 import { getBlockExplorerTransactionUrl } from "../utils/networkUtils";
@@ -27,6 +27,7 @@ import {
 } from "../utils/constants";
 import { formatToReadableTime } from "../utils/timeUtils";
 import { TokenType } from "../utils/pool";
+import { useShortSwapContext } from "../providers/context/ShortSwapProvider";
 
 interface PropTypes {
   orderLog: any;
@@ -45,7 +46,7 @@ const LongTermOrderSingleCard = ({ orderLog }: PropTypes) => {
     setAccount,
     setWalletConnected,
     setTransactionHash,
-  } = useContext(ShortSwapContext)!;
+  } = useShortSwapContext();
 
   const {
     lastVirtualOrderBlock,

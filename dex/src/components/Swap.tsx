@@ -6,7 +6,7 @@ import styles from "../css/AddLiquidity.module.css";
 import lsStyles from "../css/LongSwap.module.css";
 
 import { LongSwapContext } from "../providers";
-import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
+import { useShortSwapContext } from "../providers/context/ShortSwapProvider";
 import Input from "./Input";
 
 import { BigNumber } from "ethers";
@@ -38,7 +38,6 @@ const Swap = (props: PropTypes) => {
     account,
     swapAmount,
     setSwapAmount,
-    selectToken,
     setSelectToken,
     expectedSwapOut,
     setExpectedSwapOut,
@@ -51,7 +50,7 @@ const Swap = (props: PropTypes) => {
     isWalletConnected,
     setAllowTwammErrorMessage,
     web3provider,
-  } = useContext(ShortSwapContext)!;
+  } = useShortSwapContext();
 
   const { tokenA, tokenB, setTokenA, setTokenB, allowance, setAllowance } =
     useContext(LongSwapContext)!;

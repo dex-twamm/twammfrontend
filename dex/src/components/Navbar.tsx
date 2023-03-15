@@ -4,13 +4,14 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 import { Link, useLocation } from "react-router-dom";
 import { POPUP_MESSAGE } from "../constants";
 import styles from "../css/Navbar.module.css";
-import { ShortSwapContext, UIContext } from "../providers";
+import { UIContext } from "../providers";
 import { toHex, truncateAddress } from "../utils";
 import { connectWallet } from "../utils/connetWallet";
 import { DisconnectWalletOption } from "./DisconnectWalletOption";
 import { NETWORKS } from "../utils/networks";
 import logo from "../images/logo.png";
 import { getEthereumFromWindow } from "../utils/ethereum";
+import { useShortSwapContext } from "../providers/context/ShortSwapProvider";
 
 const Navbar = () => {
   const [showDisconnect, setShowDisconnect] = useState<boolean>(false);
@@ -29,7 +30,7 @@ const Navbar = () => {
     account,
     balance,
     setWalletConnected,
-  } = useContext(ShortSwapContext)!;
+  } = useShortSwapContext();
 
   const handleSelect = async (chainId: string) => {
     const defaultPoolId = 0;

@@ -3,7 +3,6 @@ import { Box, Button } from "@mui/material";
 import Modal from "@mui/material/Modal";
 import CloseIcon from "@mui/icons-material/Close";
 import { useContext } from "react";
-import { ShortSwapContext } from "../providers";
 import { truncateAddress } from "../utils";
 import { UIContext } from "../providers/context/UIProvider";
 import { disconnect } from "../utils/disconnectWallet";
@@ -15,6 +14,7 @@ import metaMaskLogo from "../images/metamask.svg";
 import coinbaseLogo from "../images/coinbase.svg";
 
 import styles from "../css/DisconnectWalletOption.module.css";
+import { useShortSwapContext } from "../providers/context/ShortSwapProvider";
 
 interface PropTypes {
   showDisconnect: boolean;
@@ -26,7 +26,7 @@ const DisconnectWalletOption = ({
   setShowDisconnect,
 }: PropTypes) => {
   const { account, setAccount, setWalletConnected, setBalance } =
-    useContext(ShortSwapContext)!;
+    useShortSwapContext();
   const handleClose = () => setShowDisconnect(false);
   const { selectedNetwork } = useContext(UIContext)!;
 

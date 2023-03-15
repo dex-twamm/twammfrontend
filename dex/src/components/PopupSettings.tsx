@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import React, { useContext } from "react";
 import styles from "../css/PopupSettings.module.css";
-import { ShortSwapContext } from "../providers";
+import { useShortSwapContext } from "../providers/context/ShortSwapProvider";
 
 interface PropTypes {
   swapType?: string;
@@ -9,7 +9,7 @@ interface PropTypes {
 
 const PopupSettings = ({ swapType }: PropTypes) => {
   const { tolerance, setTolerance, deadline, setDeadline } =
-    useContext(ShortSwapContext)!;
+    useShortSwapContext();
 
   return (
     <span

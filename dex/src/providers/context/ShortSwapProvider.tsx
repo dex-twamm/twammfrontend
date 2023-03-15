@@ -101,4 +101,4 @@ export const useShortSwapContext = () => {
   return context;
 };
 
-export { ShortSwapProvider, ShortSwapContext };
+export { ShortSwapProvider };

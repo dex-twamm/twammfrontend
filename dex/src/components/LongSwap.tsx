@@ -17,7 +17,7 @@ import {
   valueLabel,
 } from "../methods/longSwapMethod";
 import { LongSwapContext } from "../providers";
-import { ShortSwapContext } from "../providers/context/ShortSwapProvider";
+import { useShortSwapContext } from "../providers/context/ShortSwapProvider";
 import Input from "./Input";
 import { FiChevronDown } from "react-icons/fi";
 
@@ -51,7 +51,7 @@ const LongSwap = (props: PropTypes) => {
     isWalletConnected,
     web3provider,
     setAllowTwammErrorMessage,
-  } = useContext(ShortSwapContext)!;
+  } = useShortSwapContext();
 
   const {
     tokenA,

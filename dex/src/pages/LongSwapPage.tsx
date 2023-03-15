@@ -6,7 +6,7 @@ import LongTermOrderCard from "../components/LongTermOrderCard";
 import PopupSettings from "../components/PopupSettings";
 import lsStyles from "../css/LongSwap.module.css";
 import styles from "../css/ShortSwap.module.css";
-import { LongSwapContext, ShortSwapContext } from "../providers";
+import { LongSwapContext } from "../providers";
 import Tabs from "../components/Tabs";
 import PopupModal from "../components/alerts/PopupModal";
 import { _placeLongTermOrders } from "../utils/placeLongTermOrder";
@@ -18,6 +18,7 @@ import { verifyLongSwap } from "../utils/verifyLongSwap";
 import { getAllPool } from "../utils/poolUtils";
 import { MenuItem, Select } from "@mui/material";
 import { getEthLogs } from "../utils/get_ethLogs";
+import { useShortSwapContext } from "../providers/context/ShortSwapProvider";
 
 const LongSwapPage = () => {
   const {
@@ -47,7 +48,7 @@ const LongSwapPage = () => {
     setBalance,
     setAccount,
     setWalletConnected,
-  } = useContext(ShortSwapContext)!;
+  } = useShortSwapContext();
 
   const [showSettings, setShowSettings] = useState<boolean>(false);
 

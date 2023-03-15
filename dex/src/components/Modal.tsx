@@ -8,12 +8,13 @@ import React, {
   useState,
 } from "react";
 import styles from "../css/Modal.module.css";
-import { LongSwapContext, ShortSwapContext, UIContext } from "../providers";
+import { LongSwapContext, UIContext } from "../providers";
 import { getPoolTokens } from "../utils/poolUtils";
 
 import { getAllowance } from "../utils/getApproval";
 import { TokenState } from "../providers/context/LongSwapProvider";
 import { TokenType } from "../utils/pool";
+import { useShortSwapContext } from "../providers/context/ShortSwapProvider";
 
 interface PropTypes {
   display: boolean;
@@ -40,7 +41,7 @@ const Modal = ({
     swapAmount,
     account,
     web3provider,
-  } = useContext(ShortSwapContext)!;
+  } = useShortSwapContext();
 
   const { tokenA, tokenB } = useContext(LongSwapContext)!;
 
