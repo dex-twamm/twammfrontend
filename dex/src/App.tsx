@@ -4,7 +4,7 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import LongSwapPage from "./pages/LongSwapPage";
 import ShortSwap from "./pages/ShortSwap";
-import { LongSwapContext, ShortSwapContext, UIContext } from "./providers";
+import { LongSwapContext, UIContext } from "./providers";
 import { bigToStr } from "./utils";
 import { connectWallet } from "./utils/connetWallet";
 import { getLPTokensBalance, getTokensBalance } from "./utils/getAmount";
@@ -16,6 +16,7 @@ import LiquidityPage from "./pages/LiquidityPage";
 import { disconnect } from "./utils/disconnectWallet";
 import ContactPage from "./pages/ContactPage";
 import ChatBubbleOutlineTwoToneIcon from "@mui/icons-material/ChatBubbleOutlineTwoTone";
+import { useShortSwapContext } from "./providers/context/ShortSwapProvider";
 
 function App() {
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ function App() {
     web3provider,
     setFormErrors,
     setSpotPrice,
-  } = useContext(ShortSwapContext)!;
+  } = useShortSwapContext();
   const {
     tokenA,
     setOrderLogsDecoded,

@@ -1,7 +1,5 @@
-import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { Link, useLocation } from "react-router-dom";
 import { POPUP_MESSAGE } from "../constants";
@@ -10,9 +8,9 @@ import { ShortSwapContext, UIContext } from "../providers";
 import { toHex, truncateAddress } from "../utils";
 import { connectWallet } from "../utils/connetWallet";
 import { DisconnectWalletOption } from "./DisconnectWalletOption";
-import NavOptionDropdwon from "./navbarDropdown/NavOptionDropdwon";
 import { NETWORKS } from "../utils/networks";
 import logo from "../images/logo.png";
+import { getEthereumFromWindow } from "../utils/ethereum";
 
 const Navbar = () => {
   const [showDisconnect, setShowDisconnect] = useState<boolean>(false);
@@ -39,8 +37,8 @@ const Navbar = () => {
     const id = chainId;
     if (isWalletConnected) {
       try {
-        const { ethereum }: any = window;
-        await ethereum.request({
+        const ethereum = getEthereumFromWindow();
+        await ethereum?.request?.({
           method: "wallet_switchEthereumChain",
           params: [{ chainId: toHex(id) }],
         });
