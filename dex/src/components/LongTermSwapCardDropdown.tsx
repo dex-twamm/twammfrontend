@@ -1,14 +1,14 @@
 import { Box, IconButton } from "@mui/material";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import LaunchIcon from "@mui/icons-material/Launch";
 import CircleIcon from "@mui/icons-material/Circle";
 import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutlined";
 import { FiChevronDown } from "react-icons/fi";
 import { bigToStr } from "../utils";
-import { UIContext } from "../providers";
 import { getBlockExplorerTransactionUrl } from "../utils/networkUtils";
 import styles from "../css/LongTermSwapCardDropDown.module.css";
 import { TokenType } from "../utils/pool";
+import { useNetworkContext } from "../providers/context/NetworkProvider";
 
 interface PropTypes {
   item: any;
@@ -18,8 +18,8 @@ interface PropTypes {
 
 const LongTermSwapCardDropdown = (props: PropTypes) => {
   const { item, tokenIn, tokenOut } = props;
-  const { selectedNetwork } = useContext(UIContext)!;
-  const [open, setOpen] = useState<boolean>(false);
+  const { selectedNetwork } = useNetworkContext();
+  const [open, setOpen] = useState(false);
 
   const handleClose = () => setOpen((state) => !state);
 

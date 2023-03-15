@@ -4,7 +4,7 @@ import { cancelLTO } from "./addLiquidity";
 import { connectWallet } from "./connetWallet";
 import { getEthLogs } from "./get_ethLogs";
 import { providers } from "ethers";
-import { SelectedNetworkType } from "../providers/context/UIProvider";
+import { SelectedNetworkType } from "../providers/context/NetworkProvider";
 
 // cancelLTO
 export const _cancelLTO = async (

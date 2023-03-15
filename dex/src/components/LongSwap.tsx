@@ -7,7 +7,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import classNames from "classnames";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import lsStyles from "../css/LongSwap.module.css";
 import styles from "../css/AddLiquidity.module.css";
 import { bigToStr, getInputLimit } from "../utils";
@@ -22,7 +22,7 @@ import { FiChevronDown } from "react-icons/fi";
 
 import { approveMaxAllowance, getAllowance } from "../utils/getApproval";
 
-import { UIContext } from "../providers/context/UIProvider";
+import { useNetworkContext } from "../providers/context/NetworkProvider";
 import { useLongSwapContext } from "../providers/context/LongSwapProvider";
 
 interface PropTypes {
@@ -69,7 +69,7 @@ const LongSwap = (props: PropTypes) => {
     setMessage,
   } = useLongSwapContext();
 
-  const { selectedNetwork } = useContext(UIContext)!;
+  const { selectedNetwork } = useNetworkContext();
 
   const handleDisplay = (event: React.MouseEvent<HTMLElement>) => {
     setSelectToken(event.currentTarget.id);

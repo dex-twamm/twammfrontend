@@ -1,4 +1,8 @@
-import { LongSwapProvider, ShortSwapProvider, UIProvider } from "./context";
+import {
+  LongSwapProvider,
+  ShortSwapProvider,
+  NetworkStateProvider,
+} from "./context";
 import React, { ReactNode } from "react";
 
 interface AllProvidersProps {
@@ -7,11 +11,11 @@ interface AllProvidersProps {
 
 const AllProviders: React.FC<AllProvidersProps> = ({ children }) => {
   return (
-    <UIProvider>
+    <NetworkStateProvider>
       <ShortSwapProvider>
         <LongSwapProvider>{children}</LongSwapProvider>
       </ShortSwapProvider>
-    </UIProvider>
+    </NetworkStateProvider>
   );
 };
 

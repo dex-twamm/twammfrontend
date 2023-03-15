@@ -1,4 +1,4 @@
-import { SelectedNetworkType } from "../providers/context/UIProvider";
+import { SelectedNetworkType } from "../providers/context/NetworkProvider";
 import { timeDeltaString } from "../utils";
 import { getPoolBlockInterval } from "../utils/poolUtils";
 

@@ -3,7 +3,7 @@ import { MAX_UINT256 } from ".";
 import { getPoolId } from "./poolUtils";
 import { getExchangeContract } from "./getContracts";
 import { getGasLimit } from "./getGasLimit";
-import { SelectedNetworkType } from "../providers/context/UIProvider";
+import { SelectedNetworkType } from "../providers/context/NetworkProvider";
 
 export const verifySwapTokens = async (
   signer: any,

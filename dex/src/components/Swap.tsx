@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Alert, Box, CircularProgress, Skeleton } from "@mui/material";
 import classNames from "classnames";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import styles from "../css/AddLiquidity.module.css";
 import lsStyles from "../css/LongSwap.module.css";
 
@@ -17,7 +17,7 @@ import {
 } from "../utils";
 import { approveMaxAllowance, getAllowance } from "../utils/getApproval";
 
-import { UIContext } from "../providers/context/UIProvider";
+import { useNetworkContext } from "../providers/context/NetworkProvider";
 import { useLongSwapContext } from "../providers/context/LongSwapProvider";
 
 interface PropTypes {
@@ -55,7 +55,7 @@ const Swap = (props: PropTypes) => {
   const { tokenA, tokenB, setTokenA, setTokenB, allowance, setAllowance } =
     useLongSwapContext();
 
-  const { selectedNetwork } = useContext(UIContext)!;
+  const { selectedNetwork } = useNetworkContext();
 
   const handleDisplay = (event: React.MouseEvent<HTMLElement>) => {
     setSelectToken(event.currentTarget.id);

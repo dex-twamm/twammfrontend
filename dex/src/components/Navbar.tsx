@@ -1,10 +1,9 @@
 import classNames from "classnames";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { Link, useLocation } from "react-router-dom";
 import { POPUP_MESSAGE } from "../constants";
 import styles from "../css/Navbar.module.css";
-import { UIContext } from "../providers";
 import { toHex, truncateAddress } from "../utils";
 import { connectWallet } from "../utils/connetWallet";
 import { DisconnectWalletOption } from "./DisconnectWalletOption";
@@ -12,13 +11,14 @@ import { NETWORKS } from "../utils/networks";
 import logo from "../images/logo.png";
 import { getEthereumFromWindow } from "../utils/ethereum";
 import { useShortSwapContext } from "../providers/context/ShortSwapProvider";
+import { useNetworkContext } from "../providers/context/NetworkProvider";
 
 const Navbar = () => {
   const [showDisconnect, setShowDisconnect] = useState<boolean>(false);
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const location = useLocation();
 
-  const { selectedNetwork, setSelectedNetwork } = useContext(UIContext)!;
+  const { selectedNetwork, setSelectedNetwork } = useNetworkContext();
 
   const {
     setError,

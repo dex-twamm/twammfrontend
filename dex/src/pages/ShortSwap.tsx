@@ -1,7 +1,7 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { MenuItem, Select } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import PopupModal from "../components/alerts/PopupModal";
 import PopupSettings from "../components/PopupSettings";
 import Swap from "../components/Swap";
@@ -9,7 +9,7 @@ import Tabs from "../components/Tabs";
 import styles from "../css/ShortSwap.module.css";
 import { useLongSwapContext } from "../providers/context/LongSwapProvider";
 import { useShortSwapContext } from "../providers/context/ShortSwapProvider";
-import { UIContext } from "../providers/context/UIProvider";
+import { useNetworkContext } from "../providers/context/NetworkProvider";
 import { connectWallet } from "../utils/connetWallet";
 import { spotPrice } from "../utils/getSpotPrice";
 import { getEthLogs } from "../utils/get_ethLogs";
@@ -40,7 +40,7 @@ const ShortSwap = () => {
     spotPriceLoading,
     setSpotPriceLoading,
   } = useShortSwapContext();
-  const { selectedNetwork, setSelectedNetwork } = useContext(UIContext)!;
+  const { selectedNetwork, setSelectedNetwork } = useNetworkContext();
   const { allowance, tokenA, tokenB } = useLongSwapContext();
 
   useEffect(() => {

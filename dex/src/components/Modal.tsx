@@ -1,14 +1,7 @@
 import { Skeleton } from "@mui/material";
 import classNames from "classnames";
-import React, {
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import styles from "../css/Modal.module.css";
-import { UIContext } from "../providers";
 import { getPoolTokens } from "../utils/poolUtils";
 
 import { getAllowance } from "../utils/getApproval";
@@ -18,6 +11,7 @@ import {
 } from "../providers/context/LongSwapProvider";
 import { TokenType } from "../utils/pool";
 import { useShortSwapContext } from "../providers/context/ShortSwapProvider";
+import { useNetworkContext } from "../providers/context/NetworkProvider";
 
 interface PropTypes {
   display: boolean;
@@ -48,7 +42,7 @@ const Modal = ({
 
   const { tokenA, tokenB } = useLongSwapContext();
 
-  const { selectedNetwork } = useContext(UIContext)!;
+  const { selectedNetwork } = useNetworkContext();
 
   const [tokenDetails, setTokenDetails] = useState<TokenType[] | undefined>();
 

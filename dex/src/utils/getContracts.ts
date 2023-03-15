@@ -4,7 +4,7 @@ import {
   TWAMM_POOL_ABI,
   VAULT_CONTRACT_ABI,
 } from "../constants";
-import { SelectedNetworkType } from "../providers/context/UIProvider";
+import { SelectedNetworkType } from "../providers/context/NetworkProvider";
 import {
   getBalancerHelperContractAddress,
   getVaultContractAddress,

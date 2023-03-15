@@ -1,3 +1,3 @@
 export { LongSwapProvider } from "./LongSwapProvider";
 export { ShortSwapProvider } from "./ShortSwapProvider";
-export { UIProvider, UIContext } from "./UIProvider";
+export { NetworkStateProvider } from "./NetworkProvider";

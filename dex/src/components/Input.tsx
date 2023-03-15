@@ -1,12 +1,13 @@
 import { Skeleton } from "@mui/material";
 import classnames from "classnames";
-import { Dispatch, SetStateAction, useContext, useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import styles from "../css/Input.module.css";
-import { UIContext } from "../providers";
+
 import {
   TokenState,
   useLongSwapContext,
 } from "../providers/context/LongSwapProvider";
+import { useNetworkContext } from "../providers/context/NetworkProvider";
 import { useShortSwapContext } from "../providers/context/ShortSwapProvider";
 import Modal from "./Modal";
 
@@ -45,7 +46,7 @@ const Input = (props: PropTypes) => {
     useShortSwapContext();
   const { tokenA, tokenB } = useLongSwapContext();
 
-  const { setSelectedNetwork } = useContext(UIContext)!;
+  const { setSelectedNetwork } = useNetworkContext();
 
   useEffect(() => {
     if (tokenA) {

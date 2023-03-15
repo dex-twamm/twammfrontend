@@ -9,7 +9,7 @@ import {
 } from "./poolUtils";
 import { getExchangeContract } from "./getContracts";
 import { getGasLimit } from "./getGasLimit";
-import { SelectedNetworkType } from "../providers/context/UIProvider";
+import { SelectedNetworkType } from "../providers/context/NetworkProvider";
 
 const getLongSwapEncodedRequest = (
   tokenInIndex: number,

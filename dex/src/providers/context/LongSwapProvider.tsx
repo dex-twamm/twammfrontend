@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 import { getPoolConfig } from "../../utils/poolUtils";
 
-import { UIContext } from "./UIProvider";
+import { useNetworkContext } from "./NetworkProvider";
 import { TokenType } from "../../utils/pool";
 
 interface LongSwapProviderProps {
@@ -49,7 +49,7 @@ const useLongSwapState = () => {
     tokenIsSet: false,
   });
 
-  const { selectedNetwork } = useContext(UIContext)!;
+  const { selectedNetwork } = useNetworkContext();
   useEffect(() => {
     const poolConfig = getPoolConfig(selectedNetwork);
     setTokenA({

@@ -1,4 +1,4 @@
-import { SelectedNetworkType } from "../providers/context/UIProvider";
+import { SelectedNetworkType } from "../providers/context/NetworkProvider";
 import { POOLS } from "./pool";
 
 export const getCurrentNetwork = (currentNetwork: SelectedNetworkType) => {

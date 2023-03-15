@@ -2,7 +2,7 @@ import { BigNumber, Contract, ethers } from "ethers";
 import { bigToStr } from ".";
 
 import { ERC20_TOKEN_CONTRACT_ABI, TWAMM_POOL_ABI } from "../constants";
-import { SelectedNetworkType } from "../providers/context/UIProvider";
+import { SelectedNetworkType } from "../providers/context/NetworkProvider";
 import { PoolType } from "./pool";
 import {
   getPoolContractAddress,

@@ -1,10 +1,9 @@
 import { Alert, Backdrop, Button } from "@mui/material";
 import { useEffect } from "react";
-import { useContext } from "react";
 import { POPUP_MESSAGE } from "../../constants";
 import { useLongSwapContext } from "../../providers/context/LongSwapProvider";
 import { useShortSwapContext } from "../../providers/context/ShortSwapProvider";
-import { UIContext } from "../../providers/context/UIProvider";
+import { useNetworkContext } from "../../providers/context/NetworkProvider";
 import { getBlockExplorerTransactionUrl } from "../../utils/networkUtils";
 
 const PopupModal: React.FC = () => {
@@ -20,7 +19,7 @@ const PopupModal: React.FC = () => {
 
   const { message, setMessage } = useLongSwapContext();
 
-  const { selectedNetwork } = useContext(UIContext)!;
+  const { selectedNetwork } = useNetworkContext();
 
   // Timeout For Backdrop
   useEffect(() => {

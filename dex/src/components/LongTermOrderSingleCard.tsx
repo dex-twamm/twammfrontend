@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { BigNumber } from "ethers";
 import { HiExternalLink } from "react-icons/hi";
 import styles from "../css/LongTermOrderCard.module.css";
-import { UIContext } from "../providers/context/UIProvider";
 import {
   bigToFloat,
   bigToStr,
@@ -28,6 +27,7 @@ import { formatToReadableTime } from "../utils/timeUtils";
 import { TokenType } from "../utils/pool";
 import { useShortSwapContext } from "../providers/context/ShortSwapProvider";
 import { useLongSwapContext } from "../providers/context/LongSwapProvider";
+import { useNetworkContext } from "../providers/context/NetworkProvider";
 
 interface PropTypes {
   orderLog: any;
@@ -55,7 +55,7 @@ const LongTermOrderSingleCard = ({ orderLog }: PropTypes) => {
     setOrderLogsDecoded,
     setMessage,
   } = useLongSwapContext();
-  const { selectedNetwork, setSelectedNetwork } = useContext(UIContext)!;
+  const { selectedNetwork, setSelectedNetwork } = useNetworkContext();
 
   const [orderStatus, setOrderStatus] = useState<{
     status: string;

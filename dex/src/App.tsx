@@ -1,10 +1,9 @@
-import { useCallback, useContext, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import LongSwapPage from "./pages/LongSwapPage";
 import ShortSwap from "./pages/ShortSwap";
-import { UIContext } from "./providers";
 import { bigToStr } from "./utils";
 import { connectWallet } from "./utils/connetWallet";
 import { getLPTokensBalance, getTokensBalance } from "./utils/getAmount";
@@ -18,6 +17,7 @@ import ContactPage from "./pages/ContactPage";
 import ChatBubbleOutlineTwoToneIcon from "@mui/icons-material/ChatBubbleOutlineTwoTone";
 import { useShortSwapContext } from "./providers/context/ShortSwapProvider";
 import { useLongSwapContext } from "./providers/context/LongSwapProvider";
+import { useNetworkContext } from "./providers/context/NetworkProvider";
 
 function App() {
   const navigate = useNavigate();
@@ -49,7 +49,7 @@ function App() {
     setOrderLogsLoading,
   } = useLongSwapContext();
 
-  const { setSelectedNetwork, selectedNetwork } = useContext(UIContext)!;
+  const { setSelectedNetwork, selectedNetwork } = useNetworkContext();
 
   // Connect cached Wallet as early as possible in cycle.
   useEffect(() => {

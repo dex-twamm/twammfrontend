@@ -5,7 +5,7 @@ import { getPoolId, getPoolTokenAddresses, getPoolTokens } from "./poolUtils";
 import { getGasLimit } from "./getGasLimit";
 import { getBalancerHelperContract, getExchangeContract } from "./getContracts";
 import { TokenType } from "./pool";
-import { SelectedNetworkType } from "../providers/context/UIProvider";
+import { SelectedNetworkType } from "../providers/context/NetworkProvider";
 
 export async function cancelLTO(
   walletAddress: string,

@@ -1,6 +1,6 @@
 import { Contract, ethers } from "ethers";
 import { TWAMM_POOL_ABI } from "../constants";
-import { SelectedNetworkType } from "../providers/context/UIProvider";
+import { SelectedNetworkType } from "../providers/context/NetworkProvider";
 import { getLongTermOrder } from "./longSwap";
 import { getPoolContractAddress } from "./poolUtils";
 

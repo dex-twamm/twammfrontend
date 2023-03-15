@@ -1,7 +1,7 @@
 import { BigNumber, ethers } from "ethers";
 import { Dispatch, SetStateAction } from "react";
 import { POPUP_MESSAGE } from "../constants";
-import { SelectedNetworkType } from "../providers/context/UIProvider";
+import { SelectedNetworkType } from "../providers/context/NetworkProvider";
 import { verifyLongSwapTxn } from "./longSwap";
 import { PoolType } from "./pool";
 import { getPoolConfig } from "./poolUtils";

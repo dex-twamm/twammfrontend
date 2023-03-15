@@ -1,5 +1,4 @@
-import { useEffect, Dispatch, SetStateAction } from "react";
-import { createContext, useState } from "react";
+import { useEffect, useContext, createContext, useState } from "react";
 import { NETWORKS } from "../../utils/networks";
 import ethLogo from "../../images/ethereum.svg";
 
@@ -10,18 +9,11 @@ export interface SelectedNetworkType {
   poolId: number;
 }
 
-interface UIContextType {
-  selectedNetwork: SelectedNetworkType;
-  setSelectedNetwork: Dispatch<SetStateAction<SelectedNetworkType>>;
-}
-
-interface UIProviderProps {
+interface NetworkProviderProps {
   children: React.ReactNode;
 }
 
-const UIContext = createContext<UIContextType | null>(null);
-
-const UIProvider: React.FC<UIProviderProps> = ({ children }) => {
+const useNetworkState = () => {
   const [selectedNetwork, setSelectedNetwork] = useState<SelectedNetworkType>({
     network: "Ethereum",
     logo: ethLogo,
@@ -44,17 +36,31 @@ const UIProvider: React.FC<UIProviderProps> = ({ children }) => {
       });
     });
   }, []);
+  return {
+    selectedNetwork,
+    setSelectedNetwork,
+  };
+};
 
+type NetworkStateValue = ReturnType<typeof useNetworkState>;
+
+const NetworkStateProvider: React.FC<NetworkProviderProps> = ({ children }) => {
+  const networkState = useNetworkState();
   return (
-    <UIContext.Provider
-      value={{
-        selectedNetwork,
-        setSelectedNetwork,
-      }}
-    >
+    <NetworkContext.Provider value={networkState}>
       {children}
-    </UIContext.Provider>
+    </NetworkContext.Provider>
   );
 };
 
-export { UIProvider, UIContext };
+const NetworkContext = createContext<NetworkStateValue | null>(null);
+
+export const useNetworkContext = () => {
+  const context = useContext(NetworkContext);
+  if (!context) {
+    throw new Error("useNetworkContext must be used inside LongSwapProvider!");
+  }
+  return context;
+};
+
+export { NetworkStateProvider };

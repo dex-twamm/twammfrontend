@@ -24,7 +24,7 @@ const tabOptions: TabOptionsTypes[] = [
 
 const Tabs: React.FC = () => {
   const location = useLocation();
-  const currentPath: string = location.pathname;
+  const currentPath = location.pathname;
 
   const tabList = tabOptions.map((option, index) => (
     <Link to={option.path} key={index}>

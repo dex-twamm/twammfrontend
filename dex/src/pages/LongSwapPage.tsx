@@ -1,7 +1,7 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import LongTermOrderCard from "../components/LongTermOrderCard";
 import PopupSettings from "../components/PopupSettings";
 import lsStyles from "../css/LongSwap.module.css";
@@ -11,7 +11,7 @@ import PopupModal from "../components/alerts/PopupModal";
 import { _placeLongTermOrders } from "../utils/placeLongTermOrder";
 import { connectWallet } from "../utils/connetWallet";
 
-import { UIContext } from "../providers/context/UIProvider";
+import { useNetworkContext } from "../providers/context/NetworkProvider";
 import LongSwap from "../components/LongSwap";
 import { verifyLongSwap } from "../utils/verifyLongSwap";
 import { getAllPool } from "../utils/poolUtils";
@@ -52,7 +52,7 @@ const LongSwapPage = () => {
 
   const [showSettings, setShowSettings] = useState<boolean>(false);
 
-  const { selectedNetwork, setSelectedNetwork } = useContext(UIContext)!;
+  const { selectedNetwork, setSelectedNetwork } = useNetworkContext();
 
   const ethLogsCount = orderLogsDecoded
     ? Object.keys(orderLogsDecoded).length
