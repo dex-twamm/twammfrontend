@@ -4,11 +4,14 @@ import { SelectedNetworkType } from "../providers/context/UIProvider";
 import { getLongTermOrder } from "./longSwap";
 import { getPoolContractAddress } from "./poolUtils";
 
+type SignerOrProvider = ConstructorParameters<typeof Contract>[2];
+
 export async function getEthLogs(
-  signer: any,
+  signer: SignerOrProvider,
   walletAddress: string,
   currentNetwork: SelectedNetworkType
-): Promise<any> {
+) {
+  //q:get type of third argument of contract constructor
   const poolContract: Contract = new Contract(
     getPoolContractAddress(currentNetwork)!,
     TWAMM_POOL_ABI,

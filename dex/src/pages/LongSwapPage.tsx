@@ -10,13 +10,14 @@ import { LongSwapContext, ShortSwapContext } from "../providers";
 import Tabs from "../components/Tabs";
 import PopupModal from "../components/alerts/PopupModal";
 import { _placeLongTermOrders } from "../utils/placeLongTermOrder";
-import { connectWalletAndGetEthLogs } from "../utils/connetWallet";
+import { connectWallet } from "../utils/connetWallet";
 
 import { UIContext } from "../providers/context/UIProvider";
 import LongSwap from "../components/LongSwap";
 import { verifyLongSwap } from "../utils/verifyLongSwap";
 import { getAllPool } from "../utils/poolUtils";
 import { MenuItem, Select } from "@mui/material";
+import { getEthLogs } from "../utils/get_ethLogs";
 
 const LongSwapPage = () => {
   const {
@@ -35,17 +36,17 @@ const LongSwapPage = () => {
   const {
     isWalletConnected,
     web3provider,
-    setweb3provider,
-    setCurrentBlock,
-    setBalance,
-    setAccount,
-    setWalletConnected,
     swapAmount,
     setSwapAmount,
     account,
     setTransactionHash,
     setLoading,
     setError,
+    setweb3provider,
+    setCurrentBlock,
+    setBalance,
+    setAccount,
+    setWalletConnected,
   } = useContext(ShortSwapContext)!;
 
   const [showSettings, setShowSettings] = useState<boolean>(false);
@@ -86,17 +87,22 @@ const LongSwapPage = () => {
   async function LongSwapButtonClick() {
     try {
       if (!isWalletConnected) {
-        await connectWalletAndGetEthLogs(
-          setweb3provider,
-          setCurrentBlock,
-          setBalance,
-          setAccount,
-          setWalletConnected,
-          setSelectedNetwork,
-          web3provider,
-          account,
-          selectedNetwork
-        );
+        await connectWallet().then((res) => {
+          const {
+            account,
+            balance,
+            currentBlock,
+            selectedNetwork,
+            web3Provider,
+          } = res;
+          setweb3provider(web3Provider);
+          setCurrentBlock(currentBlock);
+          setBalance(balance);
+          setAccount(account);
+          setWalletConnected(true);
+          setSelectedNetwork(selectedNetwork);
+        });
+        await getEthLogs(web3provider, account, selectedNetwork);
       } else {
         await _placeLongTermOrders(
           swapAmount,

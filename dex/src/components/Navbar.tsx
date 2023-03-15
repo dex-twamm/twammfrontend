@@ -67,14 +67,16 @@ const Navbar = () => {
   };
 
   const walletConnect = async () => {
-    await connectWallet(
-      setweb3provider,
-      setCurrentBlock,
-      setBalance,
-      setAccount,
-      setWalletConnected,
-      setSelectedNetwork
-    );
+    await connectWallet().then((res) => {
+      const { account, balance, currentBlock, selectedNetwork, web3Provider } =
+        res;
+      setweb3provider(web3Provider);
+      setCurrentBlock(currentBlock);
+      setBalance(balance);
+      setAccount(account);
+      setWalletConnected(true);
+      setSelectedNetwork(selectedNetwork);
+    });
   };
 
   useEffect(() => {

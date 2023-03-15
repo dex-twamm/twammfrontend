@@ -30,14 +30,21 @@ export const _withdrawLTO = async (
     const walletAddress: string = account;
     const signer: any = web3provider.getSigner();
     if (!isWalletConnected) {
-      await connectWallet(
-        setweb3provider,
-        setCurrentBlock,
-        setBalance,
-        setAccount,
-        setWalletConnected,
-        setSelectedNetwork
-      );
+      await connectWallet().then((res) => {
+        const {
+          account,
+          balance,
+          currentBlock,
+          selectedNetwork,
+          web3Provider,
+        } = res;
+        setweb3provider(web3Provider);
+        setCurrentBlock(currentBlock);
+        setBalance(balance);
+        setAccount(account);
+        setWalletConnected(true);
+        setSelectedNetwork(selectedNetwork);
+      });
     }
 
     await withdrawLTO(walletAddress, signer, orderId, currentNetwork).then(

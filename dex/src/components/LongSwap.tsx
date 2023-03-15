@@ -43,7 +43,6 @@ const LongSwap = (props: PropTypes) => {
     account,
     swapAmount,
     setSwapAmount,
-    selectToken,
     setSelectToken,
     setExpectedSwapOut,
     error,

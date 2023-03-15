@@ -9,8 +9,9 @@ import Tabs from "../components/Tabs";
 import styles from "../css/ShortSwap.module.css";
 import { LongSwapContext, ShortSwapContext } from "../providers";
 import { UIContext } from "../providers/context/UIProvider";
-import { connectWalletAndGetEthLogs } from "../utils/connetWallet";
+import { connectWallet } from "../utils/connetWallet";
 import { spotPrice } from "../utils/getSpotPrice";
+import { getEthLogs } from "../utils/get_ethLogs";
 import { getAllPool } from "../utils/poolUtils";
 import { _swapTokens } from "../utils/shortSwap";
 
@@ -89,17 +90,22 @@ const ShortSwap = () => {
   async function ShortSwapButtonClick() {
     try {
       if (!isWalletConnected) {
-        await connectWalletAndGetEthLogs(
-          setweb3provider,
-          setCurrentBlock,
-          setBalance,
-          setAccount,
-          setWalletConnected,
-          setSelectedNetwork,
-          web3provider,
-          account,
-          selectedNetwork
-        );
+        await connectWallet().then((res) => {
+          const {
+            account,
+            balance,
+            currentBlock,
+            selectedNetwork,
+            web3Provider,
+          } = res;
+          setweb3provider(web3Provider);
+          setCurrentBlock(currentBlock);
+          setBalance(balance);
+          setAccount(account);
+          setWalletConnected(true);
+          setSelectedNetwork(selectedNetwork);
+        });
+        await getEthLogs(web3provider, account, selectedNetwork);
       } else {
         await _swapTokens(
           ethBalance,

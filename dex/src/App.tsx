@@ -53,16 +53,31 @@ function App() {
   // Connect cached Wallet as early as possible in cycle.
   useEffect(() => {
     if (web3Modal.cachedProvider && !isWalletConnected) {
-      connectWallet(
-        setweb3provider,
-        setCurrentBlock,
-        setBalance,
-        setAccount,
-        setWalletConnected,
-        setSelectedNetwork
-      );
+      connectWallet().then((res) => {
+        const {
+          account,
+          balance,
+          currentBlock,
+          selectedNetwork,
+          web3Provider,
+        } = res;
+        setweb3provider(web3Provider);
+        setCurrentBlock(currentBlock);
+        setBalance(balance);
+        setAccount(account);
+        setWalletConnected(true);
+        setSelectedNetwork(selectedNetwork);
+      });
     }
-  }, []);
+  }, [
+    isWalletConnected,
+    setAccount,
+    setBalance,
+    setCurrentBlock,
+    setSelectedNetwork,
+    setWalletConnected,
+    setweb3provider,
+  ]);
 
   // Swap Token
   useEffect(() => {
@@ -201,14 +216,16 @@ function App() {
   }, []);
 
   useEffect(() => {
-    connectWallet(
-      setweb3provider,
-      setCurrentBlock,
-      setBalance,
-      setAccount,
-      setWalletConnected,
-      setSelectedNetwork
-    );
+    connectWallet().then((res) => {
+      const { account, balance, currentBlock, selectedNetwork, web3Provider } =
+        res;
+      setweb3provider(web3Provider);
+      setCurrentBlock(currentBlock);
+      setBalance(balance);
+      setAccount(account);
+      setWalletConnected(true);
+      setSelectedNetwork(selectedNetwork);
+    });
   }, [account]);
 
   useEffect(() => {

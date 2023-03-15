@@ -30,14 +30,21 @@ export const _cancelLTO = async (
   try {
     const walletAddress = account;
     if (!isWalletConnected) {
-      await connectWallet(
-        setweb3provider,
-        setCurrentBlock,
-        setBalance,
-        setAccount,
-        setWalletConnected,
-        setSelectedNetwork
-      );
+      await connectWallet().then((res) => {
+        const {
+          account,
+          balance,
+          currentBlock,
+          selectedNetwork,
+          web3Provider,
+        } = res;
+        setweb3provider(web3Provider);
+        setCurrentBlock(currentBlock);
+        setBalance(balance);
+        setAccount(account);
+        setWalletConnected(true);
+        setSelectedNetwork(selectedNetwork);
+      });
     }
     const signer: any = web3provider.getSigner();
     await cancelLTO(
