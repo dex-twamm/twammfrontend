@@ -8,27 +8,27 @@ const useShortSwapState = () => {
   const [swapAmount, setSwapAmount] = useState(0);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState<string>("");
+  const [success, setSuccess] = useState("");
   const [tokenBalances, setTokenBalances] = useState<
     { [key: string]: number }[]
   >([]);
-  const [transactionHash, setTransactionHash] = useState<string>("");
-  const [selectToken, setSelectToken] = useState<string>("");
-  const [ethBalance, setEthBalance] = useState<number>(0);
-  const [account, setAccount] = useState<string>("");
-  const [isWalletConnected, setWalletConnected] = useState<boolean>(false);
-  const [expectedSwapOut, setExpectedSwapOut] = useState<number>(0);
-  const [tolerance, setTolerance] = useState<number>(0.5);
-  const [deadline, setDeadline] = useState<number>(30);
+  const [transactionHash, setTransactionHash] = useState("");
+  const [selectToken, setSelectToken] = useState("");
+  const [ethBalance, setEthBalance] = useState(0);
+  const [account, setAccount] = useState("");
+  const [isWalletConnected, setWalletConnected] = useState(false);
+  const [expectedSwapOut, setExpectedSwapOut] = useState(0);
+  const [tolerance, setTolerance] = useState(0.5);
+  const [deadline, setDeadline] = useState(30);
   const [formErrors, setFormErrors] = useState<{
     balError: string | undefined;
   }>({ balError: undefined });
   const [web3provider, setweb3provider] = useState<any>();
   const [currentBlock, setCurrentBlock] = useState<any>();
-  const [spotPrice, setSpotPrice] = useState<number>(0);
-  const [LPTokenBalance, setLPTokenBalance] = useState<number>();
-  const [balance, setBalance] = useState<number>(0);
-  const [spotPriceLoading, setSpotPriceLoading] = useState<boolean>(false);
+  const [spotPrice, setSpotPrice] = useState(0);
+  const [LPTokenBalance, setLPTokenBalance] = useState(0);
+  const [balance, setBalance] = useState(0);
+  const [spotPriceLoading, setSpotPriceLoading] = useState(false);
   const [allowTwammErrorMessage, setAllowTwammErrorMessage] =
     useState<string>("");
 
