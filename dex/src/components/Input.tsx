@@ -2,8 +2,11 @@ import { Skeleton } from "@mui/material";
 import classnames from "classnames";
 import { Dispatch, SetStateAction, useContext, useEffect } from "react";
 import styles from "../css/Input.module.css";
-import { LongSwapContext, UIContext } from "../providers";
-import { TokenState } from "../providers/context/LongSwapProvider";
+import { UIContext } from "../providers";
+import {
+  TokenState,
+  useLongSwapContext,
+} from "../providers/context/LongSwapProvider";
 import { useShortSwapContext } from "../providers/context/ShortSwapProvider";
 import Modal from "./Modal";
 
@@ -40,7 +43,7 @@ const Input = (props: PropTypes) => {
 
   const { tokenBalances, setEthBalance, isWalletConnected, setSwapAmount } =
     useShortSwapContext();
-  const { tokenA, tokenB } = useContext(LongSwapContext)!;
+  const { tokenA, tokenB } = useLongSwapContext();
 
   const { setSelectedNetwork } = useContext(UIContext)!;
 

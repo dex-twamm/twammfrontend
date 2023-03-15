@@ -1,12 +1,5 @@
 import { BigNumber } from "ethers";
-import {
-  createContext,
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 import { getPoolConfig } from "../../utils/poolUtils";
 
@@ -22,58 +15,21 @@ export interface TokenState extends TokenType {
   tokenIsSet: boolean;
 }
 
-interface LongSwapContextValue {
-  sliderValue: number;
-  setSliderValue: Dispatch<SetStateAction<number>>;
-  tokenA: TokenState;
-  setTokenA: Dispatch<SetStateAction<TokenState>>;
-  tokenB: TokenState;
-  setTokenB: Dispatch<SetStateAction<TokenState>>;
-  targetDate: string | undefined;
-  setTargetDate: Dispatch<SetStateAction<string | undefined>>;
-  orderLogsDecoded: any;
-  setOrderLogsDecoded: Dispatch<SetStateAction<any>>;
-  lastVirtualOrderBlock: BigNumber | undefined;
-  setLastVirtualOrderBlock: Dispatch<SetStateAction<BigNumber | undefined>>;
-  numberOfBlockIntervals: number;
-  setNumberOfBlockIntervals: Dispatch<SetStateAction<number>>;
-  allowance: string;
-  setAllowance: Dispatch<SetStateAction<string>>;
-  message: string;
-  setMessage: Dispatch<SetStateAction<string>>;
-  disableActionBtn: boolean;
-  setDisableActionBtn: Dispatch<SetStateAction<boolean>>;
-  orderLogsLoading: boolean;
-  setOrderLogsLoading: Dispatch<SetStateAction<boolean>>;
-  longSwapFormErrors: {
-    balError: string | undefined;
-  };
-  setLongSwapFormErrors: Dispatch<
-    SetStateAction<{
-      balError: string | undefined;
-    }>
-  >;
-  longSwapVerifyLoading: boolean;
-  setLongSwapVerifyLoading: Dispatch<SetStateAction<boolean>>;
-}
-
-const LongSwapProvider: React.FC<LongSwapProviderProps> = ({ children }) => {
-  const [sliderValue, setSliderValue] = useState<number>(1);
+const useLongSwapState = () => {
+  const [sliderValue, setSliderValue] = useState(1);
   const [orderLogsDecoded, setOrderLogsDecoded] = useState<any>([]);
   const [lastVirtualOrderBlock, setLastVirtualOrderBlock] =
     useState<BigNumber>();
-  const [numberOfBlockIntervals, setNumberOfBlockIntervals] =
-    useState<number>(0);
-  const [targetDate, setTargetDate] = useState<string>();
-  const [allowance, setAllowance] = useState<string>("");
-  const [message, setMessage] = useState<string>("");
-  const [disableActionBtn, setDisableActionBtn] = useState<boolean>(false);
-  const [orderLogsLoading, setOrderLogsLoading] = useState<boolean>(false);
+  const [numberOfBlockIntervals, setNumberOfBlockIntervals] = useState(0);
+  const [targetDate, setTargetDate] = useState("");
+  const [allowance, setAllowance] = useState("");
+  const [message, setMessage] = useState("");
+  const [disableActionBtn, setDisableActionBtn] = useState(false);
+  const [orderLogsLoading, setOrderLogsLoading] = useState(false);
   const [longSwapFormErrors, setLongSwapFormErrors] = useState<{
     balError: string | undefined;
   }>({ balError: undefined });
-  const [longSwapVerifyLoading, setLongSwapVerifyLoading] =
-    useState<boolean>(false);
+  const [longSwapVerifyLoading, setLongSwapVerifyLoading] = useState(false);
   const [tokenA, setTokenA] = useState<TokenState>({
     symbol: "",
     name: "",
@@ -109,41 +65,55 @@ const LongSwapProvider: React.FC<LongSwapProviderProps> = ({ children }) => {
     });
   }, [selectedNetwork]);
 
+  return {
+    sliderValue,
+    setSliderValue,
+    tokenA,
+    setTokenA,
+    tokenB,
+    setTokenB,
+    targetDate,
+    setTargetDate,
+    orderLogsDecoded,
+    setOrderLogsDecoded,
+    lastVirtualOrderBlock,
+    setLastVirtualOrderBlock,
+    numberOfBlockIntervals,
+    setNumberOfBlockIntervals,
+    allowance,
+    setAllowance,
+    message,
+    setMessage,
+    disableActionBtn,
+    setDisableActionBtn,
+    orderLogsLoading,
+    setOrderLogsLoading,
+    longSwapFormErrors,
+    setLongSwapFormErrors,
+    longSwapVerifyLoading,
+    setLongSwapVerifyLoading,
+  };
+};
+
+type LongSwapContextValue = ReturnType<typeof useLongSwapState>;
+
+const LongSwapProvider: React.FC<LongSwapProviderProps> = ({ children }) => {
+  const swapState = useLongSwapState();
   return (
-    <LongSwapContext.Provider
-      value={{
-        sliderValue,
-        setSliderValue,
-        tokenA,
-        setTokenA,
-        tokenB,
-        setTokenB,
-        targetDate,
-        setTargetDate,
-        orderLogsDecoded,
-        setOrderLogsDecoded,
-        lastVirtualOrderBlock,
-        setLastVirtualOrderBlock,
-        numberOfBlockIntervals,
-        setNumberOfBlockIntervals,
-        allowance,
-        setAllowance,
-        message,
-        setMessage,
-        disableActionBtn,
-        setDisableActionBtn,
-        orderLogsLoading,
-        setOrderLogsLoading,
-        longSwapFormErrors,
-        setLongSwapFormErrors,
-        longSwapVerifyLoading,
-        setLongSwapVerifyLoading,
-      }}
-    >
+    <LongSwapContext.Provider value={swapState}>
       {children}
     </LongSwapContext.Provider>
   );
 };
 
 const LongSwapContext = createContext<LongSwapContextValue | null>(null);
-export { LongSwapContext, LongSwapProvider };
+
+export const useLongSwapContext = () => {
+  const context = useContext(LongSwapContext);
+  if (!context) {
+    throw new Error("useLongSwapContext must be used inside LongSwapProvider!");
+  }
+  return context;
+};
+
+export { LongSwapProvider };

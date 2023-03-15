@@ -8,11 +8,14 @@ import React, {
   useState,
 } from "react";
 import styles from "../css/Modal.module.css";
-import { LongSwapContext, UIContext } from "../providers";
+import { UIContext } from "../providers";
 import { getPoolTokens } from "../utils/poolUtils";
 
 import { getAllowance } from "../utils/getApproval";
-import { TokenState } from "../providers/context/LongSwapProvider";
+import {
+  TokenState,
+  useLongSwapContext,
+} from "../providers/context/LongSwapProvider";
 import { TokenType } from "../utils/pool";
 import { useShortSwapContext } from "../providers/context/ShortSwapProvider";
 
@@ -43,7 +46,7 @@ const Modal = ({
     web3provider,
   } = useShortSwapContext();
 
-  const { tokenA, tokenB } = useContext(LongSwapContext)!;
+  const { tokenA, tokenB } = useLongSwapContext();
 
   const { selectedNetwork } = useContext(UIContext)!;
 

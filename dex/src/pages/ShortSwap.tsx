@@ -7,7 +7,7 @@ import PopupSettings from "../components/PopupSettings";
 import Swap from "../components/Swap";
 import Tabs from "../components/Tabs";
 import styles from "../css/ShortSwap.module.css";
-import { LongSwapContext } from "../providers";
+import { useLongSwapContext } from "../providers/context/LongSwapProvider";
 import { useShortSwapContext } from "../providers/context/ShortSwapProvider";
 import { UIContext } from "../providers/context/UIProvider";
 import { connectWallet } from "../utils/connetWallet";
@@ -41,7 +41,7 @@ const ShortSwap = () => {
     setSpotPriceLoading,
   } = useShortSwapContext();
   const { selectedNetwork, setSelectedNetwork } = useContext(UIContext)!;
-  const { allowance, tokenA, tokenB } = useContext(LongSwapContext)!;
+  const { allowance, tokenA, tokenB } = useLongSwapContext();
 
   useEffect(() => {
     let interval1: any, interval2: any;

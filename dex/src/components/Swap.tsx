@@ -5,7 +5,6 @@ import React, { useContext, useState } from "react";
 import styles from "../css/AddLiquidity.module.css";
 import lsStyles from "../css/LongSwap.module.css";
 
-import { LongSwapContext } from "../providers";
 import { useShortSwapContext } from "../providers/context/ShortSwapProvider";
 import Input from "./Input";
 
@@ -19,6 +18,7 @@ import {
 import { approveMaxAllowance, getAllowance } from "../utils/getApproval";
 
 import { UIContext } from "../providers/context/UIProvider";
+import { useLongSwapContext } from "../providers/context/LongSwapProvider";
 
 interface PropTypes {
   handleSwapAction: any;
@@ -53,7 +53,7 @@ const Swap = (props: PropTypes) => {
   } = useShortSwapContext();
 
   const { tokenA, tokenB, setTokenA, setTokenB, allowance, setAllowance } =
-    useContext(LongSwapContext)!;
+    useLongSwapContext();
 
   const { selectedNetwork } = useContext(UIContext)!;
 

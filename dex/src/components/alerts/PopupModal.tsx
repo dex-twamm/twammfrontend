@@ -2,7 +2,7 @@ import { Alert, Backdrop, Button } from "@mui/material";
 import { useEffect } from "react";
 import { useContext } from "react";
 import { POPUP_MESSAGE } from "../../constants";
-import { LongSwapContext } from "../../providers";
+import { useLongSwapContext } from "../../providers/context/LongSwapProvider";
 import { useShortSwapContext } from "../../providers/context/ShortSwapProvider";
 import { UIContext } from "../../providers/context/UIProvider";
 import { getBlockExplorerTransactionUrl } from "../../utils/networkUtils";
@@ -18,7 +18,7 @@ const PopupModal: React.FC = () => {
     setAllowTwammErrorMessage,
   } = useShortSwapContext();
 
-  const { message, setMessage } = useContext(LongSwapContext)!;
+  const { message, setMessage } = useLongSwapContext();
 
   const { selectedNetwork } = useContext(UIContext)!;
 

@@ -13,7 +13,6 @@ import classNames from "classnames";
 import LongTermSwapCardDropdown from "./LongTermSwapCardDropdown";
 import { _withdrawLTO } from "../utils/_withdrawLto";
 import { _cancelLTO } from "../utils/_cancelLto";
-import { LongSwapContext } from "../providers";
 import { ethers } from "ethers";
 import { getPoolConfig } from "../utils/poolUtils";
 import { getBlockExplorerTransactionUrl } from "../utils/networkUtils";
@@ -28,6 +27,7 @@ import {
 import { formatToReadableTime } from "../utils/timeUtils";
 import { TokenType } from "../utils/pool";
 import { useShortSwapContext } from "../providers/context/ShortSwapProvider";
+import { useLongSwapContext } from "../providers/context/LongSwapProvider";
 
 interface PropTypes {
   orderLog: any;
@@ -54,7 +54,7 @@ const LongTermOrderSingleCard = ({ orderLog }: PropTypes) => {
     setDisableActionBtn,
     setOrderLogsDecoded,
     setMessage,
-  } = useContext(LongSwapContext)!;
+  } = useLongSwapContext();
   const { selectedNetwork, setSelectedNetwork } = useContext(UIContext)!;
 
   const [orderStatus, setOrderStatus] = useState<{

@@ -16,7 +16,6 @@ import {
   calculateNumBlockIntervals,
   valueLabel,
 } from "../methods/longSwapMethod";
-import { LongSwapContext } from "../providers";
 import { useShortSwapContext } from "../providers/context/ShortSwapProvider";
 import Input from "./Input";
 import { FiChevronDown } from "react-icons/fi";
@@ -24,6 +23,7 @@ import { FiChevronDown } from "react-icons/fi";
 import { approveMaxAllowance, getAllowance } from "../utils/getApproval";
 
 import { UIContext } from "../providers/context/UIProvider";
+import { useLongSwapContext } from "../providers/context/LongSwapProvider";
 
 interface PropTypes {
   handleLongSwapAction: any;
@@ -67,7 +67,7 @@ const LongSwap = (props: PropTypes) => {
     setLongSwapFormErrors,
     longSwapFormErrors,
     setMessage,
-  } = useContext(LongSwapContext)!;
+  } = useLongSwapContext();
 
   const { selectedNetwork } = useContext(UIContext)!;
 
