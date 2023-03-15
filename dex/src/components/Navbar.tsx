@@ -68,7 +68,7 @@ const Navbar = () => {
   };
 
   const walletConnect = async () => {
-    await connectWallet().then((res) => {
+    connectWallet().then((res) => {
       const { account, balance, currentBlock, selectedNetwork, web3Provider } =
         res;
       setweb3provider(web3Provider);

@@ -30,7 +30,7 @@ export const _withdrawLTO = async (
     const walletAddress: string = account;
     const signer: any = web3provider.getSigner();
     if (!isWalletConnected) {
-      await connectWallet().then((res) => {
+      connectWallet().then((res) => {
         const {
           account,
           balance,

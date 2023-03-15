@@ -91,7 +91,7 @@ const ShortSwap = () => {
   async function ShortSwapButtonClick() {
     try {
       if (!isWalletConnected) {
-        await connectWallet().then((res) => {
+        connectWallet().then((res) => {
           const {
             account,
             balance,

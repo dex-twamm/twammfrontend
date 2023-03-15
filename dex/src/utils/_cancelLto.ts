@@ -30,7 +30,7 @@ export const _cancelLTO = async (
   try {
     const walletAddress = account;
     if (!isWalletConnected) {
-      await connectWallet().then((res) => {
+      connectWallet().then((res) => {
         const {
           account,
           balance,

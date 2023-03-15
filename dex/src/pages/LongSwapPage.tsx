@@ -88,7 +88,7 @@ const LongSwapPage = () => {
   async function LongSwapButtonClick() {
     try {
       if (!isWalletConnected) {
-        await connectWallet().then((res) => {
+        connectWallet().then((res) => {
           const {
             account,
             balance,
