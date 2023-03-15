@@ -1,6 +1,7 @@
 import { useEffect, useContext, createContext, useState } from "react";
 import { NETWORKS } from "../../utils/networks";
 import ethLogo from "../../images/ethereum.svg";
+import { getEthereumFromWindow } from "../../utils/ethereum";
 
 export interface SelectedNetworkType {
   network: string;
@@ -22,8 +23,8 @@ const useNetworkState = () => {
   });
 
   useEffect(() => {
-    const { ethereum }: any = window;
-    ethereum?.request({ method: "net_version" }).then((net_version: any) => {
+    const ethereum = getEthereumFromWindow();
+    ethereum?.request?.({ method: "net_version" }).then((net_version: any) => {
       const initialNetwork = NETWORKS.find((nw) => nw.chainId === net_version)!;
 
       setSelectedNetwork({
