@@ -41,9 +41,7 @@ export const connectWallet = async () => {
       network: network.name,
       logo: network.logo,
       chainId: network.chainId,
-      poolId: localStorage.getItem("poolId")
-        ? parseFloat(localStorage.getItem("poolId")!)
-        : 0,
+      poolId: parseFloat(localStorage.getItem("poolId") ?? "0"),
     },
   };
 };

@@ -38,9 +38,7 @@ const useNetworkState = () => {
         network: initialNetwork?.name,
         logo: initialNetwork?.logo,
         chainId: initialNetwork?.chainId,
-        poolId: localStorage.getItem("poolId")
-          ? parseFloat(localStorage.getItem("poolId")!)
-          : 0,
+        poolId: parseFloat(localStorage.getItem("poolId") ?? "0"),
       });
     });
   }, []);
