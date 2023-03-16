@@ -69,8 +69,8 @@ const LongSwapPage = () => {
       verifyLongSwap(
         swapAmount,
         setLongSwapVerifyLoading,
-        tokenA?.address!,
-        tokenB?.address!,
+        tokenA?.address,
+        tokenB?.address,
         web3provider,
         account,
         setLongSwapFormErrors,
@@ -107,8 +107,8 @@ const LongSwapPage = () => {
       } else {
         await _placeLongTermOrders(
           swapAmount,
-          tokenA?.address!,
-          tokenB?.address!,
+          tokenA?.address,
+          tokenB?.address,
           numberOfBlockIntervals,
           web3provider,
           account,

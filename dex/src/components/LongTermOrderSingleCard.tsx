@@ -205,7 +205,7 @@ const LongTermOrderSingleCard = ({ orderLog }: PropTypes) => {
   useEffect(() => {
     const getTime = async () => {
       const startTime = await web3provider?.getBlock(stBlock);
-      setOrderStartTime(formatToReadableTime(startTime?.timestamp!));
+      setOrderStartTime(formatToReadableTime(startTime?.timestamp));
 
       if (isExecuteTimeCompleted()) {
         const completionTime = await web3provider?.getBlock(

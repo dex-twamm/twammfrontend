@@ -100,8 +100,8 @@ const Swap = (props: PropTypes) => {
   const handleApproveButton = async () => {
     try {
       const approval = await approveMaxAllowance(
-        web3provider!,
-        tokenA?.address!,
+        web3provider,
+        tokenA?.address,
         selectedNetwork
       );
       setTransactionHash(approval.hash);
@@ -109,7 +109,7 @@ const Swap = (props: PropTypes) => {
       await getAllowance(
         web3provider?.getSigner(),
         account,
-        tokenA?.address!,
+        tokenA?.address,
         selectedNetwork
       ).then((res) => {
         setAllowance(bigToStr(res, tokenA?.decimals).toString());
