@@ -58,9 +58,7 @@ const Modal = ({
 
   // Handle Select Token Modal display
   const handleTokenSelection = (token: TokenType) => {
-    const chosenToken: TokenType = tokenDetails?.find(
-      (x) => x.symbol === token.symbol
-    )!;
+    const chosenToken = tokenDetails?.find((x) => x.symbol === token.symbol);
     let balances: { [address: string]: number }[] = tokenBalances.map(
       (obj: { [address: string]: number }) => ({
         address: Object.keys(obj)[0],
@@ -68,13 +66,18 @@ const Modal = ({
       })
     );
 
+    if (!chosenToken) throw new Error("Token not found in the given network!");
+
     const chosenTokenBalance = balances.find(
       (x) => x?.address.toString() === chosenToken?.address.toString()
     )?.balance;
 
+    if (!chosenTokenBalance)
+      throw new Error("Error while finding balance of choosen token!");
+
     if (selectToken === "1") {
       //set tokenFrom
-      setEthBalance(chosenTokenBalance!);
+      setEthBalance(chosenTokenBalance);
       if (chosenToken.symbol === tokenA.symbol) {
         return <></>;
       } else if (chosenToken.symbol === tokenB.symbol) {
@@ -85,7 +88,7 @@ const Modal = ({
       }
       setTokenA({
         ...chosenToken,
-        balance: chosenTokenBalance!,
+        balance: chosenTokenBalance,
         tokenIsSet: true,
       });
     } else if (selectToken === "2") {
@@ -94,7 +97,7 @@ const Modal = ({
       } else
         setTokenB({
           ...chosenToken,
-          balance: chosenTokenBalance!,
+          balance: chosenTokenBalance,
           tokenIsSet: true,
         });
     }
