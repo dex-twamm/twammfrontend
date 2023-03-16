@@ -60,3 +60,7 @@ export const getPoolTokenAddresses = (currentNetwork: SelectedNetworkType) => {
 export const getPoolBlockInterval = (currentNetwork: SelectedNetworkType) => {
   return getPoolConfig(currentNetwork)?.blockInterval;
 };
+
+export const getPoolLength = (currentNetwork: SelectedNetworkType) => {
+  return getAllPool(currentNetwork)?.length ?? 0;
+};

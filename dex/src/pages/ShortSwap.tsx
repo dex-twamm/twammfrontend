@@ -13,7 +13,7 @@ import { useNetworkContext } from "../providers/context/NetworkProvider";
 import { connectWallet } from "../utils/connetWallet";
 import { spotPrice } from "../utils/getSpotPrice";
 import { getEthLogs } from "../utils/get_ethLogs";
-import { getAllPool } from "../utils/poolUtils";
+import { getAllPool, getPoolLength } from "../utils/poolUtils";
 import { _swapTokens } from "../utils/shortSwap";
 
 const ShortSwap = () => {
@@ -152,7 +152,7 @@ const ShortSwap = () => {
             <div className={styles.swapOptions}>
               <p className={styles.textLink}>Swap</p>
               <div className={styles.poolAndIcon}>
-                {getAllPool(selectedNetwork)?.length! > 1 && (
+                {getPoolLength(selectedNetwork) > 1 && (
                   <Select
                     className={styles.poolBox}
                     inputProps={{ "aria-label": "Without label" }}

@@ -14,7 +14,7 @@ import { connectWallet } from "../utils/connetWallet";
 import { useNetworkContext } from "../providers/context/NetworkProvider";
 import LongSwap from "../components/LongSwap";
 import { verifyLongSwap } from "../utils/verifyLongSwap";
-import { getAllPool } from "../utils/poolUtils";
+import { getAllPool, getPoolLength } from "../utils/poolUtils";
 import { MenuItem, Select } from "@mui/material";
 import { getEthLogs } from "../utils/get_ethLogs";
 import { useShortSwapContext } from "../providers/context/ShortSwapProvider";
@@ -146,7 +146,7 @@ const LongSwapPage = () => {
             <div className={styles.swapOptions}>
               <p className={styles.textLink}>Long Term Swap</p>
               <div className={styles.poolAndIcon}>
-                {getAllPool(selectedNetwork)?.length! > 1 && (
+                {getPoolLength(selectedNetwork) > 1 && (
                   <Select
                     className={styles.poolBox}
                     inputProps={{ "aria-label": "Without label" }}
