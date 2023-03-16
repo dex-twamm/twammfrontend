@@ -3,11 +3,17 @@ import { getEthLogs } from "./get_ethLogs";
 import { NETWORKS } from "./networks";
 import { web3Modal } from "./providerOptions";
 import { getEthereumFromWindow } from "./ethereum";
+import ethLogo from "../images/ethereum.svg";
 
 const getNetwork = async () => {
   const ethereum = getEthereumFromWindow();
   const net_version = await ethereum?.request?.({ method: "net_version" });
-  const initialNetwork = NETWORKS.find((nw) => nw.chainId === net_version)!;
+  const initialNetwork = NETWORKS.find((nw) => nw.chainId === net_version) ?? {
+    name: "Ethereum",
+    chainId: "1",
+    logo: ethLogo,
+    poolId: 0,
+  };
   return initialNetwork;
 };
 

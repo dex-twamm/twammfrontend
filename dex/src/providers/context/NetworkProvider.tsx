@@ -24,8 +24,15 @@ const useNetworkState = () => {
 
   useEffect(() => {
     const ethereum = getEthereumFromWindow();
-    ethereum?.request?.({ method: "net_version" }).then((net_version: any) => {
-      const initialNetwork = NETWORKS.find((nw) => nw.chainId === net_version)!;
+    ethereum?.request?.({ method: "net_version" }).then((net_version) => {
+      const initialNetwork = NETWORKS.find(
+        (nw) => nw.chainId === net_version
+      ) ?? {
+        name: "Ethereum",
+        chainId: "1",
+        logo: ethLogo,
+        poolId: 0,
+      };
 
       setSelectedNetwork({
         network: initialNetwork?.name,
@@ -37,6 +44,7 @@ const useNetworkState = () => {
       });
     });
   }, []);
+
   return {
     selectedNetwork,
     setSelectedNetwork,
