@@ -18,8 +18,9 @@ export interface TokenState extends TokenType {
 const useLongSwapState = () => {
   const [sliderValue, setSliderValue] = useState(1);
   const [orderLogsDecoded, setOrderLogsDecoded] = useState<any>([]);
-  const [lastVirtualOrderBlock, setLastVirtualOrderBlock] =
-    useState<BigNumber>();
+  const [lastVirtualOrderBlock, setLastVirtualOrderBlock] = useState<BigNumber>(
+    BigNumber.from(0)
+  );
   const [numberOfBlockIntervals, setNumberOfBlockIntervals] = useState(0);
   const [targetDate, setTargetDate] = useState("");
   const [allowance, setAllowance] = useState("");

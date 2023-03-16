@@ -74,8 +74,13 @@ const LongTermOrderSingleCard = ({ orderLog }: PropTypes) => {
 
   const poolConfig = getPoolConfig(selectedNetwork);
 
-  const tokenIn: TokenType = poolConfig!.tokens[orderLog.sellTokenIndex];
-  const tokenOut: TokenType = poolConfig!.tokens[orderLog.buyTokenIndex];
+  if (!poolConfig)
+    throw new Error(
+      "Failed to retrieve pool configuration for selected network"
+    );
+
+  const tokenIn: TokenType = poolConfig.tokens[orderLog.sellTokenIndex];
+  const tokenOut: TokenType = poolConfig.tokens[orderLog.buyTokenIndex];
 
   const remainingTimeRef = useRef<HTMLParagraphElement>(null);
 
@@ -104,7 +109,7 @@ const LongTermOrderSingleCard = ({ orderLog }: PropTypes) => {
         : orderLog.salesRate?.mul(currentBlock.number - stBlock);
   } else {
     soldToken =
-      lastVirtualOrderBlock! > expBlock
+      lastVirtualOrderBlock > expBlock
         ? amountOf
         : lastVirtualOrderBlock?.sub(stBlock)?.mul(orderLog.salesRate);
   }
@@ -160,7 +165,7 @@ const LongTermOrderSingleCard = ({ orderLog }: PropTypes) => {
       setOrderStatus({ status: ORDER_STATUS_COMPLETED, progress: 100 });
     } else if (orderLog?.state === "cancelled") {
       setOrderStatus({ status: ORDER_STATUS_CANCELLED, progress: 100 });
-    } else if (lastVirtualOrderBlock! >= orderLog.expirationBlock) {
+    } else if (lastVirtualOrderBlock >= orderLog.expirationBlock) {
       setOrderStatus({ status: ORDER_STATUS_EXECUTED, progress: 100 });
     } else {
       if (orderLog.expirationBlock > currentBlock.number) {
@@ -170,7 +175,7 @@ const LongTermOrderSingleCard = ({ orderLog }: PropTypes) => {
         setOrderStatus({
           status: `${ORDER_EXECUTION_TIME_REMAINING}: ${timeString}`,
           progress:
-            ((parseFloat(lastVirtualOrderBlock!.toString()) -
+            ((parseFloat(lastVirtualOrderBlock.toString()) -
               orderLog?.startBlock) *
               100) /
             (orderLog?.expirationBlock - orderLog?.startBlock),
