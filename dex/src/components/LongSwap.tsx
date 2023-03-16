@@ -318,7 +318,7 @@ const LongSwap = (props: PropTypes) => {
           </div>
 
           {swapAmount &&
-          swapAmount <= tokenA?.balance! &&
+          swapAmount <= tokenA?.balance &&
           parseFloat(allowance) < swapAmount &&
           tokenA?.tokenIsSet &&
           tokenB?.tokenIsSet ? (

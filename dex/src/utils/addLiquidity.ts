@@ -88,9 +88,9 @@ export async function getPoolBalance(
   tokenAddress: string,
   currentNetwork: SelectedNetworkType
 ): Promise<string> {
-  const tokenIndex: TokenType[] = getPoolTokens(currentNetwork)?.filter(
-    (item) => item.address === tokenAddress
-  )!;
+  const tokenIndex = getPoolTokens(currentNetwork)?.filter(
+    (item) => item?.address === tokenAddress
+  );
 
   const vaultContract = getExchangeContract(currentNetwork, signer);
 

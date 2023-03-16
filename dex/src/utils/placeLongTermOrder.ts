@@ -21,7 +21,7 @@ export const _placeLongTermOrders = async (
   setError: Dispatch<SetStateAction<string>>,
   currentNetwork: SelectedNetworkType
 ): Promise<void> => {
-  const poolConfig: PoolType = getPoolConfig(currentNetwork)!;
+  const poolConfig: PoolType = getPoolConfig(currentNetwork);
 
   try {
     const tokenInIndex: number = poolConfig?.tokens.findIndex(

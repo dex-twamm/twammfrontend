@@ -18,10 +18,19 @@ export const getPoolId = (currentNetwork: SelectedNetworkType) => {
 };
 
 export const getPoolConfig = (currentNetwork: SelectedNetworkType) => {
+  let poolConfig;
   if (currentNetwork)
-    return Object.values(POOLS?.[getCurrentNetwork(currentNetwork)])?.[
+    poolConfig = Object.values(POOLS?.[getCurrentNetwork(currentNetwork)])?.[
       currentNetwork?.poolId
     ];
+
+  if (!poolConfig) {
+    throw new Error(
+      "Failed to retrieve pool configuration for selected network"
+    );
+  }
+
+  return poolConfig;
 };
 
 export const getPoolTokens = (currentNetwork: SelectedNetworkType) => {

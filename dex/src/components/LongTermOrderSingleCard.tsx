@@ -74,11 +74,6 @@ const LongTermOrderSingleCard = ({ orderLog }: PropTypes) => {
 
   const poolConfig = getPoolConfig(selectedNetwork);
 
-  if (!poolConfig)
-    throw new Error(
-      "Failed to retrieve pool configuration for selected network"
-    );
-
   const tokenIn: TokenType = poolConfig.tokens[orderLog.sellTokenIndex];
   const tokenOut: TokenType = poolConfig.tokens[orderLog.buyTokenIndex];
 
@@ -216,9 +211,7 @@ const LongTermOrderSingleCard = ({ orderLog }: PropTypes) => {
         const completionTime = await web3provider?.getBlock(
           parseFloat(expBlock.toString())
         );
-        setOrderCompletionTime(
-          formatToReadableTime(completionTime?.timestamp!)
-        );
+        setOrderCompletionTime(formatToReadableTime(completionTime?.timestamp));
       }
     };
     getTime();

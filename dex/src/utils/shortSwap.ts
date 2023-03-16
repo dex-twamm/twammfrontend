@@ -20,7 +20,7 @@ export const _swapTokens = async (
   setLoading: Dispatch<SetStateAction<boolean>>,
   currentNetwork: SelectedNetworkType
 ): Promise<void> => {
-  const poolConfig: PoolType = getPoolConfig(currentNetwork)!;
+  const poolConfig: PoolType = getPoolConfig(currentNetwork);
 
   const tokenIn: TokenType = poolConfig?.tokens.find(
     (token: any) => token.address === tokenA

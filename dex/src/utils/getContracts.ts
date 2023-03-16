@@ -27,7 +27,7 @@ export const getPoolContract = (
   signer: any
 ): Contract => {
   return new Contract(
-    getPoolContractAddress(currentNetwork)!,
+    getPoolContractAddress(currentNetwork),
     TWAMM_POOL_ABI,
     signer
   );

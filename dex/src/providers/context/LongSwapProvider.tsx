@@ -53,9 +53,7 @@ const useLongSwapState = () => {
   const { selectedNetwork } = useNetworkContext();
   useEffect(() => {
     const poolConfig = getPoolConfig(selectedNetwork);
-    if (!poolConfig) {
-      throw new Error("Pool not found for the selected network!");
-    }
+
     setTokenA({
       ...poolConfig?.tokens[0],
       balance: 0,

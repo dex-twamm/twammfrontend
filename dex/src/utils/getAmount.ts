@@ -18,8 +18,8 @@ export const getTokensBalance = async (
   walletAddress: string,
   currentNetwork: SelectedNetworkType
 ): Promise<MyArrayOfObjects[]> => {
-  const poolConfig: PoolType = getPoolConfig(currentNetwork)!;
-  var tokenAddress: string[] = getPoolTokenAddresses(currentNetwork)!;
+  const poolConfig: PoolType = getPoolConfig(currentNetwork);
+  var tokenAddress: string[] = getPoolTokenAddresses(currentNetwork);
 
   const newBalance: MyArrayOfObjects[] = [];
   for (let index = 0; index < tokenAddress?.length; index++) {
@@ -52,7 +52,7 @@ export const getLPTokensBalance = async (
   currentNetwork: SelectedNetworkType
 ): Promise<number> => {
   const poolContract: Contract = new Contract(
-    getPoolContractAddress(currentNetwork)!,
+    getPoolContractAddress(currentNetwork),
     TWAMM_POOL_ABI,
     signer
   );

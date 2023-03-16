@@ -103,7 +103,7 @@ export async function getLongTermOrder(
   currentNetwork: SelectedNetworkType
 ): Promise<(BigNumber | string)[]> {
   const contract = new Contract(
-    getPoolContractAddress(currentNetwork)!,
+    getPoolContractAddress(currentNetwork),
     LONGTERM_ABI,
     signer
   );
@@ -117,7 +117,7 @@ export async function getLastVirtualOrderBlock(
   currentNetwork: SelectedNetworkType
 ): Promise<BigNumber> {
   const contract = new Contract(
-    getPoolLtoContractAddress(currentNetwork)!,
+    getPoolLtoContractAddress(currentNetwork),
     LONGTERM_ABI,
     signer
   );

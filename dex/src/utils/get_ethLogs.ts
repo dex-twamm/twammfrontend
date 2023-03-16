@@ -12,8 +12,8 @@ export async function getEthLogs(
   currentNetwork: SelectedNetworkType
 ) {
   //q:get type of third argument of contract constructor
-  const poolContract: Contract = new Contract(
-    getPoolContractAddress(currentNetwork)!,
+  const poolContract = new Contract(
+    getPoolContractAddress(currentNetwork),
     TWAMM_POOL_ABI,
     signer
   );

@@ -23,7 +23,7 @@ export const verifyLongSwap = async (
   if (swapAmount && numberOfBlockIntervals) {
     setLongSwapVerifyLoading(true);
 
-    const poolConfig: PoolType = getPoolConfig(currentNetwork)!;
+    const poolConfig: PoolType = getPoolConfig(currentNetwork);
 
     const signer: any = web3provider.getSigner();
     const walletAddress: string = account;

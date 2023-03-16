@@ -16,9 +16,6 @@ const valueLabel = (
 
   let currentBlockNumber: number = currentBlock?.number || 0;
 
-  if (!blockInterval)
-    throw new Error("Could not find block interval in current network!");
-
   const numBlocks: number =
     Math.ceil(value) * blockInterval +
     (currentBlockNumber % blockInterval
