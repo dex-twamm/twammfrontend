@@ -199,7 +199,10 @@ const Swap = (props: PropTypes) => {
             id={2}
             input={
               expectedSwapOut
-                ? +bigToStr(BigNumber.from(expectedSwapOut), tokenB?.decimals)
+                ? +bigToStr(
+                    BigNumber.from(expectedSwapOut.toString()),
+                    tokenB.decimals
+                  )
                 : undefined
             }
             placeholder=""
@@ -238,7 +241,7 @@ const Swap = (props: PropTypes) => {
                       ) : spotPrice === 0 || !spotPrice ? (
                         <p></p>
                       ) : (
-                        <p className={lsStyles.spotPrice}>
+                        <div className={lsStyles.spotPrice}>
                           <span className={styles.spotValue}>
                             {!tokenRateSwitch && (
                               <>
@@ -295,7 +298,7 @@ const Swap = (props: PropTypes) => {
                               onClick={handlePriceDropdown}
                             />
                           </div>
-                        </p>
+                        </div>
                       )}
                     </div>
                   </Box>
@@ -311,10 +314,11 @@ const Swap = (props: PropTypes) => {
                   {spotPriceLoading ? (
                     <Skeleton width={"100px"} />
                   ) : (
-                    `${bigToStr(
-                      BigNumber.from(expectedSwapOut),
+                    `${+bigToStr(
+                      BigNumber.from(expectedSwapOut.toString()),
                       tokenB.decimals
-                    )} ${tokenB.symbol}`
+                    )}
+                   ${tokenB.symbol}`
                   )}
                 </p>
               </div>
