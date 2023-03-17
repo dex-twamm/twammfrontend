@@ -4,10 +4,8 @@ import classNames from "classnames";
 import React, { useState } from "react";
 import styles from "../css/AddLiquidity.module.css";
 import lsStyles from "../css/LongSwap.module.css";
-
 import { useShortSwapContext } from "../providers/context/ShortSwapProvider";
 import Input from "./Input";
-
 import { BigNumber } from "ethers";
 import {
   bigToStr,
@@ -16,9 +14,11 @@ import {
   getProperFixedValue,
 } from "../utils";
 import { approveMaxAllowance, getAllowance } from "../utils/getApproval";
-
 import { useNetworkContext } from "../providers/context/NetworkProvider";
 import { useLongSwapContext } from "../providers/context/LongSwapProvider";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ChangeCircleOutlinedIcon from "@mui/icons-material/ChangeCircleOutlined";
+import { getShortSwapPoolFee } from "../utils/poolUtils";
 
 interface PropTypes {
   handleSwapAction: any;
@@ -32,7 +32,8 @@ const Swap = (props: PropTypes) => {
   const [hasBalancerOrTransactionError, setHasBalancerOrTransactionError] =
     useState<boolean>(true);
 
-  const [tokenRateSwitch, setTokenRateSwitch] = useState<boolean>(false);
+  const [tokenRateSwitch, setTokenRateSwitch] = useState(false);
+  const [showPriceValues, setShowPriceValues] = useState(false);
 
   const {
     account,
@@ -129,6 +130,10 @@ const Swap = (props: PropTypes) => {
     return errors;
   };
 
+  const handlePriceDropdown = () => {
+    setShowPriceValues((prev) => !prev);
+  };
+
   useEffect(() => {
     formErrors.balError !== undefined
       ? setHasBalancerOrTransactionError(true)
@@ -158,10 +163,15 @@ const Swap = (props: PropTypes) => {
   ]);
 
   useEffect(() => {
+    setShowPriceValues(false);
+  }, [swapAmount]);
+
+  useEffect(() => {
     if (!swapAmount) {
       setFormErrors({ balError: undefined });
       setSpotPrice(0);
       setExpectedSwapOut(0);
+      setShowPriceValues(false);
     }
   }, [swapAmount, setFormErrors, setSpotPrice, setExpectedSwapOut]);
 
@@ -204,7 +214,6 @@ const Swap = (props: PropTypes) => {
             setTokenA={setTokenA}
             setTokenB={setTokenB}
           />
-
           {formErrors.balError && (
             <div className={styles.errorAlert}>
               <Alert severity="error" sx={{ borderRadius: "16px" }}>
@@ -215,86 +224,113 @@ const Swap = (props: PropTypes) => {
           {swapAmount !== 0 && tokenB?.tokenIsSet && (
             <>
               <Box
-                sx={{
-                  padding: { xs: "0px 4px", sm: "4px 8px" },
-                }}
                 className={
                   (tokenRateSwitch && styles.swapunit, styles.spotPriceBox)
                 }
               >
                 {!formErrors.balError ? (
-                  <Box
-                    className={styles.spotBox}
-                    sx={{
-                      alignItems: {
-                        xs: "flex-start ",
-                        sm: "center",
-                        md: "center",
-                      },
-                      width: {
-                        xs: "70%",
-                        sm: "fit-content",
-                        md: "fit-content",
-                      },
-
-                      gap: { xs: "2px", sm: "4px" },
-                    }}
-                  >
-                    {spotPriceLoading ? (
-                      <Skeleton width={"100px"} />
-                    ) : spotPrice === 0 || !spotPrice ? (
-                      <p></p>
-                    ) : (
-                      <p
-                        className={lsStyles.spotPrice}
-                        onClick={handleTokenRateSwitch}
-                      >
-                        {!tokenRateSwitch && (
-                          <>
-                            {` 1 ${tokenA?.symbol} = ${"  "}`}
-                            <label
-                              style={{ marginLeft: "4px", cursor: "pointer" }}
-                            >
-                              {spotPriceLoading ? (
-                                <Skeleton width={"100px"} />
-                              ) : (
-                                ` ${getProperFixedValue(spotPrice)} ${
-                                  tokenB.symbol
-                                }`
-                              )}
-                            </label>
-                          </>
-                        )}
-                        {tokenRateSwitch && (
-                          <>
-                            {` 1 ${tokenB.symbol} = ${"  "}`}
-                            <label
-                              style={{ marginLeft: "4px", cursor: "pointer" }}
-                            >
-                              {spotPriceLoading ? (
-                                <Skeleton width={"100px"} />
-                              ) : (
-                                ` ${getInversedValue(spotPrice)} ${
-                                  tokenA?.symbol
-                                }`
-                              )}
-                            </label>
-                          </>
-                        )}
-                      </p>
-                    )}
+                  <Box className={styles.spotBox}>
+                    <div className={styles.spotContentBox}>
+                      {spotPriceLoading ? (
+                        <p className={lsStyles.spotPrice}>
+                          <Skeleton width={"450px"} />
+                        </p>
+                      ) : spotPrice === 0 || !spotPrice ? (
+                        <p></p>
+                      ) : (
+                        <p className={lsStyles.spotPrice}>
+                          <span className={styles.spotValue}>
+                            {!tokenRateSwitch && (
+                              <>
+                                {` 1 ${tokenA.symbol} = ${"  "}`}
+                                <label
+                                  style={{
+                                    marginLeft: "4px",
+                                  }}
+                                >
+                                  {spotPriceLoading ? (
+                                    <Skeleton width={"100px"} />
+                                  ) : (
+                                    ` ${getProperFixedValue(spotPrice)} ${
+                                      tokenB.symbol
+                                    }`
+                                  )}
+                                </label>
+                              </>
+                            )}
+                            {tokenRateSwitch && (
+                              <>
+                                {` 1 ${tokenB.symbol} = ${"  "}`}
+                                <label
+                                  style={{
+                                    marginLeft: "4px",
+                                  }}
+                                >
+                                  {spotPriceLoading ? (
+                                    <Skeleton width={"100px"} />
+                                  ) : (
+                                    ` ${getInversedValue(spotPrice)} ${
+                                      tokenA.symbol
+                                    }`
+                                  )}
+                                </label>
+                              </>
+                            )}
+                            <ChangeCircleOutlinedIcon
+                              onClick={handleTokenRateSwitch}
+                              sx={{
+                                marginLeft: { xs: "3px", sm: "10px" },
+                                cursor: "pointer",
+                              }}
+                            />
+                          </span>
+                          <div className={styles.priceDropdown}>
+                            <span>
+                              Fees: {getShortSwapPoolFee(selectedNetwork)}
+                            </span>
+                            <ExpandMoreIcon
+                              sx={{
+                                cursor: "pointer",
+                              }}
+                              onClick={handlePriceDropdown}
+                            />
+                          </div>
+                        </p>
+                      )}
+                    </div>
                   </Box>
                 ) : null}
-                <Box
-                  className={lsStyles.extraBox}
-                  sx={{
-                    gap: { xs: "0px", sm: "5px" },
-                  }}
-                ></Box>
               </Box>
             </>
           )}
-
+          {showPriceValues && !formErrors.balError && (
+            <div className={styles.priceValueBox}>
+              <div className={styles.priceValueItem}>
+                <p>Expected Outcome:</p>
+                <p>
+                  {spotPriceLoading ? (
+                    <Skeleton width={"100px"} />
+                  ) : (
+                    `${bigToStr(
+                      BigNumber.from(expectedSwapOut),
+                      tokenB.decimals
+                    )} ${tokenB.symbol}`
+                  )}
+                </p>
+              </div>
+              <div className={styles.priceValueItem}>
+                <p>Fees included:</p>
+                <p>
+                  {" "}
+                  {spotPriceLoading ? (
+                    <Skeleton width={"100px"} />
+                  ) : (
+                    getShortSwapPoolFee(selectedNetwork)
+                  )}
+                </p>
+              </div>
+            </div>
+          )}
           {swapAmount &&
           parseFloat(allowance) < swapAmount &&
           tokenA?.tokenIsSet &&

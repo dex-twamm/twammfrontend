@@ -11,7 +11,6 @@ import React, { useState } from "react";
 import lsStyles from "../css/LongSwap.module.css";
 import styles from "../css/AddLiquidity.module.css";
 import { bigToStr, getInputLimit } from "../utils";
-
 import {
   calculateNumBlockIntervals,
   valueLabel,
@@ -24,6 +23,7 @@ import { approveMaxAllowance, getAllowance } from "../utils/getApproval";
 
 import { useNetworkContext } from "../providers/context/NetworkProvider";
 import { useLongSwapContext } from "../providers/context/LongSwapProvider";
+import { getLongSwapPoolFee } from "../utils/poolUtils";
 
 interface PropTypes {
   handleLongSwapAction: any;
@@ -266,6 +266,15 @@ const LongSwap = (props: PropTypes) => {
             setTokenA={setTokenA}
             setTokenB={setTokenB}
           />
+
+          <p
+            className={lsStyles.priceImpactLS}
+            // style={{
+            //   padding: { xs: "0px", sm: "8px 0px" },
+            // }}
+          >
+            Fees Included: {getLongSwapPoolFee(selectedNetwork)}
+          </p>
 
           {longSwapFormErrors?.balError && (
             <div className={styles.errorAlert}>

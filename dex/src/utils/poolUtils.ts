@@ -48,8 +48,12 @@ export const getPoolTokenSymbol = (currentNetwork: SelectedNetworkType) => {
   }
 };
 
-export const getPoolFees = (currentNetwork: SelectedNetworkType) => {
-  return getPoolConfig(currentNetwork)?.fees;
+export const getShortSwapPoolFee = (currentNetwork: SelectedNetworkType) => {
+  return getPoolConfig(currentNetwork)?.shortSwapFee;
+};
+
+export const getLongSwapPoolFee = (currentNetwork: SelectedNetworkType) => {
+  return getPoolConfig(currentNetwork)?.longSwapFee;
 };
 
 export const getPoolContractAddress = (currentNetwork: SelectedNetworkType) => {

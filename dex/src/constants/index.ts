@@ -1695,13 +1695,13 @@ export const TWAMM_POOL_ABI = [
         type: "uint256",
       },
       {
-        indexed: true,
+        indexed: false,
         internalType: "uint256",
         name: "buyTokenIndex",
         type: "uint256",
       },
       {
-        indexed: true,
+        indexed: false,
         internalType: "uint256",
         name: "sellTokenIndex",
         type: "uint256",
@@ -1769,13 +1769,13 @@ export const TWAMM_POOL_ABI = [
         type: "uint256",
       },
       {
-        indexed: true,
+        indexed: false,
         internalType: "uint256",
         name: "buyTokenIndex",
         type: "uint256",
       },
       {
-        indexed: true,
+        indexed: false,
         internalType: "uint256",
         name: "sellTokenIndex",
         type: "uint256",
@@ -1812,13 +1812,13 @@ export const TWAMM_POOL_ABI = [
         type: "uint256",
       },
       {
-        indexed: true,
+        indexed: false,
         internalType: "uint256",
         name: "buyTokenIndex",
         type: "uint256",
       },
       {
-        indexed: true,
+        indexed: false,
         internalType: "uint256",
         name: "sellTokenIndex",
         type: "uint256",
@@ -1864,12 +1864,6 @@ export const TWAMM_POOL_ABI = [
         indexed: false,
         internalType: "uint256",
         name: "longTermSwapFeePercentage",
-        type: "uint256",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "longTermSwapFeeProtocolCutPercentage",
         type: "uint256",
       },
     ],
@@ -2336,32 +2330,6 @@ export const TWAMM_POOL_ABI = [
   },
   {
     inputs: [],
-    name: "longTermSwapFeePercentage",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "longTermSwapFeeProtocolCutPercentage",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "name",
     outputs: [
       {
@@ -2768,14 +2736,9 @@ export const TWAMM_POOL_ABI = [
   {
     inputs: [
       {
-        internalType: "uint256",
+        internalType: "uint128",
         name: "newLongTermSwapFeePercentage",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "newLongTermSwapFeeProtocolCutPercentage",
-        type: "uint256",
+        type: "uint128",
       },
     ],
     name: "setLongTermSwapFeePercentage",
@@ -2862,7 +2825,7 @@ export const TWAMM_POOL_ABI = [
     inputs: [
       {
         internalType: "bool",
-        name: "virtualOrderExecutionPaused",
+        name: "newVirtualOrderExecutionPaused",
         type: "bool",
       },
     ],
@@ -2961,6 +2924,19 @@ export const TWAMM_POOL_ABI = [
     name: "transferOwnership",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "virtualOrderExecutionPaused",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {

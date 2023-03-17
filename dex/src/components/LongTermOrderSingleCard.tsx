@@ -13,7 +13,7 @@ import LongTermSwapCardDropdown from "./LongTermSwapCardDropdown";
 import { _withdrawLTO } from "../utils/_withdrawLto";
 import { _cancelLTO } from "../utils/_cancelLto";
 import { ethers } from "ethers";
-import { getPoolConfig } from "../utils/poolUtils";
+import { getLongSwapPoolFee, getPoolConfig } from "../utils/poolUtils";
 import { getBlockExplorerTransactionUrl } from "../utils/networkUtils";
 import ChangeCircleOutlinedIcon from "@mui/icons-material/ChangeCircleOutlined";
 import { withdrawLTO } from "../utils/addLiquidity";
@@ -340,7 +340,9 @@ const LongTermOrderSingleCard = ({ orderLog }: PropTypes) => {
             }
           >
             <div className={styles.feesAndPrice}>
-              <div className={styles.fees}>Fees: {poolConfig?.fees}</div>
+              <div className={styles.fees}>
+                Fees: {getLongSwapPoolFee(selectedNetwork)}
+              </div>
               {bigToFloat(soldToken) !== 0 && (
                 <div
                   className={styles.averagePrice}
