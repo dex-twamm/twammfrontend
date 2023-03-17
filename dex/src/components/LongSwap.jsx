@@ -24,6 +24,7 @@ import { FiChevronDown } from "react-icons/fi";
 import { approveMaxAllowance, getAllowance } from "../utils/getApproval";
 
 import { UIContext } from "../providers/context/UIProvider";
+import { getLongSwapPoolFee } from "../utils/poolUtils";
 
 const LongSwap = (props) => {
   const { handleLongSwapAction, longSwapVerifyLoading } = props;
@@ -267,6 +268,15 @@ const LongSwap = (props) => {
             setTokenA={setTokenA}
             setTokenB={setTokenB}
           />
+
+          <p
+            className={lsStyles.priceImpactLS}
+            style={{
+              padding: { xs: "0px", sm: "8px 0px" },
+            }}
+          >
+            Fees Included: {getLongSwapPoolFee(selectedNetwork)}
+          </p>
 
           {longSwapFormErrors?.balError && (
             <div className={styles.errorAlert}>
