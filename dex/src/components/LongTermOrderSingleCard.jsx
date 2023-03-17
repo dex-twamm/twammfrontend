@@ -284,7 +284,7 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
                 alt={tokenOut.symbol}
               />
               <p className={classNames(styles.tokenText, styles.greenText)}>
-                {tokenWithdrawals} {tokenOut.symbol}
+                {getProperFixedValue(tokenWithdrawals)} {tokenOut.symbol}
               </p>
             </div>
           </div>
