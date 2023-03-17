@@ -61,13 +61,13 @@ const Swap = (props) => {
     setSelectToken(event.currentTarget.id);
     setDisplay(!display);
     setSpotPrice(0);
-    setExpectedSwapOut();
+    setExpectedSwapOut(0);
   };
 
   useEffect(() => {
     return () => {
-      setExpectedSwapOut();
-      setSpotPrice();
+      setExpectedSwapOut(0);
+      setSpotPrice(0);
     };
   }, []);
 
@@ -165,7 +165,7 @@ const Swap = (props) => {
   useEffect(() => {
     if (!swapAmount) {
       setFormErrors({ balError: undefined });
-      setSpotPrice();
+      setSpotPrice(0);
       setExpectedSwapOut(0);
       setShowPriceValues(false);
     }
