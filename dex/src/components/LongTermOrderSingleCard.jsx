@@ -190,10 +190,14 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
     const getTime = async () => {
       const startTime = await web3provider.getBlock(stBlock);
       setOrderStartTime(formatToReadableTime(startTime?.timestamp));
-
       if (isExecuteTimeCompleted()) {
+        const blockNumberForTimestamp =
+          orderLog.state === "cancelled"
+            ? orderLog.withdrawals[orderLog.withdrawals.length - 1]?.blockNumber
+            : expBlock.toString();
+
         const completionTime = await web3provider.getBlock(
-          parseFloat(expBlock.toString())
+          parseFloat(blockNumberForTimestamp)
         );
         setOrderCompletionTime(formatToReadableTime(completionTime?.timestamp));
       }
@@ -221,6 +225,8 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
 
     if (orderLog?.state === "inProgress") getExpectedWithdrawalValue();
   }, []);
+
+  console.log(orderLog);
 
   return (
     <>
@@ -351,7 +357,10 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
               <div className={styles.fees}>Initiated On: {orderStartTime}</div>
               {isExecuteTimeCompleted() && (
                 <div className={styles.fees}>
-                  Completed On: {orderCompletionTime}
+                  {orderLog.state === "cancelled"
+                    ? "Cancelled On:"
+                    : "Completed On:"}{" "}
+                  {orderCompletionTime}
                 </div>
               )}
             </div>
