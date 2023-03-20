@@ -4,8 +4,8 @@ import { bigToStr } from ".";
 import { ERC20_TOKEN_CONTRACT_ABI, TWAMM_POOL_ABI } from "../constants";
 import {
   getPoolContractAddress,
-  getPoolConfig,
   getPoolTokenAddresses,
+  getPoolTokens,
 } from "./poolUtils";
 // To Retrieve Token Balances
 export const getTokensBalance = async (
@@ -13,7 +13,7 @@ export const getTokensBalance = async (
   walletAddress,
   currentNetwork
 ) => {
-  const poolConfig = getPoolConfig(currentNetwork);
+  const tokens = getPoolTokens(currentNetwork);
   var tokenAddress = getPoolTokenAddresses(currentNetwork);
 
   const newBalance = [];
@@ -22,7 +22,7 @@ export const getTokensBalance = async (
     const balances = await balanceContract(address);
     const readableBalance = ethers.utils.formatUnits(
       balances,
-      poolConfig?.tokens[index].decimals
+      tokens[index].decimals
     );
     newBalance.push({ [address]: readableBalance });
   }

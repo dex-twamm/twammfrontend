@@ -239,7 +239,7 @@ const Swap = (props) => {
                       ) : spotPrice === 0 || !spotPrice ? (
                         <p></p>
                       ) : (
-                        <p
+                        <div
                           className={lsStyles.spotPrice}
                           style={{
                             padding: { xs: "0px", sm: "8px 0px" },
@@ -301,7 +301,7 @@ const Swap = (props) => {
                               onClick={handlePriceDropdown}
                             />
                           </div>
-                        </p>
+                        </div>
                       )}
                     </div>
                   </Box>

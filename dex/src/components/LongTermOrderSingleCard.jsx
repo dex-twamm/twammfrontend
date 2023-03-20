@@ -14,7 +14,7 @@ import { _withdrawLTO } from "../utils/_withdrawLto";
 import { _cancelLTO } from "../utils/_cancelLto";
 import { LongSwapContext, ShortSwapContext } from "../providers";
 import { ethers } from "ethers";
-import { getLongSwapPoolFee, getPoolConfig } from "../utils/poolUtils";
+import { getLongSwapPoolFee, getPoolTokens } from "../utils/poolUtils";
 import { getBlockExplorerTransactionUrl } from "../utils/networkUtils";
 import ChangeCircleOutlinedIcon from "@mui/icons-material/ChangeCircleOutlined";
 import { withdrawLTO } from "../utils/addLiquidity";
@@ -61,10 +61,10 @@ const LongTermOrderSingleCard = ({ orderLog }) => {
   const [switchedAveragePrice, setSwitchedAveragePrice] = useState();
   const [expectedWithdrawalValue, setExpectedWithdrawalValue] = useState(0);
 
-  const poolConfig = getPoolConfig(selectedNetwork);
+  const tokens = getPoolTokens(selectedNetwork);
 
-  const tokenIn = poolConfig.tokens[orderLog.sellTokenIndex];
-  const tokenOut = poolConfig.tokens[orderLog.buyTokenIndex];
+  const tokenIn = tokens[orderLog.sellTokenIndex];
+  const tokenOut = tokens[orderLog.buyTokenIndex];
 
   const remainingTimeRef = useRef();
 

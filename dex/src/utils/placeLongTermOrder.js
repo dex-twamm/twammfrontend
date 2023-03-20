@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 import { POPUP_MESSAGE } from "../constants";
 import { getEthLogs } from "./get_ethLogs";
 import { placeLongTermOrder } from "./longSwap";
-import { getPoolConfig } from "./poolUtils";
+import { getPoolTokens } from "./poolUtils";
 
 export const _placeLongTermOrders = async (
   swapAmount,
@@ -18,18 +18,18 @@ export const _placeLongTermOrders = async (
   setError,
   currentNetwork
 ) => {
-  const poolConfig = getPoolConfig(currentNetwork);
+  const tokens = getPoolTokens(currentNetwork);
 
   try {
-    const tokenInIndex = poolConfig.tokens.findIndex(
+    const tokenInIndex = tokens.findIndex(
       (object) => tokenA === object.address
     );
-    const tokenOutIndex = poolConfig.tokens.findIndex(
+    const tokenOutIndex = tokens.findIndex(
       (object) => tokenB === object.address
     );
     const amountIn = ethers.utils.parseUnits(
       swapAmount.toString(),
-      poolConfig.tokens[tokenInIndex].decimals
+      tokens[tokenInIndex].decimals
     );
     const blockIntervals = Math.ceil(numberOfBlockIntervals);
 

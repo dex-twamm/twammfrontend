@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import { POPUP_MESSAGE } from "../constants";
-import { getPoolConfig } from "./poolUtils";
+import { getPoolTokens } from "./poolUtils";
 import { verifySwapTokens } from "./swap";
 
 // Spot Prices
@@ -20,16 +20,15 @@ export const spotPrice = async (
   if (swapAmount) {
     setSpotPriceLoading(true);
 
-    const poolConfig = getPoolConfig(currentNetwork);
-    const tokenIn = poolConfig?.tokens.find(
-      (token) => token.address === tokenA
-    );
-    const tokenOut = poolConfig?.tokens.find(
-      (token) => token.address === tokenB
-    );
+    const tokens = getPoolTokens(currentNetwork);
+    const tokenIn = tokens.find((token) => token.address === tokenA);
+    const tokenOut = tokens.find((token) => token.address === tokenB);
 
     //todo : Change this to use token decimal places
-    const swapAmountWei = ethers.utils.parseUnits(swapAmount.toString(), tokenIn.decimals);
+    const swapAmountWei = ethers.utils.parseUnits(
+      swapAmount.toString(),
+      tokenIn.decimals
+    );
 
     const errors = {};
 

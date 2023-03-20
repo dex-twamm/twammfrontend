@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import { POPUP_MESSAGE } from "../constants";
-import { getPoolConfig } from "./poolUtils";
+import { getPoolTokens } from "./poolUtils";
 import { swapTokens } from "./swap";
 
 export const _swapTokens = async (
@@ -17,10 +17,13 @@ export const _swapTokens = async (
   setLoading,
   currentNetwork
 ) => {
-  const poolConfig = getPoolConfig(currentNetwork);
-  const tokenIn = poolConfig.tokens.find((token) => token.address === tokenA);
+  const tokens = getPoolTokens(currentNetwork);
+  const tokenIn = tokens.find((token) => token.address === tokenA);
 
-  const swapAmountWei = ethers.utils.parseUnits(swapAmount.toString(), tokenIn.decimals);
+  const swapAmountWei = ethers.utils.parseUnits(
+    swapAmount.toString(),
+    tokenIn.decimals
+  );
   const walletBalanceWei = ethers.utils.parseUnits(
     ethBalance,
     tokenIn.decimals

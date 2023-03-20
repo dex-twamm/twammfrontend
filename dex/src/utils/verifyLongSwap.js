@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import { POPUP_MESSAGE } from "../constants";
 import { verifyLongSwapTxn } from "./longSwap";
-import { getPoolConfig } from "./poolUtils";
+import { getPoolTokens } from "./poolUtils";
 
 export const verifyLongSwap = async (
   swapAmount,
@@ -18,7 +18,7 @@ export const verifyLongSwap = async (
   if (swapAmount && numberOfBlockIntervals) {
     setLongSwapVerifyLoading(true);
 
-    const poolConfig = getPoolConfig(currentNetwork);
+    const tokens = getPoolTokens(currentNetwork);
 
     const errors = {};
 
@@ -26,15 +26,15 @@ export const verifyLongSwap = async (
     const walletAddress = account;
 
     try {
-      const tokenInIndex = poolConfig.tokens.findIndex(
+      const tokenInIndex = tokens.findIndex(
         (object) => tokenA === object.address
       );
-      const tokenOutIndex = poolConfig.tokens.findIndex(
+      const tokenOutIndex = tokens.findIndex(
         (object) => tokenB === object.address
       );
       const amountIn = ethers.utils.parseUnits(
         swapAmount.toString(),
-        poolConfig.tokens[tokenInIndex].decimals
+        tokens[tokenInIndex].decimals
       );
 
       if (amountIn < parseFloat(allowance)) {
