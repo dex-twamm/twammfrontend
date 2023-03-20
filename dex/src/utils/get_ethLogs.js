@@ -83,8 +83,8 @@ export async function getEthLogs(signer, walletAddress, currentNetwork) {
       transactionHash: eventsWithdrawn[i].transactionHash,
     });
     orderObject.hasPartialWithdrawals =
-      orderObject.hasPartialWithdrawals || log[4];
-    if (!log[4]) {
+      orderObject.hasPartialWithdrawals || log[6];
+    if (!log[6]) {
       orderObject.state = "completed";
     }
   }
