@@ -1,9 +1,7 @@
 import { POPUP_MESSAGE } from "../constants";
 import { Dispatch, SetStateAction } from "react";
 import { withdrawLTO } from "./addLiquidity";
-import { connectWallet } from "./connectWallet";
 import { getEthLogs } from "./getEthLogs";
-import { providers } from "ethers";
 import { SelectedNetworkType } from "../providers/context/NetworkProvider";
 
 export const _withdrawLTO = async (
@@ -12,40 +10,16 @@ export const _withdrawLTO = async (
   setDisableActionBtn: Dispatch<SetStateAction<boolean>>,
   account: string,
   web3provider: any,
-  setWeb3provider: Dispatch<SetStateAction<any>>,
-  setCurrentBlock: Dispatch<SetStateAction<any>>,
-  setBalance: Dispatch<SetStateAction<number>>,
-  setAccount: Dispatch<SetStateAction<string>>,
-  setWalletConnected: Dispatch<SetStateAction<boolean>>,
-  isWalletConnected: boolean,
   setOrderLogsDecoded: Dispatch<SetStateAction<any>>,
   setMessage: Dispatch<SetStateAction<string>>,
   setTransactionHash: Dispatch<SetStateAction<string>>,
-  currentNetwork: SelectedNetworkType,
-  setSelectedNetwork: Dispatch<SetStateAction<SelectedNetworkType>>
+  currentNetwork: SelectedNetworkType
 ): Promise<void> => {
   setDisableActionBtn(true);
   setLoading(true);
   try {
     const walletAddress: string = account;
     const signer: any = web3provider.getSigner();
-    if (!isWalletConnected) {
-      connectWallet().then((res) => {
-        const {
-          account,
-          balance,
-          currentBlock,
-          selectedNetwork,
-          web3Provider,
-        } = res;
-        setWeb3provider(web3Provider);
-        setCurrentBlock(currentBlock);
-        setBalance(balance);
-        setAccount(account);
-        setWalletConnected(true);
-        setSelectedNetwork(selectedNetwork);
-      });
-    }
 
     await withdrawLTO(walletAddress, signer, orderId, currentNetwork).then(
       (res) => {

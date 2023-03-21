@@ -45,8 +45,3 @@ export const connectWallet = async () => {
     },
   };
 };
-
-export const connectWalletAndGetEthLogs = async () => {
-  const { web3Provider, account, selectedNetwork } = await connectWallet();
-  await getEthLogs(web3Provider, account, selectedNetwork);
-};

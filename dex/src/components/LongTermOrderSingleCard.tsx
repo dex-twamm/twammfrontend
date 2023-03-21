@@ -119,17 +119,10 @@ const LongTermOrderSingleCard = ({ orderLog }: PropTypes) => {
       setDisableActionBtn,
       account,
       web3provider,
-      setWeb3provider,
-      setCurrentBlock,
-      setBalance,
-      setAccount,
-      setWalletConnected,
-      isWalletConnected,
       setOrderLogsDecoded,
       setMessage,
       setTransactionHash,
-      selectedNetwork,
-      setSelectedNetwork
+      selectedNetwork
     );
   };
 
@@ -140,17 +133,10 @@ const LongTermOrderSingleCard = ({ orderLog }: PropTypes) => {
       setDisableActionBtn,
       account,
       web3provider,
-      setWeb3provider,
-      setCurrentBlock,
-      setBalance,
-      setAccount,
-      setWalletConnected,
-      isWalletConnected,
       setOrderLogsDecoded,
       setMessage,
       setTransactionHash,
-      selectedNetwork,
-      setSelectedNetwork
+      selectedNetwork
     );
   };
 
