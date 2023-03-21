@@ -8,6 +8,7 @@ import { useShortSwapContext } from "../providers/context/ShortSwapProvider";
 import Input from "./Input";
 import { BigNumber } from "ethers";
 import {
+  bigToFloat,
   bigToStr,
   getInputLimit,
   getInversedValue,
@@ -199,7 +200,7 @@ const Swap = (props: PropTypes) => {
             id={2}
             input={
               expectedSwapOut
-                ? +bigToStr(
+                ? bigToFloat(
                     BigNumber.from(expectedSwapOut.toString()),
                     tokenB.decimals
                   )
@@ -314,7 +315,7 @@ const Swap = (props: PropTypes) => {
                   {spotPriceLoading ? (
                     <Skeleton width={"100px"} />
                   ) : (
-                    `${+bigToStr(
+                    `${bigToFloat(
                       BigNumber.from(expectedSwapOut.toString()),
                       tokenB.decimals
                     )}

@@ -103,7 +103,7 @@ function App() {
           selectedNetwork
         )
           .then((res) => {
-            setAllowance(bigToStr(res, tokenA.decimals).toString());
+            setAllowance(bigToStr(res, tokenA.decimals));
           })
           .catch((err) => console.log(err));
       }

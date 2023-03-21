@@ -20,28 +20,36 @@ export const toHex = (num: string): string => {
 };
 
 //This function returns the few number after trailing of zeroes in decimals
-export const getProperFixedValue = (num: number) => {
+export const getProperFixedValue = (num: number): number => {
   let number = num;
   let str = num?.toString();
   let decimalIndex = str.indexOf(".");
   if (decimalIndex === -1) return number;
 
   if (number > 1) {
-    return number?.toFixed(4);
+    return parseFloat(number?.toFixed(4));
   }
 
   let trailingZeroes = str.slice(decimalIndex).replace(/[1-9]/g, "").length;
-  return number?.toFixed(trailingZeroes > 2 ? trailingZeroes : 2);
+  return parseFloat(number?.toFixed(trailingZeroes > 2 ? trailingZeroes : 2));
 };
 
-export const bigToStr = (bigNum: BigNumber, decimalPlaces?: number) => {
+export const bigToStr: (bigNum: BigNumber, decimalPlaces?: number) => string = (
+  bigNum,
+  decimalPlaces
+) => {
   return getProperFixedValue(
     parseFloat(ethers.utils.formatUnits(bigNum, decimalPlaces))
   ).toString();
 };
 
-export const bigToFloat = (bigNum: BigNumber, decimalPlaces?: number) => {
-  return parseFloat(ethers.utils.formatUnits(bigNum, decimalPlaces));
+export const bigToFloat = (
+  bigNum: BigNumber,
+  decimalPlaces?: number
+): number => {
+  return getProperFixedValue(
+    parseFloat(ethers.utils.formatUnits(bigNum, decimalPlaces))
+  );
 };
 
 // Exporting fp

@@ -120,7 +120,7 @@ const LongSwap = (props: PropTypes) => {
         tokenA?.address,
         selectedNetwork
       ).then((res) => {
-        setAllowance(bigToStr(res, tokenA?.decimals).toString());
+        setAllowance(bigToStr(res, tokenA?.decimals));
       });
     } catch (e) {
       setAllowTwamErrorMessage("Error!");
