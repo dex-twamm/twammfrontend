@@ -2,7 +2,7 @@ import { ethers, BigNumber } from "ethers";
 import { Dispatch, SetStateAction } from "react";
 import { POPUP_MESSAGE } from "../constants";
 import { SelectedNetworkType } from "../providers/context/NetworkProvider";
-import { getEthLogs } from "./get_ethLogs";
+import { getEthLogs } from "./getEthLogs";
 import { placeLongTermOrder } from "./longSwap";
 import { PoolType } from "./pool";
 import { getPoolConfig } from "./poolUtils";

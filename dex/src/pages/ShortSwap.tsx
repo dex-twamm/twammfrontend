@@ -10,16 +10,16 @@ import styles from "../css/ShortSwap.module.css";
 import { useLongSwapContext } from "../providers/context/LongSwapProvider";
 import { useShortSwapContext } from "../providers/context/ShortSwapProvider";
 import { useNetworkContext } from "../providers/context/NetworkProvider";
-import { connectWallet } from "../utils/connetWallet";
+import { connectWallet } from "../utils/connectWallet";
 import { spotPrice } from "../utils/getSpotPrice";
-import { getEthLogs } from "../utils/get_ethLogs";
+import { getEthLogs } from "../utils/getEthLogs";
 import { getAllPool, getPoolLength } from "../utils/poolUtils";
 import { _swapTokens } from "../utils/shortSwap";
 
 const ShortSwap = () => {
   const {
     isWalletConnected,
-    setweb3provider,
+    setWeb3provider,
     web3provider,
     setCurrentBlock,
     setBalance,
@@ -99,7 +99,7 @@ const ShortSwap = () => {
             selectedNetwork,
             web3Provider,
           } = res;
-          setweb3provider(web3Provider);
+          setWeb3provider(web3Provider);
           setCurrentBlock(currentBlock);
           setBalance(balance);
           setAccount(account);

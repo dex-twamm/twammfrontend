@@ -49,7 +49,7 @@ const Swap = (props: PropTypes) => {
     spotPrice,
     setTransactionHash,
     isWalletConnected,
-    setAllowTwammErrorMessage,
+    setAllowTwamErrorMessage,
     web3provider,
   } = useShortSwapContext();
 
@@ -117,7 +117,7 @@ const Swap = (props: PropTypes) => {
       });
     } catch (e) {
       console.log(e);
-      setAllowTwammErrorMessage("Error!");
+      setAllowTwamErrorMessage("Error!");
     }
   };
 
@@ -228,7 +228,7 @@ const Swap = (props: PropTypes) => {
             <>
               <Box
                 className={
-                  (tokenRateSwitch && styles.swapunit, styles.spotPriceBox)
+                  (tokenRateSwitch && styles.swapUnit, styles.spotPriceBox)
                 }
               >
                 {!formErrors.balError ? (

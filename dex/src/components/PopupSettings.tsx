@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import React, { useContext } from "react";
+import React from "react";
 import styles from "../css/PopupSettings.module.css";
 import { useShortSwapContext } from "../providers/context/ShortSwapProvider";
 

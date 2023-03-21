@@ -73,7 +73,7 @@ const Modal = ({
     )?.balance;
 
     if (!chosenTokenBalance)
-      throw new Error("Error while finding balance of choosen token!");
+      throw new Error("Error while finding balance of chosen token!");
 
     if (selectToken === "1") {
       //set tokenFrom

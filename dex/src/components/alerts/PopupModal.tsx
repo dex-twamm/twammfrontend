@@ -14,7 +14,7 @@ const PopupModal: React.FC = () => {
     setSuccess,
     transactionHash,
     setTransactionHash,
-    setAllowTwammErrorMessage,
+    setAllowTwamErrorMessage,
   } = useShortSwapContext();
 
   const { message, setMessage } = useLongSwapContext();
@@ -44,7 +44,7 @@ const PopupModal: React.FC = () => {
     setSuccess("");
     setTransactionHash("");
     setMessage("");
-    setAllowTwammErrorMessage("");
+    setAllowTwamErrorMessage("");
   };
 
   const handleTransactonClose = () => {

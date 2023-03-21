@@ -11,14 +11,14 @@ const LongTermOrderCard = () => {
 
   return !isWalletConnected ? (
     <>
-      <p className={styles.ptext}>Connet wallet to view placed orders </p>
+      <p className={styles.pText}>Connect wallet to view placed orders </p>
     </>
   ) : orderLogsLoading ? (
     <CircularProgressBar></CircularProgressBar>
   ) : (
     <>
       {orderLogsDecoded?.length === 0 ? (
-        <p className={styles.ptext}>
+        <p className={styles.pText}>
           No long term orders placed for this address{" "}
         </p>
       ) : (

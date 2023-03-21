@@ -50,7 +50,7 @@ const LongSwap = (props: PropTypes) => {
     setTransactionHash,
     isWalletConnected,
     web3provider,
-    setAllowTwammErrorMessage,
+    setAllowTwamErrorMessage,
   } = useShortSwapContext();
 
   const {
@@ -123,7 +123,7 @@ const LongSwap = (props: PropTypes) => {
         setAllowance(bigToStr(res, tokenA?.decimals).toString());
       });
     } catch (e) {
-      setAllowTwammErrorMessage("Error!");
+      setAllowTwamErrorMessage("Error!");
     }
   };
 
@@ -267,12 +267,7 @@ const LongSwap = (props: PropTypes) => {
             setTokenB={setTokenB}
           />
 
-          <p
-            className={lsStyles.priceImpactLS}
-            // style={{
-            //   padding: { xs: "0px", sm: "8px 0px" },
-            // }}
-          >
+          <p className={lsStyles.priceImpactLS}>
             Fees Included: {getLongSwapPoolFee(selectedNetwork)}
           </p>
 

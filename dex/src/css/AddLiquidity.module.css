@@ -265,7 +265,7 @@
   justify-content: space-between;
 }
 
-.swapunit {
+.swapUnit {
   background-color: #f7f8fa;
   box-sizing: "border-box";
   display: flex;
@@ -305,7 +305,7 @@
 }
 
 @media screen and (min-width: 400px) {
-  .swapunit {
+  .swapUnit {
     box-sizing: border-box;
     padding: 0px 4px;
   }

@@ -1,8 +1,8 @@
 import { POPUP_MESSAGE } from "../constants";
 import { Dispatch, SetStateAction } from "react";
 import { withdrawLTO } from "./addLiquidity";
-import { connectWallet } from "./connetWallet";
-import { getEthLogs } from "./get_ethLogs";
+import { connectWallet } from "./connectWallet";
+import { getEthLogs } from "./getEthLogs";
 import { providers } from "ethers";
 import { SelectedNetworkType } from "../providers/context/NetworkProvider";
 
@@ -12,7 +12,7 @@ export const _withdrawLTO = async (
   setDisableActionBtn: Dispatch<SetStateAction<boolean>>,
   account: string,
   web3provider: any,
-  setweb3provider: Dispatch<SetStateAction<any>>,
+  setWeb3provider: Dispatch<SetStateAction<any>>,
   setCurrentBlock: Dispatch<SetStateAction<any>>,
   setBalance: Dispatch<SetStateAction<number>>,
   setAccount: Dispatch<SetStateAction<string>>,
@@ -38,7 +38,7 @@ export const _withdrawLTO = async (
           selectedNetwork,
           web3Provider,
         } = res;
-        setweb3provider(web3Provider);
+        setWeb3provider(web3Provider);
         setCurrentBlock(currentBlock);
         setBalance(balance);
         setAccount(account);

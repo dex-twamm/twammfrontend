@@ -5,10 +5,10 @@ import Navbar from "./components/Navbar";
 import LongSwapPage from "./pages/LongSwapPage";
 import ShortSwap from "./pages/ShortSwap";
 import { bigToStr } from "./utils";
-import { connectWallet } from "./utils/connetWallet";
+import { connectWallet } from "./utils/connectWallet";
 import { getLPTokensBalance, getTokensBalance } from "./utils/getAmount";
 import { getAllowance } from "./utils/getApproval";
-import { getEthLogs } from "./utils/get_ethLogs";
+import { getEthLogs } from "./utils/getEthLogs";
 import { getLastVirtualOrderBlock } from "./utils/longSwap";
 import { web3Modal } from "./utils/providerOptions";
 import LiquidityPage from "./pages/LiquidityPage";
@@ -33,7 +33,7 @@ function App() {
     isWalletConnected,
     setWalletConnected,
     setExpectedSwapOut,
-    setweb3provider,
+    setWeb3provider,
     setCurrentBlock,
     setLPTokenBalance,
     setBalance,
@@ -62,7 +62,7 @@ function App() {
           selectedNetwork,
           web3Provider,
         } = res;
-        setweb3provider(web3Provider);
+        setWeb3provider(web3Provider);
         setCurrentBlock(currentBlock);
         setBalance(balance);
         setAccount(account);
@@ -77,7 +77,7 @@ function App() {
     setCurrentBlock,
     setSelectedNetwork,
     setWalletConnected,
-    setweb3provider,
+    setWeb3provider,
   ]);
 
   // Swap Token
@@ -220,7 +220,7 @@ function App() {
     connectWallet().then((res) => {
       const { account, balance, currentBlock, selectedNetwork, web3Provider } =
         res;
-      setweb3provider(web3Provider);
+      setWeb3provider(web3Provider);
       setCurrentBlock(currentBlock);
       setBalance(balance);
       setAccount(account);

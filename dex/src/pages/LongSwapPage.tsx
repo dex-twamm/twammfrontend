@@ -9,14 +9,14 @@ import styles from "../css/ShortSwap.module.css";
 import Tabs from "../components/Tabs";
 import PopupModal from "../components/alerts/PopupModal";
 import { _placeLongTermOrders } from "../utils/placeLongTermOrder";
-import { connectWallet } from "../utils/connetWallet";
+import { connectWallet } from "../utils/connectWallet";
 
 import { useNetworkContext } from "../providers/context/NetworkProvider";
 import LongSwap from "../components/LongSwap";
 import { verifyLongSwap } from "../utils/verifyLongSwap";
 import { getAllPool, getPoolLength } from "../utils/poolUtils";
 import { MenuItem, Select } from "@mui/material";
-import { getEthLogs } from "../utils/get_ethLogs";
+import { getEthLogs } from "../utils/getEthLogs";
 import { useShortSwapContext } from "../providers/context/ShortSwapProvider";
 import { useLongSwapContext } from "../providers/context/LongSwapProvider";
 
@@ -43,7 +43,7 @@ const LongSwapPage = () => {
     setTransactionHash,
     setLoading,
     setError,
-    setweb3provider,
+    setWeb3provider,
     setCurrentBlock,
     setBalance,
     setAccount,
@@ -96,7 +96,7 @@ const LongSwapPage = () => {
             selectedNetwork,
             web3Provider,
           } = res;
-          setweb3provider(web3Provider);
+          setWeb3provider(web3Provider);
           setCurrentBlock(currentBlock);
           setBalance(balance);
           setAccount(account);

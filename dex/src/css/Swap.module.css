@@ -14,25 +14,25 @@
   place-self: center;
   width: fit-content;
   background: #f7f8fa;
-  position:absolute;
+  position: absolute;
   left: 50%;
   margin-right: -50%;
   transform: translate(-50%, -50%);
-  top:180px;
+  top: 180px;
 }
 
-.openIconDown{
+.openIconDown {
   padding: 14px;
   border: 4px solid white;
   border-radius: 15px;
   place-self: center;
   width: fit-content;
   background: #f7f8fa;
-  position:absolute;
+  position: absolute;
   left: 50%;
   margin-right: -50%;
   transform: translate(-50%, -50%);
-  top:40%;
+  top: 40%;
 }
 
 .btnConnect {
@@ -51,17 +51,15 @@
   font-weight: 600;
 }
 
-.btnConnect:disabled{
-  opacity:0.7;
+.btnConnect:disabled {
+  opacity: 0.7;
   cursor: not-allowed;
 }
 
-
 .btnConnect:enabled:hover {
-  background-color:#FEF5F8 ;
+  background-color: #fef5f8;
 }
 
-
-.swapunit{
-  background-color:#808080 ;
+.swapUnit {
+  background-color: #808080;
 }

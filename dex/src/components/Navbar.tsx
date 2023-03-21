@@ -5,7 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 import { POPUP_MESSAGE } from "../constants";
 import styles from "../css/Navbar.module.css";
 import { toHex, truncateAddress } from "../utils";
-import { connectWallet } from "../utils/connetWallet";
+import { connectWallet } from "../utils/connectWallet";
 import { DisconnectWalletOption } from "./DisconnectWalletOption";
 import { NETWORKS } from "../utils/networks";
 import logo from "../images/logo.png";
@@ -23,7 +23,7 @@ const Navbar = () => {
   const {
     setError,
     isWalletConnected,
-    setweb3provider,
+    setWeb3provider,
     setCurrentBlock,
     setBalance,
     setAccount,
@@ -71,7 +71,7 @@ const Navbar = () => {
     connectWallet().then((res) => {
       const { account, balance, currentBlock, selectedNetwork, web3Provider } =
         res;
-      setweb3provider(web3Provider);
+      setWeb3provider(web3Provider);
       setCurrentBlock(currentBlock);
       setBalance(balance);
       setAccount(account);
@@ -175,7 +175,7 @@ const Navbar = () => {
                   )}
                   id="menu-dropdown"
                 >
-                  {<NavOptionDropdwon />}
+                  {<NavOptionDropdown />}
                 </span>
               )} 
             </div> */}

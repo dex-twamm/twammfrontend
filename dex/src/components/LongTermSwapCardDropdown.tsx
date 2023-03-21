@@ -80,7 +80,7 @@ const LongTermSwapCardDropdown = (props: PropTypes) => {
                 <>
                   {item?.withdrawals.map((items: any) => (
                     <Box
-                      className={styles.withdrawlBox}
+                      className={styles.withdrawalBox}
                       key={items?.transactionHash}
                     >
                       <CircleIcon
@@ -112,7 +112,7 @@ const LongTermSwapCardDropdown = (props: PropTypes) => {
                   ))}
                   {item?.unsoldAmount && (
                     <Box
-                      className={styles.withdrawlBox}
+                      className={styles.withdrawalBox}
                       key={item?.transactionHash}
                     >
                       <CircleIcon

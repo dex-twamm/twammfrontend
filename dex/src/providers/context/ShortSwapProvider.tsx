@@ -23,13 +23,13 @@ const useShortSwapState = () => {
   const [formErrors, setFormErrors] = useState<{
     balError: string | undefined;
   }>({ balError: undefined });
-  const [web3provider, setweb3provider] = useState<any>();
+  const [web3provider, setWeb3provider] = useState<any>();
   const [currentBlock, setCurrentBlock] = useState<any>();
   const [spotPrice, setSpotPrice] = useState(0);
   const [LPTokenBalance, setLPTokenBalance] = useState(0);
   const [balance, setBalance] = useState(0);
   const [spotPriceLoading, setSpotPriceLoading] = useState(false);
-  const [allowTwammErrorMessage, setAllowTwammErrorMessage] =
+  const [allowTwamErrorMessage, setAllowTwamErrorMessage] =
     useState<string>("");
 
   return {
@@ -62,7 +62,7 @@ const useShortSwapState = () => {
     formErrors,
     setFormErrors,
     web3provider,
-    setweb3provider,
+    setWeb3provider,
     currentBlock,
     setCurrentBlock,
     spotPrice,
@@ -73,8 +73,8 @@ const useShortSwapState = () => {
     setBalance,
     spotPriceLoading,
     setSpotPriceLoading,
-    allowTwammErrorMessage,
-    setAllowTwammErrorMessage,
+    allowTwamErrorMessage,
+    setAllowTwamErrorMessage,
   };
 };
 

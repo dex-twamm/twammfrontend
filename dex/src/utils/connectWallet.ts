@@ -1,5 +1,5 @@
 import { ethers, providers } from "ethers";
-import { getEthLogs } from "./get_ethLogs";
+import { getEthLogs } from "./getEthLogs";
 import { NETWORKS } from "./networks";
 import { web3Modal } from "./providerOptions";
 import { getEthereumFromWindow } from "./ethereum";
