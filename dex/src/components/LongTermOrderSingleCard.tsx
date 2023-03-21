@@ -19,6 +19,9 @@ import ChangeCircleOutlinedIcon from "@mui/icons-material/ChangeCircleOutlined";
 import { withdrawLTO } from "../utils/addLiquidity";
 import {
   ORDER_EXECUTION_TIME_REMAINING,
+  ORDER_LOG_STATE_CANCELLED,
+  ORDER_LOG_STATE_COMPLETED,
+  ORDER_LOG_STATE_INPROGRESS,
   ORDER_STATUS_CANCELLED,
   ORDER_STATUS_COMPLETED,
   ORDER_STATUS_EXECUTED,
@@ -36,15 +39,9 @@ interface PropTypes {
 const LongTermOrderSingleCard = ({ orderLog }: PropTypes) => {
   const {
     currentBlock,
-    isWalletConnected,
     setLoading,
     account,
     web3provider,
-    setWeb3provider,
-    setCurrentBlock,
-    setBalance,
-    setAccount,
-    setWalletConnected,
     setTransactionHash,
   } = useShortSwapContext();
 
@@ -55,7 +52,7 @@ const LongTermOrderSingleCard = ({ orderLog }: PropTypes) => {
     setOrderLogsDecoded,
     setMessage,
   } = useLongSwapContext();
-  const { selectedNetwork, setSelectedNetwork } = useNetworkContext();
+  const { selectedNetwork } = useNetworkContext();
 
   const [orderStatus, setOrderStatus] = useState<{
     status: string;
@@ -94,9 +91,9 @@ const LongTermOrderSingleCard = ({ orderLog }: PropTypes) => {
     parseFloat(expectedWithdrawalValue.toString());
 
   let soldToken;
-  if (orderLog.state === "cancelled") {
+  if (orderLog.state === ORDER_LOG_STATE_CANCELLED) {
     soldToken = amountOf?.sub(orderLog?.unsoldAmount);
-  } else if (orderLog.state === "inProgress") {
+  } else if (orderLog.state === ORDER_LOG_STATE_INPROGRESS) {
     soldToken =
       currentBlock.number > expBlock
         ? amountOf
@@ -141,9 +138,9 @@ const LongTermOrderSingleCard = ({ orderLog }: PropTypes) => {
   };
 
   useEffect(() => {
-    if (orderLog?.state === "completed") {
+    if (orderLog?.state === ORDER_LOG_STATE_COMPLETED) {
       setOrderStatus({ status: ORDER_STATUS_COMPLETED, progress: 100 });
-    } else if (orderLog?.state === "cancelled") {
+    } else if (orderLog?.state === ORDER_LOG_STATE_CANCELLED) {
       setOrderStatus({ status: ORDER_STATUS_CANCELLED, progress: 100 });
     } else if (lastVirtualOrderBlock >= orderLog.expirationBlock) {
       setOrderStatus({ status: ORDER_STATUS_EXECUTED, progress: 100 });
@@ -189,12 +186,16 @@ const LongTermOrderSingleCard = ({ orderLog }: PropTypes) => {
 
   useEffect(() => {
     const getTime = async () => {
-      const startTime = await web3provider?.getBlock(stBlock);
+      const startTime = await web3provider.getBlock(stBlock);
       setOrderStartTime(formatToReadableTime(startTime?.timestamp));
-
       if (isExecuteTimeCompleted()) {
-        const completionTime = await web3provider?.getBlock(
-          parseFloat(expBlock.toString())
+        const blockNumberForTimestamp =
+          orderLog.state === ORDER_LOG_STATE_CANCELLED
+            ? orderLog.withdrawals[orderLog.withdrawals.length - 1]?.blockNumber
+            : expBlock.toString();
+
+        const completionTime = await web3provider.getBlock(
+          parseFloat(blockNumberForTimestamp)
         );
         setOrderCompletionTime(formatToReadableTime(completionTime?.timestamp));
       }
@@ -220,7 +221,8 @@ const LongTermOrderSingleCard = ({ orderLog }: PropTypes) => {
       setExpectedWithdrawalValue(+getProperFixedValue(expectedWithdrawResult));
     };
 
-    if (orderLog?.state === "inProgress") getExpectedWithdrawalValue();
+    if (orderLog?.state === ORDER_LOG_STATE_INPROGRESS)
+      getExpectedWithdrawalValue();
   }, []);
 
   return (

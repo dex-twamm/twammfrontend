@@ -1,6 +1,11 @@
 import { Contract, ethers } from "ethers";
 import { TWAMM_POOL_ABI } from "../constants";
 import { SelectedNetworkType } from "../providers/context/NetworkProvider";
+import {
+  ORDER_LOG_STATE_CANCELLED,
+  ORDER_LOG_STATE_COMPLETED,
+  ORDER_LOG_STATE_INPROGRESS,
+} from "./constants";
 import { getLongTermOrder } from "./longSwap";
 import { getPoolContractAddress } from "./poolUtils";
 
@@ -66,7 +71,7 @@ export async function getEthLogs(
       withdrawals: [],
       hasPartialWithdrawals: false,
       cancelledProceeds: 0,
-      state: "inProgress",
+      state: ORDER_LOG_STATE_INPROGRESS,
     });
   }
 
@@ -93,7 +98,7 @@ export async function getEthLogs(
     orderObject.hasPartialWithdrawals =
       orderObject.hasPartialWithdrawals || log[6];
     if (!log[6]) {
-      orderObject.state = "completed";
+      orderObject.state = ORDER_LOG_STATE_COMPLETED;
     }
   }
 
@@ -113,7 +118,7 @@ export async function getEthLogs(
     let orderObject = placedEventsDecoded.get(log[0].toNumber());
     orderObject.unsoldAmount = log[6];
     orderObject.convertedValue = log[5];
-    orderObject.state = "cancelled";
+    orderObject.state = ORDER_LOG_STATE_CANCELLED;
     orderObject.withdrawals.push({
       blockNumber: eventsCancelled[i].blockNumber,
       isPartialWithdrawal: false,
