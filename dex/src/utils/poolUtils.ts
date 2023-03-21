@@ -53,15 +53,22 @@ export const getPoolTokens = (currentNetwork: SelectedNetworkType) => {
   return getPoolConfig(currentNetwork)?.tokens;
 };
 
-export const getPoolTokenSymbol = (currentNetwork: SelectedNetworkType) => {
-  if (currentNetwork) {
-    const symbols = [
+export const getPoolTokenSymbol = (
+  currentNetwork: SelectedNetworkType
+): string[] => {
+  let symbols: string[] | null = null;
+  if (currentNetwork)
+    symbols = [
       getPoolTokens(currentNetwork)?.[0]?.symbol,
       getPoolTokens(currentNetwork)?.[1]?.symbol,
     ];
 
-    return symbols;
-  }
+  if (!symbols)
+    throw new Error(
+      "Symbols not found in the pool configuration of selected network."
+    );
+
+  return symbols;
 };
 
 export const getShortSwapPoolFee = (currentNetwork: SelectedNetworkType) => {
