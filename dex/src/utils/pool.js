@@ -1,6 +1,7 @@
 import faucetLogo from "../images/faucetIcon.png";
 import usdLogo from "../images/usdIcon.png";
 import wethLogo from "../images/wethIcon.png";
+import wbtcLogo from "../images/wbtcLogo.png";
 
 export const POOLS = {
   Goerli: {
@@ -36,7 +37,7 @@ export const POOLS = {
       shortSwapFee: "0.05%",
       longSwapFee: "0.25%",
       LTOContract: "0x34572b0d2f397dFE236FC1E7832d0F80871c8c82",
-      blockInterval: 150,
+      blockInterval: 100,
       tokens: [
         {
           symbol: "USDC",
@@ -51,6 +52,30 @@ export const POOLS = {
           decimals: 18,
           address: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
           logo: wethLogo,
+        },
+      ],
+    },
+    "0x31e97ba932074b4ebcc5e358dc8127ee03212bb20002000000000000000004df": {
+      poolName: "USDC/WBTC",
+      address: "0x31e97Ba932074B4EBcc5E358dC8127EE03212BB2",
+      shortSwapFee: "0.05%",
+      longSwapFee: "0.25%",
+      LTOContract: "0x1D699e5CC7618CC3379951c05087C94C5C3452C4",
+      blockInterval: 100,
+      tokens: [
+        {
+          symbol: "USDC",
+          name: "USD",
+          decimals: 6,
+          address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+          logo: usdLogo,
+        },
+        {
+          symbol: "WBTC",
+          name: "WBTC",
+          decimals: 8,
+          address: "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+          logo: wbtcLogo,
         },
       ],
     },
