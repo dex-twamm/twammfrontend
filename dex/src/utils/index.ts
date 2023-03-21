@@ -47,9 +47,7 @@ export const bigToFloat = (
   bigNum: BigNumber,
   decimalPlaces?: number
 ): number => {
-  return getProperFixedValue(
-    parseFloat(ethers.utils.formatUnits(bigNum, decimalPlaces))
-  );
+  return parseFloat(ethers.utils.formatUnits(bigNum, decimalPlaces));
 };
 
 // Exporting fp

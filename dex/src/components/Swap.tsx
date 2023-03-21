@@ -200,9 +200,11 @@ const Swap = (props: PropTypes) => {
             id={2}
             input={
               expectedSwapOut
-                ? bigToFloat(
-                    BigNumber.from(expectedSwapOut.toString()),
-                    tokenB.decimals
+                ? parseFloat(
+                    bigToStr(
+                      BigNumber.from(expectedSwapOut.toString()),
+                      tokenB.decimals
+                    )
                   )
                 : undefined
             }
@@ -315,9 +317,11 @@ const Swap = (props: PropTypes) => {
                   {spotPriceLoading ? (
                     <Skeleton width={"100px"} />
                   ) : (
-                    `${bigToFloat(
-                      BigNumber.from(expectedSwapOut.toString()),
-                      tokenB.decimals
+                    `${parseFloat(
+                      bigToStr(
+                        BigNumber.from(expectedSwapOut.toString()),
+                        tokenB.decimals
+                      )
                     )}
                    ${tokenB.symbol}`
                   )}
