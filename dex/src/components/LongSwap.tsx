@@ -253,10 +253,10 @@ const LongSwap = (props: PropTypes) => {
 
           <Input
             id={1}
-            input={swapAmount ? swapAmount : undefined}
+            input={swapAmount ?? undefined}
             placeholder="0.0"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              setSwapAmount(getInputLimit(parseFloat(e.target.value)));
+              setSwapAmount(parseFloat(getInputLimit(e.target.value)));
             }}
             imgSrc={tokenA?.logo}
             symbol={tokenA?.symbol}

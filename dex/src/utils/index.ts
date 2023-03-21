@@ -108,6 +108,6 @@ export const getInversedValue = (value: number) => {
   return getProperFixedValue(1 / value);
 };
 
-export const getInputLimit = (value: number) => {
-  return +value.toString().slice(0, MAX_INPUT_LENGTH);
+export const getInputLimit = (value: string) => {
+  return value.slice(0, MAX_INPUT_LENGTH);
 };
