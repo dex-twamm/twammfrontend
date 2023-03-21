@@ -1,24 +1,41 @@
 import { SelectedNetworkType } from "../providers/context/NetworkProvider";
-import { POOLS } from "./pool";
+import { POOLS, PoolType } from "./pool";
 
 export const getCurrentNetwork = (currentNetwork: SelectedNetworkType) => {
   return currentNetwork?.network ?? "Ethereum";
 };
 
-export const getAllPool = (currentNetwork: SelectedNetworkType) => {
+export const getAllPool = (currentNetwork: SelectedNetworkType): PoolType[] => {
+  let allPoolOfSelectedNetwork: PoolType[] | null = null;
+
   if (currentNetwork)
-    return Object.values(POOLS?.[getCurrentNetwork(currentNetwork)]);
+    allPoolOfSelectedNetwork = Object.values(
+      POOLS?.[getCurrentNetwork(currentNetwork)]
+    );
+
+  if (!allPoolOfSelectedNetwork)
+    throw new Error("Failed to retrieve all pool for selected network");
+
+  return allPoolOfSelectedNetwork;
 };
 
-export const getPoolId = (currentNetwork: SelectedNetworkType) => {
+export const getPoolId = (currentNetwork: SelectedNetworkType): string => {
+  let poolId: string | null = null;
   if (currentNetwork)
-    return Object.keys(POOLS[getCurrentNetwork(currentNetwork)])?.[
+    poolId = Object.keys(POOLS[getCurrentNetwork(currentNetwork)])?.[
       currentNetwork?.poolId
     ];
+
+  if (!poolId)
+    throw new Error("Failed to retrieve pool id for selected network");
+
+  return poolId;
 };
 
-export const getPoolConfig = (currentNetwork: SelectedNetworkType) => {
-  let poolConfig;
+export const getPoolConfig = (
+  currentNetwork: SelectedNetworkType
+): PoolType => {
+  let poolConfig: PoolType | null = null;
   if (currentNetwork)
     poolConfig = Object.values(POOLS?.[getCurrentNetwork(currentNetwork)])?.[
       currentNetwork?.poolId
@@ -29,7 +46,6 @@ export const getPoolConfig = (currentNetwork: SelectedNetworkType) => {
       "Failed to retrieve pool configuration for selected network"
     );
   }
-
   return poolConfig;
 };
 
