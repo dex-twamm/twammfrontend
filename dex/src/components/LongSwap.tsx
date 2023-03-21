@@ -33,11 +33,11 @@ interface PropTypes {
 const LongSwap = (props: PropTypes) => {
   const { handleLongSwapAction, longSwapVerifyLoading } = props;
 
-  const [display, setDisplay] = useState<boolean>(false);
-  const [value, setValue] = useState<number>(0.0);
-  const [executionTime, setExecutionTIme] = useState<string>("");
+  const [display, setDisplay] = useState(false);
+  const [value, setValue] = useState(0.0);
+  const [executionTime, setExecutionTIme] = useState("");
   const [hasBalancerOrTransactionError, setHasBalancerOrTransactionError] =
-    useState<boolean>(true);
+    useState(true);
 
   const {
     account,

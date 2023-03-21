@@ -29,9 +29,9 @@ interface PropTypes {
 const Swap = (props: PropTypes) => {
   const { handleSwapAction, spotPriceLoading } = props;
 
-  const [display, setDisplay] = useState<boolean>(false);
+  const [display, setDisplay] = useState(false);
   const [hasBalancerOrTransactionError, setHasBalancerOrTransactionError] =
-    useState<boolean>(true);
+    useState(true);
 
   const [tokenRateSwitch, setTokenRateSwitch] = useState(false);
   const [showPriceValues, setShowPriceValues] = useState(false);

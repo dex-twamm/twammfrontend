@@ -14,8 +14,8 @@ import { useShortSwapContext } from "../providers/context/ShortSwapProvider";
 import { useNetworkContext } from "../providers/context/NetworkProvider";
 
 const Navbar = () => {
-  const [showDisconnect, setShowDisconnect] = useState<boolean>(false);
-  const [showDropdown, setShowDropdown] = useState<boolean>(false);
+  const [showDisconnect, setShowDisconnect] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
   const location = useLocation();
 
   const { selectedNetwork, setSelectedNetwork } = useNetworkContext();

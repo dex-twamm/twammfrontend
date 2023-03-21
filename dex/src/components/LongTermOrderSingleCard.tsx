@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { BigNumber } from "ethers";
 import { HiExternalLink } from "react-icons/hi";
 import styles from "../css/LongTermOrderCard.module.css";
@@ -61,16 +61,15 @@ const LongTermOrderSingleCard = ({ orderLog }: PropTypes) => {
     status: string;
     progress: number;
   }>();
-  const [newTime, setNewTime] = useState<number>(
+  const [newTime, setNewTime] = useState(
     (orderLog.expirationBlock - currentBlock.number) * 12
   );
 
-  const [orderStartTime, setOrderStartTime] = useState<any>();
-  const [orderCompletionTime, setOrderCompletionTime] = useState<any>();
-  const [switchAvgPrice, setSwitchAvgPrice] = useState<boolean>(false);
-  const [switchedAveragePrice, setSwitchedAveragePrice] = useState<number>(0);
-  const [expectedWithdrawalValue, setExpectedWithdrawalValue] =
-    useState<number>(0);
+  const [orderStartTime, setOrderStartTime] = useState("");
+  const [orderCompletionTime, setOrderCompletionTime] = useState("");
+  const [switchAvgPrice, setSwitchAvgPrice] = useState(false);
+  const [switchedAveragePrice, setSwitchedAveragePrice] = useState(0);
+  const [expectedWithdrawalValue, setExpectedWithdrawalValue] = useState(0);
 
   const poolConfig = getPoolConfig(selectedNetwork);
 

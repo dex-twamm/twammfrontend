@@ -50,7 +50,7 @@ const LongSwapPage = () => {
     setWalletConnected,
   } = useShortSwapContext();
 
-  const [showSettings, setShowSettings] = useState<boolean>(false);
+  const [showSettings, setShowSettings] = useState(false);
 
   const { selectedNetwork, setSelectedNetwork } = useNetworkContext();
 
