@@ -39,6 +39,7 @@ interface PropTypes {
 const LongTermOrderSingleCard = ({ orderLog }: PropTypes) => {
   const {
     currentBlock,
+    setCurrentBlock,
     setLoading,
     account,
     web3provider,
@@ -64,9 +65,11 @@ const LongTermOrderSingleCard = ({ orderLog }: PropTypes) => {
 
   const [orderStartTime, setOrderStartTime] = useState("");
   const [orderCompletionTime, setOrderCompletionTime] = useState("");
+  const [averagePrice, setAveragePrice] = useState(0.0);
   const [switchAvgPrice, setSwitchAvgPrice] = useState(false);
   const [switchedAveragePrice, setSwitchedAveragePrice] = useState(0);
   const [expectedWithdrawalValue, setExpectedWithdrawalValue] = useState(0);
+  const [soldToken, setSoldToken] = useState<BigNumber>(BigNumber.from(0));
 
   const poolConfig = getPoolConfig(selectedNetwork);
 
@@ -90,24 +93,31 @@ const LongTermOrderSingleCard = ({ orderLog }: PropTypes) => {
     bigToFloat(convertedAmount, tokenOut.decimals) +
     parseFloat(expectedWithdrawalValue.toString());
 
-  let soldToken;
-  if (orderLog.state === ORDER_LOG_STATE_CANCELLED) {
-    soldToken = amountOf?.sub(orderLog?.unsoldAmount);
-  } else if (orderLog.state === ORDER_LOG_STATE_INPROGRESS) {
-    soldToken =
-      currentBlock.number > expBlock
-        ? amountOf
-        : orderLog.salesRate?.mul(currentBlock.number - stBlock);
-  } else {
-    soldToken =
-      lastVirtualOrderBlock > expBlock
-        ? amountOf
-        : lastVirtualOrderBlock?.sub(stBlock)?.mul(orderLog.salesRate);
-  }
+  useEffect(() => {
+    if (orderLog.state === ORDER_LOG_STATE_CANCELLED) {
+      setSoldToken(amountOf?.sub(orderLog?.unsoldAmount));
+    } else if (orderLog.state === ORDER_LOG_STATE_INPROGRESS) {
+      setSoldToken(
+        currentBlock.number > expBlock
+          ? amountOf
+          : orderLog.salesRate?.mul(currentBlock.number - stBlock)
+      );
+    } else {
+      setSoldToken(
+        lastVirtualOrderBlock > expBlock
+          ? amountOf
+          : lastVirtualOrderBlock?.sub(stBlock)?.mul(orderLog.salesRate)
+      );
+    }
+  }, [orderLog, lastVirtualOrderBlock, currentBlock.number, expBlock, stBlock]);
 
-  const averagePrice = getProperFixedValue(
-    tokenWithdrawals / bigToFloat(soldToken, tokenIn.decimals)
-  );
+  useEffect(() => {
+    setAveragePrice(
+      getProperFixedValue(
+        tokenWithdrawals / bigToFloat(soldToken, tokenIn.decimals)
+      )
+    );
+  }, [tokenWithdrawals, soldToken, tokenIn]);
 
   const handleCancel = (orderId: number) => {
     _cancelLTO(
@@ -165,11 +175,8 @@ const LongTermOrderSingleCard = ({ orderLog }: PropTypes) => {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      if (newTime && newTime >= 60) {
+      if (newTime && newTime > 0) {
         setNewTime(newTime - 60);
-      } else {
-        clearInterval(timer);
-        setOrderStatus({ status: ORDER_STATUS_EXECUTED, progress: 100 });
       }
     }, 1000 * 60);
     return () => clearInterval(timer);
@@ -226,7 +233,15 @@ const LongTermOrderSingleCard = ({ orderLog }: PropTypes) => {
 
     if (orderLog?.state === ORDER_LOG_STATE_INPROGRESS)
       getExpectedWithdrawalValue();
-  }, []);
+  }, [currentBlock]);
+
+  useEffect(() => {
+    const getCurrentBlock = async () => {
+      const currentBlock = await web3provider.getBlock("latest");
+      setCurrentBlock(currentBlock);
+    };
+    getCurrentBlock();
+  }, [newTime, setCurrentBlock, web3provider]);
 
   return (
     <>
