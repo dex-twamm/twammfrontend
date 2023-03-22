@@ -3,8 +3,7 @@ import { Dispatch, SetStateAction } from "react";
 import { POPUP_MESSAGE } from "../constants";
 import { SelectedNetworkType } from "../providers/context/NetworkProvider";
 import { verifyLongSwapTxn } from "./longSwap";
-import { PoolType } from "./pool";
-import { getPoolConfig } from "./poolUtils";
+import { getPoolTokens } from "./poolUtils";
 
 export const verifyLongSwap = async (
   swapAmount: number,
@@ -23,21 +22,21 @@ export const verifyLongSwap = async (
   if (swapAmount && numberOfBlockIntervals) {
     setLongSwapVerifyLoading(true);
 
-    const poolConfig: PoolType = getPoolConfig(currentNetwork);
+    const tokens = getPoolTokens(currentNetwork);
 
     const signer: any = web3provider.getSigner();
     const walletAddress: string = account;
 
     try {
-      const tokenInIndex: number = poolConfig.tokens.findIndex(
+      const tokenInIndex: number = tokens.findIndex(
         (object) => tokenA === object.address
       );
-      const tokenOutIndex: number = poolConfig.tokens.findIndex(
+      const tokenOutIndex: number = tokens.findIndex(
         (object) => tokenB === object.address
       );
       const amountIn: BigNumber = ethers.utils.parseUnits(
         swapAmount.toString(),
-        poolConfig.tokens[tokenInIndex].decimals
+        tokens[tokenInIndex].decimals
       );
 
       if (parseFloat(amountIn.toString()) < parseFloat(allowance)) {

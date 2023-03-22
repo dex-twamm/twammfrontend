@@ -2,8 +2,8 @@ import { ethers, BigNumber } from "ethers";
 import { Dispatch, SetStateAction } from "react";
 import { POPUP_MESSAGE } from "../constants";
 import { SelectedNetworkType } from "../providers/context/NetworkProvider";
-import { PoolType, TokenType } from "./pool";
-import { getPoolConfig } from "./poolUtils";
+import { TokenType } from "./pool";
+import { getPoolTokens } from "./poolUtils";
 import { swapTokens } from "./swap";
 
 export const _swapTokens = async (
@@ -20,9 +20,9 @@ export const _swapTokens = async (
   setLoading: Dispatch<SetStateAction<boolean>>,
   currentNetwork: SelectedNetworkType
 ): Promise<void> => {
-  const poolConfig: PoolType = getPoolConfig(currentNetwork);
+  const tokens = getPoolTokens(currentNetwork);
 
-  const tokenIn: TokenType = poolConfig?.tokens.find(
+  const tokenIn: TokenType = tokens.find(
     (token: any) => token.address === tokenA
   )!;
 

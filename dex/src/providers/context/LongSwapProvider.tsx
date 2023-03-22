@@ -1,7 +1,7 @@
 import { BigNumber } from "ethers";
 import { createContext, useContext, useEffect, useState } from "react";
 
-import { getPoolConfig } from "../../utils/poolUtils";
+import { getPoolTokens } from "../../utils/poolUtils";
 
 import { useNetworkContext } from "./NetworkProvider";
 import { TokenType } from "../../utils/pool";
@@ -52,18 +52,18 @@ const useLongSwapState = () => {
 
   const { selectedNetwork } = useNetworkContext();
   useEffect(() => {
-    const poolConfig = getPoolConfig(selectedNetwork);
+    const tokens = getPoolTokens(selectedNetwork);
 
     setTokenA({
-      ...poolConfig?.tokens[0],
+      ...tokens[0],
       balance: 0,
-      tokenIsSet: poolConfig?.tokens[0].address ? true : false,
+      tokenIsSet: tokens[0].address ? true : false,
     });
 
     setTokenB({
-      ...poolConfig?.tokens[1],
+      ...tokens[1],
       balance: 0,
-      tokenIsSet: poolConfig?.tokens[1].address ? true : false,
+      tokenIsSet: tokens[1].address ? true : false,
     });
   }, [selectedNetwork]);
 
