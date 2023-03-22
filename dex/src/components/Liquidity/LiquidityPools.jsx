@@ -1,7 +1,5 @@
 import React from "react";
 import styles from "../../css/LiquidityPool.module.css";
-import { useContext } from "react";
-import { LongSwapContext, ShortSwapContext } from "../../providers";
 import Tabs from "../Tabs";
 import {
   getPoolFees,
@@ -9,14 +7,15 @@ import {
   getPoolTokenSymbol,
   getShortSwapPoolFee,
 } from "../../utils/poolUtils";
-import { UIContext } from "../../providers/context/UIProvider";
+import { useNetworkContext } from "../../providers/context/NetworkProvider";
 import { Avatar, Box, Skeleton } from "@mui/material";
+import { useShortSwapContext } from "../../providers/context/ShortSwapProvider";
+import { useLongSwapContext } from "../../providers/context/LongSwapProvider";
 
 const LiquidityPools = () => {
-  const { LPTokenBalance, loading, isWalletConnected } =
-    useContext(ShortSwapContext);
-  const { tokenA, tokenB } = useContext(LongSwapContext);
-  const { selectedNetwork } = useContext(UIContext);
+  const { LPTokenBalance, loading, isWalletConnected } = useShortSwapContext();
+  const { tokenA, tokenB } = useLongSwapContext();
+  const { selectedNetwork } = useNetworkContext();
 
   return (
     <Box className={styles.rootBox}>
