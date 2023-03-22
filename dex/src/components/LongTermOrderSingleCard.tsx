@@ -165,8 +165,11 @@ const LongTermOrderSingleCard = ({ orderLog }: PropTypes) => {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      if (newTime && newTime > 0) {
+      if (newTime && newTime >= 60) {
         setNewTime(newTime - 60);
+      } else {
+        clearInterval(timer);
+        setOrderStatus({ status: ORDER_STATUS_EXECUTED, progress: 100 });
       }
     }, 1000 * 60);
     return () => clearInterval(timer);
