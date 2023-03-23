@@ -9,6 +9,7 @@ import {
 } from "../providers/context/LongSwapProvider";
 import { useNetworkContext } from "../providers/context/NetworkProvider";
 import { useShortSwapContext } from "../providers/context/ShortSwapProvider";
+import { validateSymbolKeyPressInInput } from "../utils";
 import Modal from "./Modal";
 
 interface PropTypes {
@@ -74,18 +75,6 @@ const Input = (props: PropTypes) => {
     };
   }, [setTokenA, setTokenB, tokenBalances, setSelectedNetwork]);
 
-  function handleKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
-    const keyPressed = event.key;
-    if (
-      keyPressed === "-" ||
-      keyPressed === "+" ||
-      keyPressed === "e" ||
-      keyPressed === "E"
-    ) {
-      event.preventDefault();
-    }
-  }
-
   return (
     <>
       <div className={styles.textInput}>
@@ -97,7 +86,7 @@ const Input = (props: PropTypes) => {
             placeholder={placeholder}
             value={input ?? ""}
             onChange={onChange}
-            onKeyDown={handleKeyPress}
+            onKeyDown={(e) => validateSymbolKeyPressInInput(e)}
           />
           {}
           <button

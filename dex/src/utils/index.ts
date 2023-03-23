@@ -117,3 +117,17 @@ export const getInversedValue = (value: number) => {
 export const getInputLimit = (value: string) => {
   return value.slice(0, MAX_INPUT_LENGTH);
 };
+
+export const validateSymbolKeyPressInInput = (
+  event: React.KeyboardEvent<HTMLInputElement>
+) => {
+  const keyPressed = event.key;
+  if (
+    keyPressed === "-" ||
+    keyPressed === "+" ||
+    keyPressed === "e" ||
+    keyPressed === "E"
+  ) {
+    event.preventDefault();
+  }
+};

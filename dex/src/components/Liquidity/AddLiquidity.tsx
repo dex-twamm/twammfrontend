@@ -184,7 +184,7 @@ const AddLiquidity = ({ selectedTokenPair }: PropTypes) => {
                 balances={balanceOfToken}
                 tokenInputAmount={tokenAInputAmount}
                 setTokenInputAmount={setTokenAInputAmount}
-                input={tokenAInputAmount ? tokenAInputAmount : 0}
+                input={tokenAInputAmount >= 0 ? tokenAInputAmount : undefined}
                 tokenA={tokenA}
                 tokenB={tokenB}
                 currentNetwork={currentNetwork}
@@ -198,7 +198,7 @@ const AddLiquidity = ({ selectedTokenPair }: PropTypes) => {
                 balances={balanceOfToken}
                 tokenInputAmount={tokenBInputAmount}
                 setTokenInputAmount={setTokenBInputAmount}
-                input={tokenBInputAmount ? tokenBInputAmount : 0}
+                input={tokenBInputAmount >= 0 ? tokenBInputAmount : undefined}
                 tokenA={tokenB}
                 tokenB={tokenA}
                 currentNetwork={currentNetwork}

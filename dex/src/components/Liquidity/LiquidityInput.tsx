@@ -4,6 +4,7 @@ import iStyles from "../../css/Input.module.css";
 import { useLongSwapContext } from "../../providers/context/LongSwapProvider";
 import { SelectedNetworkType } from "../../providers/context/NetworkProvider";
 import { useShortSwapContext } from "../../providers/context/ShortSwapProvider";
+import { validateSymbolKeyPressInInput } from "../../utils";
 import { spotPrice } from "../../utils/getSpotPrice";
 import { TokenType } from "../../utils/pool";
 
@@ -12,7 +13,7 @@ interface PropTypes {
   balances: { [key: string]: number }[] | undefined;
   tokenInputAmount: number;
   setTokenInputAmount: Dispatch<SetStateAction<number>>;
-  input: number;
+  input: number | undefined;
   tokenA: TokenType;
   tokenB: TokenType;
   currentNetwork: SelectedNetworkType;
@@ -128,10 +129,12 @@ const LiquidityInput = ({
       <div className={iStyles.inputSelectContainer}>
         <input
           className={iStyles.textField}
+          type="number"
           min={0}
           placeholder="0.0"
-          value={input}
+          value={input ?? ""}
           onChange={handleInputChange}
+          onKeyDown={(e) => validateSymbolKeyPressInInput(e)}
         />
         <div>
           <span className={iStyles.spnCurrency}>
