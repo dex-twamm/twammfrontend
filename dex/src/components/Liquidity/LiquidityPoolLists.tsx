@@ -10,15 +10,21 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { getPoolTokens } from "../../utils/poolUtils";
+import { getPoolTokens, getPoolLength } from "../../utils/poolUtils";
 import { Box } from "@mui/system";
 import AddLiquidity from "./AddLiquidity";
 import WithdrawLiquidity from "./WithdrawLiquidity";
-import { POOLS } from "../../utils/pool";
 import LiquidityPoolListTableRow from "./LiquidityPoolListTableRow";
 import { useNetworkContext } from "../../providers/context/NetworkProvider";
 
-const tableColumns = [
+interface TableColumnsTypes {
+  id: string;
+  label: string | JSX.Element;
+  minWidth?: number;
+  align?: "inherit" | "left" | "center" | "right" | "justify";
+}
+
+const tableColumns: TableColumnsTypes[] = [
   {
     id: "tokens",
     label: <TokenIcon sx={{ paddingTop: "5px" }} />,
@@ -64,7 +70,7 @@ const LiquidityPoolLists = () => {
   const [bptAmountIn, setBptAmountIn] = useState();
 
   const getTableData = () => {
-    const poolLength = Object.keys(POOLS[selectedNetwork?.network]).length;
+    const poolLength = getPoolLength(selectedNetwork);
     let tableData = [];
     for (let i = 0; i < poolLength; i++) {
       const networkData = { ...selectedNetwork, poolId: i };
@@ -90,17 +96,19 @@ const LiquidityPoolLists = () => {
               <Table className={styles.poolTable}>
                 <TableHead>
                   <TableRow>
-                    {tableColumns?.map((column, idx) => (
-                      <TableCell
-                        key={idx}
-                        align={column.align}
-                        className={styles.tableColumnCell}
-                      >
-                        <span className={styles.tableColumnLabel}>
-                          {column?.label}
-                        </span>
-                      </TableCell>
-                    ))}
+                    {tableColumns?.map(
+                      (column: TableColumnsTypes, idx: number) => (
+                        <TableCell
+                          key={idx}
+                          align={column.align ?? undefined}
+                          className={styles.tableColumnCell}
+                        >
+                          <span className={styles.tableColumnLabel}>
+                            {column?.label}
+                          </span>
+                        </TableCell>
+                      )
+                    )}
                   </TableRow>
                 </TableHead>
                 <TableBody>
