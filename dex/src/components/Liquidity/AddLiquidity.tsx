@@ -184,7 +184,7 @@ const AddLiquidity = ({ selectedTokenPair }: PropTypes) => {
                 balances={balanceOfToken}
                 tokenInputAmount={tokenAInputAmount}
                 setTokenInputAmount={setTokenAInputAmount}
-                input={tokenAInputAmount ? tokenAInputAmount : ""}
+                input={tokenAInputAmount ? tokenAInputAmount : 0}
                 tokenA={tokenA}
                 tokenB={tokenB}
                 currentNetwork={currentNetwork}
@@ -198,7 +198,7 @@ const AddLiquidity = ({ selectedTokenPair }: PropTypes) => {
                 balances={balanceOfToken}
                 tokenInputAmount={tokenBInputAmount}
                 setTokenInputAmount={setTokenBInputAmount}
-                input={tokenBInputAmount ? tokenBInputAmount : ""}
+                input={tokenBInputAmount ? tokenBInputAmount : 0}
                 tokenA={tokenB}
                 tokenB={tokenA}
                 currentNetwork={currentNetwork}
@@ -290,7 +290,7 @@ const AddLiquidity = ({ selectedTokenPair }: PropTypes) => {
                     tokenAInputAmount > tokenA?.balance
                   }
                 >
-                  {`Allow TWAMM Protocol to use your ${
+                  {`Allow LongSwap Protocol to use your ${
                     tokenA.symbol ?? tokenB.symbol
                   }`}
                 </button>

@@ -44,7 +44,8 @@ const ShortSwap = () => {
   const { allowance, tokenA, tokenB } = useLongSwapContext();
 
   useEffect(() => {
-    let interval1: any, interval2: any;
+    let interval1: ReturnType<typeof setTimeout>;
+    let interval2: ReturnType<typeof setTimeout>;
     // Do not fetch prices if not enough allowance.
     if (parseFloat(allowance) > swapAmount) {
       // Wait for 0.5 second before fetching price.

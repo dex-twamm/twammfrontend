@@ -1,9 +1,24 @@
 import { Skeleton } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import iStyles from "../../css/Input.module.css";
 import { useLongSwapContext } from "../../providers/context/LongSwapProvider";
+import { SelectedNetworkType } from "../../providers/context/NetworkProvider";
 import { useShortSwapContext } from "../../providers/context/ShortSwapProvider";
 import { spotPrice } from "../../utils/getSpotPrice";
+import { TokenType } from "../../utils/pool";
+
+interface PropTypes {
+  tokenData: TokenType;
+  balances: { [key: string]: number }[] | undefined;
+  tokenInputAmount: number;
+  setTokenInputAmount: Dispatch<SetStateAction<number>>;
+  input: number;
+  tokenA: TokenType;
+  tokenB: TokenType;
+  currentNetwork: SelectedNetworkType;
+  hasProportional: boolean;
+  setHasBalancerOrTransactionError: Dispatch<SetStateAction<boolean>>;
+}
 
 const LiquidityInput = ({
   tokenData,
@@ -16,9 +31,11 @@ const LiquidityInput = ({
   currentNetwork,
   hasProportional,
   setHasBalancerOrTransactionError,
-}) => {
-  const [balance, setBalance] = useState();
-  const [balancerErrors, setBalancerErrors] = useState();
+}: PropTypes) => {
+  const [balance, setBalance] = useState(0);
+  const [balancerErrors, setBalancerErrors] = useState<{
+    balError: string | undefined;
+  }>({ balError: undefined });
 
   const {
     account,
@@ -36,15 +53,19 @@ const LiquidityInput = ({
     const tokenBalance = balances?.filter((item) => {
       return item[tokenData?.address];
     });
-    setBalance(tokenBalance?.[0]?.[tokenData?.address]);
-  }, [balances]);
 
-  const handleInputChange = (e) => {
-    setTokenInputAmount(e.target.value);
+    if (tokenBalance) setBalance(tokenBalance?.[0]?.[tokenData?.address]);
+  }, [balances, tokenData?.address]);
+
+  console.log("balance", balance);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTokenInputAmount(parseFloat(e.target.value));
   };
 
   useEffect(() => {
-    let interval1, interval2;
+    let interval1: ReturnType<typeof setTimeout>;
+    let interval2: ReturnType<typeof setTimeout>;
     // Do not fetch prices if not enough allowance.
     if (parseFloat(allowance) > tokenInputAmount) {
       // Wait for 0.5 second before fetching price.
@@ -85,7 +106,7 @@ const LiquidityInput = ({
       clearTimeout(interval2);
       setExpectedSwapOut(0);
       setSpotPrice(0);
-      setBalancerErrors();
+      setBalancerErrors({ balError: undefined });
     };
   }, [tokenInputAmount, tokenA, tokenB, allowance]);
 
@@ -98,7 +119,7 @@ const LiquidityInput = ({
   useEffect(() => {
     return () => {
       setBalancerErrors({ balError: undefined });
-      setTransactionHash(undefined);
+      setTransactionHash("");
     };
   }, [setTransactionHash]);
 
@@ -156,11 +177,11 @@ const LiquidityInput = ({
           "Balance: N/A"
         ) : balance ? (
           <p className={iStyles.balanceText}>
-            Balance: {parseFloat(balance).toFixed(2)}{" "}
+            Balance: {balance.toFixed(2)}{" "}
             <span
               className={iStyles.maxInput}
               onClick={() => {
-                setTokenInputAmount(parseFloat(balance).toFixed(2));
+                setTokenInputAmount(+balance.toFixed(2));
               }}
             >
               Max

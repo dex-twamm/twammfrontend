@@ -61,7 +61,7 @@ const LongSwapPage = () => {
   const cardListCount = ethLogsCount;
 
   useEffect(() => {
-    let verifyLongSwapInterval: any;
+    let verifyLongSwapInterval: ReturnType<typeof setTimeout>;
 
     // Wait for 0.5 second before fetching price.
 
