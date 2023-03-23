@@ -1,27 +1,32 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Avatar, Box, MenuItem, Select, Slider, Tooltip } from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import styles from "../../css/ShortSwap.module.css";
 import lsStyles from "../../css/LongSwap.module.css";
 import wStyles from "../../css/WithdrawLiquidity.module.css";
 
 import PopupSettings from "../PopupSettings";
 import Tabs from "../Tabs";
-import { getTokensBalance } from "../../utils/getAmount";
 import WithdrawLiquidityPreview from "./WithdrawLiquidityPreview";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import PopupModal from "../alerts/PopupModal";
 import classNames from "classnames";
 import { useShortSwapContext } from "../../providers/context/ShortSwapProvider";
 import { useNetworkContext } from "../../providers/context/NetworkProvider";
+import { TokenType } from "../../utils/pool";
 
-const WithdrawLiquidity = ({ selectedTokenPair, bptAmountIn }) => {
-  const { account, web3provider, isWalletConnected } = useShortSwapContext();
+interface PropTypes {
+  selectedTokenPair: any;
+  bptAmountIn: any;
+}
+
+const WithdrawLiquidity = ({ selectedTokenPair, bptAmountIn }: PropTypes) => {
+  const { isWalletConnected } = useShortSwapContext();
   const { selectedNetwork } = useNetworkContext();
 
   const [showSettings, setShowSettings] = useState(false);
-  const [balanceOfToken, setBalanceOfToken] = useState();
+
   const [selectValue, setSelectValue] = useState(1);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [sliderValue, setSliderValue] = useState(100);
@@ -32,18 +37,6 @@ const WithdrawLiquidity = ({ selectedTokenPair, bptAmountIn }) => {
       poolId: selectedTokenPair[2],
     };
   }, [selectedNetwork, selectedTokenPair]);
-
-  useEffect(() => {
-    const getTokenBalance = async () => {
-      const tokenBalance = await getTokensBalance(
-        web3provider?.getSigner(),
-        account,
-        currentNetwork
-      );
-      setBalanceOfToken(tokenBalance);
-    };
-    getTokenBalance();
-  }, [account, web3provider, selectedTokenPair, currentNetwork]);
 
   const handlePreviewClick = () => {
     setShowPreviewModal(true);
@@ -80,7 +73,7 @@ const WithdrawLiquidity = ({ selectedTokenPair, bptAmountIn }) => {
                     inputProps={{ "aria-label": "Without label" }}
                     value={selectValue}
                     onChange={(e) => {
-                      setSelectValue(e.target.value);
+                      setSelectValue(+e.target.value);
                     }}
                     variant="outlined"
                     sx={{
@@ -108,7 +101,7 @@ const WithdrawLiquidity = ({ selectedTokenPair, bptAmountIn }) => {
                     </MenuItem>
                     {selectedTokenPair
                       ?.slice(0, selectedTokenPair.length - 1)
-                      .map((itm, index) => (
+                      .map((itm: TokenType, index: number) => (
                         <MenuItem value={index + 2} key={index}>
                           <div className={wStyles.menuItems}>
                             <img
@@ -128,7 +121,7 @@ const WithdrawLiquidity = ({ selectedTokenPair, bptAmountIn }) => {
                 </div>
                 <div className={wStyles.sliderPart}>
                   <div className={wStyles.proportional}>
-                    <p>Proportional withdrawl</p>
+                    <p>Proportional withdrawal</p>
                     <p>{sliderValue}%</p>
                   </div>
                   <Slider
@@ -141,7 +134,11 @@ const WithdrawLiquidity = ({ selectedTokenPair, bptAmountIn }) => {
                       width: 1,
                       color: "#6D64A5",
                     }}
-                    onChange={(e) => setSliderValue(e.target.value)}
+                    onChange={(e) =>
+                      setSliderValue(
+                        parseFloat((e.target as HTMLInputElement).value)
+                      )
+                    }
                     aria-labelledby="non-linear-slider"
                   />
                 </div>
@@ -149,7 +146,7 @@ const WithdrawLiquidity = ({ selectedTokenPair, bptAmountIn }) => {
               <div className={wStyles.tokensList}>
                 {selectedTokenPair
                   .slice(0, selectedTokenPair.length - 1)
-                  ?.map((el, idx) => (
+                  ?.map((el: TokenType, idx: number) => (
                     <div className={wStyles.items} key={idx}>
                       <div className={wStyles.tokenInfo}>
                         <img src={el?.logo} alt="" height={30} width={30} />
