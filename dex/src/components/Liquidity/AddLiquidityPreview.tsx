@@ -1,11 +1,21 @@
 import { Modal, Tooltip } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
 import styles from "../../css/AddLiquidityPreview.module.css";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { _addPoolLiquidity } from "../../utils/_addPoolLiquidity";
 import { useShortSwapContext } from "../../providers/context/ShortSwapProvider";
 import { useLongSwapContext } from "../../providers/context/LongSwapProvider";
+import { SetStateAction, Dispatch } from "react";
+import { SelectedNetworkType } from "../../providers/context/NetworkProvider";
+
+interface PropTypes {
+  amountsIn: number[];
+  showPreviewModal: boolean;
+  setShowPreviewModal: Dispatch<SetStateAction<boolean>>;
+  dollarValueOfInputAmount: number;
+  selectedTokenPair: any;
+  currentNetwork: SelectedNetworkType;
+}
 
 const AddLiquidityPreview = ({
   showPreviewModal,
@@ -14,7 +24,7 @@ const AddLiquidityPreview = ({
   dollarValueOfInputAmount,
   selectedTokenPair,
   currentNetwork,
-}) => {
+}: PropTypes) => {
   const { web3provider, account, setTransactionHash, setLoading, setError } =
     useShortSwapContext();
 
