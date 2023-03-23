@@ -1,18 +1,20 @@
 import { ethers } from "ethers";
+import { Dispatch, SetStateAction } from "react";
 import { POPUP_MESSAGE } from "../constants";
+import { SelectedNetworkType } from "../providers/context/NetworkProvider";
 import { addPoolLiquidity } from "./addPoolLiquidity";
 import { getPoolId, getPoolTokenAddresses, getPoolTokens } from "./poolUtils";
 
 export const _addPoolLiquidity = async (
-  walletAddress,
-  web3provider,
-  currentNetwork,
-  amountsIn,
-  setTransactionHash,
-  setMessage,
-  setLoading,
-  setError,
-  setShowPreviewModal
+  walletAddress: string,
+  web3provider: any,
+  currentNetwork: SelectedNetworkType,
+  amountsIn: number[],
+  setTransactionHash: Dispatch<SetStateAction<string>>,
+  setMessage: Dispatch<SetStateAction<string>>,
+  setLoading: Dispatch<SetStateAction<boolean>>,
+  setError: Dispatch<SetStateAction<string>>,
+  setShowPreviewModal: Dispatch<SetStateAction<boolean>>
 ) => {
   try {
     const poolId = getPoolId(currentNetwork);
@@ -47,17 +49,17 @@ export const _addPoolLiquidity = async (
           console.log("data after wait", result);
           return result;
         };
-        addLiquidityResult(res).then(async (response) => {
+        addLiquidityResult().then(async (response) => {
           if (response.status === 1) {
             setMessage(POPUP_MESSAGE.liquidityAdded);
-          } else setMessage(POPUP_MESSAGE.addliquidityFailed);
+          } else setMessage(POPUP_MESSAGE.addLiquidityFailed);
         });
       })
       .catch((err) => {
         console.error(err);
-        setMessage(POPUP_MESSAGE.addliquidityFailed);
+        setMessage(POPUP_MESSAGE.addLiquidityFailed);
       })
-      .finally(setLoading(false));
+      .finally(() => setLoading(false));
   } catch (err) {
     console.error(err);
     setLoading(false);
