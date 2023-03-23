@@ -18,7 +18,7 @@ import { TokenType } from "../../utils/pool";
 
 interface PropTypes {
   selectedTokenPair: any;
-  bptAmountIn: any;
+  bptAmountIn: number;
 }
 
 const WithdrawLiquidity = ({ selectedTokenPair, bptAmountIn }: PropTypes) => {
@@ -193,7 +193,6 @@ const WithdrawLiquidity = ({ selectedTokenPair, bptAmountIn }: PropTypes) => {
             showPreviewModal={showPreviewModal}
             setShowPreviewModal={setShowPreviewModal}
             bptAmountIn={bptAmountIn}
-            selectedTokenPair={selectedTokenPair}
             currentNetwork={currentNetwork}
           />
         </div>

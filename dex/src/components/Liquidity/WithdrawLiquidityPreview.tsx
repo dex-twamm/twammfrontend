@@ -7,14 +7,21 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { _withdrawPoolLiquidity } from "../../utils/_withdrawPoolLiquidity";
 import { useShortSwapContext } from "../../providers/context/ShortSwapProvider";
 import { useLongSwapContext } from "../../providers/context/LongSwapProvider";
+import { SelectedNetworkType } from "../../providers/context/NetworkProvider";
+import { Dispatch, SetStateAction } from "react";
 
+interface PropTypes {
+  showPreviewModal: boolean;
+  setShowPreviewModal: Dispatch<SetStateAction<boolean>>;
+  bptAmountIn: number;
+  currentNetwork: SelectedNetworkType;
+}
 const WithdrawLiquidityPreview = ({
   showPreviewModal,
   setShowPreviewModal,
   bptAmountIn,
-  selectedTokenPair,
   currentNetwork,
-}) => {
+}: PropTypes) => {
   const { web3provider, account, setTransactionHash, setLoading, setError } =
     useShortSwapContext();
 
@@ -23,6 +30,8 @@ const WithdrawLiquidityPreview = ({
   const handleClose = () => {
     setShowPreviewModal(false);
   };
+
+  console.log("bptAmountIn", bptAmountIn);
 
   const handleRemoveLiquidity = async () => {
     try {
