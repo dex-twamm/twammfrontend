@@ -21,22 +21,29 @@ import { useShortSwapContext } from "../../providers/context/ShortSwapProvider";
 import { useLongSwapContext } from "../../providers/context/LongSwapProvider";
 import { useNetworkContext } from "../../providers/context/NetworkProvider";
 
-const AddLiquidity = ({ selectedTokenPair }) => {
+interface PropTypes {
+  selectedTokenPair: any;
+}
+
+const AddLiquidity = ({ selectedTokenPair }: PropTypes) => {
   const {
     account,
     web3provider,
     isWalletConnected,
     spotPriceLoading,
     setTransactionHash,
-    setAllowance,
-    setAllowTwammErrorMessage,
+    setAllowTwamErrorMessage,
   } = useShortSwapContext();
 
-  const { allowance } = useLongSwapContext();
+  const { allowance, setAllowance } = useLongSwapContext();
   const { selectedNetwork } = useNetworkContext();
 
   const [showSettings, setShowSettings] = useState(false);
-  const [balanceOfToken, setBalanceOfToken] = useState();
+  const [balanceOfToken, setBalanceOfToken] = useState<
+    {
+      [key: string]: number;
+    }[]
+  >();
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [tokenAInputAmount, setTokenAInputAmount] = useState(0);
   const [tokenBInputAmount, setTokenBInputAmount] = useState(0);
@@ -96,7 +103,7 @@ const AddLiquidity = ({ selectedTokenPair }) => {
       });
     } catch (e) {
       console.log(e);
-      setAllowTwammErrorMessage(e?.message);
+      setAllowTwamErrorMessage("Error!");
     }
   };
 
@@ -107,23 +114,24 @@ const AddLiquidity = ({ selectedTokenPair }) => {
         `https://api.coingecko.com/api/v3/coins/${id}`
       );
       console.log("tokenData from API", tokenData);
-      const currentPricePerToken =
-        tokenData?.data?.market_data?.current_price?.usd;
+      const currentPricePerToken = parseFloat(
+        tokenData?.data?.market_data?.current_price?.usd
+      );
 
       setDollarValueOfInputAmount(
-        (currentPricePerToken * tokenAInputAmount).toFixed(2)
+        parseFloat((currentPricePerToken * tokenAInputAmount).toFixed(2))
       );
     };
 
     getInputAmountValueInDollar();
   }, [tokenAInputAmount, tokenA]);
 
-  function getIndividualTokenBalance(tokenAddress) {
-    const token = balanceOfToken.find(
+  const getIndividualTokenBalance = (tokenAddress: string) => {
+    const token = balanceOfToken?.find(
       (t) => Object.keys(t)[0] === tokenAddress
     );
-    return token ? parseFloat(token[tokenAddress]).toFixed(2) : null;
-  }
+    return token ? +token[tokenAddress].toFixed(2) : 0;
+  };
 
   useEffect(() => {
     setSpanText((prev) => ({ ...prev, maxText: "Max" }));
@@ -199,13 +207,6 @@ const AddLiquidity = ({ selectedTokenPair }) => {
                   setHasBalancerOrTransactionError
                 }
               />
-              {/* {formErrors.balError && (
-                <div className={styles.errorAlert}>
-                  <Alert severity="error" sx={{ borderRadius: "16px" }}>
-                    {formErrors.balError}
-                  </Alert>
-                </div>
-              )} */}
               <div className={wStyles.totalAndImpact}>
                 <div className={wStyles.total}>
                   <div className={wStyles.text}>
@@ -272,7 +273,7 @@ const AddLiquidity = ({ selectedTokenPair }) => {
                 </div>
               </div>
               {tokenAInputAmount &&
-              parseFloat(allowance) <= tokenAInputAmount &&
+              parseFloat(allowance) < tokenAInputAmount &&
               tokenA ? (
                 <button
                   className={classNames(
@@ -308,7 +309,7 @@ const AddLiquidity = ({ selectedTokenPair }) => {
                     (!tokenAInputAmount && !tokenBInputAmount) ||
                     hasBalancerOrTransactionError ||
                     spotPriceLoading ||
-                    parseFloat(allowance) <= tokenAInputAmount
+                    parseFloat(allowance) < tokenAInputAmount
                       ? true
                       : false
                   }
