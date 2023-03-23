@@ -1,7 +1,7 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Avatar, Box, MenuItem, Select, Slider, Tooltip } from "@mui/material";
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styles from "../../css/ShortSwap.module.css";
 import lsStyles from "../../css/LongSwap.module.css";
 import wStyles from "../../css/WithdrawLiquidity.module.css";
@@ -9,17 +9,16 @@ import wStyles from "../../css/WithdrawLiquidity.module.css";
 import PopupSettings from "../PopupSettings";
 import Tabs from "../Tabs";
 import { getTokensBalance } from "../../utils/getAmount";
-import { ShortSwapContext, UIContext } from "../../providers";
 import WithdrawLiquidityPreview from "./WithdrawLiquidityPreview";
-import maticLogo from "../../images/maticIcon.png";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import PopupModal from "../alerts/PopupModal";
 import classNames from "classnames";
+import { useShortSwapContext } from "../../providers/context/ShortSwapProvider";
+import { useNetworkContext } from "../../providers/context/NetworkProvider";
 
 const WithdrawLiquidity = ({ selectedTokenPair, bptAmountIn }) => {
-  const { account, web3provider, isWalletConnected } =
-    useContext(ShortSwapContext);
-  const { selectedNetwork } = useContext(UIContext);
+  const { account, web3provider, isWalletConnected } = useShortSwapContext();
+  const { selectedNetwork } = useNetworkContext();
 
   const [showSettings, setShowSettings] = useState(false);
   const [balanceOfToken, setBalanceOfToken] = useState();

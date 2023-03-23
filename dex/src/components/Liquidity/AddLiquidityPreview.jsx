@@ -1,10 +1,11 @@
 import { Modal, Tooltip } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useContext } from "react";
+import React from "react";
 import styles from "../../css/AddLiquidityPreview.module.css";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { LongSwapContext, ShortSwapContext } from "../../providers";
 import { _addPoolLiquidity } from "../../utils/_addPoolLiquidity";
+import { useShortSwapContext } from "../../providers/context/ShortSwapProvider";
+import { useLongSwapContext } from "../../providers/context/LongSwapProvider";
 
 const AddLiquidityPreview = ({
   showPreviewModal,
@@ -15,9 +16,9 @@ const AddLiquidityPreview = ({
   currentNetwork,
 }) => {
   const { web3provider, account, setTransactionHash, setLoading, setError } =
-    useContext(ShortSwapContext);
+    useShortSwapContext();
 
-  const { setMessage } = useContext(LongSwapContext);
+  const { setMessage } = useLongSwapContext();
 
   const handleClose = () => {
     setShowPreviewModal(false);

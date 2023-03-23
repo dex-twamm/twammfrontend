@@ -1,8 +1,9 @@
 import { Avatar, Button, TableCell, TableRow } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useContext, useEffect, useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import styles from "../../css/LiquidityPoolList.module.css";
-import { ShortSwapContext, UIContext } from "../../providers";
+import { useNetworkContext } from "../../providers/context/NetworkProvider";
+import { useShortSwapContext } from "../../providers/context/ShortSwapProvider";
 import { getPoolContract } from "../../utils/getContracts";
 
 const LiquidityPoolListTableRow = ({
@@ -15,8 +16,8 @@ const LiquidityPoolListTableRow = ({
   setBptAmountIn,
   bptAmountIn,
 }) => {
-  const { web3provider, account } = useContext(ShortSwapContext);
-  const { selectedNetwork } = useContext(UIContext);
+  const { web3provider, account } = useShortSwapContext();
+  const { selectedNetwork } = useNetworkContext();
 
   const handleAddLiquidity = (item, index) => {
     setIsAddLiquidity(true);

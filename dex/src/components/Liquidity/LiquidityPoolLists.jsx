@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import styles from "../../css/LiquidityPoolList.module.css";
 import Tabs from "../Tabs";
 import TokenIcon from "@mui/icons-material/Token";
@@ -15,8 +15,8 @@ import { Box } from "@mui/system";
 import AddLiquidity from "./AddLiquidity";
 import WithdrawLiquidity from "./WithdrawLiquidity";
 import { POOLS } from "../../utils/pool";
-import { UIContext } from "../../providers";
 import LiquidityPoolListTableRow from "./LiquidityPoolListTableRow";
+import { useNetworkContext } from "../../providers/context/NetworkProvider";
 
 const tableColumns = [
   {
@@ -56,7 +56,7 @@ const tableColumns = [
 ];
 
 const LiquidityPoolLists = () => {
-  const { selectedNetwork } = useContext(UIContext);
+  const { selectedNetwork } = useNetworkContext();
 
   const [selectedTokenPair, setSelectedTokenPair] = useState();
   const [isAddLiquidity, setIsAddLiquidity] = useState(false);

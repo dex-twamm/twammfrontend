@@ -1,7 +1,7 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Alert, Box, CircularProgress, Tooltip } from "@mui/material";
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import { Box, CircularProgress, Tooltip } from "@mui/material";
+import { useEffect, useMemo, useState } from "react";
 import styles from "../../css/ShortSwap.module.css";
 import lsStyles from "../../css/LongSwap.module.css";
 import wStyles from "../../css/WithdrawLiquidity.module.css";
@@ -11,13 +11,15 @@ import PopupSettings from "../PopupSettings";
 import Tabs from "../Tabs";
 import LiquidityInput from "./LiquidityInput";
 import { getTokensBalance } from "../../utils/getAmount";
-import { LongSwapContext, ShortSwapContext, UIContext } from "../../providers";
 import AddLiquidityPreview from "./AddLiquidityPreview";
 import { bigToStr } from "../../utils";
 import classNames from "classnames";
 import PopupModal from "../alerts/PopupModal";
 import axios from "axios";
 import { approveMaxAllowance, getAllowance } from "../../utils/getApproval";
+import { useShortSwapContext } from "../../providers/context/ShortSwapProvider";
+import { useLongSwapContext } from "../../providers/context/LongSwapProvider";
+import { useNetworkContext } from "../../providers/context/NetworkProvider";
 
 const AddLiquidity = ({ selectedTokenPair }) => {
   const {
@@ -25,15 +27,13 @@ const AddLiquidity = ({ selectedTokenPair }) => {
     web3provider,
     isWalletConnected,
     spotPriceLoading,
-    formErrors,
-    setFormErrors,
     setTransactionHash,
     setAllowance,
     setAllowTwammErrorMessage,
-  } = useContext(ShortSwapContext);
+  } = useShortSwapContext();
 
-  const { allowance } = useContext(LongSwapContext);
-  const { selectedNetwork } = useContext(UIContext);
+  const { allowance } = useLongSwapContext();
+  const { selectedNetwork } = useNetworkContext();
 
   const [showSettings, setShowSettings] = useState(false);
   const [balanceOfToken, setBalanceOfToken] = useState();

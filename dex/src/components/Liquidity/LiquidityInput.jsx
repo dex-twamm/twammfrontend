@@ -1,7 +1,8 @@
 import { Skeleton } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import iStyles from "../../css/Input.module.css";
-import { LongSwapContext, ShortSwapContext } from "../../providers";
+import { useLongSwapContext } from "../../providers/context/LongSwapProvider";
+import { useShortSwapContext } from "../../providers/context/ShortSwapProvider";
 import { spotPrice } from "../../utils/getSpotPrice";
 
 const LiquidityInput = ({
@@ -28,8 +29,8 @@ const LiquidityInput = ({
     setTransactionHash,
     setSpotPrice,
     setExpectedSwapOut,
-  } = useContext(ShortSwapContext);
-  const { allowance } = useContext(LongSwapContext);
+  } = useShortSwapContext();
+  const { allowance } = useLongSwapContext();
 
   useEffect(() => {
     const tokenBalance = balances?.filter((item) => {
