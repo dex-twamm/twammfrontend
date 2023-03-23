@@ -356,10 +356,11 @@ const Swap = (props: PropTypes) => {
               disabled={
                 hasBalancerOrTransactionError ||
                 swapAmount == 0 ||
-                swapAmount > tokenA?.balance
+                swapAmount > tokenA?.balance ||
+                !tokenA.balance
               }
             >
-              {`Allow TWAMM Protocol to use your ${
+              {`Allow LongSwap Protocol to use your ${
                 tokenA.symbol ?? tokenB.symbol
               }`}
             </button>
