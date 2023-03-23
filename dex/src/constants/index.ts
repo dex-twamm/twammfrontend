@@ -3563,7 +3563,7 @@ export const GAS_OVERAGE_FACTOR = 1.05 as const;
 export const POPUP_MESSAGE = {
   networkSwitchFailed: "Failed to switch network!",
 
-  shortSwapSuccess: "Token swap succcessfull!",
+  shortSwapSuccess: "Token swap successful!",
   shortSwapFailed: "Token swap failed!",
 
   transactionCancelled: "Transaction cancelled!",
@@ -3580,10 +3580,10 @@ export const POPUP_MESSAGE = {
   ltoWithdrawFailed: "Long term order withdraw failed!",
 
   liquidityAdded: "Liquidity Added!",
-  addliquidityFailed: "Couldn't add liquidity!",
+  addLiquidityFailed: "Couldn't add liquidity!",
 
   liquidityWithdrawn: "Liquidity Withdrawn!",
-  withdrawliquidityFailed: "Couldn't withdraw liquidity!",
+  withdrawLiquidityFailed: "Couldn't withdraw liquidity!",
 
   insufficientBalance: "Balance insufficient for transaction!",
 

@@ -99,7 +99,7 @@ const PopupModal: React.FC = () => {
                 message === POPUP_MESSAGE.ltoCancelFailed ||
                 message === POPUP_MESSAGE.ltoWithdrawFailed ||
                 message === POPUP_MESSAGE.ltoPlaceFailed ||
-                message === POPUP_MESSAGE.addliquidityFailed ||
+                message === POPUP_MESSAGE.addLiquidityFailed ||
                 message === POPUP_MESSAGE.ltoWithdrawFailed
                   ? "error"
                   : "success"

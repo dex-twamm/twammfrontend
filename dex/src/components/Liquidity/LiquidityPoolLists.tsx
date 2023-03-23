@@ -17,7 +17,7 @@ import WithdrawLiquidity from "./WithdrawLiquidity";
 import LiquidityPoolListTableRow from "./LiquidityPoolListTableRow";
 import { useNetworkContext } from "../../providers/context/NetworkProvider";
 
-interface TableColumnsTypes {
+export interface TableColumnsTypes {
   id: string;
   label: string | JSX.Element;
   minWidth?: number;

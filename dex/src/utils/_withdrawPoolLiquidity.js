@@ -37,12 +37,12 @@ export const _withdrawPoolLiquidity = async (
         addLiquidityResult(res).then(async (response) => {
           if (response.status === 1) {
             setMessage(POPUP_MESSAGE.liquidityWithdrawn);
-          } else setMessage(POPUP_MESSAGE.withdrawliquidityFailed);
+          } else setMessage(POPUP_MESSAGE.withdrawLiquidityFailed);
         });
       })
       .catch((err) => {
         console.error(err);
-        setMessage(POPUP_MESSAGE.addliquidityFailed);
+        setMessage(POPUP_MESSAGE.addLiquidityFailed);
       })
       .finally(setLoading(false));
   } catch (err) {
