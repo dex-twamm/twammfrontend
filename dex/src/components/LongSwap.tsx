@@ -338,7 +338,8 @@ const LongSwap = (props: PropTypes) => {
               disabled={
                 hasBalancerOrTransactionError ||
                 swapAmount == 0 ||
-                swapAmount > tokenA?.balance
+                swapAmount > tokenA?.balance ||
+                !tokenA.balance
               }
             >
               {`Allow LongSwap Protocol to use your ${
