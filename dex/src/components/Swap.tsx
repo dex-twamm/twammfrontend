@@ -8,7 +8,6 @@ import { useShortSwapContext } from "../providers/context/ShortSwapProvider";
 import Input from "./Input";
 import { BigNumber } from "ethers";
 import {
-  bigToFloat,
   bigToStr,
   getInputLimit,
   getInversedValue,

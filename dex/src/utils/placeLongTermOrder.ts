@@ -4,8 +4,7 @@ import { POPUP_MESSAGE } from "../constants";
 import { SelectedNetworkType } from "../providers/context/NetworkProvider";
 import { getEthLogs } from "./getEthLogs";
 import { placeLongTermOrder } from "./longSwap";
-import { PoolType } from "./pool";
-import { getPoolConfig } from "./poolUtils";
+import { getPoolTokens } from "./poolUtils";
 
 export const _placeLongTermOrders = async (
   swapAmount: number,
@@ -21,18 +20,18 @@ export const _placeLongTermOrders = async (
   setError: Dispatch<SetStateAction<string>>,
   currentNetwork: SelectedNetworkType
 ): Promise<void> => {
-  const poolConfig: PoolType = getPoolConfig(currentNetwork);
+  const tokens = getPoolTokens(currentNetwork);
 
   try {
-    const tokenInIndex: number = poolConfig?.tokens.findIndex(
+    const tokenInIndex: number = tokens.findIndex(
       (object) => tokenA === object.address
     );
-    const tokenOutIndex: number = poolConfig?.tokens.findIndex(
+    const tokenOutIndex: number = tokens.findIndex(
       (object) => tokenB === object.address
     );
     const amountIn: BigNumber = ethers.utils.parseUnits(
       swapAmount.toString(),
-      poolConfig?.tokens[tokenInIndex].decimals
+      tokens[tokenInIndex].decimals
     );
     const blockIntervals: number = Math.ceil(numberOfBlockIntervals);
 

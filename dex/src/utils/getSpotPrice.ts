@@ -2,8 +2,8 @@ import { BigNumber, ethers } from "ethers";
 import { Dispatch, SetStateAction } from "react";
 import { POPUP_MESSAGE } from "../constants";
 import { SelectedNetworkType } from "../providers/context/NetworkProvider";
-import { PoolType, TokenType } from "./pool";
-import { getPoolConfig } from "./poolUtils";
+import { TokenType } from "./pool";
+import { getPoolTokens } from "./poolUtils";
 import { verifySwapTokens } from "./swap";
 
 // Spot Prices
@@ -23,11 +23,11 @@ export const spotPrice = async (
   if (swapAmount) {
     setSpotPriceLoading(true);
 
-    const poolConfig: PoolType = getPoolConfig(currentNetwork);
-    const tokenIn: TokenType = poolConfig?.tokens.find(
+    const tokens = getPoolTokens(currentNetwork);
+    const tokenIn: TokenType = tokens.find(
       (token) => token.address === tokenA
     )!;
-    const tokenOut: TokenType = poolConfig?.tokens.find(
+    const tokenOut: TokenType = tokens.find(
       (token) => token.address === tokenB
     )!;
 
