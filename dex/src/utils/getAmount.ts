@@ -3,11 +3,10 @@ import { bigToStr } from ".";
 
 import { ERC20_TOKEN_CONTRACT_ABI, TWAMM_POOL_ABI } from "../constants";
 import { SelectedNetworkType } from "../providers/context/NetworkProvider";
-import { PoolType } from "./pool";
 import {
   getPoolContractAddress,
-  getPoolConfig,
   getPoolTokenAddresses,
+  getPoolTokens,
 } from "./poolUtils";
 // To Retrieve Token Balances
 
@@ -18,7 +17,7 @@ export const getTokensBalance = async (
   walletAddress: string,
   currentNetwork: SelectedNetworkType
 ): Promise<MyArrayOfObjects[]> => {
-  const poolConfig: PoolType = getPoolConfig(currentNetwork);
+  const tokens = getPoolTokens(currentNetwork);
   var tokenAddress: string[] = getPoolTokenAddresses(currentNetwork);
 
   const newBalance: MyArrayOfObjects[] = [];
@@ -27,7 +26,7 @@ export const getTokensBalance = async (
     const balances: BigNumber = await balanceContract(address);
 
     const readableBalance: number = parseFloat(
-      ethers.utils.formatUnits(balances, poolConfig?.tokens[index].decimals)
+      ethers.utils.formatUnits(balances, tokens[index].decimals)
     );
     newBalance.push({ [address]: readableBalance });
   }
