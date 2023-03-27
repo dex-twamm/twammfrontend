@@ -16,6 +16,7 @@ import AddLiquidity from "./AddLiquidity";
 import WithdrawLiquidity from "./WithdrawLiquidity";
 import LiquidityPoolListTableRow from "./LiquidityPoolListTableRow";
 import { useNetworkContext } from "../../providers/context/NetworkProvider";
+import { useLocation } from "react-router-dom";
 
 export interface TableColumnsTypes {
   id: string;
@@ -63,10 +64,9 @@ const tableColumns: TableColumnsTypes[] = [
 
 const LiquidityPoolLists = () => {
   const { selectedNetwork } = useNetworkContext();
+  const location = useLocation();
 
   const [selectedTokenPair, setSelectedTokenPair] = useState();
-  const [isAddLiquidity, setIsAddLiquidity] = useState(false);
-  const [isWithdrawLiquidity, setIsWithdrawLiquidity] = useState(false);
   const [bptAmountIn, setBptAmountIn] = useState(0);
 
   const getTableData = () => {
@@ -81,9 +81,9 @@ const LiquidityPoolLists = () => {
 
   return (
     <>
-      {isAddLiquidity ? (
+      {location.pathname === "/liquidity/add-liquidity" ? (
         <AddLiquidity selectedTokenPair={selectedTokenPair} />
-      ) : isWithdrawLiquidity ? (
+      ) : location.pathname === "/liquidity/remove-liquidity" ? (
         <WithdrawLiquidity
           selectedTokenPair={selectedTokenPair}
           bptAmountIn={bptAmountIn}
@@ -118,9 +118,7 @@ const LiquidityPoolLists = () => {
                         tableColumns={tableColumns}
                         item={item}
                         index={index}
-                        setIsAddLiquidity={setIsAddLiquidity}
                         setSelectedTokenPair={setSelectedTokenPair}
-                        setIsWithdrawLiquidity={setIsWithdrawLiquidity}
                         setBptAmountIn={setBptAmountIn}
                         bptAmountIn={bptAmountIn}
                       />

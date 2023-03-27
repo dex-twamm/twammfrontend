@@ -1,6 +1,7 @@
 import { Avatar, Button, TableCell, TableRow } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { Dispatch, SetStateAction, useEffect, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "../../css/LiquidityPoolList.module.css";
 import { useNetworkContext } from "../../providers/context/NetworkProvider";
 import { useShortSwapContext } from "../../providers/context/ShortSwapProvider";
@@ -12,9 +13,7 @@ interface PropTypes {
   tableColumns: TableColumnsTypes[];
   item: TokenType[];
   index: number;
-  setIsAddLiquidity: Dispatch<SetStateAction<boolean>>;
   setSelectedTokenPair: any;
-  setIsWithdrawLiquidity: Dispatch<SetStateAction<boolean>>;
   setBptAmountIn: Dispatch<SetStateAction<number>>;
   bptAmountIn: number;
 }
@@ -23,22 +22,19 @@ const LiquidityPoolListTableRow = ({
   tableColumns,
   item,
   index,
-  setIsAddLiquidity,
   setSelectedTokenPair,
-  setIsWithdrawLiquidity,
   setBptAmountIn,
   bptAmountIn,
 }: PropTypes) => {
   const { web3provider, account } = useShortSwapContext();
   const { selectedNetwork } = useNetworkContext();
+  const navigate = useNavigate();
 
   const handleAddLiquidity = (item: TokenType[], index: number) => {
-    setIsAddLiquidity(true);
     setSelectedTokenPair([...item, index]);
   };
 
   const handleWithdrawLiquidity = (item: TokenType[], index: number) => {
-    setIsWithdrawLiquidity(true);
     setSelectedTokenPair([...item, index]);
   };
 
@@ -132,14 +128,20 @@ const LiquidityPoolListTableRow = ({
                 <Box className={styles.buttonBox}>
                   <Button
                     className={styles.addLiquidityButton}
-                    onClick={() => handleAddLiquidity(item, index)}
+                    onClick={() => {
+                      handleAddLiquidity(item, index);
+                      navigate("/liquidity/add-liquidity");
+                    }}
                   >
                     Add {bptAmountIn}
                   </Button>
                   {bptAmountIn > 0 ? (
                     <Button
                       className={styles.removeLiquidityButton}
-                      onClick={() => handleWithdrawLiquidity(item, index)}
+                      onClick={() => {
+                        handleWithdrawLiquidity(item, index);
+                        navigate("/liquidity/remove-liquidity");
+                      }}
                     >
                       Remove
                     </Button>

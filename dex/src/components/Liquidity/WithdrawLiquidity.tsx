@@ -1,6 +1,7 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Avatar, Box, MenuItem, Select, Slider, Tooltip } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useMemo, useState } from "react";
 import styles from "../../css/ShortSwap.module.css";
 import lsStyles from "../../css/LongSwap.module.css";
@@ -15,6 +16,7 @@ import classNames from "classnames";
 import { useShortSwapContext } from "../../providers/context/ShortSwapProvider";
 import { useNetworkContext } from "../../providers/context/NetworkProvider";
 import { TokenType } from "../../utils/pool";
+import { useNavigate } from "react-router-dom";
 
 interface PropTypes {
   selectedTokenPair: any;
@@ -24,6 +26,7 @@ interface PropTypes {
 const WithdrawLiquidity = ({ selectedTokenPair, bptAmountIn }: PropTypes) => {
   const { isWalletConnected } = useShortSwapContext();
   const { selectedNetwork } = useNetworkContext();
+  const navigate = useNavigate();
 
   const [showSettings, setShowSettings] = useState(false);
 
@@ -51,6 +54,10 @@ const WithdrawLiquidity = ({ selectedTokenPair, bptAmountIn }: PropTypes) => {
             <div className={styles.swapOptions}>
               <p className={styles.textLink}>Withdraw from Pool</p>
               <div className={styles.poolAndIcon}>
+                <ArrowBackIcon
+                  className={wStyles.backIcon}
+                  onClick={() => navigate("/liquidity")}
+                />
                 <FontAwesomeIcon
                   className={styles.settingsIcon}
                   icon={faGear}

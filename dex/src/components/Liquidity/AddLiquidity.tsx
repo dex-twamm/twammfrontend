@@ -1,6 +1,7 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, CircularProgress, Tooltip } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useEffect, useMemo, useState } from "react";
 import styles from "../../css/ShortSwap.module.css";
 import lsStyles from "../../css/LongSwap.module.css";
@@ -20,6 +21,7 @@ import { approveMaxAllowance, getAllowance } from "../../utils/getApproval";
 import { useShortSwapContext } from "../../providers/context/ShortSwapProvider";
 import { useLongSwapContext } from "../../providers/context/LongSwapProvider";
 import { useNetworkContext } from "../../providers/context/NetworkProvider";
+import { useNavigate } from "react-router-dom";
 
 interface PropTypes {
   selectedTokenPair: any;
@@ -37,7 +39,7 @@ const AddLiquidity = ({ selectedTokenPair }: PropTypes) => {
 
   const { allowance, setAllowance } = useLongSwapContext();
   const { selectedNetwork } = useNetworkContext();
-
+  const navigate = useNavigate();
   const [showSettings, setShowSettings] = useState(false);
   const [balanceOfToken, setBalanceOfToken] = useState<
     {
@@ -164,6 +166,10 @@ const AddLiquidity = ({ selectedTokenPair }: PropTypes) => {
             <div className={styles.swapOptions}>
               <p className={styles.textLink}>Add Liquidity</p>
               <div className={styles.poolAndIcon}>
+                <ArrowBackIcon
+                  className={wStyles.backIcon}
+                  onClick={() => navigate("/liquidity")}
+                />
                 <FontAwesomeIcon
                   className={styles.settingsIcon}
                   icon={faGear}

@@ -254,3 +254,10 @@
   font-weight: 800;
   font-size: 13px;
 }
+
+.backIcon {
+  cursor: pointer;
+  border: 1px solid white;
+  border-radius: 50%;
+  font-size: 25px;
+}
