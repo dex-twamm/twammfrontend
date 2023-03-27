@@ -1,10 +1,9 @@
-import { BigNumber, ethers } from "ethers";
+import { ethers } from "ethers";
 import { defaultAbiCoder } from "ethers/lib/utils";
 import { getPoolId, getPoolTokenAddresses, getPoolTokens } from "./poolUtils";
 
 import { getGasLimit } from "./getGasLimit";
 import { getBalancerHelperContract, getExchangeContract } from "./getContracts";
-import { TokenType } from "./pool";
 import { SelectedNetworkType } from "../providers/context/NetworkProvider";
 
 export async function cancelLTO(
