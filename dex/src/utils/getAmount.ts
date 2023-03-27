@@ -44,21 +44,3 @@ export const getTokensBalance = async (
 
   return newBalance.map((item) => item);
 };
-
-export const getLPTokensBalance = async (
-  signer: any,
-  walletAddress: string,
-  currentNetwork: SelectedNetworkType
-): Promise<number> => {
-  const poolContract: Contract = new Contract(
-    getPoolContractAddress(currentNetwork),
-    TWAMM_POOL_ABI,
-    signer
-  );
-
-  const balanceOfLPTokens: BigNumber = await poolContract.balanceOf(
-    walletAddress
-  );
-  const readableBalance: any = bigToStr(balanceOfLPTokens);
-  return readableBalance;
-};
