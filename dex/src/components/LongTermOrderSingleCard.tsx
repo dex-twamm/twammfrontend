@@ -157,7 +157,7 @@ const LongTermOrderSingleCard = ({ orderLog }: PropTypes) => {
     } else {
       if (orderLog.expirationBlock > currentBlock.number) {
         let date = new Date(0);
-        date.setSeconds(newTime); // specify value for SECONDS here
+        date.setSeconds((orderLog.expirationBlock - currentBlock.number) * 12); // specify value for SECONDS here
         const timeString = date.toISOString().substring(11, 16);
         setOrderStatus({
           status: `${ORDER_EXECUTION_TIME_REMAINING}: ${timeString}`,
