@@ -1,13 +1,8 @@
 import { BigNumber, Contract, ethers } from "ethers";
-import { bigToStr } from ".";
 
-import { ERC20_TOKEN_CONTRACT_ABI, TWAMM_POOL_ABI } from "../constants";
+import { ERC20_TOKEN_CONTRACT_ABI } from "../constants";
 import { SelectedNetworkType } from "../providers/context/NetworkProvider";
-import {
-  getPoolContractAddress,
-  getPoolTokenAddresses,
-  getPoolTokens,
-} from "./poolUtils";
+import { getPoolTokenAddresses, getPoolTokens } from "./poolUtils";
 // To Retrieve Token Balances
 
 type MyArrayOfObjects = { [key: string]: number };

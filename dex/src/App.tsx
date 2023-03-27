@@ -6,7 +6,7 @@ import LongSwapPage from "./pages/LongSwapPage";
 import ShortSwap from "./pages/ShortSwap";
 import { bigToStr } from "./utils";
 import { connectWallet } from "./utils/connectWallet";
-import { getTokensBalance } from "./utils/getAmount";
+import { getTokensBalance } from "./utils/getTokensBalance";
 import { getAllowance } from "./utils/getApproval";
 import { getEthLogs } from "./utils/getEthLogs";
 import { getLastVirtualOrderBlock } from "./utils/longSwap";
