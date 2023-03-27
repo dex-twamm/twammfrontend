@@ -48,7 +48,6 @@ export const addPoolLiquidity = async (
   ];
 
   const joinPool = await vaultContract.joinPool(...joinData, {
-    // gasLimit: 500000,
     gasLimit: getGasLimit(vaultContract, joinData, "joinPool"),
   });
   return joinPool;

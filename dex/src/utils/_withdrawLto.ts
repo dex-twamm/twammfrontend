@@ -1,6 +1,6 @@
 import { POPUP_MESSAGE } from "../constants";
 import { Dispatch, SetStateAction } from "react";
-import { withdrawLTO } from "./addLiquidity";
+import { withdrawLTO } from "./manageLtoOrders";
 import { getEthLogs } from "./getEthLogs";
 import { SelectedNetworkType } from "../providers/context/NetworkProvider";
 

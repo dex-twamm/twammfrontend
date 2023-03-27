@@ -16,7 +16,7 @@ import { ethers } from "ethers";
 import { getLongSwapPoolFee, getPoolConfig } from "../utils/poolUtils";
 import { getBlockExplorerTransactionUrl } from "../utils/networkUtils";
 import ChangeCircleOutlinedIcon from "@mui/icons-material/ChangeCircleOutlined";
-import { withdrawLTO } from "../utils/addLiquidity";
+import { withdrawLTO } from "../utils/manageLtoOrders";
 import {
   ORDER_EXECUTION_TIME_REMAINING,
   ORDER_LOG_STATE_CANCELLED,
