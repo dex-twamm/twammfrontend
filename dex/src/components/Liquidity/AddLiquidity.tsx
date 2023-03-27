@@ -10,7 +10,7 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import PopupSettings from "../PopupSettings";
 import Tabs from "../Tabs";
 import LiquidityInput from "./LiquidityInput";
-import { getTokensBalance } from "../../utils/getAmount";
+import { getTokensBalance } from "../../utils/getTokensBalance";
 import AddLiquidityPreview from "./AddLiquidityPreview";
 import { bigToStr } from "../../utils";
 import classNames from "classnames";
