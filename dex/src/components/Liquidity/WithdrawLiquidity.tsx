@@ -8,7 +8,6 @@ import lsStyles from "../../css/LongSwap.module.css";
 import wStyles from "../../css/WithdrawLiquidity.module.css";
 
 import PopupSettings from "../PopupSettings";
-import Tabs from "../Tabs";
 import WithdrawLiquidityPreview from "./WithdrawLiquidityPreview";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import PopupModal from "../alerts/PopupModal";
@@ -16,14 +15,14 @@ import classNames from "classnames";
 import { useShortSwapContext } from "../../providers/context/ShortSwapProvider";
 import { useNetworkContext } from "../../providers/context/NetworkProvider";
 import { TokenType } from "../../utils/pool";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { getPoolTokens } from "../../utils/poolUtils";
 
 interface PropTypes {
-  selectedTokenPair: any;
   bptAmountIn: number;
 }
 
-const WithdrawLiquidity = ({ selectedTokenPair, bptAmountIn }: PropTypes) => {
+const WithdrawLiquidity = ({ bptAmountIn }: PropTypes) => {
   const { isWalletConnected } = useShortSwapContext();
   const { selectedNetwork } = useNetworkContext();
   const navigate = useNavigate();
@@ -33,13 +32,22 @@ const WithdrawLiquidity = ({ selectedTokenPair, bptAmountIn }: PropTypes) => {
   const [selectValue, setSelectValue] = useState(1);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [sliderValue, setSliderValue] = useState(100);
+  const [searchParams] = useSearchParams();
+  const idString = searchParams.get("id");
+
+  if (!idString) throw new Error("Error! Could not get id from url");
+  const poolIdNumber = parseFloat(idString);
 
   const currentNetwork = useMemo(() => {
     return {
       ...selectedNetwork,
-      poolId: selectedTokenPair[2],
+      poolId: poolIdNumber,
     };
-  }, [selectedNetwork, selectedTokenPair]);
+  }, [poolIdNumber, selectedNetwork]);
+
+  const tokenA = getPoolTokens(currentNetwork)?.[0];
+  const tokenB = getPoolTokens(currentNetwork)?.[1];
+  const selectedTokenPair = [tokenA, tokenB];
 
   const handlePreviewClick = () => {
     setShowPreviewModal(true);
@@ -48,7 +56,6 @@ const WithdrawLiquidity = ({ selectedTokenPair, bptAmountIn }: PropTypes) => {
   return (
     <>
       <div className={styles.container}>
-        <Tabs />
         <div className={styles.mainBody}>
           <div className={styles.swap}>
             <div className={styles.swapOptions}>
@@ -106,23 +113,16 @@ const WithdrawLiquidity = ({ selectedTokenPair, bptAmountIn }: PropTypes) => {
                         <span className={wStyles.optionText}>All tokens</span>
                       </div>
                     </MenuItem>
-                    {selectedTokenPair
-                      ?.slice(0, selectedTokenPair.length - 1)
-                      .map((itm: TokenType, index: number) => (
-                        <MenuItem value={index + 2} key={index}>
-                          <div className={wStyles.menuItems}>
-                            <img
-                              src={itm?.logo}
-                              alt=""
-                              height={30}
-                              width={30}
-                            />
-                            <span className={wStyles.optionText}>
-                              {itm?.name}
-                            </span>
-                          </div>
-                        </MenuItem>
-                      ))}
+                    {selectedTokenPair.map((itm: TokenType, index: number) => (
+                      <MenuItem value={index + 2} key={index}>
+                        <div className={wStyles.menuItems}>
+                          <img src={itm?.logo} alt="" height={30} width={30} />
+                          <span className={wStyles.optionText}>
+                            {itm?.name}
+                          </span>
+                        </div>
+                      </MenuItem>
+                    ))}
                   </Select>
                   <p className={wStyles.amount}>$0.00</p>
                 </div>
@@ -151,20 +151,18 @@ const WithdrawLiquidity = ({ selectedTokenPair, bptAmountIn }: PropTypes) => {
                 </div>
               </div>
               <div className={wStyles.tokensList}>
-                {selectedTokenPair
-                  .slice(0, selectedTokenPair.length - 1)
-                  ?.map((el: TokenType, idx: number) => (
-                    <div className={wStyles.items} key={idx}>
-                      <div className={wStyles.tokenInfo}>
-                        <img src={el?.logo} alt="" height={30} width={30} />
-                        <p>{el?.symbol} 50%</p>
-                      </div>
-                      <div className={wStyles.amt}>
-                        <p>0.05</p>
-                        <span>$0.00</span>
-                      </div>
+                {selectedTokenPair.map((el: TokenType, idx: number) => (
+                  <div className={wStyles.items} key={idx}>
+                    <div className={wStyles.tokenInfo}>
+                      <img src={el?.logo} alt="" height={30} width={30} />
+                      <p>{el?.symbol} 50%</p>
                     </div>
-                  ))}
+                    <div className={wStyles.amt}>
+                      <p>0.05</p>
+                      <span>$0.00</span>
+                    </div>
+                  </div>
+                ))}
               </div>
               <div className={wStyles.priceImpact}>
                 <div className={wStyles.impact}>

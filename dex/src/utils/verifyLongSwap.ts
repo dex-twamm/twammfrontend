@@ -31,6 +31,8 @@ export const verifyLongSwap = async (
       const tokenInIndex: number = tokens.findIndex(
         (object) => tokenA === object.address
       );
+
+      console.log("tokenInIndex", tokenInIndex);
       const tokenOutIndex: number = tokens.findIndex(
         (object) => tokenB === object.address
       );

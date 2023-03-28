@@ -13,6 +13,7 @@ interface PropTypes {
   balances: { [key: string]: number }[] | undefined;
   tokenInputAmount: number;
   setTokenInputAmount: Dispatch<SetStateAction<number>>;
+  calculateProportionalSuggestion: any;
   input: number | undefined;
   tokenA: TokenType;
   tokenB: TokenType;
@@ -26,6 +27,7 @@ const LiquidityInput = ({
   balances,
   tokenInputAmount,
   setTokenInputAmount,
+  calculateProportionalSuggestion,
   input,
   tokenA,
   tokenB,
@@ -57,8 +59,6 @@ const LiquidityInput = ({
 
     if (tokenBalance) setBalance(tokenBalance?.[0]?.[tokenData?.address]);
   }, [balances, tokenData?.address]);
-
-  console.log("balance", balance);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTokenInputAmount(parseFloat(e.target.value));
@@ -171,7 +171,12 @@ const LiquidityInput = ({
         }
       >
         {hasProportional && (
-          <span className={iStyles.maxInput}>proportional suggestion</span>
+          <span
+            className={iStyles.maxInput}
+            onClick={calculateProportionalSuggestion}
+          >
+            proportional suggestion
+          </span>
         )}
         {balancerErrors?.balError && (
           <span className={iStyles.errorText}>{balancerErrors?.balError}</span>

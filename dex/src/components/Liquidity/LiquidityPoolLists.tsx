@@ -82,12 +82,9 @@ const LiquidityPoolLists = () => {
   return (
     <>
       {location.pathname === "/liquidity/add-liquidity" ? (
-        <AddLiquidity selectedTokenPair={selectedTokenPair} />
+        <AddLiquidity />
       ) : location.pathname === "/liquidity/remove-liquidity" ? (
-        <WithdrawLiquidity
-          selectedTokenPair={selectedTokenPair}
-          bptAmountIn={bptAmountIn}
-        />
+        <WithdrawLiquidity bptAmountIn={bptAmountIn} />
       ) : (
         <Box className={styles.rootBox}>
           <Tabs />

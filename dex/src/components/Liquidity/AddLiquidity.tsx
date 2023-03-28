@@ -9,11 +9,10 @@ import wStyles from "../../css/WithdrawLiquidity.module.css";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 import PopupSettings from "../PopupSettings";
-import Tabs from "../Tabs";
 import LiquidityInput from "./LiquidityInput";
 import { getTokensBalance } from "../../utils/getTokensBalance";
 import AddLiquidityPreview from "./AddLiquidityPreview";
-import { bigToStr } from "../../utils";
+import { bigToStr, getProperFixedValue } from "../../utils";
 import classNames from "classnames";
 import PopupModal from "../alerts/PopupModal";
 import axios from "axios";
@@ -21,13 +20,15 @@ import { approveMaxAllowance, getAllowance } from "../../utils/getApproval";
 import { useShortSwapContext } from "../../providers/context/ShortSwapProvider";
 import { useLongSwapContext } from "../../providers/context/LongSwapProvider";
 import { useNetworkContext } from "../../providers/context/NetworkProvider";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import {
+  getSpotPrice,
+  priceImpact,
+  proportionalAmount,
+} from "../../utils/balancerMath";
+import { getPoolTokens } from "../../utils/poolUtils";
 
-interface PropTypes {
-  selectedTokenPair: any;
-}
-
-const AddLiquidity = ({ selectedTokenPair }: PropTypes) => {
+const AddLiquidity = () => {
   const {
     account,
     web3provider,
@@ -56,16 +57,26 @@ const AddLiquidity = ({ selectedTokenPair }: PropTypes) => {
     maxText: "Max",
     optimizeText: "Optimize",
   });
+  const [priceImpactValue, setPriceImpactValue] = useState(0);
+  const [tokenBalances, setTokenBalances] =
+    useState<{ [key: string]: number }[]>();
 
   const [hasProportionalInputA, setHasProportionalInputA] = useState(false);
   const [hasProportionalInputB, setHasProportionalInputB] = useState(false);
 
+  const [searchParams] = useSearchParams();
+  const idString = searchParams.get("id");
+
+  if (!idString) throw new Error("Error! Could not get id from url");
+
+  const poolIdNumber = parseFloat(idString);
+
   const currentNetwork = useMemo(() => {
     return {
       ...selectedNetwork,
-      poolId: selectedTokenPair[2],
+      poolId: poolIdNumber,
     };
-  }, [selectedNetwork, selectedTokenPair]);
+  }, [poolIdNumber, selectedNetwork]);
 
   useEffect(() => {
     const getTokenBalance = async () => {
@@ -77,14 +88,18 @@ const AddLiquidity = ({ selectedTokenPair }: PropTypes) => {
       setBalanceOfToken(tokenBalance);
     };
     getTokenBalance();
-  }, [account, web3provider, selectedTokenPair, currentNetwork]);
+  }, [account, web3provider, currentNetwork]);
 
   const handlePreviewClick = () => {
     setShowPreviewModal(true);
   };
 
-  const tokenA = selectedTokenPair[0];
-  const tokenB = selectedTokenPair[1];
+  const tokenA = getPoolTokens(currentNetwork)?.[0];
+  const tokenB = getPoolTokens(currentNetwork)?.[1];
+
+  const balanceA: any = tokenBalances?.filter(
+    (item) => item[tokenA?.address]
+  )[0]?.[tokenA?.address];
 
   const handleApproveButton = async () => {
     try {
@@ -140,7 +155,7 @@ const AddLiquidity = ({ selectedTokenPair }: PropTypes) => {
   }, [tokenAInputAmount, tokenBInputAmount]);
 
   useEffect(() => {
-    if (tokenAInputAmount == 0 && tokenBInputAmount == 0) {
+    if (tokenAInputAmount === 0 && tokenBInputAmount === 0) {
       setHasProportionalInputA(false);
       setHasProportionalInputB(false);
     } else {
@@ -157,10 +172,67 @@ const AddLiquidity = ({ selectedTokenPair }: PropTypes) => {
     }
   }, [tokenAInputAmount, tokenBInputAmount, spanText]);
 
+  useEffect(() => {
+    const getTokensBalances = async () => {
+      const tokenBalances = await getTokensBalance(
+        web3provider.getSigner(),
+        account,
+        currentNetwork
+      );
+      setTokenBalances(tokenBalances);
+    };
+    getTokensBalances();
+  }, [account, currentNetwork, web3provider]);
+
+  const calculateProportionalSuggestion = async () => {
+    if (hasProportionalInputB && tokenBalances) {
+      const balances = [
+        Object.values(tokenBalances[0])[0],
+        Object.values(tokenBalances[1])[0],
+      ];
+
+      const spotPriceValue = getSpotPrice(balances);
+
+      const proportionalValue = proportionalAmount(
+        tokenAInputAmount,
+        0,
+        spotPriceValue
+      ).toFixed(2);
+      setTokenBInputAmount(parseFloat(proportionalValue));
+    }
+
+    if (hasProportionalInputA && tokenBalances) {
+      const balances = [
+        Object.values(tokenBalances[1])[0],
+        Object.values(tokenBalances[0])[0],
+      ];
+
+      const spotPriceValue = getSpotPrice(balances);
+
+      const proportionalValue = proportionalAmount(
+        tokenBInputAmount,
+        1,
+        spotPriceValue
+      ).toFixed(2);
+      setTokenAInputAmount(parseFloat(proportionalValue));
+    }
+  };
+
+  useEffect(() => {
+    const inputAmounts = [tokenAInputAmount, tokenBInputAmount];
+    if (tokenBalances) {
+      const currentBalances = [
+        Object.values(tokenBalances[0])[0],
+        Object.values(tokenBalances[1])[0],
+      ];
+      const impactValue = priceImpact(inputAmounts, currentBalances);
+      setPriceImpactValue(impactValue);
+    }
+  }, [tokenAInputAmount, tokenBInputAmount, tokenBalances]);
+
   return (
     <>
       <div className={styles.container}>
-        <Tabs />
         <div className={styles.mainBody}>
           <div className={styles.swap}>
             <div className={styles.swapOptions}>
@@ -190,6 +262,9 @@ const AddLiquidity = ({ selectedTokenPair }: PropTypes) => {
                 balances={balanceOfToken}
                 tokenInputAmount={tokenAInputAmount}
                 setTokenInputAmount={setTokenAInputAmount}
+                calculateProportionalSuggestion={
+                  calculateProportionalSuggestion
+                }
                 input={tokenAInputAmount >= 0 ? tokenAInputAmount : undefined}
                 tokenA={tokenA}
                 tokenB={tokenB}
@@ -204,6 +279,9 @@ const AddLiquidity = ({ selectedTokenPair }: PropTypes) => {
                 balances={balanceOfToken}
                 tokenInputAmount={tokenBInputAmount}
                 setTokenInputAmount={setTokenBInputAmount}
+                calculateProportionalSuggestion={
+                  calculateProportionalSuggestion
+                }
                 input={tokenBInputAmount >= 0 ? tokenBInputAmount : undefined}
                 tokenA={tokenB}
                 tokenB={tokenA}
@@ -252,7 +330,7 @@ const AddLiquidity = ({ selectedTokenPair }: PropTypes) => {
                   </div>
                   <div className={wStyles.value}>
                     <p>
-                      0.00%
+                      {getProperFixedValue(priceImpactValue) ?? "0.0"}%
                       <Tooltip
                         arrow
                         placement="top"
@@ -293,7 +371,7 @@ const AddLiquidity = ({ selectedTokenPair }: PropTypes) => {
                   disabled={
                     hasBalancerOrTransactionError ||
                     tokenAInputAmount == 0 ||
-                    tokenAInputAmount > tokenA?.balance
+                    tokenAInputAmount > balanceA
                   }
                 >
                   {`Allow LongSwap Protocol to use your ${
@@ -345,7 +423,7 @@ const AddLiquidity = ({ selectedTokenPair }: PropTypes) => {
             showPreviewModal={showPreviewModal}
             setShowPreviewModal={setShowPreviewModal}
             dollarValueOfInputAmount={dollarValueOfInputAmount}
-            selectedTokenPair={selectedTokenPair}
+            selectedTokenPair={[tokenA, tokenB]}
             currentNetwork={currentNetwork}
           />
         </div>

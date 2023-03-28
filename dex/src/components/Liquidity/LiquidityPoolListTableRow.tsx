@@ -7,6 +7,7 @@ import { useNetworkContext } from "../../providers/context/NetworkProvider";
 import { useShortSwapContext } from "../../providers/context/ShortSwapProvider";
 import { getPoolContract } from "../../utils/getContracts";
 import { TokenType } from "../../utils/pool";
+import { getPoolId } from "../../utils/poolUtils";
 import { TableColumnsTypes } from "./LiquidityPoolLists";
 
 interface PropTypes {
@@ -31,11 +32,15 @@ const LiquidityPoolListTableRow = ({
   const navigate = useNavigate();
 
   const handleAddLiquidity = (item: TokenType[], index: number) => {
+    const poolId = getPoolId({ ...selectedNetwork, poolId: index });
     setSelectedTokenPair([...item, index]);
+    navigate(`/liquidity/add-liquidity?pool=${poolId}&id=${index}`);
   };
 
   const handleWithdrawLiquidity = (item: TokenType[], index: number) => {
+    const poolId = getPoolId({ ...selectedNetwork, poolId: index });
     setSelectedTokenPair([...item, index]);
+    navigate(`/liquidity/remove-liquidity?pool=${poolId}&id=${index}`);
   };
 
   const currentNetwork = useMemo(() => {
@@ -54,15 +59,6 @@ const LiquidityPoolListTableRow = ({
     };
     getPoolTokenData();
   }, [web3provider, account, setBptAmountIn, currentNetwork]);
-
-  console.log(
-    "bptAmountIn-->",
-    "poolId :",
-    currentNetwork?.poolId,
-    "-->",
-    bptAmountIn,
-    "--->"
-  );
 
   return (
     <>
@@ -130,7 +126,6 @@ const LiquidityPoolListTableRow = ({
                     className={styles.addLiquidityButton}
                     onClick={() => {
                       handleAddLiquidity(item, index);
-                      navigate("/liquidity/add-liquidity");
                     }}
                   >
                     Add {bptAmountIn}
@@ -140,7 +135,6 @@ const LiquidityPoolListTableRow = ({
                       className={styles.removeLiquidityButton}
                       onClick={() => {
                         handleWithdrawLiquidity(item, index);
-                        navigate("/liquidity/remove-liquidity");
                       }}
                     >
                       Remove

@@ -7,13 +7,14 @@ import { useShortSwapContext } from "../../providers/context/ShortSwapProvider";
 import { useLongSwapContext } from "../../providers/context/LongSwapProvider";
 import { SetStateAction, Dispatch } from "react";
 import { SelectedNetworkType } from "../../providers/context/NetworkProvider";
+import { TokenType } from "../../utils/pool";
 
 interface PropTypes {
   amountsIn: number[];
   showPreviewModal: boolean;
   setShowPreviewModal: Dispatch<SetStateAction<boolean>>;
   dollarValueOfInputAmount: number;
-  selectedTokenPair: any;
+  selectedTokenPair: TokenType[];
   currentNetwork: SelectedNetworkType;
 }
 
@@ -35,14 +36,6 @@ const AddLiquidityPreview = ({
   };
 
   const handleAddLiquidity = async () => {
-    console.log(
-      `walletAddress ${account}`,
-      `web3provider`,
-      web3provider.getSigner(),
-      `currentNetwork`,
-      currentNetwork,
-      `amountsIn ${amountsIn}`
-    );
     try {
       await _addPoolLiquidity(
         account,
