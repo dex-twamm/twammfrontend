@@ -175,7 +175,7 @@ const AddLiquidity = () => {
   useEffect(() => {
     const getTokensBalances = async () => {
       const tokenBalances = await getTokensBalance(
-        web3provider.getSigner(),
+        web3provider?.getSigner(),
         account,
         currentNetwork
       );
@@ -229,6 +229,8 @@ const AddLiquidity = () => {
       setPriceImpactValue(impactValue);
     }
   }, [tokenAInputAmount, tokenBInputAmount, tokenBalances]);
+
+  console.log("price impact value", priceImpactValue);
 
   return (
     <>
@@ -425,6 +427,7 @@ const AddLiquidity = () => {
             dollarValueOfInputAmount={dollarValueOfInputAmount}
             selectedTokenPair={[tokenA, tokenB]}
             currentNetwork={currentNetwork}
+            priceImpactValue={priceImpactValue}
           />
         </div>
         <PopupModal />
