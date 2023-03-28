@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import styles from "../../css/LiquidityPoolList.module.css";
 import Tabs from "../Tabs";
 import TokenIcon from "@mui/icons-material/Token";
@@ -66,8 +65,6 @@ const LiquidityPoolLists = () => {
   const { selectedNetwork } = useNetworkContext();
   const location = useLocation();
 
-  const [bptAmountIn, setBptAmountIn] = useState(0);
-
   const getTableData = () => {
     const poolLength = getPoolLength(selectedNetwork);
     let tableData = [];
@@ -83,7 +80,7 @@ const LiquidityPoolLists = () => {
       {location.pathname === "/liquidity/add-liquidity" ? (
         <AddLiquidity />
       ) : location.pathname === "/liquidity/remove-liquidity" ? (
-        <WithdrawLiquidity bptAmountIn={bptAmountIn} />
+        <WithdrawLiquidity />
       ) : (
         <Box className={styles.rootBox}>
           <Tabs />
@@ -114,8 +111,6 @@ const LiquidityPoolLists = () => {
                         tableColumns={tableColumns}
                         item={item}
                         index={index}
-                        setBptAmountIn={setBptAmountIn}
-                        bptAmountIn={bptAmountIn}
                       />
                     );
                   })}

@@ -17,7 +17,7 @@ import classNames from "classnames";
 import { useShortSwapContext } from "../../providers/context/ShortSwapProvider";
 import { useNetworkContext } from "../../providers/context/NetworkProvider";
 import { TokenType } from "../../utils/pool";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { getPoolTokens } from "../../utils/poolUtils";
 import WithdrawLiquiditySelect from "./WithdrawLiquiditySelect";
 import { validateSymbolKeyPressInInput } from "../../utils";
@@ -25,11 +25,7 @@ import { useLongSwapContext } from "../../providers/context/LongSwapProvider";
 import { spotPrice } from "../../utils/getSpotPrice";
 import CircularProgress from "@mui/material/CircularProgress";
 
-interface PropTypes {
-  bptAmountIn: number;
-}
-
-const WithdrawLiquidity = ({ bptAmountIn }: PropTypes) => {
+const WithdrawLiquidity = () => {
   const {
     account,
     web3provider,
@@ -42,7 +38,11 @@ const WithdrawLiquidity = ({ bptAmountIn }: PropTypes) => {
   } = useShortSwapContext();
   const { allowance } = useLongSwapContext();
   const { selectedNetwork } = useNetworkContext();
+
   const navigate = useNavigate();
+  const location = useLocation();
+  const { bptAmount } = location.state as { bptAmount: number };
+  const [searchParams] = useSearchParams();
 
   const [balancerErrors, setBalancerErrors] = useState<{
     balError: string | undefined;
@@ -56,7 +56,6 @@ const WithdrawLiquidity = ({ bptAmountIn }: PropTypes) => {
   const [sliderValue, setSliderValue] = useState(100);
   const [hasBalancerOrTransactionError, setHasBalancerOrTransactionError] =
     useState(true);
-  const [searchParams] = useSearchParams();
   const idString = searchParams.get("id");
 
   if (!idString) throw new Error("Error! Could not get id from url");
@@ -304,7 +303,7 @@ const WithdrawLiquidity = ({ bptAmountIn }: PropTypes) => {
           <WithdrawLiquidityPreview
             showPreviewModal={showPreviewModal}
             setShowPreviewModal={setShowPreviewModal}
-            bptAmountIn={bptAmountIn}
+            bptAmountIn={bptAmount}
             currentNetwork={currentNetwork}
           />
         </div>

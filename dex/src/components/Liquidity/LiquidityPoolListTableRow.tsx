@@ -1,6 +1,6 @@
 import { Avatar, Button, TableCell, TableRow } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { Dispatch, SetStateAction, useEffect, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../../css/LiquidityPoolList.module.css";
 import { useNetworkContext } from "../../providers/context/NetworkProvider";
@@ -14,39 +14,35 @@ interface PropTypes {
   tableColumns: TableColumnsTypes[];
   item: TokenType[];
   index: number;
-  setBptAmountIn: Dispatch<SetStateAction<number>>;
-  bptAmountIn: number;
 }
 
 const LiquidityPoolListTableRow = ({
   tableColumns,
   item,
   index,
-  setBptAmountIn,
-  bptAmountIn,
 }: PropTypes) => {
   const { web3provider, account } = useShortSwapContext();
   const { selectedNetwork } = useNetworkContext();
   const navigate = useNavigate();
+  const [bptAmountIn, setBptAmountIn] = useState(0);
 
-  const handleAddLiquidity = (item: TokenType[], index: number) => {
+  const handleAddLiquidity = (index: number) => {
     const poolId = getPoolId({ ...selectedNetwork, poolId: index });
     navigate(`/liquidity/add-liquidity?pool=${poolId}&id=${index}`);
   };
 
-  const handleWithdrawLiquidity = (item: TokenType[], index: number) => {
+  const handleWithdrawLiquidity = (index: number) => {
     const poolId = getPoolId({ ...selectedNetwork, poolId: index });
-    navigate(`/liquidity/remove-liquidity?pool=${poolId}&id=${index}`);
+    navigate(`/liquidity/remove-liquidity?pool=${poolId}&id=${index}`, {
+      state: { bptAmount: bptAmountIn },
+    });
   };
 
-  const currentNetwork = useMemo(() => {
-    return {
+  useEffect(() => {
+    const currentNetwork = {
       ...selectedNetwork,
       poolId: index,
     };
-  }, [index, selectedNetwork]);
-
-  useEffect(() => {
     const getPoolTokenData = async () => {
       const signer = web3provider?.getSigner();
       const poolContract = getPoolContract(currentNetwork, signer);
@@ -54,7 +50,7 @@ const LiquidityPoolListTableRow = ({
       setBptAmountIn(parseFloat(balance.toString()));
     };
     getPoolTokenData();
-  }, [web3provider, account, setBptAmountIn, currentNetwork]);
+  }, [web3provider, account, setBptAmountIn, selectedNetwork, index]);
 
   return (
     <>
@@ -121,7 +117,7 @@ const LiquidityPoolListTableRow = ({
                   <Button
                     className={styles.addLiquidityButton}
                     onClick={() => {
-                      handleAddLiquidity(item, index);
+                      handleAddLiquidity(index);
                     }}
                   >
                     Add {bptAmountIn}
@@ -130,7 +126,7 @@ const LiquidityPoolListTableRow = ({
                     <Button
                       className={styles.removeLiquidityButton}
                       onClick={() => {
-                        handleWithdrawLiquidity(item, index);
+                        handleWithdrawLiquidity(index);
                       }}
                     >
                       Remove

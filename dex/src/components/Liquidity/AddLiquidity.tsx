@@ -230,8 +230,10 @@ const AddLiquidity = () => {
     }
   }, [tokenAInputAmount, tokenBInputAmount, tokenBalances]);
 
-  console.log("price impact value", priceImpactValue);
-
+  const calculateOptimizedValue = () => {
+    setTokenAInputAmount(0);
+    setTokenBInputAmount(0);
+  };
   return (
     <>
       <div className={styles.container}>
@@ -351,6 +353,7 @@ const AddLiquidity = () => {
                       }}
                       onClick={() => {
                         setSpanText({ ...spanText, optimizeText: "Optimized" });
+                        calculateOptimizedValue();
                       }}
                     >
                       {spanText?.optimizeText}
