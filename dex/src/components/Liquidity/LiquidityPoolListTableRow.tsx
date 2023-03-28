@@ -14,7 +14,6 @@ interface PropTypes {
   tableColumns: TableColumnsTypes[];
   item: TokenType[];
   index: number;
-  setSelectedTokenPair: any;
   setBptAmountIn: Dispatch<SetStateAction<number>>;
   bptAmountIn: number;
 }
@@ -23,7 +22,6 @@ const LiquidityPoolListTableRow = ({
   tableColumns,
   item,
   index,
-  setSelectedTokenPair,
   setBptAmountIn,
   bptAmountIn,
 }: PropTypes) => {
@@ -33,13 +31,11 @@ const LiquidityPoolListTableRow = ({
 
   const handleAddLiquidity = (item: TokenType[], index: number) => {
     const poolId = getPoolId({ ...selectedNetwork, poolId: index });
-    setSelectedTokenPair([...item, index]);
     navigate(`/liquidity/add-liquidity?pool=${poolId}&id=${index}`);
   };
 
   const handleWithdrawLiquidity = (item: TokenType[], index: number) => {
     const poolId = getPoolId({ ...selectedNetwork, poolId: index });
-    setSelectedTokenPair([...item, index]);
     navigate(`/liquidity/remove-liquidity?pool=${poolId}&id=${index}`);
   };
 

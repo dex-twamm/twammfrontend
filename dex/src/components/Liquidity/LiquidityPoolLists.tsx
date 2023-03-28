@@ -66,7 +66,6 @@ const LiquidityPoolLists = () => {
   const { selectedNetwork } = useNetworkContext();
   const location = useLocation();
 
-  const [selectedTokenPair, setSelectedTokenPair] = useState();
   const [bptAmountIn, setBptAmountIn] = useState(0);
 
   const getTableData = () => {
@@ -115,7 +114,6 @@ const LiquidityPoolLists = () => {
                         tableColumns={tableColumns}
                         item={item}
                         index={index}
-                        setSelectedTokenPair={setSelectedTokenPair}
                         setBptAmountIn={setBptAmountIn}
                         bptAmountIn={bptAmountIn}
                       />
