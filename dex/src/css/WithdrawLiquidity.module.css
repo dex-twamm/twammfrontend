@@ -28,7 +28,18 @@
   backdrop-filter: blur(2px);
   border-radius: 5px !important;
   height: 40px;
-  width: 45%;
+}
+
+.singleText {
+  color: gray;
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.errorText {
+  color: rgb(239 68 68);
+  margin-top: 5px;
+  font-size: 12px;
 }
 
 .menuItems {
