@@ -2,6 +2,7 @@ import faucetLogo from "../images/faucetIcon.png";
 import usdLogo from "../images/usdIcon.png";
 import wethLogo from "../images/wethIcon.png";
 import wbtcLogo from "../images/wbtcLogo.png";
+import maticLogo from "../images/maticIcon.png";
 
 export interface TokenType {
   symbol: string;
@@ -43,6 +44,30 @@ export const POOLS: PoolsType = {
           decimals: 6,
           address: "0x07865c6E87B9F70255377e024ace6630C1Eaa37F",
           logo: usdLogo,
+        },
+        {
+          symbol: "FAU",
+          name: "Faucet",
+          decimals: 18,
+          address: "0xBA62BCfcAaFc6622853cca2BE6Ac7d845BC0f2Dc",
+          logo: faucetLogo,
+        },
+      ],
+    },
+    "0x8426654f17aee14540b5f6a0250d6f542c0258b1000200000000000000000709": {
+      poolName: "MATIC/FAU",
+      address: "0x8426654f17AeE14540B5f6A0250D6f542c0258b1",
+      shortSwapFee: "0.05%",
+      longSwapFee: "0.25%",
+      LTOContract: "0xEae3B5dd2b659f8562106F98f52B1fb54d75F81D",
+      blockInterval: 100,
+      tokens: [
+        {
+          symbol: "MATIC",
+          name: "Matic",
+          decimals: 18,
+          address: "0x499d11E0b6eAC7c0593d8Fb292DCBbF815Fb29Ae",
+          logo: maticLogo,
         },
         {
           symbol: "FAU",
