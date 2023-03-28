@@ -8,6 +8,7 @@ import { useLongSwapContext } from "../../providers/context/LongSwapProvider";
 import { SetStateAction, Dispatch } from "react";
 import { SelectedNetworkType } from "../../providers/context/NetworkProvider";
 import { TokenType } from "../../utils/pool";
+import { getProperFixedValue } from "../../utils";
 
 interface PropTypes {
   amountsIn: number[];
@@ -117,7 +118,7 @@ const AddLiquidityPreview = ({
               <div className={styles.item}>
                 <p className={styles.total}>Price impact</p>
                 <p className={styles.data}>
-                  {priceImpactValue}%{"  "}
+                  {getProperFixedValue(priceImpactValue) ?? "0.0"}%{"  "}
                   <span>
                     <Tooltip
                       arrow
