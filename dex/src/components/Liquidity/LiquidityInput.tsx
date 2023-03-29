@@ -61,7 +61,12 @@ const LiquidityInput = ({
   }, [balances, tokenData?.address]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTokenInputAmount(parseFloat(e.target.value));
+    const value = parseFloat(e.target.value);
+    if (!isNaN(value)) {
+      setTokenInputAmount(value);
+    } else {
+      setTokenInputAmount(0);
+    }
   };
 
   useEffect(() => {
@@ -132,7 +137,7 @@ const LiquidityInput = ({
           type="number"
           min={0}
           placeholder="0.0"
-          value={input ?? ""}
+          value={input}
           onChange={handleInputChange}
           onKeyDown={(e) => validateSymbolKeyPressInInput(e)}
         />

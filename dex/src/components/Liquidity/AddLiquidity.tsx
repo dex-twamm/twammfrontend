@@ -226,14 +226,19 @@ const AddLiquidity = () => {
         Object.values(tokenBalances[1])[0],
       ];
       const impactValue = priceImpact(inputAmounts, currentBalances);
+      console.log(inputAmounts, currentBalances, impactValue);
       setPriceImpactValue(impactValue);
     }
   }, [tokenAInputAmount, tokenBInputAmount, tokenBalances]);
 
   const calculateOptimizedValue = () => {
+    if (tokenBalances) {
+      const tokenBBalance = Object.values(tokenBalances[1])[0].toFixed(2);
+      setTokenBInputAmount(parseFloat(tokenBBalance));
+    }
     setTokenAInputAmount(0);
-    setTokenBInputAmount(0);
   };
+
   return (
     <>
       <div className={styles.container}>
@@ -334,7 +339,7 @@ const AddLiquidity = () => {
                   </div>
                   <div className={wStyles.value}>
                     <p>
-                      {getProperFixedValue(priceImpactValue) ?? "0.0"}%
+                      {getProperFixedValue(priceImpactValue)}%
                       <Tooltip
                         arrow
                         placement="top"
@@ -353,7 +358,8 @@ const AddLiquidity = () => {
                       }}
                       onClick={() => {
                         setSpanText({ ...spanText, optimizeText: "Optimized" });
-                        calculateOptimizedValue();
+                        if (spanText.optimizeText === "Optimize")
+                          calculateOptimizedValue();
                       }}
                     >
                       {spanText?.optimizeText}
