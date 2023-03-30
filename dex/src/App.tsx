@@ -18,6 +18,7 @@ import ChatBubbleOutlineTwoToneIcon from "@mui/icons-material/ChatBubbleOutlineT
 import { useShortSwapContext } from "./providers/context/ShortSwapProvider";
 import { useLongSwapContext } from "./providers/context/LongSwapProvider";
 import { useNetworkContext } from "./providers/context/NetworkProvider";
+import LandingPage from "./pages/LandingPage";
 
 function App() {
   const navigate = useNavigate();
@@ -239,8 +240,9 @@ function App() {
   return (
     <>
       <div className="main">
-        <Navbar />
+        {location.pathname !== "/landing" && <Navbar />}
         <Routes>
+          <Route path="/landing" element={<LandingPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/shortswap" element={<ShortSwap />} />
           <Route path="/" element={<LongSwapPage />} />
