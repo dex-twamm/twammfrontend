@@ -78,6 +78,30 @@ export const POOLS: PoolsType = {
         },
       ],
     },
+    "0x9f1f16b025f703ee985b58ced48daf93dad2f7ef000200000000000000000063": {
+      poolName: "WETH/USDC",
+      address: "0x9f1f16b025f703ee985b58ced48daf93dad2f7ef",
+      shortSwapFee: "0.05%",
+      longSwapFee: "0.25%",
+      LTOContract: "0xEae3B5dd2b659f8562106F98f52B1fb54d75F81D",
+      blockInterval: 100,
+      tokens: [
+        {
+          symbol: "WETH",
+          name: "WETH",
+          decimals: 18,
+          address: "0xdFCeA9088c8A88A76FF74892C1457C17dfeef9C1",
+          logo: wethLogo,
+        },
+        {
+          symbol: "USDC",
+          name: "USDC",
+          decimals: 6,
+          address: "0xe0C9275E44Ea80eF17579d33c55136b7DA269aEb",
+          logo: usdLogo,
+        },
+      ],
+    },
   },
   Ethereum: {
     "0xaf15e6cbe19e30be827f27069cf010b57ce9f3ae0002000000000000000004d3": {

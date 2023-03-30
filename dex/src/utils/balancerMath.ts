@@ -1,4 +1,4 @@
-export function proportionalAmount(
+export function getProportionalAmount(
   inputTokenAmount: number,
   inputTokenIndex: number,
   spotPrice: number

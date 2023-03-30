@@ -10,7 +10,10 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 import PopupSettings from "../PopupSettings";
 import LiquidityInput from "./LiquidityInput";
-import { getTokensBalance } from "../../utils/getTokensBalance";
+import {
+  getTokensBalance,
+  getPoolTokenBalances,
+} from "../../utils/getTokensBalance";
 import AddLiquidityPreview from "./AddLiquidityPreview";
 import { bigToStr, getProperFixedValue } from "../../utils";
 import classNames from "classnames";
@@ -24,9 +27,10 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   getSpotPrice,
   priceImpact,
-  proportionalAmount,
+  getProportionalAmount,
 } from "../../utils/balancerMath";
 import { getPoolTokens } from "../../utils/poolUtils";
+import { BigNumber } from "ethers";
 
 const AddLiquidity = () => {
   const {
@@ -130,7 +134,7 @@ const AddLiquidity = () => {
       const tokenData = await axios.get(
         `https://api.coingecko.com/api/v3/coins/${id}`
       );
-      console.log("tokenData from API", tokenData);
+      // console.log("tokenData from API", tokenData);
       const currentPricePerToken = parseFloat(
         tokenData?.data?.market_data?.current_price?.usd
       );
@@ -174,9 +178,9 @@ const AddLiquidity = () => {
 
   useEffect(() => {
     const getTokensBalances = async () => {
-      const tokenBalances = await getTokensBalance(
+      const tokenBalances = await getPoolTokenBalances(
         web3provider?.getSigner(),
-        account,
+        getPoolTokens(currentNetwork),
         currentNetwork
       );
       setTokenBalances(tokenBalances);
@@ -191,14 +195,21 @@ const AddLiquidity = () => {
         Object.values(tokenBalances[1])[0],
       ];
 
-      const spotPriceValue = getSpotPrice(balances);
-
-      const proportionalValue = proportionalAmount(
+      const spotPrice = getSpotPrice(balances);
+      const proportionalValue = getProportionalAmount(
         tokenAInputAmount,
         0,
-        spotPriceValue
-      ).toFixed(2);
-      setTokenBInputAmount(parseFloat(proportionalValue));
+        spotPrice
+      );
+      console.log(
+        "Calculate proportional amount",
+        proportionalValue.toString(),
+        tokenAInputAmount.toString(),
+        spotPrice.toString(),
+        balances[0].toString(),
+        balances[1].toString()
+      );
+      setTokenBInputAmount(getProperFixedValue(proportionalValue));
     }
 
     if (hasProportionalInputA && tokenBalances) {
@@ -209,12 +220,12 @@ const AddLiquidity = () => {
 
       const spotPriceValue = getSpotPrice(balances);
 
-      const proportionalValue = proportionalAmount(
+      const proportionalValue = getProportionalAmount(
         tokenBInputAmount,
         1,
         spotPriceValue
-      ).toFixed(2);
-      setTokenAInputAmount(parseFloat(proportionalValue));
+      );
+      setTokenAInputAmount(parseFloat(proportionalValue.toString()));
     }
   };
 
@@ -227,14 +238,14 @@ const AddLiquidity = () => {
       ];
       const impactValue = priceImpact(inputAmounts, currentBalances);
       console.log(inputAmounts, currentBalances, impactValue);
-      setPriceImpactValue(impactValue);
+      // setPriceImpactValue(impactValue);
     }
   }, [tokenAInputAmount, tokenBInputAmount, tokenBalances]);
 
   const calculateOptimizedValue = () => {
     if (tokenBalances) {
-      const tokenBBalance = Object.values(tokenBalances[1])[0].toFixed(2);
-      setTokenBInputAmount(parseFloat(tokenBBalance));
+      const tokenBBalance = Object.values(tokenBalances[1])[0];
+      setTokenBInputAmount(parseFloat(tokenBBalance.toString()));
     }
     setTokenAInputAmount(0);
   };

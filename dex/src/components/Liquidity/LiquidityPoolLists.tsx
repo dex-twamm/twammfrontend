@@ -108,6 +108,7 @@ const LiquidityPoolLists = () => {
                   {getTableData()?.map((item, index) => {
                     return (
                       <LiquidityPoolListTableRow
+                        key={index}
                         tableColumns={tableColumns}
                         item={item}
                         index={index}
