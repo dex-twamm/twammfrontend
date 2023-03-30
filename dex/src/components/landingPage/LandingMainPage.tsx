@@ -1,9 +1,11 @@
+import LandingBalancer from "./LandingBalancer";
 import LandingBlog from "./LandingBlog";
 import LandingCover from "./LandingCover";
 import LandingNavbar from "./LandingNavbar";
 import LandingTechnology from "./LandingTechnology";
 import LandingThesis from "./LandingThesis";
 import LandingTraders from "./LandingTraders";
+import LandingTweet from "./LandingTweet";
 import LandingVideo from "./LandingVideo";
 
 const LandingMainPage = () => {
@@ -16,6 +18,8 @@ const LandingMainPage = () => {
       <LandingTraders />
       <LandingTechnology />
       <LandingBlog />
+      <LandingBalancer />
+      <LandingTweet />
     </div>
   );
 };
