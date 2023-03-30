@@ -150,15 +150,7 @@ const WithdrawLiquidity = () => {
     if (selectValue === 2 || selectValue === 3) {
       withdrawLiquidityCallStatic();
     }
-  }, [
-    account,
-    bptAmount,
-    currentNetwork,
-    selectValue,
-    tokenA?.address,
-    tokenB?.address,
-    web3provider,
-  ]);
+  }, [selectValue]);
 
   return (
     <>

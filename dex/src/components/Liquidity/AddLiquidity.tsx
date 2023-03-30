@@ -238,7 +238,7 @@ const AddLiquidity = () => {
       ];
       const impactValue = priceImpact(inputAmounts, currentBalances);
       console.log(inputAmounts, currentBalances, impactValue);
-      // setPriceImpactValue(impactValue);
+      setPriceImpactValue(impactValue);
     }
   }, [tokenAInputAmount, tokenBInputAmount, tokenBalances]);
 
