@@ -18,12 +18,13 @@ import { useShortSwapContext } from "../../providers/context/ShortSwapProvider";
 import { useNetworkContext } from "../../providers/context/NetworkProvider";
 import { TokenType } from "../../utils/pool";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { getPoolTokens } from "../../utils/poolUtils";
+import { getPoolId, getPoolTokens } from "../../utils/poolUtils";
 import WithdrawLiquiditySelect from "./WithdrawLiquiditySelect";
 import { validateSymbolKeyPressInInput } from "../../utils";
 import { useLongSwapContext } from "../../providers/context/LongSwapProvider";
 import { spotPrice } from "../../utils/getSpotPrice";
 import CircularProgress from "@mui/material/CircularProgress";
+import { withdrawPoolLiquidity } from "../../utils/withdrawPoolLiquidity";
 
 const WithdrawLiquidity = () => {
   const {
@@ -128,6 +129,36 @@ const WithdrawLiquidity = () => {
       ? setHasBalancerOrTransactionError(true)
       : setHasBalancerOrTransactionError(false);
   }, [balancerErrors]);
+
+  useEffect(() => {
+    const withdrawLiquidityCallStatic = async () => {
+      const poolId = getPoolId(currentNetwork);
+      const result = await withdrawPoolLiquidity(
+        poolId,
+        [tokenA?.address, tokenB?.address],
+        bptAmount,
+        account,
+        web3provider,
+        currentNetwork,
+        true
+      );
+      console.log("Result", result);
+      console.log("amountsOut0 ->", result["amountsOut"][0]?.toString());
+      console.log("amountsOut1 ->", result["amountsOut"][1]?.toString());
+      console.log("BPT from callStatic result", result.bptIn.toString());
+    };
+    if (selectValue === 2 || selectValue === 3) {
+      withdrawLiquidityCallStatic();
+    }
+  }, [
+    account,
+    bptAmount,
+    currentNetwork,
+    selectValue,
+    tokenA?.address,
+    tokenB?.address,
+    web3provider,
+  ]);
 
   return (
     <>

@@ -28,7 +28,7 @@ export const _withdrawPoolLiquidity = async (
       currentNetwork
     )
       .then((res) => {
-        console.log("res", res);
+        console.log("response", res, res.bptIn.toString());
         setShowPreviewModal(false);
         setTransactionHash(res.hash);
         const addLiquidityResult = async () => {
