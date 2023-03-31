@@ -13,7 +13,6 @@
   font-family: "Futura";
   font-weight: 700;
   font-size: 24px;
-  line-height: 32px;
   letter-spacing: 0.4px;
 
   color: #554994;
@@ -40,7 +39,6 @@
   font-family: "Inter";
   font-weight: 600;
   font-size: 18px;
-  line-height: 22px;
 
   color: #151929;
 }
@@ -51,7 +49,6 @@
   font-family: "Inter";
   font-weight: 600;
   font-size: 18px;
-  line-height: 22px;
 
   color: #151929;
   outline: none;
@@ -73,20 +70,19 @@
 .coverContainer h1 {
   font-family: "Gilroy-Bold";
   font-size: 80px;
-  line-height: 94px;
   letter-spacing: 0.01em;
-
   color: #000000;
+  text-align: center;
 }
 
 .coverContainer h5 {
   font-family: "Gilroy-Medium";
   font-size: 24px;
-  line-height: 28px;
   letter-spacing: 0.01em;
 
   color: #000000;
   margin-top: 32px;
+  text-align: center;
 }
 
 .launchBtn {
@@ -96,7 +92,6 @@
   font-family: "Inter";
   font-weight: 600;
   font-size: 18px;
-  line-height: 22px;
   letter-spacing: 0.01em;
   color: #5865f2;
 
@@ -147,7 +142,6 @@
 .how h5 {
   font-family: "Gilroy-Medium";
   font-size: 24px;
-  line-height: 28px;
   text-align: center;
   letter-spacing: 0.2px;
 
@@ -159,7 +153,6 @@
 .how p {
   font-family: "Gilroy-Bold";
   font-size: 42px;
-  line-height: 49px;
   text-align: center;
 
   color: #000000;
@@ -173,7 +166,6 @@
 .thesisSection h5 {
   font-family: "Gilroy-Medium";
   font-size: 24px;
-  line-height: 28px;
 
   letter-spacing: 0.2px;
   color: #000000;
@@ -184,7 +176,6 @@
   font-family: "Gilroy";
   font-weight: 600;
   font-size: 42px;
-  line-height: 51px;
   color: #000000;
   padding-right: 50px;
 }
@@ -205,7 +196,6 @@
   font-family: "Gilroy";
   font-weight: 600;
   font-size: 20px;
-  line-height: 25px;
 
   letter-spacing: 0.2px;
 
@@ -218,7 +208,6 @@
 .content {
   font-family: "Gilroy-Medium";
   font-size: 16px;
-  line-height: 22px;
   letter-spacing: 0.025em;
   color: #8a8a8a;
 }
@@ -231,7 +220,6 @@
 .tradersSection h5 {
   font-family: "Gilroy-Medium";
   font-size: 24px;
-  line-height: 28px;
   color: #000000;
   margin-bottom: 30px;
   text-transform: uppercase;
@@ -241,7 +229,6 @@
   font-family: "Gilroy";
   font-weight: 600;
   font-size: 60px;
-  line-height: 74px;
   color: #000000;
   text-transform: capitalize;
   width: 70%;
@@ -259,7 +246,6 @@
 .timeInfo {
   font-family: "Gilroy-Medium";
   font-size: 20px;
-  line-height: 32px;
   color: #000000;
   width: 85%;
 }
@@ -281,7 +267,6 @@
 .cardTopic {
   font-family: "Gilroy-Bold";
   font-size: 24px;
-  line-height: 28px;
   letter-spacing: 0.025em;
   color: #000000;
   margin-bottom: 15px;
@@ -290,7 +275,6 @@
 .cardDetail {
   font-family: "Gilroy-Medium";
   font-size: 16px;
-  line-height: 21px;
   letter-spacing: 0.005em;
   color: #8a8a8a;
   margin-bottom: 30px;
@@ -299,7 +283,6 @@
 .learnMore {
   font-family: "Gilroy-Medium";
   font-size: 24px;
-  line-height: 32px;
   color: #000000;
   display: flex;
   align-items: center;
@@ -318,7 +301,6 @@
 .technologySection h5 {
   font-family: "Gilroy-Medium";
   font-size: 24px;
-  line-height: 28px;
   color: #000000;
   margin-bottom: 30px;
   text-transform: uppercase;
@@ -328,7 +310,6 @@
   font-family: "Gilroy";
   font-weight: 600;
   font-size: 60px;
-  line-height: 74px;
   color: #000000;
   text-transform: capitalize;
   width: 70%;
@@ -347,7 +328,6 @@
 .paraTwo {
   font-family: "Gilroy-Medium";
   font-size: 20px;
-  line-height: 32px;
   color: #000000;
 }
 .paraTwo {
@@ -383,7 +363,6 @@
 .topSec h5 {
   font-family: "Gilroy-Medium";
   font-size: 24px;
-  line-height: 28px;
   color: #000000;
   display: flex;
   align-items: center;
@@ -395,7 +374,6 @@
   font-family: "Gilroy";
   font-weight: 600;
   font-size: 60px;
-  line-height: 74px;
   color: #000000;
   text-transform: capitalize;
   margin-top: 30px;
@@ -413,7 +391,7 @@
 
 .blogContents {
   display: flex;
-  column-gap: 24px;
+  gap: 24px;
 }
 
 .blogItems {
@@ -423,6 +401,7 @@
 
 .blogItems img {
   width: 100%;
+  height: auto;
 }
 
 .blogInfos {
@@ -432,7 +411,6 @@
 .date {
   font-family: "Gilroy-Medium";
   font-size: 16px;
-  line-height: 24px;
   letter-spacing: 0.2px;
   color: #8a8a8a;
   margin-bottom: 8px;
@@ -441,7 +419,6 @@
 .blogTopic {
   font-family: "Gilroy-Bold";
   font-size: 20px;
-  line-height: 28px;
   letter-spacing: 0.2px;
   color: #161616;
   margin-bottom: 15px;
@@ -450,7 +427,6 @@
 .blogDetails {
   font-family: "Gilroy-Medium";
   font-size: 14px;
-  line-height: 24px;
   letter-spacing: 0.2px;
   color: #8a8a8a;
 }
@@ -467,7 +443,6 @@
 .balancerSection h5 {
   font-family: "Gilroy-Medium";
   font-size: 16px;
-  line-height: 20px;
   text-align: center;
   letter-spacing: 0.2px;
 
@@ -478,7 +453,6 @@
 .balancerText {
   font-family: "Gilroy-Medium";
   font-size: 20px;
-  line-height: 23px;
   text-align: center;
   letter-spacing: 0.2px;
 
@@ -496,7 +470,6 @@
 .feature {
   font-family: "Gilroy-Medium";
   font-size: 20px;
-  line-height: 23px;
   text-align: center;
   letter-spacing: 0.2px;
   color: #000000;
@@ -549,7 +522,6 @@
   font-style: normal;
   font-weight: 600;
   font-size: 60px;
-  line-height: 74px;
   text-align: center;
   color: #000000;
   margin-bottom: 25px;
@@ -558,7 +530,6 @@
 .communitySection p {
   font-family: "Gilroy-Medium";
   font-size: 20px;
-  line-height: 32px;
   text-align: center;
   color: #000000;
   margin-bottom: 25px;
@@ -578,7 +549,6 @@
   font-family: "Inter";
   font-weight: 600;
   font-size: 18px;
-  line-height: 22px;
   letter-spacing: 0.005em;
   gap: 10px;
 }
@@ -603,7 +573,6 @@
   font-family: "Inter";
   font-weight: 400;
   font-size: 18px;
-  line-height: 22px;
   color: #000000;
 }
 
@@ -625,18 +594,15 @@
 @media (max-width: 1200px) {
   .coverContainer h1 {
     font-size: 70px;
-    line-height: 90px;
   }
 
   .coverContainer h5 {
     font-size: 22px;
-    line-height: 25px;
     margin-top: 25px;
   }
 
   .launchBtn {
     font-size: 18px;
-    line-height: 20px;
     padding: 20px 100px;
     margin-top: 50px;
   }
@@ -661,13 +627,11 @@
 
   .how h5 {
     font-size: 22px;
-    line-height: 25px;
     margin-bottom: 20px;
   }
 
   .how p {
     font-size: 40px;
-    line-height: 45px;
   }
 
   .info {
@@ -854,8 +818,11 @@
   .tradersSection,
   .technologySection,
   .blogSection,
-  .tweetSection {
-    padding: 80px;
+  .tweetSection,
+  .balancerSection,
+  .communitySection {
+    padding-left: 80px;
+    padding-right: 80px;
   }
 
   .info {
@@ -873,16 +840,94 @@
   .blogSection h1,
   .tweetSection h1,
   .communitySection h1 {
-    font-size: 50px;
-    width: 90%;
+    font-size: 45px;
+    width: 100%;
+  }
+
+  .cards {
+    margin-top: 50px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .cardTopic {
+    font-size: 20px;
+  }
+
+  .cardDetail {
+    margin-bottom: 10px;
   }
 
   .learnMore {
-    font-size: 20px;
+    font-size: 18px;
   }
 
   .topSec h5 {
     font-size: 20px;
+  }
+
+  .paraOne,
+  .paraTwo {
+    font-size: 16px;
+  }
+  .paraTwo {
+    margin-top: 10px;
+  }
+
+  .topSec h5 {
+    font-size: 17px;
+  }
+
+  .blogContents {
+    gap: 10px;
+  }
+
+  .balancerSection h5 {
+    font-size: 15px;
+  }
+
+  .balancerText {
+    font-size: 18px;
+    margin-top: 20px;
+  }
+
+  .featureP,
+  .feature {
+    font-size: 16px;
+    white-space: nowrap;
+  }
+
+  .tweets {
+    flex-direction: column;
+  }
+
+  .tweetCards {
+    gap: 15px;
+  }
+
+  .tweetCards img {
+    height: auto;
+  }
+  .communitySection p {
+    font-size: 18px;
+    width: 100%;
+  }
+
+  .footerSection {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+  .rightSec {
+    gap: 10px;
+  }
+
+  .leftSec p,
+  .rightSec p {
+    font-size: 16px;
+  }
+
+  .socialMedia {
+    gap: 20px;
   }
 }
 
@@ -894,5 +939,226 @@
   .community {
     border-radius: 60px;
     padding: 15px 30px;
+  }
+
+  .coverContainer h1 {
+    font-size: 42px;
+  }
+
+  .coverContainer h5 {
+    font-size: 17px;
+    font-weight: 600;
+  }
+
+  .launchBtn {
+    padding: 15px 80px;
+    font-size: 16px;
+  }
+
+  .videoSection {
+    padding: 70px 60px 100px;
+  }
+
+  .thesisSection,
+  .tradersSection,
+  .technologySection,
+  .blogSection,
+  .tweetSection,
+  .balancerSection,
+  .communitySection {
+    padding-left: 70px;
+    padding-right: 70px;
+  }
+
+  .blogContents {
+    flex-direction: column;
+  }
+
+  .balancerFeatures {
+    flex-direction: column;
+    gap: 15px;
+  }
+  .feature::after {
+    content: "";
+  }
+}
+
+@media (max-width: 640px) {
+  .navContainer {
+    padding: 20px;
+  }
+
+  .longSwap {
+    font-weight: 600;
+    font-size: 22px;
+  }
+  .logoAndImage {
+    column-gap: 10px;
+  }
+  .logo {
+    height: 45px;
+    width: 45px;
+  }
+  .docAndCommunity {
+    column-gap: 18px;
+  }
+
+  .community {
+    font-size: 16px;
+    padding: 12px 25px;
+  }
+}
+
+@media (max-width: 520px) {
+  .navContainer {
+    padding: 10px;
+  }
+
+  .longSwap {
+    font-weight: 600;
+    font-size: 20px;
+  }
+  .logoAndImage {
+    column-gap: 10px;
+  }
+  .logo {
+    height: 35px;
+    width: 35px;
+  }
+
+  .docAndCommunity {
+    column-gap: 10px;
+  }
+  .docs {
+    font-weight: 500;
+    font-size: 16px;
+  }
+  .community {
+    font-size: 16px;
+    padding: 10px 20px;
+  }
+
+  .coverContainer h1 {
+    font-size: 26px;
+    width: 85%;
+  }
+
+  .coverContainer h5 {
+    font-size: 17px;
+    margin-top: 20px;
+    width: 85%;
+  }
+
+  .launchBtn {
+    font-size: 17px;
+    padding: 15px 70px;
+    margin-top: 70px;
+  }
+
+  .videoSection {
+    padding: 50px 30px;
+  }
+
+  .videoImage,
+  .backDrop {
+    height: 250px;
+  }
+
+  .play {
+    height: 50px;
+    width: 50px;
+  }
+
+  .how h5 {
+    font-size: 20px;
+  }
+
+  .how p {
+    font-size: 28px;
+  }
+
+  .thesisSection,
+  .tradersSection,
+  .technologySection,
+  .blogSection,
+  .tweetSection,
+  .balancerSection,
+  .communitySection {
+    padding: 50px 30px;
+  }
+
+  .thesisSection h5,
+  .tradersSection h5 {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+
+  .info {
+    font-size: 26px;
+    font-weight: 500;
+  }
+
+  .tradersSection h1,
+  .technologySection h1,
+  .blogSection h1,
+  .tweetSection h1,
+  .communitySection h1 {
+    font-size: 35px;
+  }
+
+  .tradersSection h1::after,
+  .technologySection h1::after,
+  .blogSection h1::after,
+  .tweetSection h1::after,
+  .communitySection h1::after {
+    margin: 30px 0;
+    width: 150px;
+  }
+
+  .muiArrow {
+    font-size: 24px;
+  }
+
+  .timeInfo,
+  .paraOne,
+  .paraTwo {
+    font-size: 17px;
+  }
+
+  .cards {
+    margin-top: 30px;
+  }
+
+  .cube {
+    right: 30px;
+  }
+
+  .techImages {
+    margin-top: 40px;
+  }
+
+  .topSec h5 {
+    font-size: 15px;
+  }
+
+  .communitySection p {
+    font-size: 16px;
+  }
+
+  .communitySection button {
+    padding: 12px 70px;
+    font-size: 16px;
+    gap: 10px;
+  }
+
+  .footerSection {
+    flex-direction: column;
+    gap: 10px;
+    padding: 30px;
+  }
+
+  .leftSec p,
+  .rightSec p {
+    font-size: 15px;
   }
 }

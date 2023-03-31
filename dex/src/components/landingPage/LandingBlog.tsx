@@ -8,7 +8,8 @@ const LandingBlog = () => {
       <div className={styles.topSec}>
         <h5>Check out our latest alpha</h5>
         <h5>
-          Read more on our blog <ArrowForwardIcon fontSize="large" />
+          Read more on our blog{" "}
+          <ArrowForwardIcon fontSize="large" className={styles.muiArrow} />
         </h5>
       </div>
       <h1>Blog</h1>
