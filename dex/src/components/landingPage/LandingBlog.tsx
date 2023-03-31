@@ -7,7 +7,7 @@ const LandingBlog = () => {
     <div className={styles.blogSection}>
       <div className={styles.topSec}>
         <h5>Check out our latest alpha</h5>
-        <h5>
+        <h5 className={styles.readMore}>
           Read more on our blog{" "}
           <ArrowForwardIcon fontSize="large" className={styles.muiArrow} />
         </h5>

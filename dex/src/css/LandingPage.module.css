@@ -286,6 +286,7 @@
   color: #000000;
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .technologySection {
@@ -358,6 +359,10 @@
 .topSec {
   display: flex;
   justify-content: space-between;
+}
+
+.topSec .readMore {
+  cursor: pointer;
 }
 
 .topSec h5 {

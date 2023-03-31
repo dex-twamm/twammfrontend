@@ -8,7 +8,7 @@ const LandingTweet = () => {
     <div className={styles.tweetSection}>
       <div className={styles.topSec}>
         <h5>Check out our latest alpha</h5>
-        <h5>
+        <h5 className={styles.readMore}>
           Read more on our Tweet{" "}
           <ArrowForwardIcon fontSize="large" className={styles.muiArrow} />
         </h5>
