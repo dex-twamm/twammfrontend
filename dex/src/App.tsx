@@ -249,7 +249,7 @@ function App() {
           <Route path="/liquidity" element={<LiquidityPage />} />
         </Routes>
         {location.pathname !== "/contact" &&
-        location.pathname !== "/landing" ? (
+        location.pathname !== "/landing-page" ? (
           <div className="supportIcon">
             <ChatBubbleOutlineTwoToneIcon
               sx={{ fontSize: 19, color: "white" }}
