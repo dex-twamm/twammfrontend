@@ -240,9 +240,9 @@ function App() {
   return (
     <>
       <div className="main">
-        {location.pathname !== "/landing" && <Navbar />}
+        {location.pathname !== "/landing-page" && <Navbar />}
         <Routes>
-          <Route path="/landing" element={<LandingPage />} />
+          <Route path="/landing-page" element={<LandingPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/shortswap" element={<ShortSwap />} />
           <Route path="/" element={<LongSwapPage />} />
