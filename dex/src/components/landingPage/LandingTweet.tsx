@@ -14,7 +14,7 @@ const LandingTweet = () => {
       </div>
       <h1>Tweet</h1>
       <div className={styles.tweets}>
-        <img src={tweetCard} alt="img" />
+        <img src={tweetCard} alt="tweetImage" />
         <div className={styles.tweetCards}>
           <img src={tweetCardOne} alt="img" />
           <img src={tweetCardOne} alt="img" />
