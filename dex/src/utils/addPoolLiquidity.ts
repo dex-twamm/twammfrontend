@@ -18,8 +18,8 @@ export const addPoolLiquidity = async (
   console.log(
     poolId,
     tokenIn,
-    tokenOneAmountWei,
-    tokenTwoAmountWei,
+    tokenOneAmountWei.toString(),
+    tokenTwoAmountWei.toString(),
     walletAddress,
     web3provider,
     currentNetwork

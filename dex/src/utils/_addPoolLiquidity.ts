@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { ethers, BigNumber } from "ethers";
 import { Dispatch, SetStateAction } from "react";
 import { POPUP_MESSAGE } from "../constants";
 import { SelectedNetworkType } from "../providers/context/NetworkProvider";
@@ -57,12 +57,14 @@ export const _addPoolLiquidity = async (
       })
       .catch((err) => {
         console.error(err);
+        setShowPreviewModal(false);
         setMessage(POPUP_MESSAGE.addLiquidityFailed);
       })
       .finally(() => setLoading(false));
   } catch (err) {
     console.error(err);
     setLoading(false);
+    setShowPreviewModal(false);
     setError(POPUP_MESSAGE.transactionCancelled);
   }
 };
