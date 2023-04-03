@@ -26,7 +26,7 @@ export const addPoolLiquidity = async (
   );
   const encodedRequest = defaultAbiCoder.encode(
     ["uint256", "uint256[]", "uint256"],
-    [2, [tokenOneAmountWei, tokenTwoAmountWei], 0]
+    [1, [tokenOneAmountWei, tokenTwoAmountWei], 0]
   );
 
   const vaultContract = new Contract(
