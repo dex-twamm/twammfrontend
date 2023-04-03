@@ -100,7 +100,8 @@ const PopupModal: React.FC = () => {
                 message === POPUP_MESSAGE.ltoWithdrawFailed ||
                 message === POPUP_MESSAGE.ltoPlaceFailed ||
                 message === POPUP_MESSAGE.addLiquidityFailed ||
-                message === POPUP_MESSAGE.ltoWithdrawFailed
+                message === POPUP_MESSAGE.ltoWithdrawFailed ||
+                message === POPUP_MESSAGE.withdrawLiquidityFailed
                   ? "error"
                   : "success"
               }

@@ -127,6 +127,10 @@
   flex-direction: column;
 }
 
+.amt span {
+  text-align: right;
+}
+
 .amt p {
   font-weight: 600;
   font-size: 18px;
@@ -267,6 +271,8 @@
   color: blueviolet;
   font-weight: 800;
   font-size: 13px;
+  margin-left: 3px;
+  cursor: pointer;
 }
 
 .optimize {

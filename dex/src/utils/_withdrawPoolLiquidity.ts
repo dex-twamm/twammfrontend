@@ -41,13 +41,15 @@ export const _withdrawPoolLiquidity = async (
         });
       })
       .catch((err) => {
+        setShowPreviewModal(false);
         console.error(err);
-        setMessage(POPUP_MESSAGE.addLiquidityFailed);
+        setMessage(POPUP_MESSAGE.withdrawLiquidityFailed);
       })
       .finally(() => setLoading(false));
   } catch (err) {
     console.error(err);
     setLoading(false);
     setError(POPUP_MESSAGE.transactionCancelled);
+    setShowPreviewModal(false);
   }
 };

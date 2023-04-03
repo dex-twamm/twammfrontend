@@ -9,23 +9,32 @@ import { useShortSwapContext } from "../../providers/context/ShortSwapProvider";
 import { useLongSwapContext } from "../../providers/context/LongSwapProvider";
 import { SelectedNetworkType } from "../../providers/context/NetworkProvider";
 import { Dispatch, SetStateAction } from "react";
+import { TokenType } from "../../utils/pool";
+import { getPoolTokens } from "../../utils/poolUtils";
 
 interface PropTypes {
   showPreviewModal: boolean;
   setShowPreviewModal: Dispatch<SetStateAction<boolean>>;
   bptAmountIn: number;
   currentNetwork: SelectedNetworkType;
+  tokens: TokenType;
+  selectValue: number;
+  inputValue: number;
 }
 const WithdrawLiquidityPreview = ({
   showPreviewModal,
   setShowPreviewModal,
   bptAmountIn,
   currentNetwork,
+  tokens,
+  selectValue,
+  inputValue,
 }: PropTypes) => {
   const { web3provider, account, setTransactionHash, setLoading, setError } =
     useShortSwapContext();
 
   const { setMessage } = useLongSwapContext();
+  const poolTokens = getPoolTokens(currentNetwork);
 
   const handleClose = () => {
     setShowPreviewModal(false);
@@ -61,18 +70,41 @@ const WithdrawLiquidityPreview = ({
       >
         <Box className={styles.boxStyle}>
           <p className={styles.modalTitle}>Withdraw Liquidity Preview</p>
-          <div className={styles.tokenAndLogo}>
-            <p className={styles.amount}>0.001 WETH</p>
-            <div className={styles.logo}>
-              <img src={wethLogo} alt="logo" width="30px" height="30px" />
+          {selectValue !== 1 ? (
+            <div className={styles.tokenAndLogo}>
+              <p className={styles.amount}>
+                {inputValue} {tokens?.symbol}
+              </p>
+              <div className={styles.logo}>
+                <img src={tokens.logo} alt="logo" width="30px" height="30px" />
+              </div>
             </div>
-          </div>
-          <div className={styles.tokenAndLogo}>
-            <p className={styles.amount}>0.001 USDC</p>
-            <div className={styles.logo}>
-              <img src={usdLogo} alt="logo" width="30px" height="30px" />
-            </div>
-          </div>
+          ) : (
+            <>
+              <div className={styles.tokenAndLogo}>
+                <p className={styles.amount}>0.001 {poolTokens[0].symbol}</p>
+                <div className={styles.logo}>
+                  <img
+                    src={poolTokens[0].logo}
+                    alt="logo"
+                    width="30px"
+                    height="30px"
+                  />
+                </div>
+              </div>
+              <div className={styles.tokenAndLogo}>
+                <p className={styles.amount}>0.001 {poolTokens[1].symbol}</p>
+                <div className={styles.logo}>
+                  <img
+                    src={poolTokens[1].logo}
+                    alt="logo"
+                    width="30px"
+                    height="30px"
+                  />
+                </div>
+              </div>
+            </>
+          )}
           <div className={styles.summary}>
             <p className={styles.title}>Summary</p>
             <div className={styles.content}>

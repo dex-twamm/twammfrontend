@@ -76,8 +76,9 @@ const WithdrawLiquidity = () => {
     };
   }, [poolIdNumber, selectedNetwork]);
 
-  const tokenA = getPoolTokens(currentNetwork)?.[0];
-  const tokenB = getPoolTokens(currentNetwork)?.[1];
+  const tokens = getPoolTokens(currentNetwork);
+  const tokenA = tokens?.[0];
+  const tokenB = tokens?.[1];
   const selectedTokenPair = [tokenA, tokenB];
 
   const handlePreviewClick = () => {
@@ -155,9 +156,7 @@ const WithdrawLiquidity = () => {
       setTokenOutFromBptIn(result["amountsOut"]);
       setSingleTokenMaxLoading(false);
     };
-    if (selectValue === 2 || selectValue === 3) {
-      withdrawLiquidityCallStatic();
-    }
+    withdrawLiquidityCallStatic();
   }, [selectValue]);
 
   return (
@@ -229,7 +228,11 @@ const WithdrawLiquidity = () => {
                         <p>{el?.symbol} 50%</p>
                       </div>
                       <div className={wStyles.amt}>
-                        <p>0.05</p>
+                        <p>
+                          {idx === 1
+                            ? bigToStr(tokenOutFromBptIn[0], tokenA.decimals)
+                            : bigToStr(tokenOutFromBptIn[1], tokenB.decimals)}
+                        </p>
                         <span>$0.00</span>
                       </div>
                     </div>
@@ -277,6 +280,7 @@ const WithdrawLiquidity = () => {
                       className={iStyles.textField}
                       type="number"
                       placeholder="0.0"
+                      value={inputValue ?? ""}
                       onChange={(e) =>
                         setInputValue(parseFloat(e.target.value))
                       }
@@ -295,6 +299,20 @@ const WithdrawLiquidity = () => {
                       bigToStr(tokenOutFromBptIn[1], tokenA.decimals)
                     ) : (
                       0
+                    )}{" "}
+                    {!singleTokenMaxLoading && (
+                      <span
+                        className={wStyles.maxInput}
+                        onClick={() => {
+                          setInputValue(
+                            selectValue === 2
+                              ? +bigToStr(tokenOutFromBptIn[0], tokenA.decimals)
+                              : +bigToStr(tokenOutFromBptIn[1], tokenA.decimals)
+                          );
+                        }}
+                      >
+                        Max
+                      </span>
                     )}
                   </p>
                   {balancerErrors?.balError && (
@@ -347,6 +365,9 @@ const WithdrawLiquidity = () => {
             setShowPreviewModal={setShowPreviewModal}
             bptAmountIn={bptAmount}
             currentNetwork={currentNetwork}
+            tokens={selectValue === 2 ? tokenA : tokenB}
+            selectValue={selectValue}
+            inputValue={inputValue}
           />
         </div>
         <PopupModal />
