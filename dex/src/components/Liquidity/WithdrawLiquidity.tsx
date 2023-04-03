@@ -1,6 +1,7 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Box, Slider, Tooltip } from "@mui/material";
+import { Box, Slider, Tooltip, Skeleton } from "@mui/material";
+
 import iStyles from "../../css/Input.module.css";
 
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -20,11 +21,12 @@ import { TokenType } from "../../utils/pool";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { getPoolId, getPoolTokens } from "../../utils/poolUtils";
 import WithdrawLiquiditySelect from "./WithdrawLiquiditySelect";
-import { validateSymbolKeyPressInInput } from "../../utils";
+import { bigToStr, validateSymbolKeyPressInInput } from "../../utils";
 import { useLongSwapContext } from "../../providers/context/LongSwapProvider";
 import { spotPrice } from "../../utils/getSpotPrice";
 import CircularProgress from "@mui/material/CircularProgress";
 import { withdrawPoolLiquidity } from "../../utils/withdrawPoolLiquidity";
+import { BigNumber } from "ethers";
 
 const WithdrawLiquidity = () => {
   const {
@@ -57,6 +59,11 @@ const WithdrawLiquidity = () => {
   const [sliderValue, setSliderValue] = useState(100);
   const [hasBalancerOrTransactionError, setHasBalancerOrTransactionError] =
     useState(true);
+  const [singleTokenMaxLoading, setSingleTokenMaxLoading] = useState(false);
+  const [tokenOutFromBptIn, setTokenOutFromBptIn] = useState([
+    BigNumber.from(0),
+    BigNumber.from(0),
+  ]);
   const idString = searchParams.get("id");
 
   if (!idString) throw new Error("Error! Could not get id from url");
@@ -132,7 +139,9 @@ const WithdrawLiquidity = () => {
 
   useEffect(() => {
     const withdrawLiquidityCallStatic = async () => {
+      setSingleTokenMaxLoading(true);
       const poolId = getPoolId(currentNetwork);
+
       const result = await withdrawPoolLiquidity(
         poolId,
         [tokenA?.address, tokenB?.address],
@@ -142,10 +151,9 @@ const WithdrawLiquidity = () => {
         currentNetwork,
         true
       );
-      console.log("Result", result);
-      console.log("amountsOut0 ->", result["amountsOut"][0]?.toString());
-      console.log("amountsOut1 ->", result["amountsOut"][1]?.toString());
-      console.log("BPT from callStatic result", result.bptIn.toString());
+
+      setTokenOutFromBptIn(result["amountsOut"]);
+      setSingleTokenMaxLoading(false);
     };
     if (selectValue === 2 || selectValue === 3) {
       withdrawLiquidityCallStatic();
@@ -277,7 +285,18 @@ const WithdrawLiquidity = () => {
                       style={{ textAlign: "right" }}
                     />
                   </div>
-                  <p className={wStyles.singleText}>Single token max: 0</p>
+                  <p className={wStyles.singleText}>
+                    Single token max:{" "}
+                    {singleTokenMaxLoading ? (
+                      <Skeleton width={"70px"} />
+                    ) : selectValue === 2 ? (
+                      bigToStr(tokenOutFromBptIn[0], tokenA.decimals)
+                    ) : selectValue === 3 ? (
+                      bigToStr(tokenOutFromBptIn[1], tokenA.decimals)
+                    ) : (
+                      0
+                    )}
+                  </p>
                   {balancerErrors?.balError && (
                     <span className={wStyles.errorText}>
                       {balancerErrors?.balError}

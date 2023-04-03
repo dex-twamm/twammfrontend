@@ -1,4 +1,4 @@
-import { Contract } from "ethers";
+import { Contract, BigNumber } from "ethers";
 import { defaultAbiCoder } from "ethers/lib/utils";
 import { VAULT_CONTRACT_ABI } from "../constants";
 import { SelectedNetworkType } from "../providers/context/NetworkProvider";
@@ -15,10 +15,9 @@ export const withdrawPoolLiquidity = async (
   currentNetwork: SelectedNetworkType,
   isCallStatic?: boolean
 ) => {
-  console.log("bptAmountIn", bptAmountIn, tokenIn);
   const encodedRequest = defaultAbiCoder.encode(
     ["uint256", "uint256"],
-    [1, bptAmountIn]
+    [1, BigNumber.from(bptAmountIn.toString())]
   );
 
   const balancerHelperContract = getBalancerHelperContract(
