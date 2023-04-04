@@ -27,6 +27,8 @@ import { spotPrice } from "../../utils/getSpotPrice";
 import CircularProgress from "@mui/material/CircularProgress";
 import { withdrawPoolLiquidity } from "../../utils/withdrawPoolLiquidity";
 import { BigNumber } from "ethers";
+import { getPoolTokenBalances } from "../../utils/getTokensBalance";
+import { priceImpact } from "../../utils/balancerMath";
 
 const WithdrawLiquidity = () => {
   const {
@@ -65,6 +67,10 @@ const WithdrawLiquidity = () => {
     BigNumber.from(0),
     BigNumber.from(0),
   ]);
+  const [tokenBalances, setTokenBalances] =
+    useState<{ [key: string]: number }[]>();
+  const [priceImpactValue, setPriceImpactValue] = useState(0);
+
   const idString = searchParams.get("id");
 
   if (!idString) throw new Error("Error! Could not get id from url");
@@ -161,8 +167,34 @@ const WithdrawLiquidity = () => {
     withdrawLiquidityCallStatic();
   }, [selectValue]);
 
-  console.log("loading", loading);
+  useEffect(() => {
+    const getTokensBalances = async () => {
+      const tokenBalances = await getPoolTokenBalances(
+        web3provider?.getSigner(),
+        getPoolTokens(currentNetwork),
+        currentNetwork
+      );
+      setTokenBalances(tokenBalances);
+    };
+    getTokensBalances();
+  }, [account, currentNetwork, web3provider]);
 
+  useEffect(() => {
+    const inputAmounts = [
+      parseFloat(tokenOutFromBptIn[0].toString()),
+      parseFloat(tokenOutFromBptIn[1].toString()),
+    ];
+    if (tokenBalances) {
+      const currentBalances = [
+        Object.values(tokenBalances[0])[0],
+        Object.values(tokenBalances[1])[0],
+      ];
+      const impactValue = priceImpact(inputAmounts, currentBalances);
+      setPriceImpactValue(parseFloat(impactValue.toFixed(3)));
+    }
+  }, [tokenBalances, tokenOutFromBptIn]);
+
+  console.log("priceImpactValue", priceImpactValue);
   return (
     <>
       <div className={styles.container}>
@@ -248,7 +280,7 @@ const WithdrawLiquidity = () => {
                   </div>
                   <div className={wStyles.number}>
                     <p>
-                      0.00%
+                      {priceImpactValue}%
                       <Tooltip
                         arrow
                         placement="top"
@@ -374,6 +406,7 @@ const WithdrawLiquidity = () => {
             tokens={selectValue === 2 ? tokenA : tokenB}
             selectValue={selectValue}
             inputValue={inputValue}
+            priceImpactValue={priceImpactValue}
           />
         </div>
         <PopupModal />

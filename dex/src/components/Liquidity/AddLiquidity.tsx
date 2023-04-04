@@ -249,8 +249,6 @@ const AddLiquidity = () => {
     setTokenAInputAmount(0);
   };
 
-  console.log("loading", loading);
-
   return (
     <>
       <div className={styles.container}>

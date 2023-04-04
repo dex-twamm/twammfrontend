@@ -19,6 +19,7 @@ interface PropTypes {
   tokens: TokenType;
   selectValue: number;
   inputValue: number;
+  priceImpactValue: number;
 }
 const WithdrawLiquidityPreview = ({
   showPreviewModal,
@@ -28,6 +29,7 @@ const WithdrawLiquidityPreview = ({
   tokens,
   selectValue,
   inputValue,
+  priceImpactValue,
 }: PropTypes) => {
   const { web3provider, account, setTransactionHash, setLoading, setError } =
     useShortSwapContext();
@@ -142,7 +144,7 @@ const WithdrawLiquidityPreview = ({
               <div className={styles.item}>
                 <p className={styles.total}>Price impact</p>
                 <p className={styles.data}>
-                  0.04%{"  "}
+                  {priceImpactValue}%{"  "}
                   <span>
                     <Tooltip
                       arrow
