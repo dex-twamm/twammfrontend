@@ -3,12 +3,13 @@ import { POPUP_MESSAGE } from "../constants";
 import { SelectedNetworkType } from "../providers/context/NetworkProvider";
 import { getPoolId, getPoolTokenAddresses } from "./poolUtils";
 import { withdrawPoolLiquidity } from "./withdrawPoolLiquidity";
+import { BigNumber } from "ethers";
 
 export const _withdrawPoolLiquidity = async (
   walletAddress: string,
   web3provider: any,
   currentNetwork: SelectedNetworkType,
-  bptAmountIn: number,
+  bptAmountIn: BigNumber,
   setTransactionHash: Dispatch<SetStateAction<string>>,
   setMessage: Dispatch<SetStateAction<string>>,
   setLoading: Dispatch<SetStateAction<boolean>>,
@@ -18,6 +19,8 @@ export const _withdrawPoolLiquidity = async (
   try {
     const poolId = getPoolId(currentNetwork);
     const tokenIn = getPoolTokenAddresses(currentNetwork);
+
+    setLoading(true);
 
     await withdrawPoolLiquidity(
       poolId,
@@ -38,14 +41,14 @@ export const _withdrawPoolLiquidity = async (
           if (response.status === 1) {
             setMessage(POPUP_MESSAGE.liquidityWithdrawn);
           } else setMessage(POPUP_MESSAGE.withdrawLiquidityFailed);
+          setLoading(false);
         });
       })
       .catch((err) => {
         setShowPreviewModal(false);
         console.error(err);
         setMessage(POPUP_MESSAGE.withdrawLiquidityFailed);
-      })
-      .finally(() => setLoading(false));
+      });
   } catch (err) {
     console.error(err);
     setLoading(false);

@@ -9,15 +9,17 @@ import { getVaultContractAddress } from "./networkUtils";
 export const withdrawPoolLiquidity = async (
   poolId: string,
   tokenIn: string[],
-  bptAmountIn: number,
+  bptAmountIn: BigNumber,
   walletAddress: string,
   web3provider: any,
   currentNetwork: SelectedNetworkType,
   isCallStatic?: boolean
 ) => {
+  console.log("Withdraw value->", bptAmountIn.toString());
+
   const encodedRequest = defaultAbiCoder.encode(
     ["uint256", "uint256"],
-    [1, BigNumber.from(bptAmountIn.toString())]
+    [1, bptAmountIn]
   );
 
   const balancerHelperContract = getBalancerHelperContract(

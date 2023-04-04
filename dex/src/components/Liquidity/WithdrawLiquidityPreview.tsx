@@ -1,8 +1,6 @@
 import { Modal, Tooltip } from "@mui/material";
 import { Box } from "@mui/system";
 import styles from "../../css/AddLiquidityPreview.module.css";
-import usdLogo from "../../images/usdIcon.png";
-import wethLogo from "../../images/wethIcon.png";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { _withdrawPoolLiquidity } from "../../utils/_withdrawPoolLiquidity";
 import { useShortSwapContext } from "../../providers/context/ShortSwapProvider";
@@ -11,6 +9,7 @@ import { SelectedNetworkType } from "../../providers/context/NetworkProvider";
 import { Dispatch, SetStateAction } from "react";
 import { TokenType } from "../../utils/pool";
 import { getPoolTokens } from "../../utils/poolUtils";
+import { BigNumber, ethers } from "ethers";
 
 interface PropTypes {
   showPreviewModal: boolean;
@@ -40,21 +39,38 @@ const WithdrawLiquidityPreview = ({
     setShowPreviewModal(false);
   };
 
-  console.log("bptAmountIn", bptAmountIn);
-
   const handleRemoveLiquidity = async () => {
     try {
-      await _withdrawPoolLiquidity(
-        account,
-        web3provider,
-        currentNetwork,
-        bptAmountIn,
-        setTransactionHash,
-        setMessage,
-        setLoading,
-        setError,
-        setShowPreviewModal
-      );
+      if (selectValue === 1) {
+        const bptAmountInBig = BigNumber.from(bptAmountIn.toString());
+        await _withdrawPoolLiquidity(
+          account,
+          web3provider,
+          currentNetwork,
+          bptAmountInBig,
+          setTransactionHash,
+          setMessage,
+          setLoading,
+          setError,
+          setShowPreviewModal
+        );
+      } else {
+        const bptAmountInBig = ethers.utils.parseUnits(
+          inputValue.toString(),
+          tokens.decimals
+        );
+        await _withdrawPoolLiquidity(
+          account,
+          web3provider,
+          currentNetwork,
+          bptAmountInBig,
+          setTransactionHash,
+          setMessage,
+          setLoading,
+          setError,
+          setShowPreviewModal
+        );
+      }
     } catch (err) {
       console.log(err);
     }

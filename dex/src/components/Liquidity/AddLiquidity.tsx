@@ -38,6 +38,7 @@ const AddLiquidity = () => {
     web3provider,
     isWalletConnected,
     spotPriceLoading,
+    loading,
     setTransactionHash,
     setAllowTwamErrorMessage,
   } = useShortSwapContext();
@@ -236,7 +237,6 @@ const AddLiquidity = () => {
         Object.values(tokenBalances[1])[0],
       ];
       const impactValue = priceImpact(inputAmounts, currentBalances);
-      console.log(inputAmounts, currentBalances, impactValue);
       setPriceImpactValue(impactValue);
     }
   }, [tokenAInputAmount, tokenBInputAmount, tokenBalances]);
@@ -248,6 +248,8 @@ const AddLiquidity = () => {
     }
     setTokenAInputAmount(0);
   };
+
+  console.log("loading", loading);
 
   return (
     <>
@@ -412,11 +414,10 @@ const AddLiquidity = () => {
                   onClick={handlePreviewClick}
                   disabled={
                     (!tokenAInputAmount && !tokenBInputAmount) ||
+                    loading ||
                     hasBalancerOrTransactionError ||
                     spotPriceLoading ||
                     parseFloat(allowance) < tokenAInputAmount
-                      ? true
-                      : false
                   }
                 >
                   {!tokenAInputAmount && !tokenBInputAmount ? (

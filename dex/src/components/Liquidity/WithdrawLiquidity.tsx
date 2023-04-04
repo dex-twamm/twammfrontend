@@ -36,6 +36,7 @@ const WithdrawLiquidity = () => {
     setSpotPriceLoading,
     spotPriceLoading,
     deadline,
+    loading,
     setSpotPrice,
     setExpectedSwapOut,
   } = useShortSwapContext();
@@ -142,11 +143,12 @@ const WithdrawLiquidity = () => {
     const withdrawLiquidityCallStatic = async () => {
       setSingleTokenMaxLoading(true);
       const poolId = getPoolId(currentNetwork);
+      const bptAmountInBig = BigNumber.from(bptAmount.toString());
 
       const result = await withdrawPoolLiquidity(
         poolId,
         [tokenA?.address, tokenB?.address],
-        bptAmount,
+        bptAmountInBig,
         account,
         web3provider,
         currentNetwork,
@@ -158,6 +160,8 @@ const WithdrawLiquidity = () => {
     };
     withdrawLiquidityCallStatic();
   }, [selectValue]);
+
+  console.log("loading", loading);
 
   return (
     <>
@@ -346,7 +350,9 @@ const WithdrawLiquidity = () => {
                     wStyles.btnBtn
                   )}
                   onClick={handlePreviewClick}
-                  disabled={!inputValue || hasBalancerOrTransactionError}
+                  disabled={
+                    !inputValue || hasBalancerOrTransactionError || loading
+                  }
                 >
                   {!inputValue ? (
                     "Enter an Amount"
