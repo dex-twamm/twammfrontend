@@ -1039,8 +1039,13 @@
     font-size: 16px;
   }
   .community {
-    font-size: 16px;
+    font-size: 0px;
     padding: 10px 20px;
+  }
+
+  .community::after {
+    content: "Join";
+    font-size: 16px;
   }
 
   .coverContainer h1 {
