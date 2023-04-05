@@ -72,6 +72,9 @@ const WithdrawLiquidity = () => {
     BigNumber.from(0),
     BigNumber.from(0),
   ]);
+
+  const [tokenAValueOfBpt, setTokenAValueOfBpt] = useState(0);
+  const [tokenBValueOfBpt, setTokenBValueOfBpt] = useState(0);
   const [dollarValueOfTokenA, setDollarValueOfTokenA] = useState(0);
   const [dollarValueOfTokenB, setDollarValueOfTokenB] = useState(0);
   const [tokenBalances, setTokenBalances] =
@@ -175,6 +178,26 @@ const WithdrawLiquidity = () => {
   }, [selectValue]);
 
   useEffect(() => {
+    if (tokenOutFromBptIn && selectValue === 1) {
+      setTokenAValueOfBpt(
+        (sliderValue / 100) *
+          parseFloat(bigToStr(tokenOutFromBptIn[0], tokenA.decimals))
+      );
+
+      setTokenBValueOfBpt(
+        (sliderValue / 100) *
+          parseFloat(bigToStr(tokenOutFromBptIn[1], tokenB.decimals))
+      );
+    }
+  }, [
+    selectValue,
+    sliderValue,
+    tokenA.decimals,
+    tokenB.decimals,
+    tokenOutFromBptIn,
+  ]);
+
+  useEffect(() => {
     const getTokensBalances = async () => {
       const tokenBalances = await getPoolTokenBalances(
         web3provider?.getSigner(),
@@ -188,8 +211,8 @@ const WithdrawLiquidity = () => {
 
   useEffect(() => {
     const inputAmounts = [
-      parseFloat(tokenOutFromBptIn[0].toString()),
-      parseFloat(tokenOutFromBptIn[1].toString()),
+      (sliderValue / 100) * parseFloat(tokenOutFromBptIn[0].toString()),
+      (sliderValue / 100) * parseFloat(tokenOutFromBptIn[1].toString()),
     ];
     if (tokenBalances) {
       const currentBalances = [
@@ -200,7 +223,7 @@ const WithdrawLiquidity = () => {
       if (impactValue && impactValue < 0.01) setPriceImpactValue(0.01);
       else setPriceImpactValue(impactValue);
     }
-  }, [tokenBalances, tokenOutFromBptIn]);
+  }, [sliderValue, tokenBalances, tokenOutFromBptIn]);
 
   useEffect(() => {
     setInputValue(0);
@@ -211,16 +234,10 @@ const WithdrawLiquidity = () => {
       if (tokenOutFromBptIn) {
         if (selectValue === 1) {
           const tokenAUsdRate = await getTokensUSDValue(tokenA?.id);
-          setDollarValueOfTokenA(
-            tokenAUsdRate *
-              parseFloat(bigToStr(tokenOutFromBptIn[0], tokenA.decimals))
-          );
+          setDollarValueOfTokenA(tokenAUsdRate * tokenAValueOfBpt);
 
           const tokenBUsdRate = await getTokensUSDValue(tokenB?.id);
-          setDollarValueOfTokenB(
-            tokenBUsdRate *
-              parseFloat(bigToStr(tokenOutFromBptIn[1], tokenB.decimals))
-          );
+          setDollarValueOfTokenB(tokenBUsdRate * tokenAValueOfBpt);
         } else {
           if (selectValue === 2) {
             const tokenAUsdRate = await getTokensUSDValue(tokenA?.id);
@@ -233,7 +250,14 @@ const WithdrawLiquidity = () => {
       }
     };
     getTokenDollarValue();
-  }, [tokenA, tokenB, tokenOutFromBptIn, selectValue, inputValue]);
+  }, [
+    tokenA,
+    tokenB,
+    tokenOutFromBptIn,
+    selectValue,
+    inputValue,
+    tokenAValueOfBpt,
+  ]);
 
   return (
     <>
@@ -308,8 +332,8 @@ const WithdrawLiquidity = () => {
                       <div className={wStyles.amt}>
                         <p>
                           {idx === 0
-                            ? bigToStr(tokenOutFromBptIn[0], tokenA.decimals)
-                            : bigToStr(tokenOutFromBptIn[1], tokenB.decimals)}
+                            ? getProperFixedValue(tokenAValueOfBpt)
+                            : getProperFixedValue(tokenBValueOfBpt)}
                         </p>
                         <span>
                           $
