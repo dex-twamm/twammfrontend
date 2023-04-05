@@ -33,6 +33,7 @@ import { withdrawPoolLiquidity } from "../../utils/withdrawPoolLiquidity";
 import { BigNumber } from "ethers";
 import { getPoolTokenBalances } from "../../utils/getTokensBalance";
 import { priceImpact } from "../../utils/balancerMath";
+import { getTokensUSDValue } from "../../utils/getTokensUSDValue";
 
 const WithdrawLiquidity = () => {
   const {
@@ -71,6 +72,8 @@ const WithdrawLiquidity = () => {
     BigNumber.from(0),
     BigNumber.from(0),
   ]);
+  const [dollarValueOfTokenA, setDollarValueOfTokenA] = useState(0);
+  const [dollarValueOfTokenB, setDollarValueOfTokenB] = useState(0);
   const [tokenBalances, setTokenBalances] =
     useState<{ [key: string]: number }[]>();
   const [priceImpactValue, setPriceImpactValue] = useState(0);
@@ -203,6 +206,35 @@ const WithdrawLiquidity = () => {
     setInputValue(0);
   }, [selectValue]);
 
+  useEffect(() => {
+    const getTokenDollarValue = async () => {
+      if (tokenOutFromBptIn) {
+        if (selectValue === 1) {
+          const tokenAUsdRate = await getTokensUSDValue(tokenA?.id);
+          setDollarValueOfTokenA(
+            tokenAUsdRate *
+              parseFloat(bigToStr(tokenOutFromBptIn[0], tokenA.decimals))
+          );
+
+          const tokenBUsdRate = await getTokensUSDValue(tokenB?.id);
+          setDollarValueOfTokenB(
+            tokenBUsdRate *
+              parseFloat(bigToStr(tokenOutFromBptIn[1], tokenB.decimals))
+          );
+        } else {
+          if (selectValue === 2) {
+            const tokenAUsdRate = await getTokensUSDValue(tokenA?.id);
+            setDollarValueOfTokenA(tokenAUsdRate * inputValue);
+          } else if (selectValue === 3) {
+            const tokenBUsdRate = await getTokensUSDValue(tokenB?.id);
+            setDollarValueOfTokenB(tokenBUsdRate * inputValue);
+          }
+        }
+      }
+    };
+    getTokenDollarValue();
+  }, [tokenA, tokenB, tokenOutFromBptIn, selectValue, inputValue]);
+
   return (
     <>
       <div className={styles.container}>
@@ -238,7 +270,9 @@ const WithdrawLiquidity = () => {
                       selectValue={selectValue}
                       setSelectValue={setSelectValue}
                     />
-                    <p className={wStyles.amount}>$0.00</p>
+                    <p className={wStyles.amount}>
+                      ${(dollarValueOfTokenA + dollarValueOfTokenB).toFixed(2)}
+                    </p>
                   </div>
                   <div className={wStyles.sliderPart}>
                     <div className={wStyles.proportional}>
@@ -273,11 +307,16 @@ const WithdrawLiquidity = () => {
                       </div>
                       <div className={wStyles.amt}>
                         <p>
-                          {idx === 1
+                          {idx === 0
                             ? bigToStr(tokenOutFromBptIn[0], tokenA.decimals)
                             : bigToStr(tokenOutFromBptIn[1], tokenB.decimals)}
                         </p>
-                        <span>$0.00</span>
+                        <span>
+                          $
+                          {idx === 0
+                            ? dollarValueOfTokenA.toFixed(2)
+                            : dollarValueOfTokenB.toFixed(2)}
+                        </span>
                       </div>
                     </div>
                   ))}
@@ -421,6 +460,13 @@ const WithdrawLiquidity = () => {
             selectValue={selectValue}
             inputValue={inputValue}
             priceImpactValue={priceImpactValue}
+            dollarValueOfToken={
+              selectValue === 1
+                ? dollarValueOfTokenA + dollarValueOfTokenB
+                : selectValue === 2
+                ? dollarValueOfTokenA
+                : dollarValueOfTokenB
+            }
           />
         </div>
         <PopupModal />

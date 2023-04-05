@@ -15,8 +15,6 @@ export const withdrawPoolLiquidity = async (
   currentNetwork: SelectedNetworkType,
   isCallStatic?: boolean
 ) => {
-  console.log("Withdraw value->", bptAmountIn.toString());
-
   const encodedRequest = defaultAbiCoder.encode(
     ["uint256", "uint256"],
     [1, bptAmountIn]
