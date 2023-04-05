@@ -255,21 +255,21 @@ const AddLiquidity = () => {
         <div className={styles.mainBody}>
           <div className={styles.swap}>
             <div className={styles.swapOptions}>
-              <p className={styles.textLink}>Add Liquidity</p>
-              <div className={styles.poolAndIcon}>
+              <div className={styles.titleAndBack}>
                 <ArrowBackIcon
                   className={wStyles.backIcon}
                   onClick={() => navigate("/liquidity")}
                 />
-                <FontAwesomeIcon
-                  className={styles.settingsIcon}
-                  icon={faGear}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setShowSettings(!showSettings);
-                  }}
-                />
+                <p className={styles.textLink}>Add Liquidity</p>
               </div>
+              <FontAwesomeIcon
+                className={styles.settingsIcon}
+                icon={faGear}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowSettings(!showSettings);
+                }}
+              />
             </div>
             {showSettings && <PopupSettings />}
           </div>
