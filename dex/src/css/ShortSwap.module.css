@@ -119,10 +119,11 @@
   overflow: hidden;
 }
 
-.titleAndBack {
+.titleAndBack,
+.poolAndIcon {
   display: flex;
   align-items: center;
-  column-gap: 10px;
+  column-gap: 12px;
 }
 
 .poolBox {
