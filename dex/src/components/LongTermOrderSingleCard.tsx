@@ -157,7 +157,7 @@ const LongTermOrderSingleCard = ({ orderLog }: PropTypes) => {
     } else {
       if (orderLog.expirationBlock > currentBlock.number) {
         let date = new Date(0);
-        date.setSeconds(newTime); // specify value for SECONDS here
+        date.setSeconds((orderLog.expirationBlock - currentBlock.number) * 12); // specify value for SECONDS here
         const timeString = date.toISOString().substring(11, 16);
         setOrderStatus({
           status: `${ORDER_EXECUTION_TIME_REMAINING}: ${timeString}`,
@@ -174,9 +174,9 @@ const LongTermOrderSingleCard = ({ orderLog }: PropTypes) => {
   }, [orderLog, currentBlock, lastVirtualOrderBlock, newTime]);
 
   useEffect(() => {
-    const timer = setInterval(() => {
+    const timer: ReturnType<typeof setInterval> = setInterval(() => {
       if (newTime && newTime > 0) {
-        setNewTime(newTime - 60);
+        setNewTime((prev) => prev - 60);
       }
     }, 1000 * 60);
     return () => clearInterval(timer);
@@ -371,7 +371,10 @@ const LongTermOrderSingleCard = ({ orderLog }: PropTypes) => {
               <div className={styles.fees}>Initiated On: {orderStartTime}</div>
               {isExecuteTimeCompleted() && (
                 <div className={styles.fees}>
-                  Completed On: {orderCompletionTime}
+                  {orderLog.state === "cancelled"
+                    ? "Cancelled On:"
+                    : "Completed On:"}{" "}
+                  {orderCompletionTime}
                 </div>
               )}
             </div>
