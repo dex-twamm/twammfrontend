@@ -234,17 +234,10 @@ const AddLiquidity = () => {
         Object.values(tokenBalances[1])[0],
       ];
       const impactValue = priceImpact(inputAmounts, currentBalances);
-      setPriceImpactValue(impactValue);
+      if (impactValue && impactValue < 0.01) setPriceImpactValue(0.01);
+      else setPriceImpactValue(impactValue);
     }
   }, [tokenAInputAmount, tokenBInputAmount, tokenBalances]);
-
-  const calculateOptimizedValue = () => {
-    if (tokenBalances) {
-      const tokenBBalance = Object.values(tokenBalances[1])[0];
-      setTokenBInputAmount(parseFloat(tokenBBalance.toString()));
-    }
-    setTokenAInputAmount(0);
-  };
 
   return (
     <>
@@ -345,7 +338,10 @@ const AddLiquidity = () => {
                   </div>
                   <div className={wStyles.value}>
                     <p>
-                      {getProperFixedValue(priceImpactValue)}%
+                      {priceImpactValue === 0.01
+                        ? "<.01"
+                        : getProperFixedValue(priceImpactValue)}
+                      %
                       <Tooltip
                         arrow
                         placement="top"

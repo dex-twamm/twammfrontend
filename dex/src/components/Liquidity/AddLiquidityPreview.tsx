@@ -118,7 +118,10 @@ const AddLiquidityPreview = ({
               <div className={styles.item}>
                 <p className={styles.total}>Price impact</p>
                 <p className={styles.data}>
-                  {getProperFixedValue(priceImpactValue) ?? "0.0"}%{"  "}
+                  {priceImpactValue === 0.01
+                    ? "<.01"
+                    : getProperFixedValue(priceImpactValue)}
+                  %
                   <span>
                     <Tooltip
                       arrow

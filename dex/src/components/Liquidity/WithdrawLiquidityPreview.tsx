@@ -10,6 +10,7 @@ import { Dispatch, SetStateAction } from "react";
 import { TokenType } from "../../utils/pool";
 import { getPoolTokens } from "../../utils/poolUtils";
 import { BigNumber, ethers } from "ethers";
+import { getProperFixedValue } from "../../utils";
 
 interface PropTypes {
   showPreviewModal: boolean;
@@ -144,7 +145,10 @@ const WithdrawLiquidityPreview = ({
               <div className={styles.item}>
                 <p className={styles.total}>Price impact</p>
                 <p className={styles.data}>
-                  {priceImpactValue}%{"  "}
+                  {priceImpactValue === 0.01
+                    ? "<.01"
+                    : getProperFixedValue(priceImpactValue)}
+                  %
                   <span>
                     <Tooltip
                       arrow

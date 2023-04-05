@@ -21,7 +21,11 @@ import { TokenType } from "../../utils/pool";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { getPoolId, getPoolTokens } from "../../utils/poolUtils";
 import WithdrawLiquiditySelect from "./WithdrawLiquiditySelect";
-import { bigToStr, validateSymbolKeyPressInInput } from "../../utils";
+import {
+  bigToStr,
+  getProperFixedValue,
+  validateSymbolKeyPressInInput,
+} from "../../utils";
 import { useLongSwapContext } from "../../providers/context/LongSwapProvider";
 import { spotPrice } from "../../utils/getSpotPrice";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -190,7 +194,8 @@ const WithdrawLiquidity = () => {
         Object.values(tokenBalances[1])[0],
       ];
       const impactValue = priceImpact(inputAmounts, currentBalances);
-      setPriceImpactValue(parseFloat(impactValue.toFixed(3)));
+      if (impactValue && impactValue < 0.01) setPriceImpactValue(0.01);
+      else setPriceImpactValue(impactValue);
     }
   }, [tokenBalances, tokenOutFromBptIn]);
 
@@ -280,7 +285,10 @@ const WithdrawLiquidity = () => {
                   </div>
                   <div className={wStyles.number}>
                     <p>
-                      {priceImpactValue}%
+                      {priceImpactValue === 0.01
+                        ? "<.01"
+                        : getProperFixedValue(priceImpactValue)}
+                      %
                       <Tooltip
                         arrow
                         placement="top"
@@ -364,7 +372,10 @@ const WithdrawLiquidity = () => {
                   </div>
                   <div className={wStyles.number}>
                     <p>
-                      0.00%
+                      {priceImpactValue === 0.01
+                        ? "<.01"
+                        : getProperFixedValue(priceImpactValue)}
+                      %
                       <Tooltip
                         arrow
                         placement="top"
