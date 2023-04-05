@@ -58,10 +58,7 @@ const AddLiquidity = () => {
   const [dollarValueOfInputAmount, setDollarValueOfInputAmount] = useState(0.0);
   const [hasBalancerOrTransactionError, setHasBalancerOrTransactionError] =
     useState(true);
-  const [spanText, setSpanText] = useState({
-    maxText: "Max",
-    optimizeText: "Optimize",
-  });
+  const [maxText, setMaxText] = useState("Max");
   const [priceImpactValue, setPriceImpactValue] = useState(0);
   const [tokenBalances, setTokenBalances] =
     useState<{ [key: string]: number }[]>();
@@ -155,7 +152,7 @@ const AddLiquidity = () => {
   };
 
   useEffect(() => {
-    setSpanText((prev) => ({ ...prev, maxText: "Max" }));
+    setMaxText("Max");
   }, [tokenAInputAmount, tokenBInputAmount]);
 
   useEffect(() => {
@@ -174,7 +171,7 @@ const AddLiquidity = () => {
         setHasProportionalInputB(false);
       }
     }
-  }, [tokenAInputAmount, tokenBInputAmount, spanText]);
+  }, [tokenAInputAmount, tokenBInputAmount, maxText]);
 
   useEffect(() => {
     const getTokensBalances = async () => {
@@ -330,16 +327,15 @@ const AddLiquidity = () => {
                         setTokenBInputAmount(
                           getIndividualTokenBalance(tokenB?.address)
                         );
-                        setSpanText((prev) => ({ ...prev, maxText: "Maxed" }));
+                        setMaxText("Maxed");
                         setHasProportionalInputA(false);
                         setHasProportionalInputB(false);
                       }}
                       style={{
-                        cursor:
-                          spanText?.maxText === "Max" ? "pointer" : "unset",
+                        cursor: maxText === "Max" ? "pointer" : "unset",
                       }}
                     >
-                      {spanText?.maxText}
+                      {maxText}
                     </span>
                   </div>
                 </div>
@@ -358,22 +354,6 @@ const AddLiquidity = () => {
                         <InfoOutlinedIcon fontSize="small" />
                       </Tooltip>
                     </p>
-                    <span
-                      className={wStyles.maxInput}
-                      style={{
-                        cursor:
-                          spanText?.optimizeText === "Optimize"
-                            ? "pointer"
-                            : "unset",
-                      }}
-                      onClick={() => {
-                        setSpanText({ ...spanText, optimizeText: "Optimized" });
-                        if (spanText.optimizeText === "Optimize")
-                          calculateOptimizedValue();
-                      }}
-                    >
-                      {spanText?.optimizeText}
-                    </span>
                   </div>
                 </div>
               </div>
