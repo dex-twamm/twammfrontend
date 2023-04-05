@@ -37,6 +37,7 @@ const useLongSwapState = () => {
     decimals: 0,
     address: "",
     logo: "",
+    id: "",
     balance: 0,
     tokenIsSet: false,
   });
@@ -46,6 +47,7 @@ const useLongSwapState = () => {
     decimals: 0,
     address: "",
     logo: "",
+    id: "",
     balance: 0,
     tokenIsSet: false,
   });

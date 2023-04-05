@@ -10,6 +10,7 @@ export interface TokenType {
   decimals: number;
   address: string;
   logo: string;
+  id: string;
 }
 
 export interface PoolType {
@@ -44,6 +45,7 @@ export const POOLS: PoolsType = {
           decimals: 6,
           address: "0x07865c6E87B9F70255377e024ace6630C1Eaa37F",
           logo: usdLogo,
+          id: "usd-coin",
         },
         {
           symbol: "FAU",
@@ -51,6 +53,7 @@ export const POOLS: PoolsType = {
           decimals: 18,
           address: "0xBA62BCfcAaFc6622853cca2BE6Ac7d845BC0f2Dc",
           logo: faucetLogo,
+          id: "",
         },
       ],
     },
@@ -68,6 +71,7 @@ export const POOLS: PoolsType = {
           decimals: 18,
           address: "0x499d11E0b6eAC7c0593d8Fb292DCBbF815Fb29Ae",
           logo: maticLogo,
+          id: "matic-network",
         },
         {
           symbol: "FAU",
@@ -75,6 +79,7 @@ export const POOLS: PoolsType = {
           decimals: 18,
           address: "0xBA62BCfcAaFc6622853cca2BE6Ac7d845BC0f2Dc",
           logo: faucetLogo,
+          id: "",
         },
       ],
     },
@@ -92,6 +97,7 @@ export const POOLS: PoolsType = {
           decimals: 18,
           address: "0xdFCeA9088c8A88A76FF74892C1457C17dfeef9C1",
           logo: wethLogo,
+          id: "weth",
         },
         {
           symbol: "USDC",
@@ -99,6 +105,7 @@ export const POOLS: PoolsType = {
           decimals: 6,
           address: "0xe0C9275E44Ea80eF17579d33c55136b7DA269aEb",
           logo: usdLogo,
+          id: "usd-coin",
         },
       ],
     },
@@ -118,6 +125,7 @@ export const POOLS: PoolsType = {
           decimals: 6,
           address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
           logo: usdLogo,
+          id: "usd-coin",
         },
         {
           symbol: "WETH",
@@ -125,6 +133,7 @@ export const POOLS: PoolsType = {
           decimals: 18,
           address: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
           logo: wethLogo,
+          id: "weth",
         },
       ],
     },
@@ -142,6 +151,7 @@ export const POOLS: PoolsType = {
           decimals: 8,
           address: "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
           logo: wbtcLogo,
+          id: "wrapped-bitcoin",
         },
         {
           symbol: "USDC",
@@ -149,6 +159,7 @@ export const POOLS: PoolsType = {
           decimals: 6,
           address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
           logo: usdLogo,
+          id: "usd-coin",
         },
       ],
     },

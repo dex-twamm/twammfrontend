@@ -82,6 +82,7 @@ const Swap = (props: PropTypes) => {
         name: "",
         decimals: 0,
         address: "",
+        id: "",
       });
   }, [tokenA, tokenB, setTokenB]);
 

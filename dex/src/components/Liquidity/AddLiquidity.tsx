@@ -128,7 +128,7 @@ const AddLiquidity = () => {
 
   useEffect(() => {
     const getInputAmountValueInDollar = async () => {
-      const id = tokenA?.symbol.toLowerCase();
+      const id = tokenA?.id;
       const tokenData = await axios.get(
         `https://api.coingecko.com/api/v3/coins/${id}`
       );
