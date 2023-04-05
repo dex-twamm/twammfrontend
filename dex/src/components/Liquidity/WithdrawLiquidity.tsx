@@ -199,7 +199,10 @@ const WithdrawLiquidity = () => {
     }
   }, [tokenBalances, tokenOutFromBptIn]);
 
-  console.log("priceImpactValue", priceImpactValue);
+  useEffect(() => {
+    setInputValue(0);
+  }, [selectValue]);
+
   return (
     <>
       <div className={styles.container}>
