@@ -22,17 +22,6 @@ export const withdrawPoolLiquidity = async (
     [1, bptAmountIn]
   );
 
-  const balancerHelperContract = getBalancerHelperContract(
-    currentNetwork,
-    web3provider.getSigner()
-  );
-
-  const vaultContract = new Contract(
-    getVaultContractAddress(currentNetwork),
-    VAULT_CONTRACT_ABI,
-    web3provider.getSigner()
-  );
-
   const exitData = [
     poolId,
     walletAddress,
@@ -48,10 +37,21 @@ export const withdrawPoolLiquidity = async (
   let exitPool;
 
   if (isCallStatic) {
+    const balancerHelperContract = getBalancerHelperContract(
+      currentNetwork,
+      web3provider.getSigner()
+    );
+
     exitPool = await balancerHelperContract.queryExit(...exitData, {
       gasLimit: getGasLimit(balancerHelperContract, exitData, "queryExit"),
     });
   } else {
+    const vaultContract = new Contract(
+      getVaultContractAddress(currentNetwork),
+      VAULT_CONTRACT_ABI,
+      web3provider.getSigner()
+    );
+
     exitPool = await vaultContract.exitPool(...exitData, {
       gasLimit: getGasLimit(vaultContract, exitData, "exitPool"),
     });
