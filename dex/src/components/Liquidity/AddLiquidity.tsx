@@ -30,7 +30,7 @@ import {
   getProportionalAmount,
 } from "../../utils/balancerMath";
 import { getPoolTokens } from "../../utils/poolUtils";
-import { BigNumber } from "ethers";
+import { getTokensUSDValue } from "../../utils/getTokensUSDValue";
 
 const AddLiquidity = () => {
   const {
@@ -128,21 +128,34 @@ const AddLiquidity = () => {
 
   useEffect(() => {
     const getInputAmountValueInDollar = async () => {
-      const id = tokenA?.id;
-      const tokenData = await axios.get(
-        `https://api.coingecko.com/api/v3/coins/${id}`
-      );
-      const currentPricePerToken = parseFloat(
-        tokenData?.data?.market_data?.current_price?.usd
-      );
-
-      setDollarValueOfInputAmount(
-        parseFloat((currentPricePerToken * tokenAInputAmount).toFixed(2))
-      );
+      if (tokenAInputAmount && !tokenBInputAmount) {
+        const tokenAUsdRate = await getTokensUSDValue(tokenA?.id);
+        setDollarValueOfInputAmount(
+          parseFloat((tokenAUsdRate * tokenAInputAmount).toFixed(2))
+        );
+      } else if (tokenBInputAmount && !tokenAInputAmount) {
+        const tokenBUsdRate = await getTokensUSDValue(tokenB?.id);
+        setDollarValueOfInputAmount(
+          parseFloat((tokenBUsdRate * tokenBInputAmount).toFixed(2))
+        );
+      } else if (tokenAInputAmount && tokenBInputAmount) {
+        const tokenAUsdRate = await getTokensUSDValue(tokenA?.id);
+        const tokenBUsdRate = await getTokensUSDValue(tokenB?.id);
+        setDollarValueOfInputAmount(
+          parseFloat(
+            (
+              tokenAUsdRate * tokenAInputAmount +
+              tokenBUsdRate * tokenBInputAmount
+            ).toFixed(2)
+          )
+        );
+      } else {
+        setDollarValueOfInputAmount(0);
+      }
     };
 
     getInputAmountValueInDollar();
-  }, [tokenAInputAmount, tokenA]);
+  }, [tokenA?.id, tokenAInputAmount, tokenB?.id, tokenBInputAmount]);
 
   const getIndividualTokenBalance = (tokenAddress: string) => {
     const token = balanceOfToken?.find(
@@ -307,7 +320,7 @@ const AddLiquidity = () => {
                   </div>
                   <div className={wStyles.value}>
                     <p>
-                      {tokenAInputAmount
+                      {dollarValueOfInputAmount
                         ? `$${dollarValueOfInputAmount}`
                         : `$0.0`}
                     </p>
