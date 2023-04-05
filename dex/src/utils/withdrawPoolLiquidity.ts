@@ -37,7 +37,7 @@ export const withdrawPoolLiquidity = async (
   if (isCallStatic) {
     const balancerHelperContract = getBalancerHelperContract(
       currentNetwork,
-      web3provider.getSigner()
+      web3provider?.getSigner()
     );
 
     exitPool = await balancerHelperContract.queryExit(...exitData, {

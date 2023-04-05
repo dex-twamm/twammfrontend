@@ -18,7 +18,6 @@ import AddLiquidityPreview from "./AddLiquidityPreview";
 import { bigToStr, getProperFixedValue } from "../../utils";
 import classNames from "classnames";
 import PopupModal from "../alerts/PopupModal";
-import axios from "axios";
 import { approveMaxAllowance, getAllowance } from "../../utils/getApproval";
 import { useShortSwapContext } from "../../providers/context/ShortSwapProvider";
 import { useLongSwapContext } from "../../providers/context/LongSwapProvider";
@@ -210,14 +209,6 @@ const AddLiquidity = () => {
         tokenAInputAmount,
         0,
         spotPrice
-      );
-      console.log(
-        "Calculate proportional amount",
-        proportionalValue.toString(),
-        tokenAInputAmount.toString(),
-        spotPrice.toString(),
-        balances[0].toString(),
-        balances[1].toString()
       );
       setTokenBInputAmount(getProperFixedValue(proportionalValue));
     }

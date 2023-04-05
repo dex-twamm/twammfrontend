@@ -147,7 +147,19 @@ const WithdrawLiquidity = () => {
       setSpotPrice(0);
       setBalancerErrors({ balError: undefined });
     };
-  }, [inputValue, tokenA, tokenB, allowance]);
+  }, [
+    inputValue,
+    tokenA,
+    tokenB,
+    allowance,
+    setSpotPriceLoading,
+    web3provider,
+    account,
+    deadline,
+    setSpotPrice,
+    setExpectedSwapOut,
+    currentNetwork,
+  ]);
 
   useEffect(() => {
     balancerErrors?.balError !== undefined
@@ -175,7 +187,15 @@ const WithdrawLiquidity = () => {
       setSingleTokenMaxLoading(false);
     };
     withdrawLiquidityCallStatic();
-  }, [selectValue]);
+  }, [
+    account,
+    bptAmount,
+    currentNetwork,
+    selectValue,
+    tokenA,
+    tokenB,
+    web3provider,
+  ]);
 
   useEffect(() => {
     if (tokenOutFromBptIn && selectValue === 1) {

@@ -104,7 +104,9 @@ function App() {
           .then((res) => {
             setAllowance(bigToStr(res, tokenA.decimals));
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            console.log(err);
+          });
       }
     };
     allowance();

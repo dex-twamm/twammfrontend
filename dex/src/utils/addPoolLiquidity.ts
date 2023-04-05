@@ -15,15 +15,6 @@ export const addPoolLiquidity = async (
   web3provider: any,
   currentNetwork: SelectedNetworkType
 ) => {
-  console.log(
-    poolId,
-    tokenIn,
-    tokenOneAmountWei.toString(),
-    tokenTwoAmountWei.toString(),
-    walletAddress,
-    web3provider,
-    currentNetwork
-  );
   const encodedRequest = defaultAbiCoder.encode(
     ["uint256", "uint256[]", "uint256"],
     [1, [tokenOneAmountWei, tokenTwoAmountWei], 0]
