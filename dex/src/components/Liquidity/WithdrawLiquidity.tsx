@@ -5,7 +5,7 @@ import { Box, Slider, Tooltip, Skeleton } from "@mui/material";
 import iStyles from "../../css/Input.module.css";
 
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useCallback } from "react";
 import styles from "../../css/ShortSwap.module.css";
 import lsStyles from "../../css/LongSwap.module.css";
 import wStyles from "../../css/WithdrawLiquidity.module.css";
@@ -249,21 +249,31 @@ const WithdrawLiquidity = () => {
     setInputValue(0);
   }, [selectValue]);
 
+  const getTokenAUSDValueMemoized = useMemo(async () => {
+    const usdRate = await getTokensUSDValue(tokenA.id);
+    return usdRate;
+  }, [tokenA.id]);
+
+  const getTokenBUSDValueMemoized = useMemo(async () => {
+    const usdRate = await getTokensUSDValue(tokenB.id);
+    return usdRate;
+  }, [tokenB.id]);
+
   useEffect(() => {
     const getTokenDollarValue = async () => {
       if (tokenOutFromBptIn) {
         if (selectValue === 1) {
-          const tokenAUsdRate = await getTokensUSDValue(tokenA?.id);
+          const tokenAUsdRate = await getTokenAUSDValueMemoized;
           setDollarValueOfTokenA(tokenAUsdRate * tokenAValueOfBpt);
 
-          const tokenBUsdRate = await getTokensUSDValue(tokenB?.id);
+          const tokenBUsdRate = await getTokenBUSDValueMemoized;
           setDollarValueOfTokenB(tokenBUsdRate * tokenAValueOfBpt);
         } else {
           if (selectValue === 2) {
-            const tokenAUsdRate = await getTokensUSDValue(tokenA?.id);
+            const tokenAUsdRate = await getTokenAUSDValueMemoized;
             setDollarValueOfTokenA(tokenAUsdRate * inputValue);
           } else if (selectValue === 3) {
-            const tokenBUsdRate = await getTokensUSDValue(tokenB?.id);
+            const tokenBUsdRate = await getTokenBUSDValueMemoized;
             setDollarValueOfTokenB(tokenBUsdRate * inputValue);
           }
         }
@@ -277,6 +287,8 @@ const WithdrawLiquidity = () => {
     selectValue,
     inputValue,
     tokenAValueOfBpt,
+    getTokenAUSDValueMemoized,
+    getTokenBUSDValueMemoized,
   ]);
 
   return (
