@@ -62,7 +62,7 @@ const WithdrawLiquidity = () => {
   const [showSettings, setShowSettings] = useState(false);
 
   const [selectValue, setSelectValue] = useState(1);
-  const [inputValue, setInputValue] = useState<number | undefined>();
+  const [inputValue, setInputValue] = useState(0);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [sliderValue, setSliderValue] = useState(100);
   const [hasBalancerOrTransactionError, setHasBalancerOrTransactionError] =
@@ -106,7 +106,7 @@ const WithdrawLiquidity = () => {
     let interval1: ReturnType<typeof setTimeout>;
     let interval2: ReturnType<typeof setTimeout>;
     // Do not fetch prices if not enough allowance.
-    if (inputValue && parseFloat(allowance) > inputValue) {
+    if (parseFloat(allowance) > inputValue) {
       // Wait for 0.5 second before fetching price.
       interval1 = setTimeout(() => {
         spotPrice(
@@ -246,12 +246,12 @@ const WithdrawLiquidity = () => {
   }, [sliderValue, tokenBalances, tokenOutFromBptIn]);
 
   useEffect(() => {
-    setInputValue(undefined);
+    setInputValue(0);
   }, [selectValue]);
 
   useEffect(() => {
     const getTokenDollarValue = async () => {
-      if (tokenOutFromBptIn && inputValue) {
+      if (tokenOutFromBptIn) {
         if (selectValue === 1) {
           const tokenAUsdRate = await getTokensUSDValue(tokenA?.id);
           setDollarValueOfTokenA(tokenAUsdRate * tokenAValueOfBpt);
