@@ -5,7 +5,7 @@ import { Box, Slider, Tooltip, Skeleton } from "@mui/material";
 import iStyles from "../../css/Input.module.css";
 
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { useMemo, useState, useEffect, useCallback } from "react";
+import { useMemo, useState, useEffect } from "react";
 import styles from "../../css/ShortSwap.module.css";
 import lsStyles from "../../css/LongSwap.module.css";
 import wStyles from "../../css/WithdrawLiquidity.module.css";

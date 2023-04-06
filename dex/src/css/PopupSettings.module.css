@@ -23,9 +23,17 @@
   }
 }
 
-.settingsTitle {
+h4 {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.settingTitles {
   font-size: 14px;
   font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .settings {
@@ -68,6 +76,10 @@
 .slippageTolerance {
   display: flex;
   gap: 8px;
+}
+
+.transactionType .btn {
+  width: fit-content;
 }
 
 .inputContainer {
