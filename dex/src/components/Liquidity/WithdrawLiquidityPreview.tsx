@@ -21,6 +21,7 @@ interface PropTypes {
   selectValue: number;
   inputValue: number;
   priceImpactValue: number;
+  tokenValueOfBpt: number[];
   dollarValueOfToken: number;
 }
 const WithdrawLiquidityPreview = ({
@@ -32,6 +33,7 @@ const WithdrawLiquidityPreview = ({
   selectValue,
   inputValue,
   priceImpactValue,
+  tokenValueOfBpt,
   dollarValueOfToken,
 }: PropTypes) => {
   const { web3provider, account, setTransactionHash, setLoading, setError } =
@@ -103,7 +105,10 @@ const WithdrawLiquidityPreview = ({
           ) : (
             <>
               <div className={styles.tokenAndLogo}>
-                <p className={styles.amount}>0.001 {poolTokens[0].symbol}</p>
+                <p className={styles.amount}>
+                  {getProperFixedValue(tokenValueOfBpt[0])}{" "}
+                  {poolTokens[0].symbol}
+                </p>
                 <div className={styles.logo}>
                   <img
                     src={poolTokens[0].logo}
@@ -114,7 +119,10 @@ const WithdrawLiquidityPreview = ({
                 </div>
               </div>
               <div className={styles.tokenAndLogo}>
-                <p className={styles.amount}>0.001 {poolTokens[1].symbol}</p>
+                <p className={styles.amount}>
+                  {getProperFixedValue(tokenValueOfBpt[1])}{" "}
+                  {poolTokens[1].symbol}
+                </p>
                 <div className={styles.logo}>
                   <img
                     src={poolTokens[1].logo}

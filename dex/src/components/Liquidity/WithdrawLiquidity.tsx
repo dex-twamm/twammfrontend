@@ -516,6 +516,7 @@ const WithdrawLiquidity = () => {
             selectValue={selectValue}
             inputValue={inputValue}
             priceImpactValue={priceImpactValue}
+            tokenValueOfBpt={[tokenAValueOfBpt, tokenBValueOfBpt]}
             dollarValueOfToken={
               selectValue === 1
                 ? dollarValueOfTokenA + dollarValueOfTokenB
