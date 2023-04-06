@@ -46,6 +46,8 @@ const WithdrawLiquidityPreview = ({
     setShowPreviewModal(false);
   };
 
+  console.log("bptAmountIsadasdn", bptAmountIn);
+
   const handleRemoveLiquidity = async () => {
     try {
       if (selectValue === 1) {

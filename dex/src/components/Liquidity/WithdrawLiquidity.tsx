@@ -510,7 +510,7 @@ const WithdrawLiquidity = () => {
           <WithdrawLiquidityPreview
             showPreviewModal={showPreviewModal}
             setShowPreviewModal={setShowPreviewModal}
-            bptAmountIn={bptAmount}
+            bptAmountIn={(sliderValue / 100) * bptAmount}
             currentNetwork={currentNetwork}
             tokens={selectValue === 2 ? tokenA : tokenB}
             selectValue={selectValue}
