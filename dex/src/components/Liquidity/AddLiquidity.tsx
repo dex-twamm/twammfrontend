@@ -21,7 +21,10 @@ import PopupModal from "../alerts/PopupModal";
 import { approveMaxAllowance, getAllowance } from "../../utils/getApproval";
 import { useShortSwapContext } from "../../providers/context/ShortSwapProvider";
 import { useLongSwapContext } from "../../providers/context/LongSwapProvider";
-import { useNetworkContext } from "../../providers/context/NetworkProvider";
+import {
+  SelectedNetworkType,
+  useNetworkContext,
+} from "../../providers/context/NetworkProvider";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   getSpotPrice,
@@ -72,7 +75,7 @@ const AddLiquidity = () => {
 
   const poolIdNumber = parseFloat(idString);
 
-  const currentNetwork = useMemo(() => {
+  const currentNetwork: SelectedNetworkType = useMemo(() => {
     return {
       ...selectedNetwork,
       poolId: poolIdNumber,
