@@ -231,7 +231,15 @@ const AddLiquidity = () => {
   };
 
   useEffect(() => {
-    const inputAmounts = [tokenAInputAmount, tokenBInputAmount];
+    const inputAmounts =
+      !tokenAInputAmount && !tokenBInputAmount
+        ? [0, 0]
+        : tokenAInputAmount && !tokenBInputAmount
+        ? [tokenAInputAmount, 0]
+        : !tokenAInputAmount && tokenBInputAmount
+        ? [0, tokenBInputAmount]
+        : [tokenAInputAmount, tokenBInputAmount];
+
     if (tokenBalances) {
       const currentBalances = [
         Object.values(tokenBalances[0])[0],

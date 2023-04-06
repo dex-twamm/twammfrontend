@@ -4,7 +4,7 @@ import iStyles from "../../css/Input.module.css";
 import { useLongSwapContext } from "../../providers/context/LongSwapProvider";
 import { SelectedNetworkType } from "../../providers/context/NetworkProvider";
 import { useShortSwapContext } from "../../providers/context/ShortSwapProvider";
-import { validateSymbolKeyPressInInput } from "../../utils";
+import { getInputLimit, validateSymbolKeyPressInInput } from "../../utils";
 import { spotPrice } from "../../utils/getSpotPrice";
 import { TokenType } from "../../utils/pool";
 
@@ -61,12 +61,7 @@ const LiquidityInput = ({
   }, [balances, tokenData?.address]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseFloat(e.target.value);
-    if (!isNaN(value)) {
-      setTokenInputAmount(value);
-    } else {
-      setTokenInputAmount(0);
-    }
+    setTokenInputAmount(parseFloat(getInputLimit(e.target.value)));
   };
 
   useEffect(() => {
@@ -137,7 +132,7 @@ const LiquidityInput = ({
           type="number"
           min={0}
           placeholder="0.0"
-          value={input}
+          value={input ?? ""}
           onChange={handleInputChange}
           onKeyDown={(e) => validateSymbolKeyPressInInput(e)}
         />
