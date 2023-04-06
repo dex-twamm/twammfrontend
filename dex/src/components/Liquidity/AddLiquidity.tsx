@@ -2,7 +2,7 @@ import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, CircularProgress, Tooltip } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styles from "../../css/ShortSwap.module.css";
 import lsStyles from "../../css/LongSwap.module.css";
 import wStyles from "../../css/WithdrawLiquidity.module.css";
@@ -125,12 +125,12 @@ const AddLiquidity = () => {
     }
   };
 
-  const getTokenAUSDValueMemoized = useMemo(async () => {
+  const getTokenAUsdValueMemoized = useMemo(async () => {
     const usdRate = await getTokensUSDValue(tokenA.id);
     return usdRate;
   }, [tokenA.id]);
 
-  const getTokenBUSDValueMemoized = useMemo(async () => {
+  const getTokenBUsdValueMemoized = useMemo(async () => {
     const usdRate = await getTokensUSDValue(tokenB.id);
     return usdRate;
   }, [tokenB.id]);
@@ -138,18 +138,18 @@ const AddLiquidity = () => {
   useEffect(() => {
     const getInputAmountValueInDollar = async () => {
       if (tokenAInputAmount && !tokenBInputAmount) {
-        const tokenAUsdRate = await getTokenAUSDValueMemoized;
+        const tokenAUsdRate = await getTokenAUsdValueMemoized;
         setDollarValueOfInputAmount(
           parseFloat((tokenAUsdRate * tokenAInputAmount).toFixed(2))
         );
       } else if (tokenBInputAmount && !tokenAInputAmount) {
-        const tokenBUsdRate = await getTokenBUSDValueMemoized;
+        const tokenBUsdRate = await getTokenBUsdValueMemoized;
         setDollarValueOfInputAmount(
           parseFloat((tokenBUsdRate * tokenBInputAmount).toFixed(2))
         );
       } else if (tokenAInputAmount && tokenBInputAmount) {
-        const tokenAUsdRate = await getTokenAUSDValueMemoized;
-        const tokenBUsdRate = await getTokenBUSDValueMemoized;
+        const tokenAUsdRate = await getTokenAUsdValueMemoized;
+        const tokenBUsdRate = await getTokenBUsdValueMemoized;
         setDollarValueOfInputAmount(
           parseFloat(
             (
@@ -165,8 +165,8 @@ const AddLiquidity = () => {
 
     getInputAmountValueInDollar();
   }, [
-    getTokenAUSDValueMemoized,
-    getTokenBUSDValueMemoized,
+    getTokenAUsdValueMemoized,
+    getTokenBUsdValueMemoized,
     tokenA?.id,
     tokenAInputAmount,
     tokenB?.id,

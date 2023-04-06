@@ -249,12 +249,12 @@ const WithdrawLiquidity = () => {
     setInputValue(0);
   }, [selectValue]);
 
-  const getTokenAUSDValueMemoized = useMemo(async () => {
+  const getTokenAUsdValueMemoized = useMemo(async () => {
     const usdRate = await getTokensUSDValue(tokenA.id);
     return usdRate;
   }, [tokenA.id]);
 
-  const getTokenBUSDValueMemoized = useMemo(async () => {
+  const getTokenBUsdValueMemoized = useMemo(async () => {
     const usdRate = await getTokensUSDValue(tokenB.id);
     return usdRate;
   }, [tokenB.id]);
@@ -263,17 +263,17 @@ const WithdrawLiquidity = () => {
     const getTokenDollarValue = async () => {
       if (tokenOutFromBptIn) {
         if (selectValue === 1) {
-          const tokenAUsdRate = await getTokenAUSDValueMemoized;
+          const tokenAUsdRate = await getTokenAUsdValueMemoized;
           setDollarValueOfTokenA(tokenAUsdRate * tokenAValueOfBpt);
 
-          const tokenBUsdRate = await getTokenBUSDValueMemoized;
+          const tokenBUsdRate = await getTokenBUsdValueMemoized;
           setDollarValueOfTokenB(tokenBUsdRate * tokenAValueOfBpt);
         } else {
           if (selectValue === 2) {
-            const tokenAUsdRate = await getTokenAUSDValueMemoized;
+            const tokenAUsdRate = await getTokenAUsdValueMemoized;
             setDollarValueOfTokenA(tokenAUsdRate * inputValue);
           } else if (selectValue === 3) {
-            const tokenBUsdRate = await getTokenBUSDValueMemoized;
+            const tokenBUsdRate = await getTokenBUsdValueMemoized;
             setDollarValueOfTokenB(tokenBUsdRate * inputValue);
           }
         }
@@ -287,8 +287,8 @@ const WithdrawLiquidity = () => {
     selectValue,
     inputValue,
     tokenAValueOfBpt,
-    getTokenAUSDValueMemoized,
-    getTokenBUSDValueMemoized,
+    getTokenAUsdValueMemoized,
+    getTokenBUsdValueMemoized,
   ]);
 
   return (
