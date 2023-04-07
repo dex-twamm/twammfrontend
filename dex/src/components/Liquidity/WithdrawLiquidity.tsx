@@ -30,7 +30,7 @@ import { useLongSwapContext } from "../../providers/context/LongSwapProvider";
 import { spotPrice } from "../../utils/getSpotPrice";
 import CircularProgress from "@mui/material/CircularProgress";
 import { withdrawPoolLiquidity } from "../../utils/withdrawPoolLiquidity";
-import { BigNumber } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { getPoolTokenBalances } from "../../utils/getTokensBalance";
 import { priceImpact } from "../../utils/balancerMath";
 import { getTokensUSDValue } from "../../utils/getTokensUSDValue";
@@ -230,11 +230,33 @@ const WithdrawLiquidity = () => {
   }, [account, currentNetwork, web3provider]);
 
   useEffect(() => {
-    const inputAmounts = [
-      (sliderValue / 100) * parseFloat(tokenOutFromBptIn[0].toString()),
-      (sliderValue / 100) * parseFloat(tokenOutFromBptIn[1].toString()),
-    ];
-    if (tokenBalances) {
+    let inputAmounts;
+    if (selectValue === 1) {
+      inputAmounts = [
+        (sliderValue / 100) * parseFloat(tokenOutFromBptIn[0].toString()),
+        (sliderValue / 100) * parseFloat(tokenOutFromBptIn[1].toString()),
+      ];
+    } else if (selectValue === 2 && inputValue) {
+      inputAmounts = [
+        parseFloat(
+          ethers.utils
+            .parseUnits(inputValue.toString(), tokenA.decimals)
+            .toString()
+        ),
+        parseFloat(tokenOutFromBptIn[1].toString()),
+      ];
+    } else if (selectValue === 3 && inputValue) {
+      inputAmounts = [
+        parseFloat(tokenOutFromBptIn[0].toString()),
+        parseFloat(
+          ethers.utils
+            .parseUnits(inputValue.toString(), tokenB.decimals)
+            .toString()
+        ),
+      ];
+    }
+
+    if (tokenBalances && inputAmounts) {
       const currentBalances = [
         Object.values(tokenBalances[0])[0],
         Object.values(tokenBalances[1])[0],
@@ -243,7 +265,19 @@ const WithdrawLiquidity = () => {
       if (impactValue && impactValue < 0.01) setPriceImpactValue(0.01);
       else setPriceImpactValue(impactValue);
     }
-  }, [sliderValue, tokenBalances, tokenOutFromBptIn]);
+  }, [
+    inputValue,
+    selectValue,
+    sliderValue,
+    tokenA,
+    tokenB,
+    tokenBalances,
+    tokenOutFromBptIn,
+  ]);
+
+  useEffect(() => {
+    if (selectValue > 1) if (!inputValue) setPriceImpactValue(0);
+  }, [inputValue, selectValue]);
 
   useEffect(() => {
     setInputValue(0);
@@ -422,7 +456,7 @@ const WithdrawLiquidity = () => {
                       className={iStyles.textField}
                       type="number"
                       placeholder="0.0"
-                      value={inputValue ?? ""}
+                      value={inputValue?.toString() ?? ""}
                       onChange={(e) =>
                         setInputValue(parseFloat(e.target.value))
                       }
