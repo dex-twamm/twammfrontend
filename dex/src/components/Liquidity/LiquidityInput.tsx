@@ -11,10 +11,10 @@ import { TokenType } from "../../utils/pool";
 interface PropTypes {
   tokenData: TokenType;
   balances: { [key: string]: number }[] | undefined;
-  tokenInputAmount: number;
-  setTokenInputAmount: Dispatch<SetStateAction<number>>;
+  tokenInputAmount: string;
+  setTokenInputAmount: Dispatch<SetStateAction<string>>;
   calculateProportionalSuggestion: any;
-  input: number | undefined;
+  input: string;
   tokenA: TokenType;
   tokenB: TokenType;
   currentNetwork: SelectedNetworkType;
@@ -61,18 +61,19 @@ const LiquidityInput = ({
   }, [balances, tokenData?.address]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTokenInputAmount(parseFloat(getInputLimit(e.target.value)));
+    setTokenInputAmount(getInputLimit(e.target.value));
   };
 
   useEffect(() => {
     let interval1: ReturnType<typeof setTimeout>;
     let interval2: ReturnType<typeof setTimeout>;
     // Do not fetch prices if not enough allowance.
-    if (parseFloat(allowance) > tokenInputAmount) {
+    const inputAmount = parseFloat(tokenInputAmount);
+    if (parseFloat(allowance) > inputAmount) {
       // Wait for 0.5 second before fetching price.
       interval1 = setTimeout(() => {
         spotPrice(
-          tokenInputAmount,
+          inputAmount,
           setSpotPriceLoading,
           tokenA?.address,
           tokenB?.address,
@@ -88,7 +89,7 @@ const LiquidityInput = ({
       // Update price every 12 seconds.
       interval2 = setTimeout(() => {
         spotPrice(
-          tokenInputAmount,
+          inputAmount,
           setSpotPriceLoading,
           tokenA?.address,
           tokenB?.address,
@@ -189,7 +190,7 @@ const LiquidityInput = ({
             <span
               className={iStyles.maxInput}
               onClick={() => {
-                setTokenInputAmount(+balance.toFixed(2));
+                setTokenInputAmount(balance.toFixed(2));
               }}
             >
               Max

@@ -55,8 +55,8 @@ const AddLiquidity = () => {
     }[]
   >();
   const [showPreviewModal, setShowPreviewModal] = useState(false);
-  const [tokenAInputAmount, setTokenAInputAmount] = useState(0);
-  const [tokenBInputAmount, setTokenBInputAmount] = useState(0);
+  const [tokenAInputAmount, setTokenAInputAmount] = useState("");
+  const [tokenBInputAmount, setTokenBInputAmount] = useState("");
   const [dollarValueOfInputAmount, setDollarValueOfInputAmount] = useState(0.0);
   const [hasBalancerOrTransactionError, setHasBalancerOrTransactionError] =
     useState(true);
@@ -140,24 +140,30 @@ const AddLiquidity = () => {
 
   useEffect(() => {
     const getInputAmountValueInDollar = async () => {
-      if (tokenAInputAmount && !tokenBInputAmount) {
+      if (parseFloat(tokenAInputAmount) && parseFloat(tokenBInputAmount)) {
         const tokenAUsdRate = await getTokenAUsdValueMemoized;
         setDollarValueOfInputAmount(
-          parseFloat((tokenAUsdRate * tokenAInputAmount).toFixed(2))
+          parseFloat((tokenAUsdRate * parseFloat(tokenAInputAmount)).toFixed(2))
         );
-      } else if (tokenBInputAmount && !tokenAInputAmount) {
+      } else if (
+        parseFloat(tokenBInputAmount) &&
+        !parseFloat(tokenAInputAmount)
+      ) {
         const tokenBUsdRate = await getTokenBUsdValueMemoized;
         setDollarValueOfInputAmount(
-          parseFloat((tokenBUsdRate * tokenBInputAmount).toFixed(2))
+          parseFloat((tokenBUsdRate * parseFloat(tokenBInputAmount)).toFixed(2))
         );
-      } else if (tokenAInputAmount && tokenBInputAmount) {
+      } else if (
+        parseFloat(tokenAInputAmount) &&
+        parseFloat(tokenBInputAmount)
+      ) {
         const tokenAUsdRate = await getTokenAUsdValueMemoized;
         const tokenBUsdRate = await getTokenBUsdValueMemoized;
         setDollarValueOfInputAmount(
           parseFloat(
             (
-              tokenAUsdRate * tokenAInputAmount +
-              tokenBUsdRate * tokenBInputAmount
+              tokenAUsdRate * parseFloat(tokenAInputAmount) +
+              tokenBUsdRate * parseFloat(tokenBInputAmount)
             ).toFixed(2)
           )
         );
@@ -188,17 +194,23 @@ const AddLiquidity = () => {
   }, [tokenAInputAmount, tokenBInputAmount]);
 
   useEffect(() => {
-    if (tokenAInputAmount === 0 && tokenBInputAmount === 0) {
+    if (
+      parseFloat(tokenAInputAmount) === 0 &&
+      parseFloat(tokenBInputAmount) === 0
+    ) {
       setHasProportionalInputA(false);
       setHasProportionalInputB(false);
     } else {
-      if (tokenAInputAmount > 0 && tokenBInputAmount > 0) {
+      if (
+        parseFloat(tokenAInputAmount) > 0 &&
+        parseFloat(tokenBInputAmount) > 0
+      ) {
         setHasProportionalInputA(false);
         setHasProportionalInputB(false);
-      } else if (tokenAInputAmount > 0) {
+      } else if (parseFloat(tokenAInputAmount) > 0) {
         setHasProportionalInputA(false);
         setHasProportionalInputB(true);
-      } else if (tokenBInputAmount > 0) {
+      } else if (parseFloat(tokenBInputAmount) > 0) {
         setHasProportionalInputA(true);
         setHasProportionalInputB(false);
       }
@@ -226,11 +238,11 @@ const AddLiquidity = () => {
 
       const spotPrice = getSpotPrice(balances);
       const proportionalValue = getProportionalAmount(
-        tokenAInputAmount,
+        parseFloat(tokenAInputAmount),
         0,
         spotPrice
       );
-      setTokenBInputAmount(getProperFixedValue(proportionalValue));
+      setTokenBInputAmount(getProperFixedValue(proportionalValue).toString());
     }
 
     if (hasProportionalInputA && tokenBalances) {
@@ -242,23 +254,23 @@ const AddLiquidity = () => {
       const spotPriceValue = getSpotPrice(balances);
 
       const proportionalValue = getProportionalAmount(
-        tokenBInputAmount,
+        parseFloat(tokenBInputAmount),
         1,
         spotPriceValue
       );
-      setTokenAInputAmount(parseFloat(proportionalValue.toString()));
+      setTokenAInputAmount(proportionalValue.toString());
     }
   };
 
   useEffect(() => {
     const inputAmounts =
-      !tokenAInputAmount && !tokenBInputAmount
+      !parseFloat(tokenAInputAmount) && !parseFloat(tokenBInputAmount)
         ? [0, 0]
-        : tokenAInputAmount && !tokenBInputAmount
-        ? [tokenAInputAmount, 0]
-        : !tokenAInputAmount && tokenBInputAmount
-        ? [0, tokenBInputAmount]
-        : [tokenAInputAmount, tokenBInputAmount];
+        : parseFloat(tokenAInputAmount) && !parseFloat(tokenBInputAmount)
+        ? [parseFloat(tokenAInputAmount), 0]
+        : !parseFloat(tokenAInputAmount) && parseFloat(tokenBInputAmount)
+        ? [0, parseFloat(tokenBInputAmount)]
+        : [parseFloat(tokenAInputAmount), parseFloat(tokenBInputAmount)];
 
     if (tokenBalances) {
       const currentBalances = [
@@ -306,7 +318,7 @@ const AddLiquidity = () => {
                 calculateProportionalSuggestion={
                   calculateProportionalSuggestion
                 }
-                input={tokenAInputAmount >= 0 ? tokenAInputAmount : undefined}
+                input={tokenAInputAmount}
                 tokenA={tokenA}
                 tokenB={tokenB}
                 currentNetwork={currentNetwork}
@@ -323,7 +335,7 @@ const AddLiquidity = () => {
                 calculateProportionalSuggestion={
                   calculateProportionalSuggestion
                 }
-                input={tokenBInputAmount >= 0 ? tokenBInputAmount : undefined}
+                input={tokenBInputAmount}
                 tokenA={tokenB}
                 tokenB={tokenA}
                 currentNetwork={currentNetwork}
@@ -347,10 +359,10 @@ const AddLiquidity = () => {
                       className={wStyles.maxInput}
                       onClick={() => {
                         setTokenAInputAmount(
-                          getIndividualTokenBalance(tokenA?.address)
+                          getIndividualTokenBalance(tokenA?.address).toString()
                         );
                         setTokenBInputAmount(
-                          getIndividualTokenBalance(tokenB?.address)
+                          getIndividualTokenBalance(tokenB?.address).toString()
                         );
                         setMaxText("Maxed");
                         setHasProportionalInputA(false);
@@ -385,8 +397,8 @@ const AddLiquidity = () => {
                   </div>
                 </div>
               </div>
-              {tokenAInputAmount &&
-              parseFloat(allowance) < tokenAInputAmount &&
+              {parseFloat(tokenAInputAmount) &&
+              parseFloat(allowance) < parseFloat(tokenAInputAmount) &&
               tokenA ? (
                 <button
                   className={classNames(
@@ -399,8 +411,8 @@ const AddLiquidity = () => {
                   }}
                   disabled={
                     hasBalancerOrTransactionError ||
-                    tokenAInputAmount == 0 ||
-                    tokenAInputAmount > balanceA
+                    parseFloat(tokenAInputAmount) == 0 ||
+                    parseFloat(tokenAInputAmount) > balanceA
                   }
                 >
                   {`Allow LongSwap Protocol to use your ${
@@ -419,14 +431,16 @@ const AddLiquidity = () => {
                   )}
                   onClick={handlePreviewClick}
                   disabled={
-                    (!tokenAInputAmount && !tokenBInputAmount) ||
+                    (!parseFloat(tokenAInputAmount) &&
+                      !parseFloat(tokenBInputAmount)) ||
                     loading ||
                     hasBalancerOrTransactionError ||
                     spotPriceLoading ||
-                    parseFloat(allowance) < tokenAInputAmount
+                    parseFloat(allowance) < parseFloat(tokenAInputAmount)
                   }
                 >
-                  {!tokenAInputAmount && !tokenBInputAmount ? (
+                  {!parseFloat(tokenAInputAmount) &&
+                  !parseFloat(tokenBInputAmount) ? (
                     "Enter an Amount"
                   ) : spotPriceLoading ? (
                     <CircularProgress sx={{ color: "white" }} size={30} />
@@ -447,7 +461,10 @@ const AddLiquidity = () => {
           </div>
 
           <AddLiquidityPreview
-            amountsIn={[tokenAInputAmount, tokenBInputAmount]}
+            amountsIn={[
+              parseFloat(tokenAInputAmount),
+              parseFloat(tokenBInputAmount),
+            ]}
             showPreviewModal={showPreviewModal}
             setShowPreviewModal={setShowPreviewModal}
             dollarValueOfInputAmount={dollarValueOfInputAmount}
