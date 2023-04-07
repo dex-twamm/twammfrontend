@@ -62,7 +62,7 @@ const WithdrawLiquidity = () => {
   const [showSettings, setShowSettings] = useState(false);
 
   const [selectValue, setSelectValue] = useState(1);
-  const [inputValue, setInputValue] = useState(0);
+  const [inputValue, setInputValue] = useState("");
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [sliderValue, setSliderValue] = useState(100);
   const [hasBalancerOrTransactionError, setHasBalancerOrTransactionError] =
@@ -106,11 +106,12 @@ const WithdrawLiquidity = () => {
     let interval1: ReturnType<typeof setTimeout>;
     let interval2: ReturnType<typeof setTimeout>;
     // Do not fetch prices if not enough allowance.
-    if (parseFloat(allowance) > inputValue) {
+    const inputAmount = parseFloat(inputValue);
+    if (parseFloat(allowance) > inputAmount) {
       // Wait for 0.5 second before fetching price.
       interval1 = setTimeout(() => {
         spotPrice(
-          inputValue,
+          inputAmount,
           setSpotPriceLoading,
           tokenA?.address,
           tokenB?.address,
@@ -126,7 +127,7 @@ const WithdrawLiquidity = () => {
       // Update price every 12 seconds.
       interval2 = setTimeout(() => {
         spotPrice(
-          inputValue,
+          inputAmount,
           setSpotPriceLoading,
           tokenA?.address,
           tokenB?.address,
@@ -276,11 +277,11 @@ const WithdrawLiquidity = () => {
   ]);
 
   useEffect(() => {
-    if (selectValue > 1) if (!inputValue) setPriceImpactValue(0);
+    if (selectValue > 1) if (!parseFloat(inputValue)) setPriceImpactValue(0);
   }, [inputValue, selectValue]);
 
   useEffect(() => {
-    setInputValue(0);
+    setInputValue("");
   }, [selectValue]);
 
   const getTokenAUsdValueMemoized = useMemo(async () => {
@@ -305,10 +306,10 @@ const WithdrawLiquidity = () => {
         } else {
           if (selectValue === 2) {
             const tokenAUsdRate = await getTokenAUsdValueMemoized;
-            setDollarValueOfTokenA(tokenAUsdRate * inputValue);
+            setDollarValueOfTokenA(tokenAUsdRate * parseFloat(inputValue));
           } else if (selectValue === 3) {
             const tokenBUsdRate = await getTokenBUsdValueMemoized;
-            setDollarValueOfTokenB(tokenBUsdRate * inputValue);
+            setDollarValueOfTokenB(tokenBUsdRate * parseFloat(inputValue));
           }
         }
       }
@@ -456,10 +457,8 @@ const WithdrawLiquidity = () => {
                       className={iStyles.textField}
                       type="number"
                       placeholder="0.0"
-                      value={inputValue?.toString() ?? ""}
-                      onChange={(e) =>
-                        setInputValue(parseFloat(e.target.value))
-                      }
+                      value={inputValue}
+                      onChange={(e) => setInputValue(e.target.value)}
                       onKeyDown={(e) => validateSymbolKeyPressInInput(e)}
                       min={0}
                       style={{ textAlign: "right" }}
@@ -482,8 +481,8 @@ const WithdrawLiquidity = () => {
                         onClick={() => {
                           setInputValue(
                             selectValue === 2
-                              ? +bigToStr(tokenOutFromBptIn[0], tokenA.decimals)
-                              : +bigToStr(tokenOutFromBptIn[1], tokenA.decimals)
+                              ? bigToStr(tokenOutFromBptIn[0], tokenA.decimals)
+                              : bigToStr(tokenOutFromBptIn[1], tokenA.decimals)
                           );
                         }}
                       >
@@ -526,10 +525,12 @@ const WithdrawLiquidity = () => {
                   )}
                   onClick={handlePreviewClick}
                   disabled={
-                    !inputValue || hasBalancerOrTransactionError || loading
+                    !parseFloat(inputValue) ||
+                    hasBalancerOrTransactionError ||
+                    loading
                   }
                 >
-                  {!inputValue ? (
+                  {!parseFloat(inputValue) ? (
                     "Enter an Amount"
                   ) : spotPriceLoading ? (
                     <CircularProgress sx={{ color: "white" }} size={30} />

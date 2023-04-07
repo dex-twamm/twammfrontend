@@ -19,7 +19,7 @@ interface PropTypes {
   currentNetwork: SelectedNetworkType;
   tokens: TokenType;
   selectValue: number;
-  inputValue: number;
+  inputValue: string;
   priceImpactValue: number;
   tokenValueOfBpt: number[];
   dollarValueOfToken: number;
@@ -63,7 +63,7 @@ const WithdrawLiquidityPreview = ({
         );
       } else {
         const bptAmountInBig = ethers.utils.parseUnits(
-          inputValue.toString(),
+          inputValue,
           tokens.decimals
         );
         await _withdrawPoolLiquidity(
