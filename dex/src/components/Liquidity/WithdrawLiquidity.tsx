@@ -243,11 +243,11 @@ const WithdrawLiquidity = () => {
             .parseUnits(inputValue.toString(), tokenA.decimals)
             .toString()
         ),
-        parseFloat(tokenOutFromBptIn[1].toString()),
+        0,
       ];
     } else if (selectValue === 3 && inputValue) {
       inputAmounts = [
-        parseFloat(tokenOutFromBptIn[0].toString()),
+        0,
         parseFloat(
           ethers.utils
             .parseUnits(inputValue.toString(), tokenB.decimals)
