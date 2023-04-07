@@ -47,11 +47,11 @@ const ShortSwap = () => {
     let interval1: ReturnType<typeof setTimeout>;
     let interval2: ReturnType<typeof setTimeout>;
     // Do not fetch prices if not enough allowance.
-    if (parseFloat(allowance) > swapAmount) {
+    if (parseFloat(allowance) > parseFloat(swapAmount)) {
       // Wait for 0.5 second before fetching price.
       interval1 = setTimeout(() => {
         spotPrice(
-          swapAmount,
+          parseFloat(swapAmount),
           setSpotPriceLoading,
           tokenA?.address,
           tokenB?.address,
@@ -67,7 +67,7 @@ const ShortSwap = () => {
       // Update price every 12 seconds.
       interval2 = setTimeout(() => {
         spotPrice(
-          swapAmount,
+          parseFloat(swapAmount),
           setSpotPriceLoading,
           tokenA?.address,
           tokenB?.address,
@@ -111,7 +111,7 @@ const ShortSwap = () => {
       } else {
         await _swapTokens(
           ethBalance,
-          swapAmount,
+          parseFloat(swapAmount),
           web3provider,
           tokenA?.address,
           tokenB?.address,
@@ -124,7 +124,7 @@ const ShortSwap = () => {
           selectedNetwork
         );
 
-        setSwapAmount(0);
+        setSwapAmount("");
         setExpectedSwapOut(0);
       }
     } catch (err) {

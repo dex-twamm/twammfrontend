@@ -5,7 +5,7 @@ interface ShortSwapProviderProps {
 }
 
 const useShortSwapState = () => {
-  const [swapAmount, setSwapAmount] = useState(0);
+  const [swapAmount, setSwapAmount] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState("");

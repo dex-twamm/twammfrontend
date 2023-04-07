@@ -82,7 +82,7 @@ function App() {
   // Swap Token
   useEffect(() => {
     if (transactionHash) {
-      setSwapAmount(0);
+      setSwapAmount("");
       setExpectedSwapOut(0);
     }
   }, [transactionHash]);
@@ -222,7 +222,7 @@ function App() {
   }, [account]);
 
   useEffect(() => {
-    setSwapAmount(0);
+    setSwapAmount("");
     setExpectedSwapOut(0);
     setFormErrors({ balError: "" });
     setSpotPrice(0);

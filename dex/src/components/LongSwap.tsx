@@ -102,7 +102,7 @@ const LongSwap = (props: PropTypes) => {
   };
 
   const handleClick = () => {
-    isWalletConnected && setLongSwapFormErrors(validate(swapAmount.toString()));
+    isWalletConnected && setLongSwapFormErrors(validate(swapAmount));
     handleLongSwapAction();
   };
 
@@ -181,7 +181,7 @@ const LongSwap = (props: PropTypes) => {
   }, []);
 
   useEffect(() => {
-    if (!swapAmount) {
+    if (!parseFloat(swapAmount)) {
       setLongSwapFormErrors({ balError: undefined });
     }
   }, [swapAmount, setLongSwapFormErrors]);
@@ -254,10 +254,10 @@ const LongSwap = (props: PropTypes) => {
 
           <Input
             id={1}
-            input={swapAmount >= 0 ? swapAmount : undefined}
+            input={swapAmount}
             placeholder="0.0"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              setSwapAmount(parseFloat(getInputLimit(e.target.value)));
+              setSwapAmount(getInputLimit(e.target.value));
             }}
             imgSrc={tokenA?.logo}
             symbol={tokenA?.symbol}
@@ -311,7 +311,7 @@ const LongSwap = (props: PropTypes) => {
                 onChange={handleChange}
                 aria-labelledby="non-linear-slider"
               />
-              {swapAmount &&
+              {parseFloat(swapAmount) &&
               tokenA?.tokenIsSet &&
               tokenB?.tokenIsSet &&
               !executionTime ? (
@@ -322,9 +322,9 @@ const LongSwap = (props: PropTypes) => {
             </Box>
           </div>
 
-          {swapAmount &&
-          swapAmount <= tokenA?.balance &&
-          parseFloat(allowance) < swapAmount &&
+          {parseFloat(swapAmount) &&
+          parseFloat(swapAmount) <= tokenA?.balance &&
+          parseFloat(allowance) < parseFloat(swapAmount) &&
           tokenA?.tokenIsSet &&
           tokenB?.tokenIsSet ? (
             <button
@@ -338,8 +338,8 @@ const LongSwap = (props: PropTypes) => {
               }}
               disabled={
                 hasBalancerOrTransactionError ||
-                swapAmount == 0 ||
-                swapAmount > tokenA?.balance ||
+                parseFloat(swapAmount) == 0 ||
+                parseFloat(swapAmount) > tokenA?.balance ||
                 !tokenA.balance
               }
             >
@@ -361,16 +361,16 @@ const LongSwap = (props: PropTypes) => {
               disabled={
                 !tokenA?.tokenIsSet ||
                 !tokenB?.tokenIsSet ||
-                !swapAmount ||
+                !parseFloat(swapAmount) ||
                 !numberOfBlockIntervals ||
                 hasBalancerOrTransactionError ||
                 longSwapVerifyLoading ||
-                parseFloat(allowance) < swapAmount
+                parseFloat(allowance) < parseFloat(swapAmount)
               }
             >
               {!tokenA?.tokenIsSet || !tokenB?.tokenIsSet ? (
                 "Select a Token"
-              ) : !swapAmount ? (
+              ) : !parseFloat(swapAmount) ? (
                 "Enter an Amount"
               ) : longSwapVerifyLoading ? (
                 <CircularProgress sx={{ color: "white" }} />

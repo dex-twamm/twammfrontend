@@ -15,7 +15,7 @@ import Modal from "./Modal";
 interface PropTypes {
   id: number;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
-  input: number | undefined;
+  input: string;
   imgSrc?: string;
   symbol?: string;
   handleDisplay: (
@@ -71,7 +71,7 @@ const Input = (props: PropTypes) => {
     }
     // TODO: Rename this to TokenInBalance.
     return () => {
-      setSwapAmount(0);
+      setSwapAmount("");
     };
   }, [setTokenA, setTokenB, tokenBalances, setSelectedNetwork]);
 
@@ -84,7 +84,7 @@ const Input = (props: PropTypes) => {
             type="number"
             min={0}
             placeholder={placeholder}
-            value={input ?? ""}
+            value={input}
             onChange={onChange}
             onKeyDown={(e) => validateSymbolKeyPressInInput(e)}
           />
@@ -136,7 +136,7 @@ const Input = (props: PropTypes) => {
                 <span
                   className={styles.maxInput}
                   onClick={() => {
-                    setSwapAmount(tokenA?.balance ?? 0);
+                    setSwapAmount(tokenA?.balance.toString() ?? "");
                   }}
                 >
                   Max

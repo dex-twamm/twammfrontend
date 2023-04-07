@@ -67,7 +67,7 @@ const LongSwapPage = () => {
 
     verifyLongSwapInterval = setTimeout(() => {
       verifyLongSwap(
-        swapAmount,
+        parseFloat(swapAmount),
         setLongSwapVerifyLoading,
         tokenA?.address,
         tokenB?.address,
@@ -106,7 +106,7 @@ const LongSwapPage = () => {
         await getEthLogs(web3provider, account, selectedNetwork);
       } else {
         await _placeLongTermOrders(
-          swapAmount,
+          parseFloat(swapAmount),
           tokenA?.address,
           tokenB?.address,
           numberOfBlockIntervals,
@@ -119,7 +119,7 @@ const LongSwapPage = () => {
           setError,
           selectedNetwork
         );
-        setSwapAmount(0);
+        setSwapAmount("");
       }
     } catch (err) {
       console.log(err);

@@ -95,7 +95,7 @@ const Swap = (props: PropTypes) => {
   };
 
   const handleClick = () => {
-    isWalletConnected && setFormErrors(validate(swapAmount.toString()));
+    isWalletConnected && setFormErrors(validate(swapAmount));
     handleSwapAction();
   };
 
@@ -168,7 +168,7 @@ const Swap = (props: PropTypes) => {
   }, [swapAmount]);
 
   useEffect(() => {
-    if (!swapAmount) {
+    if (!parseFloat(swapAmount)) {
       setFormErrors({ balError: undefined });
       setSpotPrice(0);
       setExpectedSwapOut(0);
@@ -183,10 +183,10 @@ const Swap = (props: PropTypes) => {
         <Box className={lsStyles.mainBox}>
           <Input
             id={1}
-            input={swapAmount >= 0 ? swapAmount : undefined}
+            input={swapAmount}
             placeholder="0.0"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              setSwapAmount(parseFloat(getInputLimit(e.target.value)));
+              setSwapAmount(getInputLimit(e.target.value));
             }}
             imgSrc={tokenA?.logo}
             symbol={tokenA?.symbol}
@@ -200,13 +200,11 @@ const Swap = (props: PropTypes) => {
             id={2}
             input={
               expectedSwapOut
-                ? parseFloat(
-                    bigToStr(
-                      BigNumber.from(expectedSwapOut.toString()),
-                      tokenB.decimals
-                    )
+                ? bigToStr(
+                    BigNumber.from(expectedSwapOut.toString()),
+                    tokenB.decimals
                   )
-                : undefined
+                : ""
             }
             placeholder=""
             imgSrc={tokenB?.logo}
@@ -227,7 +225,7 @@ const Swap = (props: PropTypes) => {
               </Alert>
             </div>
           )}
-          {swapAmount !== 0 && tokenB?.tokenIsSet && (
+          {parseFloat(swapAmount) !== 0 && tokenB?.tokenIsSet && (
             <>
               <Box
                 className={
@@ -340,8 +338,8 @@ const Swap = (props: PropTypes) => {
               </div>
             </div>
           )}
-          {swapAmount &&
-          parseFloat(allowance) < swapAmount &&
+          {parseFloat(swapAmount) &&
+          parseFloat(allowance) < parseFloat(swapAmount) &&
           tokenA?.tokenIsSet &&
           tokenB?.tokenIsSet ? (
             <button
@@ -355,8 +353,8 @@ const Swap = (props: PropTypes) => {
               }}
               disabled={
                 hasBalancerOrTransactionError ||
-                swapAmount == 0 ||
-                swapAmount > tokenA?.balance ||
+                parseFloat(swapAmount) == 0 ||
+                parseFloat(swapAmount) > tokenA?.balance ||
                 !tokenA.balance
               }
             >
@@ -378,17 +376,17 @@ const Swap = (props: PropTypes) => {
               disabled={
                 !tokenA?.tokenIsSet ||
                 !tokenB?.tokenIsSet ||
-                !swapAmount ||
+                !parseFloat(swapAmount) ||
                 hasBalancerOrTransactionError ||
                 spotPriceLoading ||
-                parseFloat(allowance) < swapAmount
+                parseFloat(allowance) < parseFloat(swapAmount)
                   ? true
                   : false
               }
             >
               {!tokenA?.tokenIsSet || !tokenB?.tokenIsSet ? (
                 "Select a Token"
-              ) : !swapAmount ? (
+              ) : !parseFloat(swapAmount) ? (
                 "Enter an Amount"
               ) : spotPriceLoading ? (
                 <CircularProgress sx={{ color: "white" }} />
