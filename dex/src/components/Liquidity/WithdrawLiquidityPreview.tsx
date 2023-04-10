@@ -59,7 +59,8 @@ const WithdrawLiquidityPreview = ({
           setMessage,
           setLoading,
           setError,
-          setShowPreviewModal
+          setShowPreviewModal,
+          selectValue
         );
       } else {
         const bptAmountInBig = ethers.utils.parseUnits(
@@ -75,7 +76,8 @@ const WithdrawLiquidityPreview = ({
           setMessage,
           setLoading,
           setError,
-          setShowPreviewModal
+          setShowPreviewModal,
+          selectValue
         );
       }
     } catch (err) {

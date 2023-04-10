@@ -14,7 +14,8 @@ export const _withdrawPoolLiquidity = async (
   setMessage: Dispatch<SetStateAction<string>>,
   setLoading: Dispatch<SetStateAction<boolean>>,
   setError: Dispatch<SetStateAction<string>>,
-  setShowPreviewModal: Dispatch<SetStateAction<boolean>>
+  setShowPreviewModal: Dispatch<SetStateAction<boolean>>,
+  selectValue: number
 ) => {
   try {
     const poolId = getPoolId(currentNetwork);
@@ -23,6 +24,7 @@ export const _withdrawPoolLiquidity = async (
     setLoading(true);
 
     await withdrawPoolLiquidity(
+      selectValue,
       poolId,
       tokenIn,
       bptAmountIn,

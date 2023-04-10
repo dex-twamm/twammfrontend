@@ -84,6 +84,7 @@ const WithdrawLiquidity = () => {
   const idString = searchParams.get("id");
 
   if (!idString) throw new Error("Error! Could not get id from url");
+
   const poolIdNumber = parseFloat(idString);
 
   const currentNetwork = useMemo(() => {
@@ -93,9 +94,8 @@ const WithdrawLiquidity = () => {
     };
   }, [poolIdNumber, selectedNetwork]);
 
-  const tokens = getPoolTokens(currentNetwork);
-  const tokenA = tokens?.[0];
-  const tokenB = tokens?.[1];
+  const tokenA: TokenType = getPoolTokens(currentNetwork)?.[0];
+  const tokenB: TokenType = getPoolTokens(currentNetwork)?.[1];
   const selectedTokenPair = [tokenA, tokenB];
 
   const handlePreviewClick = () => {
@@ -175,6 +175,7 @@ const WithdrawLiquidity = () => {
       const bptAmountInBig = BigNumber.from(bptAmount.toString());
 
       const result = await withdrawPoolLiquidity(
+        selectValue,
         poolId,
         [tokenA?.address, tokenB?.address],
         bptAmountInBig,

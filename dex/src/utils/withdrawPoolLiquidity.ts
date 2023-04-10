@@ -7,6 +7,7 @@ import { getGasLimit } from "./getGasLimit";
 import { getVaultContractAddress } from "./networkUtils";
 
 export const withdrawPoolLiquidity = async (
+  selectValue: number,
   poolId: string,
   tokenIn: string[],
   bptAmountIn: BigNumber,
@@ -15,7 +16,12 @@ export const withdrawPoolLiquidity = async (
   currentNetwork: SelectedNetworkType,
   isCallStatic?: boolean
 ) => {
-  const encodedRequest = defaultAbiCoder.encode(
+  const encodedRequestForOneTokenOut = defaultAbiCoder.encode(
+    ["uint256", "uint256"],
+    [0, bptAmountIn]
+  );
+
+  const encodedRequestForTokensOut = defaultAbiCoder.encode(
     ["uint256", "uint256"],
     [1, bptAmountIn]
   );
@@ -27,7 +33,10 @@ export const withdrawPoolLiquidity = async (
     {
       assets: tokenIn,
       minAmountsOut: [0, 0],
-      userData: encodedRequest,
+      userData:
+        selectValue === 1
+          ? encodedRequestForTokensOut
+          : encodedRequestForOneTokenOut,
       toInternalBalance: false,
     },
   ];
