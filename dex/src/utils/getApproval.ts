@@ -1,11 +1,11 @@
-import { BigNumber, Contract, providers } from "ethers";
+import { BigNumber, Contract, Signer, providers } from "ethers";
 import { MAX_UINT256 } from ".";
 import { ERC20_TOKEN_CONTRACT_ABI } from "../constants";
 import { SelectedNetworkType } from "../providers/context/NetworkProvider";
 import { getVaultContractAddress } from "./networkUtils";
 
 export const getAllowance = async (
-  signer: any,
+  signer: Signer | providers.Provider,
   walletAddress: string,
   tokenAddress: string,
   currentNetwork: SelectedNetworkType

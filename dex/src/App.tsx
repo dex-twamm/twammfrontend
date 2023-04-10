@@ -94,7 +94,7 @@ function App() {
       const walletAddress = account;
 
       // Allowance
-      if (tokenA?.address) {
+      if (tokenA?.address && web3provider?.getSigner()) {
         await getAllowance(
           web3provider?.getSigner(),
           walletAddress,
