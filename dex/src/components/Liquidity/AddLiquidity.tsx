@@ -282,6 +282,13 @@ const AddLiquidity = () => {
     }
   }, [tokenAInputAmount, tokenBInputAmount, tokenBalances]);
 
+  console.log("spotPrice loading", spotPriceLoading);
+  console.log(
+    "Parse",
+    parseFloat(tokenAInputAmount),
+    parseFloat(allowance) < parseFloat(tokenAInputAmount)
+  );
+
   return (
     <>
       <div className={styles.container}>
@@ -461,8 +468,12 @@ const AddLiquidity = () => {
 
           <AddLiquidityPreview
             amountsIn={[
-              parseFloat(tokenAInputAmount),
-              parseFloat(tokenBInputAmount),
+              isNaN(parseFloat(tokenAInputAmount))
+                ? 0
+                : parseFloat(tokenAInputAmount),
+              isNaN(parseFloat(tokenBInputAmount))
+                ? 0
+                : parseFloat(tokenBInputAmount),
             ]}
             showPreviewModal={showPreviewModal}
             setShowPreviewModal={setShowPreviewModal}
