@@ -1,0 +1,169 @@
+.container {
+  padding: 35px 100px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.leftSection {
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.h5Text {
+  text-transform: uppercase;
+  margin-bottom: 5px;
+  color: #554994;
+}
+
+.h1Text {
+  margin-bottom: 20px;
+  color: #554994;
+}
+
+.para {
+  font-size: 16px;
+  margin-bottom: 30px;
+  letter-spacing: 0.5px;
+}
+
+.mediums {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.details {
+  display: flex;
+  gap: 20px;
+  height: 45px;
+  padding: 2px 0;
+}
+
+.icon {
+  width: 45px;
+  margin: 0px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0.15rem 0.5rem;
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(2px);
+  border-radius: 8px;
+  border: 0.5px solid white;
+}
+
+.contents {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.item {
+  font-size: 14px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #554994;
+}
+
+.info {
+  font-size: 15px;
+}
+
+.rightSection {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0) 100%
+    ),
+    rgba(255, 255, 255, 0.3);
+  padding: 20px;
+  gap: 15px;
+  border: 1px solid white;
+  border-radius: 16px;
+  backdrop-filter: blur(2px);
+  width: 50%;
+  height: 800px;
+  margin: auto;
+}
+
+.textInput {
+  border: 2px solid white;
+  outline: none;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  height: 50px;
+  padding: 10px 20px;
+  font-size: 15px;
+  width: 100%;
+}
+
+.textAreaInput {
+  border: 2px solid white;
+  outline: none;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  width: 100%;
+  padding: 10px 20px;
+  font-size: 15px;
+}
+
+.sendButton {
+  padding: 12px 0px;
+  outline: none;
+  color: white;
+  font-weight: 400;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #554994;
+  border-radius: 8px;
+  width: 100%;
+}
+
+@media (max-width: 1068px) {
+  .rightSection {
+    width: 70%;
+  }
+}
+
+@media (max-width: 768px) {
+  .rightSection {
+    width: 100%;
+  }
+}
+@media (max-width: 520px) {
+  .container {
+    padding: 20px;
+    flex-direction: column;
+  }
+
+  .leftSection {
+    padding-right: 0;
+  }
+
+  .h1Text {
+    margin-bottom: 10px;
+    font-size: 28px;
+  }
+
+  .para {
+    font-size: 15px;
+    margin-bottom: 20px;
+  }
+
+  .item {
+    font-size: 13px;
+  }
+
+  .info {
+    font-size: 14px;
+  }
+}

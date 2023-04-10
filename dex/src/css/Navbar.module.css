@@ -8,7 +8,7 @@
   align-items: center;
 }
 
-.tabContainerLeft {
+.tabContainerLeft a {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -320,7 +320,7 @@ input[type="number"]:focus {
   flex-direction: row;
   -webkit-box-align: center;
   align-items: center;
-  padding: 0.5rem;
+  padding: 0 0.5rem;
   -webkit-box-pack: justify;
   justify-content: space-between;
   color: #73788b;
@@ -376,11 +376,20 @@ a {
 }
 
 @media (max-width: 520px) {
-  .tabContainerCenter {
-    flex-direction: column;
+  .tabContainerCenter a {
+    font-size: 13px;
+  }
+
+  .tabButton {
+    padding: 10px;
   }
 
   .row {
     flex-direction: column;
+    gap: 10px;
+  }
+
+  .btnWallet {
+    font-size: 14px;
   }
 }

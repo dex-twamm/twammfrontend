@@ -72,14 +72,19 @@
   justify-content: space-between;
   align-items: center;
   height: 2%;
-  padding-bottom: 20px;
+}
+
+.logoAndName {
+  display: flex;
+  align-items: center;
 }
 
 .styledBoxFour {
   display: flex;
-  column-gap: 20px;
   align-items: center;
   margin: 14px;
+  width: 100%;
+  justify-content: space-between;
 }
 
 .styledBoxFive {
@@ -88,14 +93,12 @@
 }
 
 .styledAvatarOne {
-  background-color: blue !important;
   height: 40px;
   width: 40px;
 }
 
 .styledAvatarTwo {
   left: -10px;
-  background-color: green !important;
   height: 40px;
   width: 40px;
 }
@@ -115,6 +118,7 @@
   font-weight: 500;
   background: #ee4d3745;
   border-radius: 17px;
+  justify-content: flex-end;
 }
 
 .balanceInfoBox {
@@ -127,7 +131,7 @@
 
 .balanceInfoTypography {
   font-weight: 500;
-  display: inline;
+  display: flex;
   color: grey;
   font-family: Open Sans;
 }
@@ -137,6 +141,7 @@
   display: inline;
   color: #333333;
   font-family: Open Sans;
+  margin-left: 5px;
 }
 
 .buttonsBox {

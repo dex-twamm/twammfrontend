@@ -1,0 +1,116 @@
+.boxStyle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgb(224 227 255);
+  border: 2px solid white;
+  border-radius: 16px;
+  padding: 20px;
+  margin: 0 auto;
+  width: 450px;
+}
+
+@media (max-width: 520px) {
+  .boxStyle {
+    width: 300px;
+  }
+}
+
+.tokenAndLogo {
+  margin-top: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0) 100%
+    ),
+    rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(2px);
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+
+.modalTitle {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.amount {
+  font-weight: 600;
+}
+
+.logo {
+  height: 45px;
+  width: 45px;
+  border-radius: 50%;
+  background-color: transparent;
+  border: 1px solid white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.summary {
+  background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0) 100%
+    ),
+    rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(3px);
+
+  border: 1px solid white;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.title {
+  border-bottom: 1px solid white;
+  padding: 10px;
+  font-weight: 600;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  padding: 0 10px;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+.data {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+}
+
+.data span {
+  display: flex;
+  align-items: center;
+  margin-left: 5px;
+}
+
+.btn {
+  margin-top: 10px;
+  height: 40px;
+  background-color: #554994;
+  color: white;
+  width: 100%;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 10px;
+  transition: 0.3s;
+  font-size: 16px;
+  font-weight: 600;
+}
