@@ -17,7 +17,6 @@ const PopupSettings = ({ swapType }: PropTypes) => {
   const [transactionType, setTransactionType] = useState("Legacy");
 
   const location = useLocation();
-  console.log("location", location);
 
   return (
     <span

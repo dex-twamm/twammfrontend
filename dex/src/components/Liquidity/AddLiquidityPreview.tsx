@@ -56,8 +56,6 @@ const AddLiquidityPreview = ({
     }
   };
 
-  console.log("amountsIn", amountsIn);
-
   return (
     <>
       <Modal

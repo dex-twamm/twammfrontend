@@ -282,13 +282,6 @@ const AddLiquidity = () => {
     }
   }, [tokenAInputAmount, tokenBInputAmount, tokenBalances]);
 
-  console.log("spotPrice loading", spotPriceLoading);
-  console.log(
-    "Parse",
-    parseFloat(tokenAInputAmount),
-    parseFloat(allowance) < parseFloat(tokenAInputAmount)
-  );
-
   return (
     <>
       <div className={styles.container}>

@@ -43,12 +43,10 @@ export const _addPoolLiquidity = async (
       currentNetwork
     )
       .then((res) => {
-        console.log("res", res);
         setShowPreviewModal(false);
         setTransactionHash(res.hash);
         const addLiquidityResult = async () => {
           const result = await res.wait();
-          console.log("data after wait", result);
           return result;
         };
         addLiquidityResult().then(async (response) => {
