@@ -100,26 +100,27 @@ const Swap = (props: PropTypes) => {
   };
 
   const handleApproveButton = async () => {
-    try {
-      const approval = await approveMaxAllowance(
-        web3provider,
-        tokenA?.address,
-        selectedNetwork
-      );
-      setTransactionHash(approval.hash);
+    if (web3provider?.getSigner())
+      try {
+        const approval = await approveMaxAllowance(
+          web3provider.getSigner(),
+          tokenA?.address,
+          selectedNetwork
+        );
+        setTransactionHash(approval.hash);
 
-      await getAllowance(
-        web3provider?.getSigner(),
-        account,
-        tokenA?.address,
-        selectedNetwork
-      ).then((res) => {
-        setAllowance(bigToStr(res, tokenA?.decimals).toString());
-      });
-    } catch (e) {
-      console.log(e);
-      setAllowTwamErrorMessage("Error!");
-    }
+        await getAllowance(
+          web3provider?.getSigner(),
+          account,
+          tokenA?.address,
+          selectedNetwork
+        ).then((res) => {
+          setAllowance(bigToStr(res, tokenA?.decimals).toString());
+        });
+      } catch (e) {
+        console.log(e);
+        setAllowTwamErrorMessage("Error!");
+      }
   };
 
   const validate = (values: string) => {

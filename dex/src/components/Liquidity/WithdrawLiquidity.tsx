@@ -227,7 +227,7 @@ const WithdrawLiquidity = () => {
       );
       setTokenBalances(tokenBalances);
     };
-    getTokensBalances();
+    if (web3provider?.getSigner()) getTokensBalances();
   }, [account, currentNetwork, web3provider]);
 
   useEffect(() => {

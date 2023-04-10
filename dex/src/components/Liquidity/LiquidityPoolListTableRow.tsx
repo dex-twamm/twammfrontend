@@ -49,7 +49,7 @@ const LiquidityPoolListTableRow = ({
       const balance = await poolContract.balanceOf(account);
       setBptAmountIn(parseFloat(balance.toString()));
     };
-    getPoolTokenData();
+    if (web3provider?.getSigner()) getPoolTokenData();
   }, [web3provider, account, setBptAmountIn, selectedNetwork, index]);
 
   return (

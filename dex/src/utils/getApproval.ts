@@ -23,14 +23,14 @@ export const getAllowance = async (
 };
 
 export const approveMaxAllowance = async (
-  provider: providers.Web3Provider,
+  signer: Signer | providers.Provider,
   tokenAddress: string,
   currentNetwork: SelectedNetworkType
 ): Promise<any> => {
   const ERC20Contract: Contract = new Contract(
     tokenAddress,
     ERC20_TOKEN_CONTRACT_ABI,
-    provider.getSigner()
+    signer
   );
 
   return await ERC20Contract.approve(

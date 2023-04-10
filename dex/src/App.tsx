@@ -116,7 +116,7 @@ function App() {
   const tokenBalance = useCallback(async () => {
     setLoading(true);
     setOrderLogsLoading(true);
-    if (account && web3provider) {
+    if (account && web3provider?.getSigner()) {
       const walletAddress = account;
       if (!walletAddress) {
         return null;

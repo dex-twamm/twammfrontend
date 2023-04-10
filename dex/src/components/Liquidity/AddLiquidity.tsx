@@ -33,6 +33,7 @@ import {
 } from "../../utils/balancerMath";
 import { getPoolTokens } from "../../utils/poolUtils";
 import { getTokensUSDValue } from "../../utils/getTokensUSDValue";
+import { TokenType } from "../../utils/pool";
 
 const AddLiquidity = () => {
   const {
@@ -91,41 +92,42 @@ const AddLiquidity = () => {
       );
       setBalanceOfToken(tokenBalance);
     };
-    getTokenBalance();
+    if (web3provider?.getSigner()) getTokenBalance();
   }, [account, web3provider, currentNetwork]);
 
   const handlePreviewClick = () => {
     setShowPreviewModal(true);
   };
 
-  const tokenA = getPoolTokens(currentNetwork)?.[0];
-  const tokenB = getPoolTokens(currentNetwork)?.[1];
+  const tokenA: TokenType = getPoolTokens(currentNetwork)?.[0];
+  const tokenB: TokenType = getPoolTokens(currentNetwork)?.[1];
 
   const balanceA: any = tokenBalances?.filter(
     (item) => item[tokenA?.address]
   )[0]?.[tokenA?.address];
 
   const handleApproveButton = async () => {
-    try {
-      const approval = await approveMaxAllowance(
-        web3provider,
-        tokenA?.address,
-        selectedNetwork
-      );
-      setTransactionHash(approval.hash);
+    if (web3provider?.getSigner())
+      try {
+        const approval = await approveMaxAllowance(
+          web3provider.getSigner(),
+          tokenA?.address,
+          selectedNetwork
+        );
+        setTransactionHash(approval.hash);
 
-      await getAllowance(
-        web3provider?.getSigner(),
-        account,
-        tokenA?.address,
-        selectedNetwork
-      ).then((res) => {
-        setAllowance(bigToStr(res));
-      });
-    } catch (e) {
-      console.log(e);
-      setAllowTwamErrorMessage("Error!");
-    }
+        await getAllowance(
+          web3provider?.getSigner(),
+          account,
+          tokenA?.address,
+          selectedNetwork
+        ).then((res) => {
+          setAllowance(bigToStr(res));
+        });
+      } catch (e) {
+        console.log(e);
+        setAllowTwamErrorMessage("Error!");
+      }
   };
 
   const getTokenAUsdValueMemoized = useMemo(async () => {
@@ -194,10 +196,7 @@ const AddLiquidity = () => {
   }, [tokenAInputAmount, tokenBInputAmount]);
 
   useEffect(() => {
-    if (
-      parseFloat(tokenAInputAmount) === 0 &&
-      parseFloat(tokenBInputAmount) === 0
-    ) {
+    if (!parseFloat(tokenAInputAmount) && !parseFloat(tokenBInputAmount)) {
       setHasProportionalInputA(false);
       setHasProportionalInputB(false);
     } else {
@@ -226,7 +225,7 @@ const AddLiquidity = () => {
       );
       setTokenBalances(tokenBalances);
     };
-    getTokensBalances();
+    if (web3provider?.getSigner()) getTokensBalances();
   }, [account, currentNetwork, web3provider]);
 
   const calculateProportionalSuggestion = async () => {
