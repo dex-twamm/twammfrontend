@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { ethers, providers } from "ethers";
 import { Dispatch, SetStateAction } from "react";
 import { POPUP_MESSAGE } from "../constants";
 import { SelectedNetworkType } from "../providers/context/NetworkProvider";
@@ -7,7 +7,7 @@ import { getPoolId, getPoolTokenAddresses, getPoolTokens } from "./poolUtils";
 
 export const _addPoolLiquidity = async (
   walletAddress: string,
-  web3provider: any,
+  web3provider: providers.Web3Provider,
   currentNetwork: SelectedNetworkType,
   amountsIn: number[],
   setTransactionHash: Dispatch<SetStateAction<string>>,

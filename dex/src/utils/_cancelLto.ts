@@ -3,6 +3,7 @@ import { Dispatch, SetStateAction } from "react";
 import { cancelLTO } from "./manageLtoOrders";
 import { getEthLogs } from "./getEthLogs";
 import { SelectedNetworkType } from "../providers/context/NetworkProvider";
+import { providers } from "ethers";
 
 // cancelLTO
 export const _cancelLTO = async (
@@ -10,7 +11,7 @@ export const _cancelLTO = async (
   setLoading: Dispatch<SetStateAction<boolean>>,
   setDisableActionBtn: Dispatch<SetStateAction<boolean>>,
   account: string,
-  web3provider: any,
+  web3provider: providers.Web3Provider,
   setOrderLogsDecoded: Dispatch<SetStateAction<any>>,
   setMessage: Dispatch<SetStateAction<string>>,
   setTransactionHash: Dispatch<SetStateAction<string>>,
@@ -20,7 +21,7 @@ export const _cancelLTO = async (
   setDisableActionBtn(true);
   try {
     const walletAddress = account;
-    const signer: any = web3provider.getSigner();
+    const signer = web3provider.getSigner();
     await cancelLTO(
       walletAddress,
       web3provider.getSigner(),

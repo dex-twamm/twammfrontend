@@ -1,4 +1,4 @@
-import { ethers, BigNumber } from "ethers";
+import { ethers, BigNumber, providers } from "ethers";
 import { Dispatch, SetStateAction } from "react";
 import { POPUP_MESSAGE } from "../constants";
 import { SelectedNetworkType } from "../providers/context/NetworkProvider";
@@ -11,7 +11,7 @@ export const _placeLongTermOrders = async (
   tokenA: string,
   tokenB: string,
   numberOfBlockIntervals: number,
-  web3provider: any,
+  web3provider: providers.Web3Provider,
   account: string,
   setTransactionHash: Dispatch<SetStateAction<string>>,
   setLoading: Dispatch<SetStateAction<boolean>>,
@@ -35,7 +35,7 @@ export const _placeLongTermOrders = async (
     );
     const blockIntervals: number = Math.ceil(numberOfBlockIntervals);
 
-    const signer: any = web3provider.getSigner();
+    const signer = web3provider.getSigner();
 
     const walletAddress: string = account;
     // Call the PlaceLongTermOrders function from the `utils` folder*

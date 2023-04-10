@@ -1,4 +1,4 @@
-import { BigNumber } from "ethers";
+import { BigNumber, Signer, providers } from "ethers";
 import { MAX_UINT256 } from ".";
 import { getPoolId } from "./poolUtils";
 import { getExchangeContract } from "./getContracts";
@@ -6,7 +6,7 @@ import { getGasLimit } from "./getGasLimit";
 import { SelectedNetworkType } from "../providers/context/NetworkProvider";
 
 export const verifySwapTokens = async (
-  signer: any,
+  signer: Signer | providers.Provider,
   swapAmountWei: BigNumber,
   assetIn: string,
   assetOut: string,
@@ -40,7 +40,7 @@ const getDeadlineStamp = (deadline: number) => {
 };
 
 export const swapTokens = async (
-  signer: any,
+  signer: Signer | providers.Provider,
   swapAmountWei: BigNumber,
   assetIn: string,
   assetOut: string,

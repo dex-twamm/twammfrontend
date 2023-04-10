@@ -1,4 +1,4 @@
-import { BigNumber, Contract, ethers } from "ethers";
+import { BigNumber, Contract, ethers, Signer, providers } from "ethers";
 import { LONGTERM_ABI } from "../constants";
 import { MAX_UINT256 } from ".";
 import {
@@ -36,7 +36,7 @@ export const verifyLongSwapTxn = async (
   tokenOutIndex: number,
   amountIn: BigNumber,
   numberOfBlockIntervals: number,
-  signer: any,
+  signer: Signer | providers.Provider,
   walletAddress: string,
   currentNetwork: SelectedNetworkType
 ): Promise<void> => {
@@ -58,7 +58,7 @@ export async function placeLongTermOrder(
   tokenOutIndex: number,
   amountIn: BigNumber,
   numberOfBlockIntervals: number,
-  signer: any,
+  signer: Signer | providers.Provider,
   walletAddress: string,
   currentNetwork: SelectedNetworkType,
   isVerifyOnly?: boolean
@@ -98,7 +98,7 @@ export async function placeLongTermOrder(
 }
 
 export async function getLongTermOrder(
-  signer: any,
+  signer: Signer | providers.Provider,
   orderId: any,
   currentNetwork: SelectedNetworkType
 ): Promise<(BigNumber | string)[]> {
@@ -113,7 +113,7 @@ export async function getLongTermOrder(
 }
 
 export async function getLastVirtualOrderBlock(
-  signer: any,
+  signer: Signer | providers.Provider,
   currentNetwork: SelectedNetworkType
 ): Promise<BigNumber> {
   const contract = new Contract(

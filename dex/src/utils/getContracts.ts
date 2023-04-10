@@ -1,4 +1,4 @@
-import { Contract } from "ethers";
+import { Contract, Signer, providers } from "ethers";
 import {
   BALANCER_HELPER_ABI,
   TWAMM_POOL_ABI,
@@ -13,7 +13,7 @@ import { getPoolContractAddress } from "./poolUtils";
 
 export const getExchangeContract = (
   currentNetwork: SelectedNetworkType,
-  signer: any
+  signer: Signer | providers.Provider
 ): Contract => {
   return new Contract(
     getVaultContractAddress(currentNetwork),
@@ -24,7 +24,7 @@ export const getExchangeContract = (
 
 export const getPoolContract = (
   currentNetwork: SelectedNetworkType,
-  signer: any
+  signer: Signer | providers.Provider
 ): Contract => {
   return new Contract(
     getPoolContractAddress(currentNetwork),
@@ -35,7 +35,7 @@ export const getPoolContract = (
 
 export const getBalancerHelperContract = (
   currentNetwork: SelectedNetworkType,
-  signer: any
+  signer: Signer | providers.Provider
 ): Contract => {
   return new Contract(
     getBalancerHelperContractAddress(currentNetwork),

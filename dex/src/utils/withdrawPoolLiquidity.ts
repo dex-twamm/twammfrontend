@@ -1,4 +1,4 @@
-import { Contract, BigNumber } from "ethers";
+import { Contract, BigNumber, providers } from "ethers";
 import { defaultAbiCoder } from "ethers/lib/utils";
 import { VAULT_CONTRACT_ABI } from "../constants";
 import { SelectedNetworkType } from "../providers/context/NetworkProvider";
@@ -11,7 +11,7 @@ export const withdrawPoolLiquidity = async (
   tokenIn: string[],
   bptAmountIn: BigNumber,
   walletAddress: string,
-  web3provider: any,
+  web3provider: providers.Web3Provider,
   currentNetwork: SelectedNetworkType,
   isCallStatic?: boolean
 ) => {

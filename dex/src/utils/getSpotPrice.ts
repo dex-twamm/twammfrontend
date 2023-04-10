@@ -1,4 +1,4 @@
-import { BigNumber, ethers } from "ethers";
+import { BigNumber, ethers, providers } from "ethers";
 import { Dispatch, SetStateAction } from "react";
 import { POPUP_MESSAGE } from "../constants";
 import { SelectedNetworkType } from "../providers/context/NetworkProvider";
@@ -12,7 +12,7 @@ export const spotPrice = async (
   setSpotPriceLoading: Dispatch<SetStateAction<boolean>>,
   tokenA: string,
   tokenB: string,
-  web3provider: any,
+  web3provider: providers.Web3Provider,
   account: string,
   deadline: number,
   setFormErrors: Dispatch<SetStateAction<{ balError: string | undefined }>>,
@@ -37,7 +37,7 @@ export const spotPrice = async (
       tokenIn.decimals
     );
 
-    const signer: any = web3provider.getSigner();
+    const signer = web3provider.getSigner();
     const walletAddress: string = account;
 
     //for shortswap

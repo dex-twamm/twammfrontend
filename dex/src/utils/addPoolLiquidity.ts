@@ -1,4 +1,4 @@
-import { BigNumber, Contract } from "ethers";
+import { BigNumber, Contract, providers } from "ethers";
 import { defaultAbiCoder } from "ethers/lib/utils";
 import { MAX_UINT256 } from ".";
 import { VAULT_CONTRACT_ABI } from "../constants";
@@ -12,7 +12,7 @@ export const addPoolLiquidity = async (
   tokenOneAmountWei: BigNumber,
   tokenTwoAmountWei: BigNumber,
   walletAddress: string,
-  web3provider: any,
+  web3provider: providers.Web3Provider,
   currentNetwork: SelectedNetworkType
 ) => {
   const encodedRequest = defaultAbiCoder.encode(

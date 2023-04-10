@@ -1,4 +1,4 @@
-import { ethers, BigNumber } from "ethers";
+import { ethers, BigNumber, providers } from "ethers";
 import { Dispatch, SetStateAction } from "react";
 import { POPUP_MESSAGE } from "../constants";
 import { SelectedNetworkType } from "../providers/context/NetworkProvider";
@@ -9,7 +9,7 @@ import { swapTokens } from "./swap";
 export const _swapTokens = async (
   ethBalance: number,
   swapAmount: number,
-  web3provider: any,
+  web3provider: providers.Web3Provider,
   tokenA: string,
   tokenB: string,
   account: string,
@@ -38,7 +38,7 @@ export const _swapTokens = async (
 
   if (swapAmountWei.lte(walletBalanceWei)) {
     try {
-      const signer: any = web3provider.getSigner();
+      const signer = web3provider.getSigner();
       const assetIn: string = tokenA;
       const assetOut: string = tokenB;
       const walletAddress: string = account;

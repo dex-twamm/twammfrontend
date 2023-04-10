@@ -3,11 +3,11 @@ import { POPUP_MESSAGE } from "../constants";
 import { SelectedNetworkType } from "../providers/context/NetworkProvider";
 import { getPoolId, getPoolTokenAddresses } from "./poolUtils";
 import { withdrawPoolLiquidity } from "./withdrawPoolLiquidity";
-import { BigNumber } from "ethers";
+import { BigNumber, providers } from "ethers";
 
 export const _withdrawPoolLiquidity = async (
   walletAddress: string,
-  web3provider: any,
+  web3provider: providers.Web3Provider,
   currentNetwork: SelectedNetworkType,
   bptAmountIn: BigNumber,
   setTransactionHash: Dispatch<SetStateAction<string>>,

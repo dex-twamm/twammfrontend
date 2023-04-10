@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { ethers, Signer, providers } from "ethers";
 import { defaultAbiCoder } from "ethers/lib/utils";
 import { getPoolId, getPoolTokenAddresses, getPoolTokens } from "./poolUtils";
 
@@ -8,7 +8,7 @@ import { SelectedNetworkType } from "../providers/context/NetworkProvider";
 
 export async function cancelLTO(
   walletAddress: string,
-  signer: any,
+  signer: Signer | providers.Provider,
   orderId: number,
   currentNetwork: SelectedNetworkType
 ): Promise<any> {
@@ -39,7 +39,7 @@ export async function cancelLTO(
 
 export async function withdrawLTO(
   walletAddress: string,
-  signer: any,
+  signer: Signer | providers.Provider,
   orderId: number,
   currentNetwork: SelectedNetworkType,
   hasCallStatic?: boolean
@@ -83,7 +83,7 @@ export async function withdrawLTO(
 }
 
 export async function getPoolBalance(
-  signer: any,
+  signer: Signer | providers.Provider,
   tokenAddress: string,
   currentNetwork: SelectedNetworkType
 ): Promise<string> {

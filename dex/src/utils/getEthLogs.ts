@@ -1,4 +1,4 @@
-import { Contract, ethers } from "ethers";
+import { Contract, ethers, Signer, providers } from "ethers";
 import { TWAMM_POOL_ABI } from "../constants";
 import { SelectedNetworkType } from "../providers/context/NetworkProvider";
 import {
@@ -9,10 +9,8 @@ import {
 import { getLongTermOrder } from "./longSwap";
 import { getPoolContractAddress } from "./poolUtils";
 
-type SignerOrProvider = ConstructorParameters<typeof Contract>[2];
-
 export async function getEthLogs(
-  signer: SignerOrProvider,
+  signer: Signer | providers.Provider,
   walletAddress: string,
   currentNetwork: SelectedNetworkType
 ) {

@@ -1,4 +1,4 @@
-import { BigNumber, Contract, ethers } from "ethers";
+import { BigNumber, Contract, ethers, Signer, providers } from "ethers";
 import { ERC20_TOKEN_CONTRACT_ABI } from "../constants";
 import { SelectedNetworkType } from "../providers/context/NetworkProvider";
 import { getPoolId, getPoolTokenAddresses, getPoolTokens } from "./poolUtils";
@@ -9,7 +9,7 @@ import { TokenType } from "./pool";
 type MyArrayOfObjects = { [key: string]: number };
 
 export const getTokensBalance = async (
-  signer: any,
+  signer: Signer | providers.Provider,
   walletAddress: string,
   currentNetwork: SelectedNetworkType
 ): Promise<MyArrayOfObjects[]> => {
@@ -43,7 +43,7 @@ export const getTokensBalance = async (
 };
 
 export const getPoolTokenBalances = async (
-  signer: any,
+  signer: Signer | providers.Provider,
   poolTokensConfig: Array<TokenType>,
   currentNetwork: SelectedNetworkType
 ) => {

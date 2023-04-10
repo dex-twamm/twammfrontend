@@ -1,4 +1,4 @@
-import { BigNumber, ethers } from "ethers";
+import { BigNumber, ethers, providers } from "ethers";
 import { Dispatch, SetStateAction } from "react";
 import { POPUP_MESSAGE } from "../constants";
 import { SelectedNetworkType } from "../providers/context/NetworkProvider";
@@ -10,7 +10,7 @@ export const verifyLongSwap = async (
   setLongSwapVerifyLoading: Dispatch<SetStateAction<boolean>>,
   tokenA: string,
   tokenB: string,
-  web3provider: any,
+  web3provider: providers.Web3Provider,
   account: string,
   setLongSwapFormErrors: Dispatch<
     SetStateAction<{ balError: string | undefined }>
@@ -24,7 +24,7 @@ export const verifyLongSwap = async (
 
     const tokens = getPoolTokens(currentNetwork);
 
-    const signer: any = web3provider.getSigner();
+    const signer = web3provider.getSigner();
     const walletAddress: string = account;
 
     try {
