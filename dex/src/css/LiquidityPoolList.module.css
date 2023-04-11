@@ -146,14 +146,14 @@
     linear-gradient(112.83deg, #cad7f5 0%, #d1c9f1 110.84%);
   box-shadow: -10px 48.5967px 140px rgba(126, 123, 160, 0.2);
   backdrop-filter: blur(9.5px);
-  border-radius: 10.7993px;
+  border-radius: 8px;
   border: 1px solid white;
 }
 
 .buttonTd {
   display: flex;
   align-items: center;
-  gap: 5px;
+  justify-content: space-between;
 }
 
 .addLiquidityButton {
@@ -169,7 +169,7 @@
   border-top-right-radius: 8px;
   border: 0px;
   border-bottom: 1px solid white;
-  min-width: 100px;
+  width: 100px;
 }
 
 .removeLiquidityButton {
@@ -182,8 +182,9 @@
   outline: none;
   border: none;
   cursor: pointer;
-  border-radius: 8px;
-  min-width: 100px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  width: 100px;
 }
 
 @media (max-width: 1200px) {

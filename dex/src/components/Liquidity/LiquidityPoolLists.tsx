@@ -8,6 +8,8 @@ import WithdrawLiquidity from "./WithdrawLiquidity";
 import LiquidityPoolListTableRow from "./LiquidityPoolListTableRow";
 import { useNetworkContext } from "../../providers/context/NetworkProvider";
 import { useLocation } from "react-router-dom";
+import circles from "../../images/circles.png";
+
 export interface TableColumnsTypes {
   id: string;
   label: string | JSX.Element;
@@ -16,7 +18,7 @@ export interface TableColumnsTypes {
 const tableColumns: TableColumnsTypes[] = [
   {
     id: "tokens",
-    label: <TokenIcon sx={{ paddingTop: "5px" }} />,
+    label: <img src={circles} alt="circles" />,
   },
   {
     id: "composition",
