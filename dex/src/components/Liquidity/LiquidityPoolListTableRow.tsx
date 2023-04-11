@@ -12,6 +12,7 @@ import { TableColumnsTypes } from "./LiquidityPoolLists";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { ethers } from "ethers";
 
 interface PropTypes {
   tableColumns: TableColumnsTypes[];
@@ -51,7 +52,8 @@ const LiquidityPoolListTableRow = ({
       const signer = web3provider?.getSigner();
       const poolContract = getPoolContract(currentNetwork, signer);
       const balance = await poolContract.balanceOf(account);
-      setBptAmountIn(parseFloat(balance.toString()));
+      console.log(balance);
+      setBptAmountIn(parseFloat(balance.div(10 ** 12).toString()));
     };
     if (web3provider?.getSigner()) getPoolTokenData();
   }, [web3provider, account, setBptAmountIn, selectedNetwork, index]);
