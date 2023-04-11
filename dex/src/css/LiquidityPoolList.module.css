@@ -1,3 +1,7 @@
+::-webkit-scrollbar {
+  display: none;
+}
+
 .rootBox {
   display: flex;
   flex-direction: column;
@@ -18,28 +22,69 @@
   border: 1px solid white;
   backdrop-filter: blur(2px);
   border-radius: 16px;
+  overflow: scroll;
+}
+
+.tableHead {
+  background: linear-gradient(
+    241.25deg,
+    rgba(255, 255, 255, 0.45) 4.4%,
+    rgba(255, 255, 255, 0.65) 61.77%,
+    rgba(255, 255, 255, 0.54) 119.94%
+  );
+  border-radius: 6px;
+  padding: 20px;
+}
+
+.poolTable {
+  padding: 15px;
+}
+
+.tableHead {
+  background: linear-gradient(
+    241.25deg,
+    rgba(255, 255, 255, 0.45) 4.4%,
+    rgba(255, 255, 255, 0.65) 61.77%,
+    rgba(255, 255, 255, 0.54) 119.94%
+  );
+  margin-bottom: 10px;
+}
+
+.tableColumnCell {
+  margin-bottom: 10px;
 }
 
 .tableColumnLabel {
-  font-size: 16px;
+  font-family: "Open Sans";
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   white-space: nowrap;
+  padding: 8px;
 }
 
 .styledBoxFive {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 5px;
 }
 
 .styledAvatarOne {
-  height: 35px;
-  width: 35px;
+  height: 33px;
+  width: 33px;
+  border: 1px solid white;
 }
 
 .styledAvatarTwo {
-  left: -10px;
-  height: 35px;
-  width: 35px;
+  height: 33px;
+  width: 33px;
+  border: 1px solid white;
 }
 
 .symbolBox {
@@ -65,11 +110,13 @@
   align-self: flex-end;
 }
 
-.buttonBox {
-  display: flex;
-  /* flex-direction: column; */
-  justify-content: space-between;
-  gap: 5px;
+.dataRow td {
+  padding: 12px 10px;
+  min-width: 150px;
+}
+
+.composition {
+  min-width: 300px !important;
 }
 
 .dataRow:hover {
@@ -81,46 +128,73 @@
     ),
     rgba(255, 255, 255, 0.2);
   transition: all 0.5s ease-in;
+  padding: 10px 0;
 }
 
-.removeLiquidityButton {
-  font-family: Open Sans;
-  outline: none;
-  color: white !important;
-  border: none;
-  font-size: 14px;
-  cursor: pointer;
-  background-color: #ff6969 !important;
-  border-radius: 8px;
+.buttonBox {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.55),
+      rgba(255, 255, 255, 0.55)
+    ),
+    linear-gradient(112.83deg, #cad7f5 0%, #d1c9f1 110.84%);
+  box-shadow: -10px 48.5967px 140px rgba(126, 123, 160, 0.2);
+  backdrop-filter: blur(9.5px);
+  border-radius: 10.7993px;
+  border: 1px solid white;
 }
 
 .addLiquidityButton {
-  font-family: Open Sans;
-  outline: none;
-  color: white !important;
-  border: none;
+  font-family: "Open Sans";
+  font-weight: 600;
   font-size: 14px;
+  line-height: 24px;
+  letter-spacing: 0.04em;
+  color: #554994;
+  outline: none;
+  border: none;
   cursor: pointer;
-  background-color: #554994 !important;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  border-bottom: 1px solid white;
+}
+
+.removeLiquidityButton {
+  font-family: "Open Sans";
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 24px;
+  letter-spacing: 0.04em;
+  color: #ce3131 !important;
+  outline: none;
+  border: none;
+  cursor: pointer;
   border-radius: 8px;
 }
 
-.addLiquidityButton:hover {
-  background-color: #554994;
+@media (max-width: 1200px) {
+  .dataRow td {
+    min-width: 120px;
+  }
 }
 
-.removeLiquidityButton:hover {
-  background-color: #ff6969;
+@media (max-width: 1068px) {
+  .rootBox {
+    width: 100%;
+    padding: 50px;
+  }
 }
 
-@media (max-width: 968px) {
-  .tableColumnCell:nth-child(4) {
+@media (max-width: 1024px) {
+  /* .tableColumnCell:nth-child(4) {
     display: none;
   }
 
   .dataRow td:nth-child(4) {
     display: none;
-  }
+  } */
 
   .removeLiquidityButton,
   .addLiquidityButton {
@@ -133,8 +207,13 @@
   }
 }
 
+.dataRow p {
+  font-family: "Open Sans";
+  font-size: 15px;
+}
+
 @media (max-width: 920px) {
-  .tableColumnCell:nth-child(3),
+  /* .tableColumnCell:nth-child(3),
   .tableColumnCell:nth-child(4) {
     display: none;
   }
@@ -142,22 +221,20 @@
   .dataRow td:nth-child(3),
   .dataRow td:nth-child(4) {
     display: none;
-  }
+  } */
 }
 
 @media (max-width: 768px) {
-  /* .tableColumnCell:nth-child(5) {
-    display: none;
+  .rootBox {
+    padding: 0 20px;
   }
-
-  .dataRow td:nth-child(5) {
-    display: none;
-  } */
+  .composition {
+    min-width: 250px !important;
+  }
 }
 
 @media (max-width: 520px) {
   .rootBox {
-    width: 100%;
-    padding: 0 5px;
+    padding: 0 10px;
   }
 }

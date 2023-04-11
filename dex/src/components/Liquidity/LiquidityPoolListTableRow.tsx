@@ -1,4 +1,4 @@
-import { Avatar, Button, TableCell, TableRow } from "@mui/material";
+import { Avatar, Button } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,8 @@ import { getPoolContract } from "../../utils/getContracts";
 import { TokenType } from "../../utils/pool";
 import { getPoolId } from "../../utils/poolUtils";
 import { TableColumnsTypes } from "./LiquidityPoolLists";
+import AddIcon from "@mui/icons-material/Add";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 interface PropTypes {
   tableColumns: TableColumnsTypes[];
@@ -54,11 +56,11 @@ const LiquidityPoolListTableRow = ({
 
   return (
     <>
-      <TableRow key={index} className={styles.dataRow}>
+      <tr key={index} className={styles.dataRow}>
         {tableColumns?.map((column, idx) => {
           if (column.id === "tokens") {
             return (
-              <TableCell key={idx}>
+              <td key={idx}>
                 <Box className={styles.styledBoxFive}>
                   <Avatar
                     className={styles.styledAvatarOne}
@@ -72,12 +74,12 @@ const LiquidityPoolListTableRow = ({
                     src={item[1]?.logo}
                   />
                 </Box>
-              </TableCell>
+              </td>
             );
           }
           if (column.id === "composition") {
             return (
-              <TableCell key={idx}>
+              <td key={idx} className={styles.composition}>
                 <Box className={styles.symbolBox}>
                   <p>
                     {item[0]?.symbol} <span>50%</span>
@@ -86,33 +88,40 @@ const LiquidityPoolListTableRow = ({
                     {item[1]?.symbol} <span>50%</span>
                   </p>
                 </Box>
-              </TableCell>
+              </td>
             );
           }
           if (column.id === "pool_value") {
             return (
-              <TableCell key={idx}>
+              <td key={idx}>
                 <p> -- </p>
-              </TableCell>
+              </td>
             );
           }
           if (column.id === "volume") {
             return (
-              <TableCell key={idx}>
+              <td key={idx}>
                 <p> -- </p>
-              </TableCell>
+              </td>
             );
           }
           if (column.id === "apr") {
             return (
-              <TableCell key={idx}>
+              <td key={idx}>
                 <p className={styles.apr}> -- </p>
-              </TableCell>
+              </td>
+            );
+          }
+          if (column.id === "liquidity") {
+            return (
+              <td key={idx}>
+                <p> {bptAmountIn} </p>
+              </td>
             );
           }
           if (column.id === "action") {
             return (
-              <TableCell key={idx} align={column.align}>
+              <td key={idx} className={styles.buttonTd}>
                 <Box className={styles.buttonBox}>
                   <Button
                     className={styles.addLiquidityButton}
@@ -120,7 +129,8 @@ const LiquidityPoolListTableRow = ({
                       handleAddLiquidity(index);
                     }}
                   >
-                    Add {bptAmountIn}
+                    <AddIcon />
+                    Add
                   </Button>
                   {bptAmountIn > 0 ? (
                     <Button
@@ -129,18 +139,19 @@ const LiquidityPoolListTableRow = ({
                         handleWithdrawLiquidity(index);
                       }}
                     >
+                      <DeleteForeverIcon />
                       Remove
                     </Button>
                   ) : (
                     <></>
                   )}
                 </Box>
-              </TableCell>
+              </td>
             );
           }
-          return <TableCell key={idx} />;
+          return <td key={idx} />;
         })}
-      </TableRow>
+      </tr>
     </>
   );
 };
