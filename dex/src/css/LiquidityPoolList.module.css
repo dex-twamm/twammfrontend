@@ -146,6 +146,12 @@
   border: 1px solid white;
 }
 
+.buttonTd {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
 .addLiquidityButton {
   font-family: "Open Sans";
   font-weight: 600;
@@ -154,11 +160,12 @@
   letter-spacing: 0.04em;
   color: #554994;
   outline: none;
-  border: none;
   cursor: pointer;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
+  border: 0px;
   border-bottom: 1px solid white;
+  min-width: 100px;
 }
 
 .removeLiquidityButton {
@@ -172,6 +179,7 @@
   border: none;
   cursor: pointer;
   border-radius: 8px;
+  min-width: 100px;
 }
 
 @media (max-width: 1200px) {

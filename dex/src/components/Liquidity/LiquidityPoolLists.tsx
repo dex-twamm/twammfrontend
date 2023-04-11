@@ -24,15 +24,7 @@ const tableColumns: TableColumnsTypes[] = [
   },
   {
     id: "pool_value",
-    label: "Pool value",
-  },
-  // {
-  //   id: "volume",
-  //   label: "Volume(24h)",
-  // },
-  {
-    id: "apr",
-    label: "APR",
+    label: "Pool value (Apr)",
   },
   {
     id: "liquidity",

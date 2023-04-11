@@ -11,6 +11,7 @@ import { getPoolId } from "../../utils/poolUtils";
 import { TableColumnsTypes } from "./LiquidityPoolLists";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 interface PropTypes {
   tableColumns: TableColumnsTypes[];
@@ -26,6 +27,7 @@ const LiquidityPoolListTableRow = ({
   const { web3provider, account } = useShortSwapContext();
   const { selectedNetwork } = useNetworkContext();
   const navigate = useNavigate();
+  const [showRemoveBtn, setShowRemoveBtn] = useState(false);
   const [bptAmountIn, setBptAmountIn] = useState(0);
 
   const handleAddLiquidity = (index: number) => {
@@ -105,13 +107,6 @@ const LiquidityPoolListTableRow = ({
               </td>
             );
           }
-          if (column.id === "apr") {
-            return (
-              <td key={idx}>
-                <p className={styles.apr}> -- </p>
-              </td>
-            );
-          }
           if (column.id === "liquidity") {
             return (
               <td key={idx}>
@@ -132,7 +127,7 @@ const LiquidityPoolListTableRow = ({
                     <AddIcon />
                     Add
                   </Button>
-                  {bptAmountIn > 0 ? (
+                  {bptAmountIn > 0 && showRemoveBtn ? (
                     <Button
                       className={styles.removeLiquidityButton}
                       onClick={() => {
@@ -146,6 +141,10 @@ const LiquidityPoolListTableRow = ({
                     <></>
                   )}
                 </Box>
+                <MoreVertIcon
+                  onClick={() => setShowRemoveBtn((prev) => !prev)}
+                  sx={{ cursor: "pointer" }}
+                />
               </td>
             );
           }
