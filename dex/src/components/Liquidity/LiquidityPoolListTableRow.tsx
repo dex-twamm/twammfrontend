@@ -12,7 +12,6 @@ import { TableColumnsTypes } from "./LiquidityPoolLists";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { ethers } from "ethers";
 
 interface PropTypes {
   tableColumns: TableColumnsTypes[];
@@ -98,21 +97,15 @@ const LiquidityPoolListTableRow = ({
           if (column.id === "pool_value") {
             return (
               <td key={idx}>
-                <p> -- </p>
+                <p className={styles.tableDataP}> -- </p>
               </td>
             );
           }
-          if (column.id === "volume") {
-            return (
-              <td key={idx}>
-                <p> -- </p>
-              </td>
-            );
-          }
+
           if (column.id === "liquidity") {
             return (
               <td key={idx}>
-                <p> {bptAmountIn} </p>
+                <p className={styles.tableDataP}> {bptAmountIn} </p>
               </td>
             );
           }
