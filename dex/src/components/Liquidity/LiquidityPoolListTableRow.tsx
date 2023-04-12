@@ -67,7 +67,7 @@ const LiquidityPoolListTableRow = ({
                 <Box className={styles.styledBoxFive}>
                   <Avatar
                     className={styles.styledAvatarOne}
-                    alt="Testv4"
+                    alt="TestV4"
                     src={item[0]?.logo}
                   />
                   <Avatar

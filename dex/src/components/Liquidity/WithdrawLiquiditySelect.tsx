@@ -34,7 +34,7 @@ const WithdrawLiquiditySelect = ({
           <Box className={wStyles.styledBoxFive}>
             <Avatar
               className={wStyles.styledAvatarOne}
-              alt="Testv4"
+              alt="TestV4"
               src={selectedTokenPair[0].logo}
               sx={{ width: "25px", height: "25px" }}
             />

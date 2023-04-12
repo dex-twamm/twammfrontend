@@ -410,7 +410,7 @@ const AddLiquidity = () => {
                   }}
                   disabled={
                     hasBalancerOrTransactionError ||
-                    parseFloat(tokenAInputAmount) == 0 ||
+                    parseFloat(tokenAInputAmount) === 0 ||
                     parseFloat(tokenAInputAmount) > balanceA
                   }
                 >

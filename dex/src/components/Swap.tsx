@@ -354,7 +354,7 @@ const Swap = (props: PropTypes) => {
               }}
               disabled={
                 hasBalancerOrTransactionError ||
-                parseFloat(swapAmount) == 0 ||
+                parseFloat(swapAmount) === 0 ||
                 parseFloat(swapAmount) > tokenA?.balance ||
                 !tokenA.balance
               }
