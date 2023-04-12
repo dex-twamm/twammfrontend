@@ -22,6 +22,8 @@ const useNetworkState = () => {
     poolId: 0,
   });
 
+  const [isInitialized, setIsInitialized] = useState(false);
+
   useEffect(() => {
     const ethereum = getEthereumFromWindow();
     ethereum?.request?.({ method: "net_version" }).then((net_version) => {
@@ -40,23 +42,27 @@ const useNetworkState = () => {
         chainId: initialNetwork?.chainId,
         poolId: parseFloat(localStorage.getItem("poolId") ?? "0"),
       });
+
+      setIsInitialized(true);
     });
   }, []);
 
   return {
     selectedNetwork,
     setSelectedNetwork,
+    isInitialized,
   };
 };
 
 type NetworkStateValue = ReturnType<typeof useNetworkState>;
 
 const NetworkStateProvider: React.FC<NetworkProviderProps> = ({ children }) => {
-  const networkState = useNetworkState();
+  const { selectedNetwork, setSelectedNetwork, isInitialized } =
+    useNetworkState();
+  const value = { selectedNetwork, setSelectedNetwork, isInitialized };
+  if (!isInitialized) return null;
   return (
-    <NetworkContext.Provider value={networkState}>
-      {children}
-    </NetworkContext.Provider>
+    <NetworkContext.Provider value={value}>{children}</NetworkContext.Provider>
   );
 };
 

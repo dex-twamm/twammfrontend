@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { useEffect, useState } from "react";
 import { RiArrowDropDownLine } from "react-icons/ri";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { POPUP_MESSAGE } from "../constants";
 import styles from "../css/Navbar.module.css";
 import { toHex, truncateAddress } from "../utils";
@@ -17,6 +17,7 @@ const Navbar = () => {
   const [showDisconnect, setShowDisconnect] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const { selectedNetwork, setSelectedNetwork } = useNetworkContext();
 
@@ -43,6 +44,7 @@ const Navbar = () => {
           method: "wallet_switchEthereumChain",
           params: [{ chainId: toHex(id) }],
         });
+        navigate("/");
         window.location.reload();
       } catch (err) {
         console.error(err);

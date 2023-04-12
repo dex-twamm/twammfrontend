@@ -51,7 +51,6 @@ const LiquidityPoolListTableRow = ({
       const signer = web3provider?.getSigner();
       const poolContract = getPoolContract(currentNetwork, signer);
       const balance = await poolContract.balanceOf(account);
-      console.log(balance);
       setBptAmountIn(parseFloat(balance.div(10 ** 12).toString()));
     };
     if (web3provider?.getSigner()) getPoolTokenData();
