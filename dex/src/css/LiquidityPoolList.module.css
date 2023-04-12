@@ -196,7 +196,7 @@
 @media (max-width: 1068px) {
   .rootBox {
     width: 100%;
-    padding: 50px;
+    padding: 0 50px 50px;
   }
 }
 

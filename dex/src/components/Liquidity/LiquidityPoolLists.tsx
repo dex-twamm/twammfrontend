@@ -1,6 +1,5 @@
 import styles from "../../css/LiquidityPoolList.module.css";
 import Tabs from "../Tabs";
-import TokenIcon from "@mui/icons-material/Token";
 import { getPoolTokens, getPoolLength } from "../../utils/poolUtils";
 import { Box } from "@mui/system";
 import AddLiquidity from "./AddLiquidity";
