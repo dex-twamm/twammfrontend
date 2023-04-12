@@ -55,7 +55,6 @@
 }
 
 .tableColumnLabel {
-  font-family: "Open Sans";
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
@@ -157,23 +156,25 @@
 }
 
 .addLiquidityButton {
-  font-family: "Open Sans";
   font-weight: 600;
   font-size: 14px;
   line-height: 24px;
   letter-spacing: 0.04em;
   color: #554994;
   outline: none;
+  border: none;
   cursor: pointer;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-  border: 0px;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid white !important;
   width: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 0;
 }
 
 .removeLiquidityButton {
-  font-family: "Open Sans";
   font-weight: 600;
   font-size: 14px;
   line-height: 24px;
@@ -185,6 +186,10 @@
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
   width: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 0;
 }
 
 @media (max-width: 1200px) {
@@ -221,7 +226,6 @@
 }
 
 .dataRow p {
-  font-family: "Open Sans";
   font-size: 15px;
 }
 

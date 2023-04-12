@@ -85,7 +85,7 @@ function App() {
       setSwapAmount("");
       setExpectedSwapOut(0);
     }
-  }, [transactionHash]);
+  }, [setExpectedSwapOut, setSwapAmount, transactionHash]);
 
   // Use Memo
   useMemo(() => {
@@ -110,7 +110,7 @@ function App() {
       }
     };
     allowance();
-  }, [tokenA, transactionHash, selectedNetwork]);
+  }, [tokenA, account, web3provider, selectedNetwork, setAllowance]);
 
   // Getting Each Token Balances
   const tokenBalance = useCallback(async () => {
@@ -153,7 +153,16 @@ function App() {
         setOrderLogsLoading(false);
       }
     }
-  }, [account, web3provider, selectedNetwork]);
+  }, [
+    setLoading,
+    setOrderLogsLoading,
+    account,
+    web3provider,
+    selectedNetwork,
+    setTokenBalances,
+    setLastVirtualOrderBlock,
+    setOrderLogsDecoded,
+  ]);
 
   useEffect(() => {
     tokenBalance();
@@ -168,7 +177,7 @@ function App() {
       setWalletConnected(true);
       setBalance(parseFloat(balance));
     }
-  }, []);
+  }, [setAccount, setBalance, setWalletConnected, tokenBalance]);
 
   useEffect(() => {
     let signer = web3provider?.getSigner();
@@ -191,7 +200,7 @@ function App() {
         }
       };
     }
-  }, [web3provider]);
+  }, [setAccount, setBalance, setWalletConnected, web3provider]);
 
   // This will automatically change the account of our app without refreshing when the account in metamask is changed.
   useEffect(() => {
@@ -206,7 +215,7 @@ function App() {
         ethereum.removeListener("accountsChanged", accountsChangedListener);
       };
     }
-  }, []);
+  }, [setAccount]);
 
   useEffect(() => {
     connectWallet().then((res) => {
@@ -219,14 +228,28 @@ function App() {
       setWalletConnected(true);
       setSelectedNetwork(selectedNetwork);
     });
-  }, [account]);
+  }, [
+    account,
+    setAccount,
+    setBalance,
+    setCurrentBlock,
+    setSelectedNetwork,
+    setWalletConnected,
+    setWeb3provider,
+  ]);
 
   useEffect(() => {
     setSwapAmount("");
     setExpectedSwapOut(0);
     setFormErrors({ balError: "" });
     setSpotPrice(0);
-  }, [selectedNetwork]);
+  }, [
+    selectedNetwork,
+    setExpectedSwapOut,
+    setFormErrors,
+    setSpotPrice,
+    setSwapAmount,
+  ]);
 
   return (
     <>

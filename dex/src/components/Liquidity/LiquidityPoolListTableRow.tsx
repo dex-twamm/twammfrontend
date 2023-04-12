@@ -112,7 +112,7 @@ const LiquidityPoolListTableRow = ({
             return (
               <td key={idx} className={styles.buttonTd}>
                 <Box className={styles.buttonBox}>
-                  <Button
+                  <button
                     className={styles.addLiquidityButton}
                     onClick={() => {
                       handleAddLiquidity(index);
@@ -120,9 +120,9 @@ const LiquidityPoolListTableRow = ({
                   >
                     <AddIcon />
                     Add
-                  </Button>
+                  </button>
                   {bptAmountIn > 0 && showRemoveBtn ? (
-                    <Button
+                    <button
                       className={styles.removeLiquidityButton}
                       onClick={() => {
                         handleWithdrawLiquidity(index);
@@ -130,7 +130,7 @@ const LiquidityPoolListTableRow = ({
                     >
                       <DeleteForeverIcon />
                       Remove
-                    </Button>
+                    </button>
                   ) : (
                     <></>
                   )}
