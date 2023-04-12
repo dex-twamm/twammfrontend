@@ -66,13 +66,6 @@ const Swap = (props: PropTypes) => {
   };
 
   useEffect(() => {
-    return () => {
-      setExpectedSwapOut(0);
-      setSpotPrice(0);
-    };
-  }, []);
-
-  useEffect(() => {
     if (tokenA?.symbol === tokenB?.symbol)
       setTokenB({
         symbol: "Select Token",

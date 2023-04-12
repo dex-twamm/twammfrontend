@@ -179,7 +179,7 @@ const LongSwap = (props: PropTypes) => {
       setTransactionHash("");
       setMessage("");
     };
-  }, []);
+  }, [setMessage, setTargetDate, setTransactionHash]);
 
   useEffect(() => {
     if (!parseFloat(swapAmount)) {

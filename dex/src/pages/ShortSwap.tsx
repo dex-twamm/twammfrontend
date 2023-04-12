@@ -85,7 +85,20 @@ const ShortSwap = () => {
       clearTimeout(interval1);
       clearTimeout(interval2);
     };
-  }, [swapAmount, tokenB, tokenA, allowance, selectedNetwork]);
+  }, [
+    swapAmount,
+    tokenB,
+    tokenA,
+    allowance,
+    selectedNetwork,
+    setSpotPriceLoading,
+    web3provider,
+    account,
+    deadline,
+    setFormErrors,
+    setSpotPrice,
+    setExpectedSwapOut,
+  ]);
 
   const [showSettings, setShowSettings] = useState(false);
 

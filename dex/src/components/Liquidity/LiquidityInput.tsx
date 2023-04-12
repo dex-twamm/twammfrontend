@@ -110,13 +110,25 @@ const LiquidityInput = ({
       setSpotPrice(0);
       setBalancerErrors({ balError: undefined });
     };
-  }, [tokenInputAmount, tokenA, tokenB, allowance]);
+  }, [
+    tokenInputAmount,
+    tokenA,
+    tokenB,
+    allowance,
+    setSpotPriceLoading,
+    web3provider,
+    account,
+    deadline,
+    setSpotPrice,
+    setExpectedSwapOut,
+    currentNetwork,
+  ]);
 
   useEffect(() => {
     balancerErrors?.balError !== undefined
       ? setHasBalancerOrTransactionError(true)
       : setHasBalancerOrTransactionError(false);
-  }, [balancerErrors]);
+  }, [balancerErrors, setHasBalancerOrTransactionError]);
 
   useEffect(() => {
     return () => {

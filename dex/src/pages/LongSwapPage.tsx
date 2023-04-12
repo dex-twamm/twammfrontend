@@ -83,7 +83,18 @@ const LongSwapPage = () => {
     return () => {
       clearTimeout(verifyLongSwapInterval);
     };
-  }, [swapAmount, tokenB, tokenA, numberOfBlockIntervals, selectedNetwork]);
+  }, [
+    swapAmount,
+    tokenB,
+    tokenA,
+    numberOfBlockIntervals,
+    selectedNetwork,
+    setLongSwapVerifyLoading,
+    web3provider,
+    account,
+    setLongSwapFormErrors,
+    allowance,
+  ]);
 
   async function LongSwapButtonClick() {
     try {

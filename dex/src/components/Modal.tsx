@@ -117,7 +117,14 @@ const Modal = ({
         tokenA?.address,
         selectedNetwork
       );
-  }, [tokenA, setFormErrors]);
+  }, [
+    tokenA,
+    setFormErrors,
+    swapAmount,
+    web3provider,
+    account,
+    selectedNetwork,
+  ]);
 
   let tokensList;
   let tokensDetail = tokenDetails;
