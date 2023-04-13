@@ -254,15 +254,29 @@ const AddLiquidity = () => {
     }
   };
 
+  const getParsedInputAmounts = (
+    tokenAInputAmount: string,
+    tokenBInputAmount: string
+  ) => {
+    let tokenAAmount = parseFloat(tokenAInputAmount);
+    let tokenBAmount = parseFloat(tokenBInputAmount);
+
+    if (!tokenAAmount) {
+      tokenAAmount = 0;
+    }
+
+    if (!tokenBAmount) {
+      tokenBAmount = 0;
+    }
+
+    return [tokenAAmount, tokenBAmount];
+  };
+
   useEffect(() => {
-    const inputAmounts =
-      !parseFloat(tokenAInputAmount) && !parseFloat(tokenBInputAmount)
-        ? [0, 0]
-        : parseFloat(tokenAInputAmount) && !parseFloat(tokenBInputAmount)
-        ? [parseFloat(tokenAInputAmount), 0]
-        : !parseFloat(tokenAInputAmount) && parseFloat(tokenBInputAmount)
-        ? [0, parseFloat(tokenBInputAmount)]
-        : [parseFloat(tokenAInputAmount), parseFloat(tokenBInputAmount)];
+    const inputAmounts = getParsedInputAmounts(
+      tokenAInputAmount,
+      tokenBInputAmount
+    );
 
     if (poolTokenBalances) {
       const currentBalances = [poolTokenBalances[0], poolTokenBalances[1]];
