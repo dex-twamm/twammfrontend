@@ -7,7 +7,10 @@ export function getProportionalAmount(
   else return (1 / spotPrice) * inputTokenAmount;
 }
 
-export function priceImpact(inputAmounts: number[], currentBalances: number[]) {
+export function getPriceImpact(
+  inputAmounts: number[],
+  currentBalances: number[]
+) {
   const currentSpotPrice = getSpotPrice(currentBalances);
   const newSpotPrice = getSpotPrice([
     currentBalances[0] + inputAmounts[0],

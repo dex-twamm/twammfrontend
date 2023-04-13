@@ -17,7 +17,7 @@ interface PropTypes {
   dollarValueOfInputAmount: number;
   selectedTokenPair: TokenType[];
   currentNetwork: SelectedNetworkType;
-  priceImpactValue: number;
+  priceImpact: number;
 }
 
 const AddLiquidityPreview = ({
@@ -27,7 +27,7 @@ const AddLiquidityPreview = ({
   dollarValueOfInputAmount,
   selectedTokenPair,
   currentNetwork,
-  priceImpactValue,
+  priceImpact,
 }: PropTypes) => {
   const { web3provider, account, setTransactionHash, setLoading, setError } =
     useShortSwapContext();
@@ -118,9 +118,9 @@ const AddLiquidityPreview = ({
               <div className={styles.item}>
                 <p className={styles.total}>Price impact</p>
                 <p className={styles.data}>
-                  {priceImpactValue === 0.01
+                  {priceImpact === 0.01
                     ? "<.01"
-                    : getProperFixedValue(priceImpactValue)}
+                    : getProperFixedValue(priceImpact)}
                   %
                   <span>
                     <Tooltip

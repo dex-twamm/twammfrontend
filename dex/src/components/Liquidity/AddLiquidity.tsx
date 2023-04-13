@@ -28,7 +28,7 @@ import {
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   getSpotPrice,
-  priceImpact,
+  getPriceImpact,
   getProportionalAmount,
 } from "../../utils/balancerMath";
 import { getPoolTokens } from "../../utils/poolUtils";
@@ -62,7 +62,7 @@ const AddLiquidity = () => {
   const [hasBalancerOrTransactionError, setHasBalancerOrTransactionError] =
     useState(true);
   const [maxText, setMaxText] = useState("Max");
-  const [priceImpactValue, setPriceImpactValue] = useState(0);
+  const [priceImpact, setPriceImpact] = useState(0);
   const [poolTokenBalances, setPoolTokenBalances] = useState<number[]>();
 
   const [hasProportionalSuggestion, setHasProportionalSuggestion] =
@@ -269,10 +269,10 @@ const AddLiquidity = () => {
 
     if (poolTokenBalances) {
       const currentBalances = [poolTokenBalances[0], poolTokenBalances[1]];
-      const impactValue = priceImpact(inputAmounts, currentBalances);
+      const impactValue = getPriceImpact(inputAmounts, currentBalances);
 
-      if (impactValue && impactValue < 0.01) setPriceImpactValue(0.01);
-      else setPriceImpactValue(impactValue);
+      if (impactValue && impactValue < 0.01) setPriceImpact(0.01);
+      else setPriceImpact(impactValue);
     }
   }, [tokenAInputAmount, tokenBInputAmount, poolTokenBalances]);
 
@@ -384,7 +384,7 @@ const AddLiquidity = () => {
                   </div>
                   <div className={wStyles.value}>
                     <p>
-                      {getPriceImpactValueString(priceImpactValue)}
+                      {getPriceImpactValueString(priceImpact)}
                       <Tooltip
                         arrow
                         placement="top"
@@ -473,7 +473,7 @@ const AddLiquidity = () => {
             dollarValueOfInputAmount={dollarValueOfInputAmount}
             selectedTokenPair={[tokenA, tokenB]}
             currentNetwork={currentNetwork}
-            priceImpactValue={priceImpactValue}
+            priceImpact={priceImpact}
           />
         </div>
         <PopupModal />

@@ -32,7 +32,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { withdrawPoolLiquidity } from "../../utils/withdrawPoolLiquidity";
 import { BigNumber, ethers } from "ethers";
 import { getPoolTokenBalances } from "../../utils/getTokensBalance";
-import { priceImpact } from "../../utils/balancerMath";
+import { getPriceImpact } from "../../utils/balancerMath";
 import { getTokensUSDValue } from "../../utils/getTokensUSDValue";
 
 const WithdrawLiquidity = () => {
@@ -78,7 +78,7 @@ const WithdrawLiquidity = () => {
   const [dollarValueOfTokenA, setDollarValueOfTokenA] = useState(0);
   const [dollarValueOfTokenB, setDollarValueOfTokenB] = useState(0);
   const [poolTokenBalances, setPoolTokenBalances] = useState<number[]>();
-  const [priceImpactValue, setPriceImpactValue] = useState(0);
+  const [priceImpact, setPriceImpact] = useState(0);
 
   const idString = searchParams.get("id");
 
@@ -259,9 +259,9 @@ const WithdrawLiquidity = () => {
 
     if (poolTokenBalances && inputAmounts) {
       const currentBalances = [poolTokenBalances[0], poolTokenBalances[1]];
-      const impactValue = priceImpact(inputAmounts, currentBalances);
-      if (impactValue && impactValue < 0.01) setPriceImpactValue(0.01);
-      else setPriceImpactValue(impactValue);
+      const impactValue = getPriceImpact(inputAmounts, currentBalances);
+      if (impactValue && impactValue < 0.01) setPriceImpact(0.01);
+      else setPriceImpact(impactValue);
     }
   }, [
     inputValue,
@@ -274,7 +274,7 @@ const WithdrawLiquidity = () => {
   ]);
 
   useEffect(() => {
-    if (selectValue > 1) if (!parseFloat(inputValue)) setPriceImpactValue(0);
+    if (selectValue > 1) if (!parseFloat(inputValue)) setPriceImpact(0);
   }, [inputValue, selectValue]);
 
   useEffect(() => {
@@ -415,9 +415,9 @@ const WithdrawLiquidity = () => {
                   </div>
                   <div className={wStyles.number}>
                     <p>
-                      {priceImpactValue === 0.01
+                      {priceImpact === 0.01
                         ? "<.01"
-                        : getProperFixedValue(priceImpactValue)}
+                        : getProperFixedValue(priceImpact)}
                       %
                       <Tooltip
                         arrow
@@ -500,9 +500,9 @@ const WithdrawLiquidity = () => {
                   </div>
                   <div className={wStyles.number}>
                     <p>
-                      {priceImpactValue === 0.01
+                      {priceImpact === 0.01
                         ? "<.01"
-                        : getProperFixedValue(priceImpactValue)}
+                        : getProperFixedValue(priceImpact)}
                       %
                       <Tooltip
                         arrow
@@ -547,7 +547,7 @@ const WithdrawLiquidity = () => {
             tokens={selectValue === 2 ? tokenA : tokenB}
             selectValue={selectValue}
             inputValue={inputValue}
-            priceImpactValue={priceImpactValue}
+            priceImpact={priceImpact}
             tokenValueOfBpt={[tokenAValueOfBpt, tokenBValueOfBpt]}
             dollarValueOfToken={
               selectValue === 1

@@ -20,7 +20,7 @@ interface PropTypes {
   tokens: TokenType;
   selectValue: number;
   inputValue: string;
-  priceImpactValue: number;
+  priceImpact: number;
   tokenValueOfBpt: number[];
   dollarValueOfToken: number;
 }
@@ -32,7 +32,7 @@ const WithdrawLiquidityPreview = ({
   tokens,
   selectValue,
   inputValue,
-  priceImpactValue,
+  priceImpact,
   tokenValueOfBpt,
   dollarValueOfToken,
 }: PropTypes) => {
@@ -158,9 +158,9 @@ const WithdrawLiquidityPreview = ({
               <div className={styles.item}>
                 <p className={styles.total}>Price impact</p>
                 <p className={styles.data}>
-                  {priceImpactValue === 0.01
+                  {priceImpact === 0.01
                     ? "<.01"
-                    : getProperFixedValue(priceImpactValue)}
+                    : getProperFixedValue(priceImpact)}
                   %
                   <span>
                     <Tooltip

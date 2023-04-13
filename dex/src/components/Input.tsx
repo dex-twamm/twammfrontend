@@ -126,13 +126,12 @@ const Input = (props: PropTypes) => {
           </button>
         </div>
         <div className={styles.balance}>
-          Balance:
           {!isWalletConnected ? (
-            "N/A"
+            "Balance: N/A"
           ) : tokenBalances ? (
             id === 1 ? (
               <p className={styles.balanceText}>
-                {tokenA?.balance?.toFixed(2) ?? "N/A"}{" "}
+                Balance: {tokenA?.balance?.toFixed(2) ?? "N/A"}{" "}
                 <span
                   className={styles.maxInput}
                   onClick={() => {
@@ -144,7 +143,7 @@ const Input = (props: PropTypes) => {
               </p>
             ) : (
               <p className={styles.balanceText}>
-                {tokenB?.balance?.toFixed(2) ?? "N/A"}
+                Balance: {tokenB?.balance?.toFixed(2) ?? "N/A"}
               </p>
             )
           ) : (
