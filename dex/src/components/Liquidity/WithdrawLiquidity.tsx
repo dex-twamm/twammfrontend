@@ -77,8 +77,7 @@ const WithdrawLiquidity = () => {
   const [tokenBValueOfBpt, setTokenBValueOfBpt] = useState(0);
   const [dollarValueOfTokenA, setDollarValueOfTokenA] = useState(0);
   const [dollarValueOfTokenB, setDollarValueOfTokenB] = useState(0);
-  const [tokenBalances, setTokenBalances] =
-    useState<{ [key: string]: number }[]>();
+  const [poolTokenBalances, setPoolTokenBalances] = useState<number[]>();
   const [priceImpactValue, setPriceImpactValue] = useState(0);
 
   const idString = searchParams.get("id");
@@ -221,12 +220,12 @@ const WithdrawLiquidity = () => {
 
   useEffect(() => {
     const getTokensBalances = async () => {
-      const tokenBalances = await getPoolTokenBalances(
+      const poolTokenBalances = await getPoolTokenBalances(
         web3provider?.getSigner(),
         getPoolTokens(currentNetwork),
         currentNetwork
       );
-      setTokenBalances(tokenBalances);
+      setPoolTokenBalances(poolTokenBalances);
     };
     if (web3provider?.getSigner()) getTokensBalances();
   }, [account, currentNetwork, web3provider]);
@@ -258,10 +257,10 @@ const WithdrawLiquidity = () => {
       ];
     }
 
-    if (tokenBalances && inputAmounts) {
+    if (poolTokenBalances && inputAmounts) {
       const currentBalances = [
-        Object.values(tokenBalances[0])[0],
-        Object.values(tokenBalances[1])[0],
+        Object.values(poolTokenBalances[0])[0],
+        Object.values(poolTokenBalances[1])[0],
       ];
       const impactValue = priceImpact(inputAmounts, currentBalances);
       if (impactValue && impactValue < 0.01) setPriceImpactValue(0.01);
@@ -273,7 +272,7 @@ const WithdrawLiquidity = () => {
     sliderValue,
     tokenA,
     tokenB,
-    tokenBalances,
+    poolTokenBalances,
     tokenOutFromBptIn,
   ]);
 

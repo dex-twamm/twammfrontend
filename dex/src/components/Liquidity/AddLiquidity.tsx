@@ -63,8 +63,7 @@ const AddLiquidity = () => {
     useState(true);
   const [maxText, setMaxText] = useState("Max");
   const [priceImpactValue, setPriceImpactValue] = useState(0);
-  const [tokenBalances, setTokenBalances] =
-    useState<{ [key: string]: number }[]>();
+  const [poolTokenBalances, setPoolTokenBalances] = useState<number[]>();
 
   const [hasProportionalInputA, setHasProportionalInputA] = useState(false);
   const [hasProportionalInputB, setHasProportionalInputB] = useState(false);
@@ -75,6 +74,12 @@ const AddLiquidity = () => {
   if (!idString) throw new Error("Error! Could not get id from url");
 
   const poolIdNumber = parseFloat(idString);
+
+  const getPriceImpactValueString = (priceImpact: number) => {
+    return priceImpact === 0.01
+      ? "<.01%"
+      : getProperFixedValue(priceImpact) + "%";
+  };
 
   const currentNetwork: SelectedNetworkType = useMemo(() => {
     return {
@@ -102,9 +107,7 @@ const AddLiquidity = () => {
   const tokenA: TokenType = getPoolTokens(currentNetwork)?.[0];
   const tokenB: TokenType = getPoolTokens(currentNetwork)?.[1];
 
-  const balanceA: any = tokenBalances?.filter(
-    (item) => item[tokenA?.address]
-  )[0]?.[tokenA?.address];
+  const balanceA: number = poolTokenBalances ? poolTokenBalances[0] : 0;
 
   const handleApproveButton = async () => {
     if (web3provider?.getSigner())
@@ -218,24 +221,19 @@ const AddLiquidity = () => {
 
   useEffect(() => {
     const getTokensBalances = async () => {
-      const tokenBalances = await getPoolTokenBalances(
+      const poolTokenBalances = await getPoolTokenBalances(
         web3provider?.getSigner(),
         getPoolTokens(currentNetwork),
         currentNetwork
       );
-      setTokenBalances(tokenBalances);
+      setPoolTokenBalances(poolTokenBalances);
     };
     if (web3provider?.getSigner()) getTokensBalances();
   }, [account, currentNetwork, web3provider]);
 
   const calculateProportionalSuggestion = async () => {
-    if (hasProportionalInputB && tokenBalances) {
-      const balances = [
-        Object.values(tokenBalances[0])[0],
-        Object.values(tokenBalances[1])[0],
-      ];
-
-      const spotPrice = getSpotPrice(balances);
+    if (hasProportionalInputB && poolTokenBalances) {
+      const spotPrice = getSpotPrice(poolTokenBalances);
       const proportionalValue = getProportionalAmount(
         parseFloat(tokenAInputAmount),
         0,
@@ -244,18 +242,13 @@ const AddLiquidity = () => {
       setTokenBInputAmount(getProperFixedValue(proportionalValue).toString());
     }
 
-    if (hasProportionalInputA && tokenBalances) {
-      const balances = [
-        Object.values(tokenBalances[1])[0],
-        Object.values(tokenBalances[0])[0],
-      ];
-
-      const spotPriceValue = getSpotPrice(balances);
+    if (hasProportionalInputA && poolTokenBalances) {
+      const spotPrice = getSpotPrice(poolTokenBalances);
 
       const proportionalValue = getProportionalAmount(
         parseFloat(tokenBInputAmount),
         1,
-        spotPriceValue
+        spotPrice
       );
       setTokenAInputAmount(proportionalValue.toString());
     }
@@ -271,16 +264,14 @@ const AddLiquidity = () => {
         ? [0, parseFloat(tokenBInputAmount)]
         : [parseFloat(tokenAInputAmount), parseFloat(tokenBInputAmount)];
 
-    if (tokenBalances) {
-      const currentBalances = [
-        Object.values(tokenBalances[0])[0],
-        Object.values(tokenBalances[1])[0],
-      ];
+    if (poolTokenBalances) {
+      const currentBalances = [poolTokenBalances[0], poolTokenBalances[1]];
       const impactValue = priceImpact(inputAmounts, currentBalances);
+
       if (impactValue && impactValue < 0.01) setPriceImpactValue(0.01);
       else setPriceImpactValue(impactValue);
     }
-  }, [tokenAInputAmount, tokenBInputAmount, tokenBalances]);
+  }, [tokenAInputAmount, tokenBInputAmount, poolTokenBalances]);
 
   return (
     <>
@@ -381,10 +372,7 @@ const AddLiquidity = () => {
                   </div>
                   <div className={wStyles.value}>
                     <p>
-                      {priceImpactValue === 0.01
-                        ? "<.01"
-                        : getProperFixedValue(priceImpactValue)}
-                      %
+                      {getPriceImpactValueString(priceImpactValue)}
                       <Tooltip
                         arrow
                         placement="top"
