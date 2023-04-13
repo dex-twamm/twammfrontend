@@ -2,7 +2,7 @@ import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, CircularProgress, Tooltip } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { useEffect, useMemo, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import styles from "../../css/ShortSwap.module.css";
 import lsStyles from "../../css/LongSwap.module.css";
 import wStyles from "../../css/WithdrawLiquidity.module.css";
@@ -231,27 +231,22 @@ const AddLiquidity = () => {
     if (web3provider?.getSigner()) getTokensBalances();
   }, [account, currentNetwork, web3provider]);
 
-  const calculateProportionalSuggestion = async () => {
-    if (hasProportionalInputB && poolTokenBalances) {
-      const spotPrice = getSpotPrice(poolTokenBalances);
-      const proportionalValue = getProportionalAmount(
-        parseFloat(tokenAInputAmount),
-        0,
-        spotPrice
-      );
-      setTokenBInputAmount(getProperFixedValue(proportionalValue).toString());
-    }
+  const calculateProportionalSuggestion = (
+    amount: string,
+    tokenIndex: number,
+    setAmountDispatcher: Dispatch<SetStateAction<string>>
+  ) => {
+    if (!poolTokenBalances) return;
 
-    if (hasProportionalInputA && poolTokenBalances) {
-      const spotPrice = getSpotPrice(poolTokenBalances);
+    const spotPrice = getSpotPrice(poolTokenBalances);
 
-      const proportionalValue = getProportionalAmount(
-        parseFloat(tokenBInputAmount),
-        1,
-        spotPrice
-      );
-      setTokenAInputAmount(proportionalValue.toString());
-    }
+    const proportionalValue = getProportionalAmount(
+      parseFloat(amount),
+      tokenIndex,
+      spotPrice
+    );
+
+    setAmountDispatcher(getProperFixedValue(proportionalValue).toString());
   };
 
   const getParsedInputAmounts = (
@@ -319,8 +314,12 @@ const AddLiquidity = () => {
                 balances={balanceOfToken}
                 tokenInputAmount={tokenAInputAmount}
                 setTokenInputAmount={setTokenAInputAmount}
-                calculateProportionalSuggestion={
-                  calculateProportionalSuggestion
+                calculateProportionalSuggestion={() =>
+                  calculateProportionalSuggestion(
+                    tokenBInputAmount,
+                    1,
+                    setTokenAInputAmount
+                  )
                 }
                 input={tokenAInputAmount}
                 tokenA={tokenA}
@@ -336,8 +335,12 @@ const AddLiquidity = () => {
                 balances={balanceOfToken}
                 tokenInputAmount={tokenBInputAmount}
                 setTokenInputAmount={setTokenBInputAmount}
-                calculateProportionalSuggestion={
-                  calculateProportionalSuggestion
+                calculateProportionalSuggestion={() =>
+                  calculateProportionalSuggestion(
+                    tokenAInputAmount,
+                    0,
+                    setTokenBInputAmount
+                  )
                 }
                 input={tokenBInputAmount}
                 tokenA={tokenB}

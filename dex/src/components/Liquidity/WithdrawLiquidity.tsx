@@ -258,10 +258,7 @@ const WithdrawLiquidity = () => {
     }
 
     if (poolTokenBalances && inputAmounts) {
-      const currentBalances = [
-        Object.values(poolTokenBalances[0])[0],
-        Object.values(poolTokenBalances[1])[0],
-      ];
+      const currentBalances = [poolTokenBalances[0], poolTokenBalances[1]];
       const impactValue = priceImpact(inputAmounts, currentBalances);
       if (impactValue && impactValue < 0.01) setPriceImpactValue(0.01);
       else setPriceImpactValue(impactValue);
