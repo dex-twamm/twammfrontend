@@ -142,7 +142,7 @@ const AddLiquidity = () => {
 
   useEffect(() => {
     const getInputAmountValueInDollar = async () => {
-      if (parseFloat(tokenAInputAmount) && parseFloat(tokenBInputAmount)) {
+      if (parseFloat(tokenAInputAmount) && !parseFloat(tokenBInputAmount)) {
         const tokenAUsdRate = await getTokenAUsdValueMemoized;
         setDollarValueOfInputAmount(
           parseFloat((tokenAUsdRate * parseFloat(tokenAInputAmount)).toFixed(2))
