@@ -1,4 +1,4 @@
-import { Avatar } from "@mui/material";
+import { Avatar, Select, MenuItem } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -112,33 +112,83 @@ const LiquidityPoolListTableRow = ({
             return (
               <td key={idx} className={styles.buttonTd}>
                 <Box className={styles.buttonBox}>
-                  <button
-                    className={styles.addLiquidityButton}
-                    onClick={() => {
-                      handleAddLiquidity(index);
-                    }}
-                  >
-                    <AddIcon />
-                    Add
-                  </button>
-                  {bptAmountIn > 0 && showRemoveBtn ? (
+                  {!showRemoveBtn && (
                     <button
-                      className={styles.removeLiquidityButton}
+                      className={styles.addLiquidityButton}
                       onClick={() => {
-                        handleWithdrawLiquidity(index);
+                        handleAddLiquidity(index);
                       }}
                     >
-                      <DeleteForeverIcon />
-                      Remove
+                      <AddIcon />
+                      Add
                     </button>
-                  ) : (
-                    <></>
+                  )}
+                  {showRemoveBtn && (
+                    <Select
+                      value={1}
+                      onClose={() => setShowRemoveBtn(false)}
+                      className={styles.btnSelect}
+                      sx={{
+                        boxShadow: "none",
+                        padding: "0px",
+                        "& .MuiSelect-select": {
+                          padding: "0 !important",
+                        },
+                        ".MuiOutlinedInput-notchedOutline": {
+                          border: 0,
+                        },
+                        "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
+                          {
+                            border: 0,
+                          },
+                        "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                          {
+                            border: 0,
+                          },
+
+                        "& .MuiSvgIcon-root": { right: 0 },
+                      }}
+                      MenuProps={{
+                        PaperProps: {
+                          sx: {
+                            "& .MuiList-root": {
+                              padding: "1px",
+                            },
+                          },
+                        },
+                      }}
+                    >
+                      <MenuItem value={1} sx={{ display: "none" }}>
+                        <button
+                          className={styles.addLiquidityButton}
+                          onClick={() => {
+                            handleAddLiquidity(index);
+                          }}
+                        >
+                          <AddIcon />
+                          Add
+                        </button>
+                      </MenuItem>
+                      <MenuItem value={20} sx={{ padding: 0 }}>
+                        <button
+                          className={styles.removeLiquidityButton}
+                          onClick={() => {
+                            handleWithdrawLiquidity(index);
+                          }}
+                        >
+                          <DeleteForeverIcon />
+                          Remove
+                        </button>
+                      </MenuItem>
+                    </Select>
                   )}
                 </Box>
-                <MoreVertIcon
-                  onClick={() => setShowRemoveBtn((prev) => !prev)}
-                  sx={{ cursor: "pointer" }}
-                />
+                <div>
+                  <MoreVertIcon
+                    onClick={() => setShowRemoveBtn((prev) => !prev)}
+                    sx={{ cursor: "pointer" }}
+                  />
+                </div>
               </td>
             );
           }
