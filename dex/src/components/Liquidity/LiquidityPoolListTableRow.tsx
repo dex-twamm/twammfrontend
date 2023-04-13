@@ -11,8 +11,8 @@ import { getPoolId } from "../../utils/poolUtils";
 import { TableColumnsTypes } from "./LiquidityPoolLists";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 interface PropTypes {
   tableColumns: TableColumnsTypes[];
   item: TokenType[];
@@ -135,10 +135,17 @@ const LiquidityPoolListTableRow = ({
                     <></>
                   )}
                 </Box>
-                <MoreVertIcon
-                  onClick={() => setShowRemoveBtn((prev) => !prev)}
-                  sx={{ cursor: "pointer" }}
-                />
+                {!showRemoveBtn ? (
+                  <ExpandMoreIcon
+                    onClick={() => setShowRemoveBtn((prev) => !prev)}
+                    sx={{ cursor: "pointer" }}
+                  />
+                ) : (
+                  <ExpandLessIcon
+                    onClick={() => setShowRemoveBtn((prev) => !prev)}
+                    sx={{ cursor: "pointer" }}
+                  />
+                )}
               </td>
             );
           }
