@@ -57,21 +57,17 @@ export const getPoolTokenBalances = async (
     await vaultContract.getPoolTokens(poolId);
 
   return [
-    {
-      [poolTokenBalances[0][0].toString()]: parseFloat(
-        ethers.utils.formatUnits(
-          poolTokenBalances[1][0],
-          poolTokensConfig[0].decimals
-        )
-      ),
-    },
-    {
-      [poolTokenBalances[0][1].toString()]: parseFloat(
-        ethers.utils.formatUnits(
-          poolTokenBalances[1][1],
-          poolTokensConfig[1].decimals
-        )
-      ),
-    },
+    parseFloat(
+      ethers.utils.formatUnits(
+        poolTokenBalances[1][0],
+        poolTokensConfig[0].decimals
+      )
+    ),
+    parseFloat(
+      ethers.utils.formatUnits(
+        poolTokenBalances[1][1],
+        poolTokensConfig[1].decimals
+      )
+    ),
   ];
 };
