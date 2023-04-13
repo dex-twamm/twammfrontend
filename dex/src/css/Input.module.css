@@ -181,6 +181,7 @@
 
 .balanceText {
   margin-left: 4px;
+  flex: 1;
 }
 
 .errorText {

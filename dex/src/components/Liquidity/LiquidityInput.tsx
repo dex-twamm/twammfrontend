@@ -18,8 +18,9 @@ interface PropTypes {
   tokenA: TokenType;
   tokenB: TokenType;
   currentNetwork: SelectedNetworkType;
-  hasProportional: boolean;
+  hasProportional: string;
   setHasBalancerOrTransactionError: Dispatch<SetStateAction<boolean>>;
+  inputIndex: number;
 }
 
 const LiquidityInput = ({
@@ -34,6 +35,7 @@ const LiquidityInput = ({
   currentNetwork,
   hasProportional,
   setHasBalancerOrTransactionError,
+  inputIndex,
 }: PropTypes) => {
   const [balance, setBalance] = useState(0);
   const [balancerErrors, setBalancerErrors] = useState<{
@@ -183,13 +185,22 @@ const LiquidityInput = ({
             : iStyles.balance
         }
       >
-        {hasProportional && (
+        {hasProportional === "inputA" && inputIndex === 1 ? (
           <span
             className={iStyles.maxInput}
             onClick={calculateProportionalSuggestion}
           >
             proportional suggestion
           </span>
+        ) : hasProportional === "inputB" && inputIndex === 2 ? (
+          <span
+            className={iStyles.maxInput}
+            onClick={calculateProportionalSuggestion}
+          >
+            proportional suggestion
+          </span>
+        ) : (
+          <></>
         )}
         {balancerErrors?.balError && (
           <span className={iStyles.errorText}>{balancerErrors?.balError}</span>

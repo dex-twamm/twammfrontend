@@ -65,8 +65,8 @@ const AddLiquidity = () => {
   const [priceImpactValue, setPriceImpactValue] = useState(0);
   const [poolTokenBalances, setPoolTokenBalances] = useState<number[]>();
 
-  const [hasProportionalInputA, setHasProportionalInputA] = useState(false);
-  const [hasProportionalInputB, setHasProportionalInputB] = useState(false);
+  const [hasProportionalSuggestion, setHasProportionalSuggestion] =
+    useState("");
 
   const [searchParams] = useSearchParams();
   const idString = searchParams.get("id");
@@ -145,30 +145,29 @@ const AddLiquidity = () => {
 
   useEffect(() => {
     const getInputAmountValueInDollar = async () => {
-      if (parseFloat(tokenAInputAmount) && !parseFloat(tokenBInputAmount)) {
-        const tokenAUsdRate = await getTokenAUsdValueMemoized;
+      let tokenAAmount = parseFloat(tokenAInputAmount);
+      let tokenBAmount = parseFloat(tokenBInputAmount);
+      let tokenAUsdRate = 0;
+      let tokenBUsdRate = 0;
+
+      if (tokenAAmount && !tokenBAmount) {
+        tokenAUsdRate = await getTokenAUsdValueMemoized;
         setDollarValueOfInputAmount(
-          parseFloat((tokenAUsdRate * parseFloat(tokenAInputAmount)).toFixed(2))
+          parseFloat((tokenAUsdRate * tokenAAmount).toFixed(2))
         );
-      } else if (
-        parseFloat(tokenBInputAmount) &&
-        !parseFloat(tokenAInputAmount)
-      ) {
-        const tokenBUsdRate = await getTokenBUsdValueMemoized;
+      } else if (tokenBAmount && !tokenAAmount) {
+        tokenBUsdRate = await getTokenBUsdValueMemoized;
         setDollarValueOfInputAmount(
-          parseFloat((tokenBUsdRate * parseFloat(tokenBInputAmount)).toFixed(2))
+          parseFloat((tokenBUsdRate * tokenBAmount).toFixed(2))
         );
-      } else if (
-        parseFloat(tokenAInputAmount) &&
-        parseFloat(tokenBInputAmount)
-      ) {
-        const tokenAUsdRate = await getTokenAUsdValueMemoized;
-        const tokenBUsdRate = await getTokenBUsdValueMemoized;
+      } else if (tokenAAmount && tokenBAmount) {
+        tokenAUsdRate = await getTokenAUsdValueMemoized;
+        tokenBUsdRate = await getTokenBUsdValueMemoized;
         setDollarValueOfInputAmount(
           parseFloat(
             (
-              tokenAUsdRate * parseFloat(tokenAInputAmount) +
-              tokenBUsdRate * parseFloat(tokenBInputAmount)
+              tokenAUsdRate * tokenAAmount +
+              tokenBUsdRate * tokenBAmount
             ).toFixed(2)
           )
         );
@@ -199,22 +198,17 @@ const AddLiquidity = () => {
   }, [tokenAInputAmount, tokenBInputAmount]);
 
   useEffect(() => {
-    if (!parseFloat(tokenAInputAmount) && !parseFloat(tokenBInputAmount)) {
-      setHasProportionalInputA(false);
-      setHasProportionalInputB(false);
+    const tokenAAmount = parseFloat(tokenAInputAmount);
+    const tokenBAmount = parseFloat(tokenBInputAmount);
+    if (!tokenAAmount && !tokenBAmount) {
+      setHasProportionalSuggestion("");
     } else {
-      if (
-        parseFloat(tokenAInputAmount) > 0 &&
-        parseFloat(tokenBInputAmount) > 0
-      ) {
-        setHasProportionalInputA(false);
-        setHasProportionalInputB(false);
-      } else if (parseFloat(tokenAInputAmount) > 0) {
-        setHasProportionalInputA(false);
-        setHasProportionalInputB(true);
-      } else if (parseFloat(tokenBInputAmount) > 0) {
-        setHasProportionalInputA(true);
-        setHasProportionalInputB(false);
+      if (tokenAAmount > 0 && tokenBAmount > 0) {
+        setHasProportionalSuggestion("");
+      } else if (tokenAAmount > 0) {
+        setHasProportionalSuggestion("inputB");
+      } else if (tokenBAmount > 0) {
+        setHasProportionalSuggestion("inputA");
       }
     }
   }, [tokenAInputAmount, tokenBInputAmount, maxText]);
@@ -325,10 +319,11 @@ const AddLiquidity = () => {
                 tokenA={tokenA}
                 tokenB={tokenB}
                 currentNetwork={currentNetwork}
-                hasProportional={hasProportionalInputA}
+                hasProportional={hasProportionalSuggestion}
                 setHasBalancerOrTransactionError={
                   setHasBalancerOrTransactionError
                 }
+                inputIndex={1}
               />
               <LiquidityInput
                 tokenData={tokenB}
@@ -346,10 +341,11 @@ const AddLiquidity = () => {
                 tokenA={tokenB}
                 tokenB={tokenA}
                 currentNetwork={currentNetwork}
-                hasProportional={hasProportionalInputB}
+                hasProportional={hasProportionalSuggestion}
                 setHasBalancerOrTransactionError={
                   setHasBalancerOrTransactionError
                 }
+                inputIndex={2}
               />
               <div className={wStyles.totalAndImpact}>
                 <div className={wStyles.total}>
@@ -372,8 +368,7 @@ const AddLiquidity = () => {
                           getIndividualTokenBalance(tokenB?.address).toString()
                         );
                         setMaxText("Maxed");
-                        setHasProportionalInputA(false);
-                        setHasProportionalInputB(false);
+                        setHasProportionalSuggestion("");
                       }}
                       style={{
                         cursor: maxText === "Max" ? "pointer" : "unset",
