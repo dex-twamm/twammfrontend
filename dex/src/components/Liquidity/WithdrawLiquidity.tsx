@@ -13,7 +13,6 @@ import wStyles from "../../css/WithdrawLiquidity.module.css";
 import PopupSettings from "../PopupSettings";
 import WithdrawLiquidityPreview from "./WithdrawLiquidityPreview";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import PopupModal from "../alerts/PopupModal";
 import classNames from "classnames";
 import { useShortSwapContext } from "../../providers/context/ShortSwapProvider";
 import { useNetworkContext } from "../../providers/context/NetworkProvider";
@@ -217,8 +216,6 @@ const WithdrawLiquidity = () => {
     tokenB.decimals,
     tokenOutFromBptIn,
   ]);
-
-  console.log(tokenAValueOfBpt, tokenBValueOfBpt);
 
   useEffect(() => {
     const getTokensBalances = async () => {

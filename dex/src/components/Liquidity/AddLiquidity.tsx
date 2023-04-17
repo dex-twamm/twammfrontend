@@ -17,7 +17,6 @@ import {
 import AddLiquidityPreview from "./AddLiquidityPreview";
 import { bigToStr, getProperFixedValue } from "../../utils";
 import classNames from "classnames";
-import PopupModal from "../alerts/PopupModal";
 import { approveMaxAllowance, getAllowance } from "../../utils/getApproval";
 import { useShortSwapContext } from "../../providers/context/ShortSwapProvider";
 import { useLongSwapContext } from "../../providers/context/LongSwapProvider";

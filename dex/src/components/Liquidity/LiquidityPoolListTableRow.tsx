@@ -1,4 +1,4 @@
-import { Avatar } from "@mui/material";
+import { Avatar, Tooltip } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -51,7 +51,7 @@ const LiquidityPoolListTableRow = ({
       const signer = web3provider?.getSigner();
       const poolContract = getPoolContract(currentNetwork, signer);
       const balance = await poolContract.balanceOf(account);
-      setBptAmountIn(parseFloat(balance.div(10 ** 12).toString()));
+      setBptAmountIn(parseFloat(balance));
     };
     if (web3provider?.getSigner()) getPoolTokenData();
   }, [web3provider, account, setBptAmountIn, selectedNetwork, index]);
@@ -104,7 +104,12 @@ const LiquidityPoolListTableRow = ({
           if (column.id === "liquidity") {
             return (
               <td key={idx}>
-                <p className={styles.tableDataP}> {bptAmountIn} </p>
+                <Tooltip title={bptAmountIn}>
+                  <p className={styles.tableDataP}>
+                    {" "}
+                    {bptAmountIn.toString().slice(0, 6)}...
+                  </p>
+                </Tooltip>
               </td>
             );
           }
