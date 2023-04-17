@@ -174,7 +174,7 @@ const WithdrawLiquidity = () => {
       const bptAmountInBig = BigNumber.from(bptAmount.toString());
 
       const result = await withdrawPoolLiquidity(
-        selectValue,
+        1,
         poolId,
         [tokenA?.address, tokenB?.address],
         bptAmountInBig,
@@ -217,6 +217,8 @@ const WithdrawLiquidity = () => {
     tokenB.decimals,
     tokenOutFromBptIn,
   ]);
+
+  console.log(tokenAValueOfBpt, tokenBValueOfBpt);
 
   useEffect(() => {
     const getTokensBalances = async () => {
@@ -468,7 +470,7 @@ const WithdrawLiquidity = () => {
                     ) : selectValue === 2 ? (
                       bigToStr(tokenOutFromBptIn[0], tokenA.decimals)
                     ) : selectValue === 3 ? (
-                      bigToStr(tokenOutFromBptIn[1], tokenA.decimals)
+                      bigToStr(tokenOutFromBptIn[1], tokenB.decimals)
                     ) : (
                       0
                     )}{" "}
@@ -479,7 +481,7 @@ const WithdrawLiquidity = () => {
                           setInputValue(
                             selectValue === 2
                               ? bigToStr(tokenOutFromBptIn[0], tokenA.decimals)
-                              : bigToStr(tokenOutFromBptIn[1], tokenA.decimals)
+                              : bigToStr(tokenOutFromBptIn[1], tokenB.decimals)
                           );
                         }}
                       >
@@ -558,7 +560,6 @@ const WithdrawLiquidity = () => {
             }
           />
         </div>
-        <PopupModal />
       </div>
     </>
   );

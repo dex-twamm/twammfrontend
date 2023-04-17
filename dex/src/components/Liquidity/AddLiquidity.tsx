@@ -476,7 +476,6 @@ const AddLiquidity = () => {
             priceImpact={priceImpact}
           />
         </div>
-        <PopupModal />
       </div>
     </>
   );
