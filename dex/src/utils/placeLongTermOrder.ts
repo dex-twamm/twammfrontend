@@ -15,7 +15,7 @@ export const _placeLongTermOrders = async (
   account: string,
   setTransactionHash: Dispatch<SetStateAction<string>>,
   setLoading: Dispatch<SetStateAction<boolean>>,
-  setMessage: Dispatch<SetStateAction<string>>,
+  setMessage: Dispatch<SetStateAction<{ status: string; message: string }>>,
   setOrderLogsDecoded: Dispatch<SetStateAction<any>>,
   setError: Dispatch<SetStateAction<string>>,
   currentNetwork: SelectedNetworkType
@@ -62,13 +62,17 @@ export const _placeLongTermOrders = async (
                 setOrderLogsDecoded(resArray);
               }
             );
-            setMessage(POPUP_MESSAGE.ltoPlaced);
-          } else setMessage(POPUP_MESSAGE.ltoPlaceFailed);
+            setMessage({ status: "success", message: POPUP_MESSAGE.ltoPlaced });
+          } else
+            setMessage({
+              status: "failed",
+              message: POPUP_MESSAGE.ltoPlaceFailed,
+            });
         });
       })
       .catch((err) => {
         console.error(err);
-        setMessage(POPUP_MESSAGE.ltoPlaceFailed);
+        setMessage({ status: "failed", message: POPUP_MESSAGE.ltoPlaceFailed });
       })
       .finally(() => {
         setLoading(false);
@@ -76,6 +80,9 @@ export const _placeLongTermOrders = async (
   } catch (err) {
     console.error(err);
     setLoading(false);
-    setError(POPUP_MESSAGE.transactionCancelled);
+    setMessage({
+      status: "failed",
+      message: POPUP_MESSAGE.transactionCancelled,
+    });
   }
 };

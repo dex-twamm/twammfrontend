@@ -177,7 +177,7 @@ const LongSwap = (props: PropTypes) => {
       setTargetDate("");
       setExecutionTIme("");
       setTransactionHash("");
-      setMessage("");
+      setMessage({ status: "", message: "" });
     };
   }, [setMessage, setTargetDate, setTransactionHash]);
 

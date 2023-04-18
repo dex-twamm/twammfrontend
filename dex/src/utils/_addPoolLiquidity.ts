@@ -11,7 +11,7 @@ export const _addPoolLiquidity = async (
   currentNetwork: SelectedNetworkType,
   amountsIn: number[],
   setTransactionHash: Dispatch<SetStateAction<string>>,
-  setMessage: Dispatch<SetStateAction<string>>,
+  setMessage: Dispatch<SetStateAction<{ status: string; message: string }>>,
   setLoading: Dispatch<SetStateAction<boolean>>,
   setError: Dispatch<SetStateAction<string>>,
   setShowPreviewModal: Dispatch<SetStateAction<boolean>>
@@ -51,20 +51,33 @@ export const _addPoolLiquidity = async (
         };
         addLiquidityResult().then(async (response) => {
           if (response.status === 1) {
-            setMessage(POPUP_MESSAGE.liquidityAdded);
-          } else setMessage(POPUP_MESSAGE.addLiquidityFailed);
+            setMessage({
+              status: "success",
+              message: POPUP_MESSAGE.liquidityAdded,
+            });
+          } else
+            setMessage({
+              status: "failed",
+              message: POPUP_MESSAGE.addLiquidityFailed,
+            });
           setLoading(false);
         });
       })
       .catch((err) => {
         console.error(err);
         setShowPreviewModal(false);
-        setMessage(POPUP_MESSAGE.addLiquidityFailed);
+        setMessage({
+          status: "failed",
+          message: POPUP_MESSAGE.addLiquidityFailed,
+        });
       });
   } catch (err) {
     console.error(err);
     setLoading(false);
     setShowPreviewModal(false);
-    setError(POPUP_MESSAGE.transactionCancelled);
+    setMessage({
+      status: "failed",
+      message: POPUP_MESSAGE.transactionCancelled,
+    });
   }
 };

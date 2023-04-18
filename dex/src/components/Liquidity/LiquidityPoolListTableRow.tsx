@@ -106,8 +106,8 @@ const LiquidityPoolListTableRow = ({
               <td key={idx}>
                 <Tooltip title={bptAmountIn}>
                   <p className={styles.tableDataP}>
-                    {" "}
-                    {bptAmountIn.toString().slice(0, 6)}...
+                    {bptAmountIn.toString().slice(0, 6)}
+                    {bptAmountIn.toString().length > 6 && "..."}
                   </p>
                 </Tooltip>
               </td>

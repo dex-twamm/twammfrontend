@@ -1,6 +1,5 @@
 import { Alert, Backdrop, Button } from "@mui/material";
 import { useEffect } from "react";
-import { POPUP_MESSAGE } from "../../constants";
 import { useLongSwapContext } from "../../providers/context/LongSwapProvider";
 import { useShortSwapContext } from "../../providers/context/ShortSwapProvider";
 import { useNetworkContext } from "../../providers/context/NetworkProvider";
@@ -43,7 +42,7 @@ const PopupModal: React.FC = () => {
     setError("");
     setSuccess("");
     setTransactionHash("");
-    setMessage("");
+    setMessage({ status: "", message: "" });
     setAllowTwamErrorMessage("");
   };
 
@@ -92,34 +91,23 @@ const PopupModal: React.FC = () => {
             View Your Tx Progress
           </Alert>
         )}
-        {message && (
-          <Backdrop open={message !== "" ? true : false}>
+        {message.message && (
+          <Backdrop open={message.message !== "" ? true : false}>
             <Alert
               severity={
-                message === POPUP_MESSAGE.ltoCancelFailed ||
-                message === POPUP_MESSAGE.ltoWithdrawFailed ||
-                message === POPUP_MESSAGE.ltoPlaceFailed ||
-                message === POPUP_MESSAGE.addLiquidityFailed ||
-                message === POPUP_MESSAGE.ltoWithdrawFailed ||
-                message === POPUP_MESSAGE.withdrawLiquidityFailed
+                message.status && message.status === "failed"
                   ? "error"
                   : "success"
               }
               onClose={() => {
-                if (
-                  message === POPUP_MESSAGE.ltoCancelSuccess ||
-                  message === POPUP_MESSAGE.ltoWithdrawn ||
-                  message === POPUP_MESSAGE.ltoPlaced ||
-                  message === POPUP_MESSAGE.liquidityAdded ||
-                  message === POPUP_MESSAGE.liquidityWithdrawn
-                ) {
+                if (message.status === "success") {
                   handleAlertClose();
                 } else {
                   handleClose();
                 }
               }}
             >
-              {message}
+              {message.message}
             </Alert>
           </Backdrop>
         )}

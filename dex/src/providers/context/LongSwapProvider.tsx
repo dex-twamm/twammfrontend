@@ -24,7 +24,7 @@ const useLongSwapState = () => {
   const [numberOfBlockIntervals, setNumberOfBlockIntervals] = useState(0);
   const [targetDate, setTargetDate] = useState("");
   const [allowance, setAllowance] = useState("");
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState({ status: "", message: "" });
   const [disableActionBtn, setDisableActionBtn] = useState(false);
   const [orderLogsLoading, setOrderLogsLoading] = useState(false);
   const [longSwapFormErrors, setLongSwapFormErrors] = useState<{

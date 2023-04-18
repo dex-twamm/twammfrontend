@@ -12,7 +12,7 @@ export const _withdrawLTO = async (
   account: string,
   web3provider: providers.Web3Provider,
   setOrderLogsDecoded: Dispatch<SetStateAction<any>>,
-  setMessage: Dispatch<SetStateAction<string>>,
+  setMessage: Dispatch<SetStateAction<{ status: string; message: string }>>,
   setTransactionHash: Dispatch<SetStateAction<string>>,
   currentNetwork: SelectedNetworkType
 ): Promise<void> => {
@@ -37,8 +37,15 @@ export const _withdrawLTO = async (
                 setOrderLogsDecoded(resArray);
               }
             );
-            setMessage(POPUP_MESSAGE.ltoWithdrawn);
-          } else setMessage(POPUP_MESSAGE.ltoWithdrawFailed);
+            setMessage({
+              status: "success",
+              message: POPUP_MESSAGE.ltoWithdrawn,
+            });
+          } else
+            setMessage({
+              status: "failed",
+              message: POPUP_MESSAGE.ltoWithdrawFailed,
+            });
           setDisableActionBtn(false);
         });
       }
@@ -46,7 +53,7 @@ export const _withdrawLTO = async (
     setLoading(false);
   } catch (e) {
     console.log(e);
-    setMessage(POPUP_MESSAGE.ltoWithdrawFailed);
+    setMessage({ status: "failed", message: POPUP_MESSAGE.ltoWithdrawFailed });
     setLoading(false);
     setDisableActionBtn(false);
   }

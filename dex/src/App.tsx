@@ -126,23 +126,23 @@ function App() {
           web3provider?.getSigner(),
           account,
           selectedNetwork
-        ).then((res) => {
-          setTokenBalances(res);
+        ).then((response) => {
+          setTokenBalances(response);
         });
 
         await getLastVirtualOrderBlock(
           web3provider?.getSigner(),
           selectedNetwork
-        ).then((res) => {
-          setLastVirtualOrderBlock(res);
+        ).then((response) => {
+          setLastVirtualOrderBlock(response);
         });
 
         await getEthLogs(
           web3provider?.getSigner(),
           walletAddress,
           selectedNetwork
-        ).then((res) => {
-          const resArray = Array.from(res.values());
+        ).then((response) => {
+          const resArray = Array.from(response.values());
           setOrderLogsDecoded(resArray);
         });
         setLoading(false);
@@ -180,7 +180,7 @@ function App() {
   }, [setAccount, setBalance, setWalletConnected, tokenBalance]);
 
   useEffect(() => {
-    let signer = web3provider?.getSigner();
+    const signer = web3provider?.getSigner();
     if (signer?.on) {
       const handleAccountsChanged = (accounts: string[]) => {
         if (accounts) setAccount(accounts[0]);

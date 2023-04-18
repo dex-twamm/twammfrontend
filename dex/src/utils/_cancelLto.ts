@@ -13,7 +13,7 @@ export const _cancelLTO = async (
   account: string,
   web3provider: providers.Web3Provider,
   setOrderLogsDecoded: Dispatch<SetStateAction<any>>,
-  setMessage: Dispatch<SetStateAction<string>>,
+  setMessage: Dispatch<SetStateAction<{ status: string; message: string }>>,
   setTransactionHash: Dispatch<SetStateAction<string>>,
   currentNetwork: SelectedNetworkType
 ): Promise<void> => {
@@ -41,15 +41,22 @@ export const _cancelLTO = async (
               setOrderLogsDecoded(resArray);
             }
           );
-          setMessage(POPUP_MESSAGE.ltoCancelSuccess);
-        } else setMessage(POPUP_MESSAGE.ltoCancelFailed);
+          setMessage({
+            status: "success",
+            message: POPUP_MESSAGE.ltoCancelSuccess,
+          });
+        } else
+          setMessage({
+            status: "failed",
+            message: POPUP_MESSAGE.ltoCancelFailed,
+          });
         setDisableActionBtn(false);
       });
     });
     setLoading(false);
   } catch (e) {
     console.log(e);
-    setMessage(POPUP_MESSAGE.ltoCancelFailed);
+    setMessage({ status: "failed", message: POPUP_MESSAGE.ltoCancelFailed });
     setLoading(false);
     setDisableActionBtn(false);
   }
