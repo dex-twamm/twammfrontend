@@ -276,6 +276,20 @@ const AddLiquidity = () => {
     }
   }, [tokenAInputAmount, tokenBInputAmount, poolTokenBalances]);
 
+  const getAmountsInForAddLiquidityPreview = (
+    tokenAInputAmount: string,
+    tokenBInputAmount: string
+  ) => {
+    const amountA = isNaN(parseFloat(tokenAInputAmount))
+      ? 0
+      : parseFloat(tokenAInputAmount);
+    const amountB = isNaN(parseFloat(tokenBInputAmount))
+      ? 0
+      : parseFloat(tokenBInputAmount);
+
+    return [amountA, amountB];
+  };
+
   return (
     <>
       <div className={styles.container}>
@@ -460,14 +474,10 @@ const AddLiquidity = () => {
           </div>
 
           <AddLiquidityPreview
-            amountsIn={[
-              isNaN(parseFloat(tokenAInputAmount))
-                ? 0
-                : parseFloat(tokenAInputAmount),
-              isNaN(parseFloat(tokenBInputAmount))
-                ? 0
-                : parseFloat(tokenBInputAmount),
-            ]}
+            amountsIn={getAmountsInForAddLiquidityPreview(
+              tokenAInputAmount,
+              tokenBInputAmount
+            )}
             showPreviewModal={showPreviewModal}
             setShowPreviewModal={setShowPreviewModal}
             dollarValueOfInputAmount={dollarValueOfInputAmount}
