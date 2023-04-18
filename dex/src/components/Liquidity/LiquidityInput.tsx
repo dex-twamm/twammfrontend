@@ -59,7 +59,8 @@ const LiquidityInput = ({
       return item[tokenData?.address];
     });
 
-    if (tokenBalance) setBalance(tokenBalance?.[0]?.[tokenData?.address]);
+    if (tokenBalance)
+      setBalance(tokenBalance?.[0]?.[tokenData?.address] ?? 0.0);
   }, [balances, tokenData?.address]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -207,9 +208,9 @@ const LiquidityInput = ({
         )}
         {!isWalletConnected ? (
           "Balance: N/A"
-        ) : balance ? (
+        ) : balance >= 0 ? (
           <p className={iStyles.balanceText}>
-            Balance: {balance.toFixed(2)}{" "}
+            Balance: {balance?.toFixed(2)}{" "}
             <span
               className={iStyles.maxInput}
               onClick={() => {
