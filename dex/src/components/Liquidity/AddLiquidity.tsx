@@ -33,6 +33,7 @@ import {
 import { getPoolTokens } from "../../utils/poolUtils";
 import { getTokensUSDValue } from "../../utils/getTokensUSDValue";
 import { TokenType } from "../../utils/pool";
+import PopupModal from "../alerts/PopupModal";
 
 const AddLiquidity = () => {
   const {
@@ -475,6 +476,7 @@ const AddLiquidity = () => {
             priceImpact={priceImpact}
           />
         </div>
+        <PopupModal />
       </div>
     </>
   );

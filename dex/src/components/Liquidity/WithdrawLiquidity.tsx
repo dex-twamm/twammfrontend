@@ -33,6 +33,7 @@ import { BigNumber, ethers } from "ethers";
 import { getPoolTokenBalances } from "../../utils/getTokensBalance";
 import { getPriceImpact } from "../../utils/balancerMath";
 import { getTokensUSDValue } from "../../utils/getTokensUSDValue";
+import PopupModal from "../alerts/PopupModal";
 
 const WithdrawLiquidity = () => {
   const {
@@ -557,6 +558,7 @@ const WithdrawLiquidity = () => {
             }
           />
         </div>
+        <PopupModal />
       </div>
     </>
   );

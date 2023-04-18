@@ -8,7 +8,6 @@ import LiquidityPoolListTableRow from "./LiquidityPoolListTableRow";
 import { useNetworkContext } from "../../providers/context/NetworkProvider";
 import { useLocation } from "react-router-dom";
 import circles from "../../images/circles.png";
-import PopupModal from "../alerts/PopupModal";
 
 export interface TableColumnsTypes {
   id: string;
@@ -93,7 +92,6 @@ const LiquidityPoolLists = () => {
           </Box>
         </Box>
       )}
-      <PopupModal />
     </>
   );
 };
