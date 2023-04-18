@@ -10,7 +10,7 @@ import { BigNumber } from "ethers";
 import {
   bigToStr,
   getInputLimit,
-  getInversedValue,
+  getInverseValue,
   getProperFixedValue,
 } from "../utils";
 import { approveMaxAllowance, getAllowance } from "../utils/getApproval";
@@ -267,7 +267,7 @@ const Swap = (props: PropTypes) => {
                                   {spotPriceLoading ? (
                                     <Skeleton width={"100px"} />
                                   ) : (
-                                    ` ${getInversedValue(spotPrice)} ${
+                                    ` ${getInverseValue(spotPrice)} ${
                                       tokenA.symbol
                                     }`
                                   )}

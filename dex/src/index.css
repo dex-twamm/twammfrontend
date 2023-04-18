@@ -5,9 +5,9 @@ body {
   box-shadow: 40px 40px 100px rgba(24, 48, 63, 0.2);
 }
 
-/* Make container unselectable */
+/* Make container unSelectable */
 
-.unselectable {
+.unSelectable {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;

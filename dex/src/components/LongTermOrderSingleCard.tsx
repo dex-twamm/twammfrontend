@@ -5,7 +5,7 @@ import styles from "../css/LongTermOrderCard.module.css";
 import {
   bigToFloat,
   bigToStr,
-  getInversedValue,
+  getInverseValue,
   getProperFixedValue,
 } from "../utils";
 import classNames from "classnames";
@@ -191,7 +191,7 @@ const LongTermOrderSingleCard = ({ orderLog }: PropTypes) => {
   const handleAveragePriceClick = () => {
     setSwitchAvgPrice((prev) => !prev);
     const avgPrice = parseFloat(averagePrice.toString());
-    setSwitchedAveragePrice(+getInversedValue(avgPrice));
+    setSwitchedAveragePrice(+getInverseValue(avgPrice));
   };
 
   useEffect(() => {

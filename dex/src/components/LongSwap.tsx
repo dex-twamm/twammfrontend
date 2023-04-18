@@ -197,7 +197,7 @@ const LongSwap = (props: PropTypes) => {
             style={{ marginTop: "0px", paddingTop: "0px" }}
           >
             <div
-              className={`unselectable ${styles.selectPairContainer}`}
+              className={`unSelectable ${styles.selectPairContainer}`}
               style={{ marginTop: "6px" }}
             >
               <p className={styles.mainHeader} style={{ color: "#333333" }}>

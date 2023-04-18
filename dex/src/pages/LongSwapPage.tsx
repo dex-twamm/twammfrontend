@@ -197,7 +197,7 @@ const LongSwapPage = () => {
 
         <div className={lsStyles.ordersWrapper}>
           <h4 className={lsStyles.longTermText}>Your Long Term Orders</h4>
-          <div className={styles.scroller}>
+          <div className={styles.scroll}>
             <div
               className={classNames(
                 lsStyles.longTermOrderCard,

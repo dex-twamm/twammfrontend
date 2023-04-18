@@ -110,7 +110,7 @@ export const timeDeltaString = (seconds: number): string => {
   }
 };
 
-export const getInversedValue = (value: number) => {
+export const getInverseValue = (value: number) => {
   return getProperFixedValue(1 / value);
 };
 

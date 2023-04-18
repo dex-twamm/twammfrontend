@@ -47,7 +47,7 @@ const PopupModal: React.FC = () => {
     setAllowTwamErrorMessage("");
   };
 
-  const handleTransactonClose = () => {
+  const handleTransactionClose = () => {
     setTransactionHash("");
   };
 
@@ -87,7 +87,7 @@ const PopupModal: React.FC = () => {
             variant="outlined"
             severity="info"
             action={buttonAction}
-            onClose={handleTransactonClose}
+            onClose={handleTransactionClose}
           >
             View Your Tx Progress
           </Alert>
