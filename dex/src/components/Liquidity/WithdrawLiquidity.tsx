@@ -104,40 +104,32 @@ const WithdrawLiquidity = () => {
   useEffect(() => {
     let interval1: ReturnType<typeof setTimeout>;
     let interval2: ReturnType<typeof setTimeout>;
+
+    const fetchSpotPrice = () => {
+      spotPrice(
+        inputAmount,
+        setSpotPriceLoading,
+        tokenA?.address,
+        tokenB?.address,
+        web3provider,
+        account,
+        deadline,
+        setBalancerErrors,
+        setSpotPrice,
+        setExpectedSwapOut,
+        currentNetwork
+      );
+    };
     // Do not fetch prices if not enough allowance.
     const inputAmount = parseFloat(inputValue);
     if (parseFloat(allowance) > inputAmount) {
       // Wait for 0.5 second before fetching price.
       interval1 = setTimeout(() => {
-        spotPrice(
-          inputAmount,
-          setSpotPriceLoading,
-          tokenA?.address,
-          tokenB?.address,
-          web3provider,
-          account,
-          deadline,
-          setBalancerErrors,
-          setSpotPrice,
-          setExpectedSwapOut,
-          currentNetwork
-        );
+        fetchSpotPrice();
       }, 500);
       // Update price every 12 seconds.
       interval2 = setTimeout(() => {
-        spotPrice(
-          inputAmount,
-          setSpotPriceLoading,
-          tokenA?.address,
-          tokenB?.address,
-          web3provider,
-          account,
-          deadline,
-          setBalancerErrors,
-          setSpotPrice,
-          setExpectedSwapOut,
-          currentNetwork
-        );
+        fetchSpotPrice();
       }, 12000);
     }
     return () => {

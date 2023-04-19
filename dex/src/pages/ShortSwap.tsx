@@ -46,39 +46,31 @@ const ShortSwap = () => {
   useEffect(() => {
     let interval1: ReturnType<typeof setTimeout>;
     let interval2: ReturnType<typeof setTimeout>;
+
+    const fetchSpotPrice = () => {
+      spotPrice(
+        parseFloat(swapAmount),
+        setSpotPriceLoading,
+        tokenA?.address,
+        tokenB?.address,
+        web3provider,
+        account,
+        deadline,
+        setFormErrors,
+        setSpotPrice,
+        setExpectedSwapOut,
+        selectedNetwork
+      );
+    };
     // Do not fetch prices if not enough allowance.
     if (parseFloat(allowance) > parseFloat(swapAmount)) {
       // Wait for 0.5 second before fetching price.
       interval1 = setTimeout(() => {
-        spotPrice(
-          parseFloat(swapAmount),
-          setSpotPriceLoading,
-          tokenA?.address,
-          tokenB?.address,
-          web3provider,
-          account,
-          deadline,
-          setFormErrors,
-          setSpotPrice,
-          setExpectedSwapOut,
-          selectedNetwork
-        );
+        fetchSpotPrice();
       }, 500);
       // Update price every 12 seconds.
       interval2 = setTimeout(() => {
-        spotPrice(
-          parseFloat(swapAmount),
-          setSpotPriceLoading,
-          tokenA?.address,
-          tokenB?.address,
-          web3provider,
-          account,
-          deadline,
-          setFormErrors,
-          setSpotPrice,
-          setExpectedSwapOut,
-          selectedNetwork
-        );
+        fetchSpotPrice();
       }, 12000);
     }
     return () => {
