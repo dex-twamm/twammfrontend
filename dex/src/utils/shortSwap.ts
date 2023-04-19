@@ -44,7 +44,7 @@ export const _swapTokens = async (
       const walletAddress: string = account;
 
       // Call the swapTokens function from the `utils` folder
-      await swapTokens(
+      const response = await swapTokens(
         signer,
         swapAmountWei,
         assetIn,
@@ -52,22 +52,12 @@ export const _swapTokens = async (
         walletAddress,
         deadline,
         currentNetwork
-      )
-        .then((res) => {
-          setTransactionHash(res.hash);
-          const swapResult = async (res: any) => {
-            const result = await res.wait();
-            return result;
-          };
-          swapResult(res).then((response) => {
-            if (response.status === 1)
-              setSuccess(POPUP_MESSAGE.shortSwapSuccess);
-          });
-        })
-        .catch((err) => {
-          console.log(err);
-          setError(POPUP_MESSAGE.shortSwapFailed);
-        });
+      );
+      setTransactionHash(response.hash);
+      const result = await response.wait();
+
+      if (result.status === 1) setSuccess(POPUP_MESSAGE.shortSwapSuccess);
+      else setError(POPUP_MESSAGE.shortSwapFailed);
       setLoading(false);
     } catch (err) {
       setLoading(false);

@@ -29,7 +29,7 @@ const AddLiquidityPreview = ({
   currentNetwork,
   priceImpact,
 }: PropTypes) => {
-  const { web3provider, account, setTransactionHash, setLoading, setError } =
+  const { web3provider, account, setTransactionHash, setLoading } =
     useShortSwapContext();
 
   const { setMessage } = useLongSwapContext();
@@ -48,7 +48,6 @@ const AddLiquidityPreview = ({
         setTransactionHash,
         setMessage,
         setLoading,
-        setError,
         setShowPreviewModal
       );
     } catch (err) {

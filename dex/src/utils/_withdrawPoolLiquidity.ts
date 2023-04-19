@@ -13,7 +13,6 @@ export const _withdrawPoolLiquidity = async (
   setTransactionHash: Dispatch<SetStateAction<string>>,
   setMessage: Dispatch<SetStateAction<{ status: string; message: string }>>,
   setLoading: Dispatch<SetStateAction<boolean>>,
-  setError: Dispatch<SetStateAction<string>>,
   setShowPreviewModal: Dispatch<SetStateAction<boolean>>,
   selectValue: number
 ) => {
@@ -23,7 +22,7 @@ export const _withdrawPoolLiquidity = async (
 
     setLoading(true);
 
-    await withdrawPoolLiquidity(
+    const response = await withdrawPoolLiquidity(
       selectValue,
       poolId,
       tokenIn,
@@ -31,38 +30,25 @@ export const _withdrawPoolLiquidity = async (
       walletAddress,
       web3provider,
       currentNetwork
-    )
-      .then((res) => {
-        setShowPreviewModal(false);
-        setTransactionHash(res.hash);
-        const addLiquidityResult = async () => {
-          const result = await res.wait();
-          return result;
-        };
-        addLiquidityResult().then(async (response) => {
-          if (response.status === 1) {
-            setMessage({
-              status: "success",
-              message: POPUP_MESSAGE.liquidityWithdrawn,
-            });
-          } else
-            setMessage({
-              status: "failed",
-              message: POPUP_MESSAGE.withdrawLiquidityFailed,
-            });
-          setLoading(false);
-        });
-      })
-      .catch((err) => {
-        setShowPreviewModal(false);
-        console.error(err);
-        setMessage({
-          status: "failed",
-          message: POPUP_MESSAGE.withdrawLiquidityFailed,
-        });
+    );
+
+    setShowPreviewModal(false);
+    setTransactionHash(response.hash);
+    const result = await response.wait();
+
+    if (result.status === 1) {
+      setMessage({
+        status: "success",
+        message: POPUP_MESSAGE.liquidityWithdrawn,
       });
+    } else {
+      setMessage({
+        status: "failed",
+        message: POPUP_MESSAGE.withdrawLiquidityFailed,
+      });
+    }
+    setLoading(false);
   } catch (err) {
-    console.error(err);
     setLoading(false);
     setMessage({
       status: "failed",

@@ -22,41 +22,36 @@ export const _cancelLTO = async (
   try {
     const walletAddress = account;
     const signer = web3provider.getSigner();
-    await cancelLTO(
+    const response = await cancelLTO(
       walletAddress,
       web3provider.getSigner(),
       orderId,
       currentNetwork
-    ).then((res) => {
-      setTransactionHash(res.hash);
-      const exitPoolResult = async (res: any) => {
-        const result = await res.wait();
-        return result;
-      };
-      exitPoolResult(res).then(async (response) => {
-        if (response.status === 1) {
-          await getEthLogs(signer, walletAddress, currentNetwork).then(
-            (res) => {
-              const resArray = Array.from(res.values());
-              setOrderLogsDecoded(resArray);
-            }
-          );
-          setMessage({
-            status: "success",
-            message: POPUP_MESSAGE.ltoCancelSuccess,
-          });
-        } else
-          setMessage({
-            status: "failed",
-            message: POPUP_MESSAGE.ltoCancelFailed,
-          });
-        setDisableActionBtn(false);
+    );
+    setTransactionHash(response.hash);
+    const result = await response.wait();
+
+    if (result.status === 1) {
+      await getEthLogs(signer, walletAddress, currentNetwork).then((res) => {
+        const resArray = Array.from(res.values());
+        setOrderLogsDecoded(resArray);
       });
-    });
+      setMessage({
+        status: "success",
+        message: POPUP_MESSAGE.ltoCancelSuccess,
+      });
+    } else
+      setMessage({
+        status: "failed",
+        message: POPUP_MESSAGE.ltoCancelFailed,
+      });
+    setDisableActionBtn(false);
     setLoading(false);
   } catch (e) {
-    console.log(e);
-    setMessage({ status: "failed", message: POPUP_MESSAGE.ltoCancelFailed });
+    setMessage({
+      status: "failed",
+      message: POPUP_MESSAGE.transactionCancelled,
+    });
     setLoading(false);
     setDisableActionBtn(false);
   }

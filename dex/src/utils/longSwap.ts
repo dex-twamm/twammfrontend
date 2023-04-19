@@ -122,7 +122,7 @@ export async function getLastVirtualOrderBlock(
     signer
   );
 
-  const longterm = await contract.longTermOrders();
-  const lastVirtualOrderBlock = longterm.lastVirtualOrderBlock;
+  const longTerm = await contract.longTermOrders();
+  const lastVirtualOrderBlock = longTerm.lastVirtualOrderBlock;
   return lastVirtualOrderBlock;
 }

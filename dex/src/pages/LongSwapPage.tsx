@@ -1,7 +1,7 @@
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import LongTermOrderCard from "../components/LongTermOrderCard";
 import PopupSettings from "../components/PopupSettings";
 import lsStyles from "../css/LongSwap.module.css";
@@ -42,7 +42,6 @@ const LongSwapPage = () => {
     account,
     setTransactionHash,
     setLoading,
-    setError,
     setWeb3provider,
     setCurrentBlock,
     setBalance,
@@ -127,7 +126,6 @@ const LongSwapPage = () => {
           setLoading,
           setMessage,
           setOrderLogsDecoded,
-          setError,
           selectedNetwork
         );
         setSwapAmount("");

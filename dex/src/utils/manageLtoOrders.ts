@@ -44,12 +44,6 @@ export async function withdrawLTO(
   currentNetwork: SelectedNetworkType,
   hasCallStatic?: boolean
 ): Promise<any> {
-  const vaultContract = getExchangeContract(currentNetwork, signer);
-
-  const balancerHelperContract = getBalancerHelperContract(
-    currentNetwork,
-    signer
-  );
   // bptAmountIn As User Input
   const encodedRequest: string = defaultAbiCoder.encode(
     ["uint256", "uint256"],
@@ -71,10 +65,16 @@ export async function withdrawLTO(
   let withdrawLTOTx;
 
   if (hasCallStatic) {
+    const balancerHelperContract = getBalancerHelperContract(
+      currentNetwork,
+      signer
+    );
     withdrawLTOTx = await balancerHelperContract.queryExit(...data, {
       gasLimit: getGasLimit(balancerHelperContract, data, "queryExit"),
     });
   } else {
+    const vaultContract = getExchangeContract(currentNetwork, signer);
+
     withdrawLTOTx = await vaultContract.exitPool(...data, {
       gasLimit: getGasLimit(vaultContract, data, "exitPool"),
     });

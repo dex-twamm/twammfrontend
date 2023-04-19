@@ -36,7 +36,7 @@ const WithdrawLiquidityPreview = ({
   tokenValueOfBpt,
   dollarValueOfToken,
 }: PropTypes) => {
-  const { web3provider, account, setTransactionHash, setLoading, setError } =
+  const { web3provider, account, setTransactionHash, setLoading } =
     useShortSwapContext();
 
   const { setMessage } = useLongSwapContext();
@@ -58,7 +58,6 @@ const WithdrawLiquidityPreview = ({
           setTransactionHash,
           setMessage,
           setLoading,
-          setError,
           setShowPreviewModal,
           selectValue
         );
@@ -75,7 +74,6 @@ const WithdrawLiquidityPreview = ({
           setTransactionHash,
           setMessage,
           setLoading,
-          setError,
           setShowPreviewModal,
           selectValue
         );

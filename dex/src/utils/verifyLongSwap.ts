@@ -1,6 +1,6 @@
 import { BigNumber, ethers, providers } from "ethers";
 import { Dispatch, SetStateAction } from "react";
-import { POPUP_MESSAGE } from "../constants";
+import { BALANCER_ERRORS } from "../constants";
 import { SelectedNetworkType } from "../providers/context/NetworkProvider";
 import { verifyLongSwapTxn } from "./longSwap";
 import { getPoolTokens } from "./poolUtils";
@@ -58,25 +58,12 @@ export const verifyLongSwap = async (
     } catch (e: any) {
       setLongSwapVerifyLoading(false);
       if (e.reason) {
-        if (e.reason.match("BAL#304")) {
-          setLongSwapFormErrors({
-            balError: POPUP_MESSAGE["BAL#304"],
-          });
-        } else if (e.reason.match("BAL#347")) {
-          setLongSwapFormErrors({
-            balError: POPUP_MESSAGE["BAL#347"],
-          });
-        } else if (e.reason.match("BAL#346")) {
-          setLongSwapFormErrors({
-            balError: POPUP_MESSAGE["BAL#346"],
-          });
-        } else if (e.reason.match("BAL#510")) {
-          setLongSwapFormErrors({
-            balError: POPUP_MESSAGE["BAL#510"],
-          });
-        } else if (e.reason.match("underflow")) {
-          setLongSwapFormErrors({ balError: "Underflow" });
-        } else if (
+        const errorKey = Object.keys(BALANCER_ERRORS).find((key) =>
+          e.reason.match(key)
+        );
+        if (errorKey)
+          setLongSwapFormErrors({ balError: BALANCER_ERRORS[errorKey] });
+        else if (
           e.reason.match("ERC20: transfer amount exceeds allowance") ||
           e.reason.match("allowance")
         ) {
@@ -84,12 +71,12 @@ export const verifyLongSwap = async (
           setLongSwapFormErrors({ balError: undefined });
         } else {
           setLongSwapFormErrors({
-            balError: POPUP_MESSAGE.unknown,
+            balError: BALANCER_ERRORS.unknown,
           });
         }
       } else {
         setLongSwapFormErrors({
-          balError: POPUP_MESSAGE.unknown,
+          balError: BALANCER_ERRORS.unknown,
         });
       }
       setLongSwapVerifyLoading(false);

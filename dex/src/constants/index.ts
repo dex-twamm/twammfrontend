@@ -3586,15 +3586,9 @@ export const POPUP_MESSAGE = {
   withdrawLiquidityFailed: "Couldn't withdraw liquidity!",
 
   insufficientBalance: "Balance insufficient for transaction!",
-
-  "BAL#304": "Try Giving Lesser Amount",
-  "BAL#510": "Invalid Amount!",
-  "BAL#347": "Try Giving Lesser Amount",
-  "BAL#346": "Try Giving Smaller Duration or Higher Amount",
-  unknown: "Unknown error!",
 } as const;
 
-export const BalancerErrors = {
+export const BALANCER_ERRORS: { [key: string]: string } = {
   "BAL#304": "Try Giving Lesser Amount",
   "BAL#510": "Invalid Amount!",
   "BAL#347": "Try Giving Lesser Amount",

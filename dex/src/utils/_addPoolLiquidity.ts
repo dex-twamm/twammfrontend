@@ -13,7 +13,6 @@ export const _addPoolLiquidity = async (
   setTransactionHash: Dispatch<SetStateAction<string>>,
   setMessage: Dispatch<SetStateAction<{ status: string; message: string }>>,
   setLoading: Dispatch<SetStateAction<boolean>>,
-  setError: Dispatch<SetStateAction<string>>,
   setShowPreviewModal: Dispatch<SetStateAction<boolean>>
 ) => {
   try {
@@ -33,7 +32,7 @@ export const _addPoolLiquidity = async (
 
     setLoading(true);
 
-    await addPoolLiquidity(
+    const response = await addPoolLiquidity(
       poolId,
       tokenIn,
       tokenOneAmountWei,
@@ -41,38 +40,26 @@ export const _addPoolLiquidity = async (
       walletAddress,
       web3provider,
       currentNetwork
-    )
-      .then((res) => {
-        setShowPreviewModal(false);
-        setTransactionHash(res.hash);
-        const addLiquidityResult = async () => {
-          const result = await res.wait();
-          return result;
-        };
-        addLiquidityResult().then(async (response) => {
-          if (response.status === 1) {
-            setMessage({
-              status: "success",
-              message: POPUP_MESSAGE.liquidityAdded,
-            });
-          } else
-            setMessage({
-              status: "failed",
-              message: POPUP_MESSAGE.addLiquidityFailed,
-            });
-          setLoading(false);
-        });
-      })
-      .catch((err) => {
-        console.error(err);
-        setShowPreviewModal(false);
-        setMessage({
-          status: "failed",
-          message: POPUP_MESSAGE.addLiquidityFailed,
-        });
+    );
+
+    setShowPreviewModal(false);
+    setTransactionHash(response.hash);
+
+    const result = await response.wait();
+
+    if (result.status === 1) {
+      setMessage({
+        status: "success",
+        message: POPUP_MESSAGE.liquidityAdded,
       });
+    } else {
+      setMessage({
+        status: "failed",
+        message: POPUP_MESSAGE.addLiquidityFailed,
+      });
+    }
+    setLoading(false);
   } catch (err) {
-    console.error(err);
     setLoading(false);
     setShowPreviewModal(false);
     setMessage({

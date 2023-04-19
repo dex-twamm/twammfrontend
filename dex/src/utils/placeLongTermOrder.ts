@@ -17,7 +17,6 @@ export const _placeLongTermOrders = async (
   setLoading: Dispatch<SetStateAction<boolean>>,
   setMessage: Dispatch<SetStateAction<{ status: string; message: string }>>,
   setOrderLogsDecoded: Dispatch<SetStateAction<any>>,
-  setError: Dispatch<SetStateAction<string>>,
   currentNetwork: SelectedNetworkType
 ): Promise<void> => {
   const tokens = getPoolTokens(currentNetwork);
@@ -39,7 +38,7 @@ export const _placeLongTermOrders = async (
 
     const walletAddress: string = account;
     // Call the PlaceLongTermOrders function from the `utils` folder*
-    await placeLongTermOrder(
+    const response = await placeLongTermOrder(
       tokenInIndex,
       tokenOutIndex,
       amountIn,
@@ -47,35 +46,21 @@ export const _placeLongTermOrders = async (
       signer,
       walletAddress,
       currentNetwork
-    )
-      .then((res) => {
-        setTransactionHash(res.hash);
-        const placeLtoTxResult = async (res: any) => {
-          const result = await res.wait();
-          return result;
-        };
-        placeLtoTxResult(res).then(async (response) => {
-          if (response.status === 1) {
-            await getEthLogs(signer, walletAddress, currentNetwork).then(
-              (res) => {
-                const resArray = Array.from(res.values());
-                setOrderLogsDecoded(resArray);
-              }
-            );
-            setMessage({ status: "success", message: POPUP_MESSAGE.ltoPlaced });
-          } else
-            setMessage({
-              status: "failed",
-              message: POPUP_MESSAGE.ltoPlaceFailed,
-            });
-        });
-      })
-      .catch((err) => {
-        console.error(err);
-        setMessage({ status: "failed", message: POPUP_MESSAGE.ltoPlaceFailed });
-      })
-      .finally(() => {
-        setLoading(false);
+    );
+
+    setTransactionHash(response.hash);
+    const result = await response.wait();
+
+    if (result.status === 1) {
+      await getEthLogs(signer, walletAddress, currentNetwork).then((res) => {
+        const resArray = Array.from(res.values());
+        setOrderLogsDecoded(resArray);
+      });
+      setMessage({ status: "success", message: POPUP_MESSAGE.ltoPlaced });
+    } else
+      setMessage({
+        status: "failed",
+        message: POPUP_MESSAGE.ltoPlaceFailed,
       });
   } catch (err) {
     console.error(err);
@@ -84,5 +69,7 @@ export const _placeLongTermOrders = async (
       status: "failed",
       message: POPUP_MESSAGE.transactionCancelled,
     });
+  } finally {
+    setLoading(false);
   }
 };

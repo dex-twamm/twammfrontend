@@ -1,6 +1,6 @@
 import { BigNumber, ethers, providers } from "ethers";
 import { Dispatch, SetStateAction } from "react";
-import { POPUP_MESSAGE } from "../constants";
+import { BALANCER_ERRORS } from "../constants";
 import { SelectedNetworkType } from "../providers/context/NetworkProvider";
 import { TokenType } from "./pool";
 import { getPoolTokens } from "./poolUtils";
@@ -62,15 +62,14 @@ export const spotPrice = async (
     } catch (e: any) {
       setSpotPriceLoading(false);
       if (e.reason) {
-        if (e.reason.match("BAL#304")) {
+        const errorKey = Object.keys(BALANCER_ERRORS).find((key) =>
+          e.reason.match(key)
+        );
+        if (errorKey)
           setFormErrors({
-            balError: POPUP_MESSAGE["BAL#304"],
+            balError: BALANCER_ERRORS[errorKey],
           });
-        } else if (e.reason.match("BAL#510")) {
-          setFormErrors({
-            balError: POPUP_MESSAGE["BAL#510"],
-          });
-        } else if (
+        else if (
           e.reason.match("ERC20: transfer amount exceeds allowance") ||
           e.reason.match("allowance")
         ) {
@@ -80,12 +79,12 @@ export const spotPrice = async (
           setExpectedSwapOut(0);
         } else {
           setFormErrors({
-            balError: POPUP_MESSAGE.unknown,
+            balError: BALANCER_ERRORS.unknown,
           });
         }
       } else {
         setFormErrors({
-          balError: POPUP_MESSAGE.unknown,
+          balError: BALANCER_ERRORS.unknown,
         });
       }
       setSpotPriceLoading(false);
