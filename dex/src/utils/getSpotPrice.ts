@@ -3,8 +3,14 @@ import { Dispatch, SetStateAction } from "react";
 import { POPUP_MESSAGE } from "../constants";
 import { SelectedNetworkType } from "../providers/context/NetworkProvider";
 import { TokenType } from "./pool";
-import { getPoolTokens } from "./poolUtils";
+import { getPoolId, getPoolTokens } from "./poolUtils";
 import { verifySwapTokens } from "./swap";
+import {
+  BalancerSDK,
+  PoolWithMethods,
+  BalancerSdkConfig,
+  Network,
+} from "@balancer-labs/sdk";
 
 // Spot Prices
 export const spotPrice = async (
@@ -40,55 +46,32 @@ export const spotPrice = async (
     const signer = web3provider.getSigner();
     const walletAddress: string = account;
 
-    //for shortswap
-    try {
-      await verifySwapTokens(
-        signer,
-        swapAmountWei,
-        tokenIn.address,
-        tokenOut.address,
-        walletAddress,
-        deadline,
-        currentNetwork
-      ).then((res: BigNumber) => {
-        setFormErrors({ balError: undefined });
-        setSpotPrice(
-          (parseFloat(res.toString()) * 10 ** tokenIn.decimals) /
-            (parseFloat(swapAmountWei.toString()) * 10 ** tokenOut.decimals)
-        );
-        setSpotPriceLoading(false);
-        setExpectedSwapOut(parseFloat(res.toString()));
-      });
-    } catch (e: any) {
-      setSpotPriceLoading(false);
-      if (e.reason) {
-        if (e.reason.match("BAL#304")) {
-          setFormErrors({
-            balError: POPUP_MESSAGE["BAL#304"],
-          });
-        } else if (e.reason.match("BAL#510")) {
-          setFormErrors({
-            balError: POPUP_MESSAGE["BAL#510"],
-          });
-        } else if (
-          e.reason.match("ERC20: transfer amount exceeds allowance") ||
-          e.reason.match("allowance")
-        ) {
-          setSpotPriceLoading(false);
-          setSpotPrice(0);
-          setFormErrors({ balError: undefined });
-          setExpectedSwapOut(0);
-        } else {
-          setFormErrors({
-            balError: POPUP_MESSAGE.unknown,
-          });
-        }
-      } else {
-        setFormErrors({
-          balError: POPUP_MESSAGE.unknown,
-        });
-      }
-      setSpotPriceLoading(false);
-    }
+    console.log(getPoolId(currentNetwork), tokenA, tokenB);
+    const spotPrice = await getSpotPrice(
+      getPoolId(currentNetwork),
+      tokenA,
+      tokenB
+    );
   }
+};
+
+export const getSpotPrice = async (
+  poolId: string,
+  tokenInAddress: string,
+  tokenOutAddress: string
+) => {
+  const sdkConfig: BalancerSdkConfig = {
+    network: Network.GOERLI,
+    rpcUrl: `https://goerli.infura.io/v3/${process.env.INFURA_KEY}`,
+  };
+  const balancer = new BalancerSDK(sdkConfig);
+
+  const pool: PoolWithMethods | undefined = await balancer.pools.find(poolId);
+
+  console.log(pool);
+  const spotPrice = await pool?.calcSpotPrice(tokenInAddress, tokenOutAddress);
+
+  console.log(spotPrice);
+
+  return spotPrice;
 };

@@ -1,5 +1,5 @@
 import { SelectedNetworkType } from "../providers/context/NetworkProvider";
-import { POOLS, PoolType } from "./pool";
+import { POOLS, PoolType, TOKENS } from "./pool";
 
 export const getCurrentNetwork = (currentNetwork: SelectedNetworkType) => {
   return currentNetwork?.network ?? "Ethereum";
@@ -99,4 +99,11 @@ export const getPoolBlockInterval = (currentNetwork: SelectedNetworkType) => {
 
 export const getPoolLength = (currentNetwork: SelectedNetworkType) => {
   return getAllPool(currentNetwork)?.length ?? 0;
+};
+
+export const getTokenAddress = (
+  currentNetwork: SelectedNetworkType,
+  tokenSymbol: string
+) => {
+  return TOKENS[getCurrentNetwork(currentNetwork)][tokenSymbol];
 };
