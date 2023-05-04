@@ -54,7 +54,7 @@ const LandingBlog = () => {
           <iframe
             src="https://www.paradigm.xyz/2021/07/twamm"
             width="100%"
-            height="450px"
+            height="100%"
             allowFullScreen
             title="blog"
             scrolling="no"

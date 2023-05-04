@@ -403,7 +403,8 @@
 .blogItems {
   background: #f8faff;
   border-radius: 24px;
-  width: 100%;
+  width: 32%;
+  height: 300px;
   position: relative;
 }
 
@@ -835,6 +836,10 @@ iframe {
   .topSec h5 {
     font-size: 20px;
   }
+
+  .blogItems {
+    width: 40%;
+  }
 }
 
 @media (max-width: 992px) {
@@ -985,9 +990,16 @@ iframe {
   .socialMedia {
     gap: 20px;
   }
+
+  .blogItems {
+    width: 43%;
+  }
 }
 
 @media (max-width: 720px) {
+  .blogItems {
+    width: 47%;
+  }
   .docAndCommunity {
     column-gap: 30px;
   }
@@ -1024,10 +1036,6 @@ iframe {
   .communitySection {
     padding-left: 70px;
     padding-right: 70px;
-  }
-
-  .blogContents {
-    flex-direction: column;
   }
 
   .balancerFeatures {
@@ -1074,6 +1082,12 @@ iframe {
 }
 
 @media (max-width: 520px) {
+  .blogContents {
+    flex-direction: column;
+  }
+  .blogItems {
+    width: 100%;
+  }
   .navContainer {
     padding: 10px;
   }
