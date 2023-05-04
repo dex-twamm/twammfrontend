@@ -4,11 +4,14 @@ import tweetCardOne from "../../images/tweetCardOne.png";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 const LandingTweet = () => {
+  const handleReadMore = () => {
+    window.open("https://twitter.com/FinanceXS", "_blank");
+  };
   return (
     <div className={styles.tweetSection}>
       <div className={styles.topSec}>
         <h5>Check out our latest alpha</h5>
-        <h5 className={styles.readMore}>
+        <h5 className={styles.readMore} onClick={handleReadMore}>
           Read more on our Tweet{" "}
           <ArrowForwardIcon fontSize="large" className={styles.muiArrow} />
         </h5>
