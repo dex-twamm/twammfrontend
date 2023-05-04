@@ -8,7 +8,7 @@ import LandingTechnology from "./LandingTechnology";
 import LandingThesis from "./LandingThesis";
 import LandingTraders from "./LandingTraders";
 import LandingTweet from "./LandingTweet";
-import LandingVideo from "./LandingVideo";
+// import LandingVideo from "./LandingVideo";
 
 const LandingMainPage = () => {
   return (

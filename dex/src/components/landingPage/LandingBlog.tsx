@@ -3,11 +3,14 @@ import blogImg from "../../images/blogImg.png";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 const LandingBlog = () => {
+  const handleReadMoreBlog = () => {
+    window.open("https://mirror.xyz/longswap-xyz.eth", "_blank");
+  };
   return (
     <div className={styles.blogSection}>
       <div className={styles.topSec}>
         <h5>Check out our latest alpha</h5>
-        <h5 className={styles.readMore}>
+        <h5 className={styles.readMore} onClick={handleReadMoreBlog}>
           Read more on our blog{" "}
           <ArrowForwardIcon fontSize="large" className={styles.muiArrow} />
         </h5>
