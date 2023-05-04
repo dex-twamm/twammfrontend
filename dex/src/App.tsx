@@ -230,7 +230,7 @@ function App() {
   return (
     <>
       <div className="main">
-        {location.pathname !== "/landing-page" && <Navbar />}
+        {!location.pathname.includes("/landing-page") && <Navbar />}
         <Routes>
           <Route path="/landing-page" element={<LandingPage />} />
           <Route path="/contact" element={<ContactPage />} />
@@ -239,7 +239,7 @@ function App() {
           <Route path="/liquidity" element={<LiquidityPage />} />
         </Routes>
         {location.pathname !== "/contact" &&
-        location.pathname !== "/landing-page" ? (
+        location.pathname !== "/landing-page/" ? (
           <div className="supportIcon">
             <ChatBubbleOutlineTwoToneIcon
               sx={{ fontSize: 19, color: "white" }}
