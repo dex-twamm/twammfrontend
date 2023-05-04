@@ -2,6 +2,7 @@ import styles from "../../css/LandingPage.module.css";
 import tweetCard from "../../images/tweetCard.png";
 import tweetCardOne from "../../images/tweetCardOne.png";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { TwitterTweetEmbed } from "react-twitter-embed";
 
 const LandingTweet = () => {
   const handleReadMore = () => {
@@ -18,14 +19,32 @@ const LandingTweet = () => {
       </div>
       <h1>Tweet</h1>
       <div className={styles.tweets}>
-        <img src={tweetCard} alt="tweetImage" />
-        <div className={styles.tweetCards}>
-          <img src={tweetCardOne} alt="img" />
-          <img src={tweetCardOne} alt="img" />
+        <div className={styles.tweetsEmbed}>
+          <TwitterTweetEmbed
+            tweetId="1505433297865912320"
+            options={{
+              cards: "hidden",
+            }}
+            placeholder={"loading..."}
+          />
         </div>
-        <div className={styles.tweetCards}>
-          <img src={tweetCardOne} alt="img" />
-          <img src={tweetCardOne} alt="img" />
+        <div className={styles.tweetsEmbed}>
+          <TwitterTweetEmbed
+            tweetId="1630905815526961152"
+            placeholder={"loading..."}
+            options={{
+              cards: "hidden",
+            }}
+          />
+        </div>
+        <div className={styles.tweetsEmbed}>
+          <TwitterTweetEmbed
+            tweetId="1630880519021006848"
+            placeholder={"loading..."}
+            options={{
+              cards: "hidden",
+            }}
+          />
         </div>
       </div>
     </div>

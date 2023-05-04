@@ -494,7 +494,14 @@
 
 .tweets {
   display: flex;
-  gap: 24px;
+  gap: 20px;
+  width: 100%;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.tweetsEmbed {
+  width: 350px;
 }
 
 .tweets img {
@@ -602,7 +609,16 @@
   cursor: pointer;
 }
 
+@media (max-width: 1290px) {
+  .tweetsEmbed {
+    width: 450px;
+  }
+}
+
 @media (max-width: 1200px) {
+  .tweetsEmbed {
+    width: 400px;
+  }
   .coverContainer h1 {
     font-size: 70px;
   }
@@ -754,6 +770,9 @@
 }
 
 @media (max-width: 1024px) {
+  .tweetsEmbed {
+    width: 350px;
+  }
   .coverContainer h1 {
     font-size: 60px;
   }
@@ -791,6 +810,14 @@
 
   .topSec h5 {
     font-size: 20px;
+  }
+}
+
+@media (max-width: 920px) {
+  .tweetsEmbed {
+    width: 100%;
+    display: flex;
+    justify-content: center;
   }
 }
 
