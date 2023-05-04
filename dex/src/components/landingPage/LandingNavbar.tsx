@@ -5,6 +5,10 @@ const LandingNavbar = () => {
   const handleDocsClick = () => {
     window.open("https://docs.longswap.xyz/", "_blank");
   };
+
+  const handleJoinCommunity = () => {
+    window.open("https://discord.gg/N2rbZwCNhq", "_blank");
+  };
   return (
     <div className={styles.navContainer}>
       <div className={styles.logoAndImage}>
@@ -15,7 +19,9 @@ const LandingNavbar = () => {
         <p className={styles.docs} onClick={handleDocsClick}>
           Docs
         </p>
-        <button className={styles.community}>Join the community</button>
+        <button className={styles.community} onClick={handleJoinCommunity}>
+          Join the community
+        </button>
       </div>
     </div>
   );
