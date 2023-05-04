@@ -525,14 +525,13 @@ iframe {
 
 .tweets {
   display: flex;
-  gap: 20px;
   width: 100%;
   justify-content: space-between;
   flex-wrap: wrap;
 }
 
 .tweetsEmbed {
-  width: 350px;
+  width: 33%;
 }
 
 .tweets img {
@@ -642,14 +641,11 @@ iframe {
 
 @media (max-width: 1290px) {
   .tweetsEmbed {
-    width: 450px;
+    width: 33%;
   }
 }
 
 @media (max-width: 1200px) {
-  .tweetsEmbed {
-    width: 400px;
-  }
   .coverContainer h1 {
     font-size: 70px;
   }
@@ -801,9 +797,6 @@ iframe {
 }
 
 @media (max-width: 1024px) {
-  .tweetsEmbed {
-    width: 350px;
-  }
   .coverContainer h1 {
     font-size: 60px;
   }
@@ -844,11 +837,9 @@ iframe {
   }
 }
 
-@media (max-width: 920px) {
+@media (max-width: 992px) {
   .tweetsEmbed {
-    width: 100%;
-    display: flex;
-    justify-content: center;
+    width: 49%;
   }
 }
 
@@ -966,10 +957,6 @@ iframe {
     white-space: nowrap;
   }
 
-  .tweets {
-    flex-direction: column;
-  }
-
   .tweetCards {
     gap: 15px;
   }
@@ -1055,6 +1042,14 @@ iframe {
 @media (max-width: 640px) {
   .navContainer {
     padding: 20px;
+  }
+
+  .tweets {
+    flex-direction: column-reverse;
+  }
+
+  .tweetsEmbed {
+    width: 100%;
   }
 
   .longSwap {
