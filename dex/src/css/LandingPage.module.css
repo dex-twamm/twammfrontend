@@ -598,6 +598,10 @@
   column-gap: 40px;
 }
 
+.socialMedia img {
+  cursor: pointer;
+}
+
 @media (max-width: 1200px) {
   .coverContainer h1 {
     font-size: 70px;
