@@ -15,7 +15,7 @@ const LandingMainPage = () => {
     <div>
       <LandingNavbar />
       <LandingCover />
-      <LandingVideo />
+      {/* <LandingVideo /> */}
       <LandingThesis />
       <LandingTraders />
       <LandingTechnology />
