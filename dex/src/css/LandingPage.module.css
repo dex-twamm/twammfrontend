@@ -944,7 +944,7 @@ iframe {
   }
 
   .blogContents {
-    gap: 10px;
+    gap: 12px;
   }
 
   .balancerSection h5 {
@@ -993,6 +993,12 @@ iframe {
 
   .blogItems {
     width: 43%;
+  }
+}
+
+@media (max-width: 768px) {
+  .blogItems {
+    width: 49%;
   }
 }
 
