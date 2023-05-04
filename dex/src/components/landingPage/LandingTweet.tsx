@@ -1,6 +1,4 @@
 import styles from "../../css/LandingPage.module.css";
-import tweetCard from "../../images/tweetCard.png";
-import tweetCardOne from "../../images/tweetCardOne.png";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { TwitterTweetEmbed } from "react-twitter-embed";
 

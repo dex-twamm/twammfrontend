@@ -1,11 +1,15 @@
 import styles from "../../css/LandingPage.module.css";
-import blogImg from "../../images/blogImg.png";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 const LandingBlog = () => {
   const handleReadMoreBlog = () => {
     window.open("https://mirror.xyz/longswap-xyz.eth", "_blank");
   };
+
+  const handleViewBlog = (link: string) => {
+    window.open(link, "_blank");
+  };
+
   return (
     <div className={styles.blogSection}>
       <div className={styles.topSec}>
@@ -18,49 +22,44 @@ const LandingBlog = () => {
       <h1>Blog</h1>
       <div className={styles.blogContents}>
         <div className={styles.blogItems}>
-          <img src={blogImg} alt="img" />
-          <div className={styles.blogInfos}>
-            <span className={styles.date}>23 Nov 2022</span>
-            <p className={styles.blogTopic}>What is Interest rate swap?</p>
-            <p className={styles.blogDetails}>
-              Why is it essential in DeFi? An interest rate swap (IRS) is the
-              exchange of fixed-rate interest flows for variable-rate interest
-              flows in the same currency. It is widely used in traditional
-              finance and allows you t...
-              <br />
-              <ArrowForwardIcon />
-            </p>
+          <div
+            className={styles.blogOverlay}
+            onClick={() =>
+              handleViewBlog(
+                "https://mirror.xyz/longswap-xyz.eth/Ud9CF0TyLD4dBFzeTzhrQuxXH_2PkP49RjF5BdT-t5E"
+              )
+            }
+          >
+            View Blog
           </div>
+          <iframe
+            src="https://mirror.xyz/longswap-xyz.eth/Ud9CF0TyLD4dBFzeTzhrQuxXH_2PkP49RjF5BdT-t5E"
+            width="100%"
+            height="100%"
+            allowFullScreen
+            title="blog"
+            scrolling="no"
+            id="blog-iframe"
+          />
         </div>
         <div className={styles.blogItems}>
-          <img src={blogImg} alt="img" />
-          <div className={styles.blogInfos}>
-            <span className={styles.date}>23 Nov 2022</span>
-            <p className={styles.blogTopic}>What is Interest rate swap?</p>
-            <p className={styles.blogDetails}>
-              Why is it essential in DeFi? An interest rate swap (IRS) is the
-              exchange of fixed-rate interest flows for variable-rate interest
-              flows in the same currency. It is widely used in traditional
-              finance and allows you t...
-              <br />
-              <ArrowForwardIcon />
-            </p>
+          <div
+            className={styles.blogOverlay}
+            onClick={() =>
+              handleViewBlog("https://www.paradigm.xyz/2021/07/twamm")
+            }
+          >
+            View Blog
           </div>
-        </div>
-        <div className={styles.blogItems}>
-          <img src={blogImg} alt="img" />
-          <div className={styles.blogInfos}>
-            <span className={styles.date}>23 Nov 2022</span>
-            <p className={styles.blogTopic}>What is Interest rate swap?</p>
-            <p className={styles.blogDetails}>
-              Why is it essential in DeFi? An interest rate swap (IRS) is the
-              exchange of fixed-rate interest flows for variable-rate interest
-              flows in the same currency. It is widely used in traditional
-              finance and allows you t...
-              <br />
-              <ArrowForwardIcon />
-            </p>
-          </div>
+          <iframe
+            src="https://www.paradigm.xyz/2021/07/twamm"
+            width="100%"
+            height="450px"
+            allowFullScreen
+            title="blog"
+            scrolling="no"
+            id="blog-iframe"
+          />
         </div>
       </div>
     </div>

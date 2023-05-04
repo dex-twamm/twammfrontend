@@ -1,5 +1,5 @@
 ::-webkit-scrollbar {
-  display: none;
+  display: none !important;
 }
 
 .navContainer {
@@ -403,6 +403,37 @@
 .blogItems {
   background: #f8faff;
   border-radius: 24px;
+  width: 100%;
+  position: relative;
+}
+
+.blogOverlay {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 24px;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  opacity: 0;
+  transition: 0.5s ease;
+  font-weight: 500;
+  font-size: 18px;
+}
+
+iframe {
+  border: 1px solid #dddddd;
+  border-radius: 24px;
+}
+
+.blogItems:hover .blogOverlay {
+  opacity: 1;
+  transition: 0.5s ease;
 }
 
 .blogItems img {
