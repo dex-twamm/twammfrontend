@@ -6,7 +6,7 @@ import LongSwapPage from "./pages/LongSwapPage";
 import ShortSwap from "./pages/ShortSwap";
 import { bigToStr } from "./utils";
 import { connectWallet } from "./utils/connectWallet";
-import { getLPTokensBalance, getTokensBalance } from "./utils/getAmount";
+import { getTokensBalance } from "./utils/getTokensBalance";
 import { getAllowance } from "./utils/getApproval";
 import { getEthLogs } from "./utils/getEthLogs";
 import { getLastVirtualOrderBlock } from "./utils/longSwap";
@@ -36,7 +36,6 @@ function App() {
     setExpectedSwapOut,
     setWeb3provider,
     setCurrentBlock,
-    setLPTokenBalance,
     setBalance,
     web3provider,
     setFormErrors,
@@ -144,15 +143,6 @@ function App() {
         ).then((res) => {
           const resArray = Array.from(res.values());
           setOrderLogsDecoded(resArray);
-        });
-
-        // Pool Token's Balance
-        await getLPTokensBalance(
-          web3provider?.getSigner(),
-          walletAddress,
-          selectedNetwork
-        ).then((res) => {
-          setLPTokenBalance(res);
         });
         setLoading(false);
         setOrderLogsLoading(false);

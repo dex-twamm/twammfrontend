@@ -26,7 +26,6 @@ const useShortSwapState = () => {
   const [web3provider, setWeb3provider] = useState<any>();
   const [currentBlock, setCurrentBlock] = useState<any>();
   const [spotPrice, setSpotPrice] = useState(0);
-  const [LPTokenBalance, setLPTokenBalance] = useState(0);
   const [balance, setBalance] = useState(0);
   const [spotPriceLoading, setSpotPriceLoading] = useState(false);
   const [allowTwamErrorMessage, setAllowTwamErrorMessage] =
@@ -67,8 +66,6 @@ const useShortSwapState = () => {
     setCurrentBlock,
     spotPrice,
     setSpotPrice,
-    LPTokenBalance,
-    setLPTokenBalance,
     balance,
     setBalance,
     spotPriceLoading,
